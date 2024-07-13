@@ -1,0 +1,40 @@
+{
+  "name": "@codemonster/vue-ui",
+  "version": "0.0.1",
+  "description": "Open source UI components for Vue.",
+  "license": "MIT",
+  "author": "Kirill Kolesnikov",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/codemonster-ru/ui.git"
+  },
+  "keywords": [],
+  "main": "./dist/index.umd.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.umd.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "build": "vite build",
+    "dev:link": "npm link"
+  },
+  "peerDependencies": {
+    "vue": "^3.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.10",
+    "vue": "^3.4.31",
+    "vite": "^5.3.3",
+    "vite-plugin-dts": "^3.9.1",
+    "typescript": "^5.5.3",
+    "@vitejs/plugin-vue": "^5.0.5"
+  }
+}
