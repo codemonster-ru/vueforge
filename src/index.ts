@@ -1,3 +1,1 @@
-import Header from "./header/Header.vue";
-
-export { Header };
+export { default as CmHeader } from './header/HeaderComponent.vue';
