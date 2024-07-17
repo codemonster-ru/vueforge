@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang='ts'>
-import('./logo.css');
+import('./logo.scss');
 
 defineProps<{
     src: string,
