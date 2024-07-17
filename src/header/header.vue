@@ -5,5 +5,5 @@
 </template>
 
 <script setup lang='ts'>
-import('./header.css');
+import('./header.scss');
 </script>
