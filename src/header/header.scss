@@ -1,5 +1,11 @@
 .cm-header {
-    padding-top: 1rem;
-    padding-bottom: 1rem;
+    padding-top: 12px;
+    padding-bottom: 12px;
     border-bottom: 1px solid #CCC;
+
+    .cm-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
 }
