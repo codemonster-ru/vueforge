@@ -10,7 +10,7 @@ import('./logo.scss');
 defineProps<{
     src: string,
     alt?: string,
-    width: number,
-    height: number,
+    width?: string,
+    height?: string,
 }>();
 </script>
