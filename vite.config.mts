@@ -1,11 +1,19 @@
 import { resolve } from 'node:path';
 import { defineConfig } from 'vite';
+import { copyFileSync } from 'node:fs';
 import vue from '@vitejs/plugin-vue';
 import dts from 'vite-plugin-dts';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-    plugins: [vue(), dts()],
+    plugins: [
+        vue(),
+        dts({
+            afterBuild: () => {
+                copyFileSync('dist/index.d.ts', 'dist/index.d.mts');
+            },
+        }),
+    ],
     build: {
         cssCodeSplit: true,
         lib: {
