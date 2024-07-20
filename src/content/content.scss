@@ -1,0 +1,9 @@
+.cm-content {
+    flex: 1 0 auto;
+
+    .cm-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+}

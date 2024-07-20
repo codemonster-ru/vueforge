@@ -1,0 +1,12 @@
+.cm-footer {
+    flex: 0 0 auto;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    border-top: 1px solid #CCC;
+
+    .cm-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+}
