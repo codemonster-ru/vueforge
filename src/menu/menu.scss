@@ -1,0 +1,53 @@
+@import "../colors";
+
+.cm-menu {
+    display: flex;
+}
+
+.cm-menu_horizontal {
+    .cm-menu__list {
+        flex-direction: row;
+    }
+
+    .cm-menu__item {
+        &:not(:first-child) {
+            margin-left: .5rem;
+        }
+
+        &:not(:last-child) {
+            margin-right: .5rem;
+        }
+    }
+}
+
+.cm-menu_vertical {
+    .cm-menu__list {
+        flex-direction: column;
+    }
+
+    .cm-menu__item {
+        &:not(:first-child) {
+            margin-top: .5rem;
+        }
+
+        &:not(:last-child) {
+            margin-bottom: .5rem;
+        }
+    }
+}
+
+.cm-menu__list {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    list-style: none;
+}
+
+.cm-menu__link {
+    color: inherit;
+    text-decoration: none;
+
+    &:hover {
+        color: $blue-600;
+    }
+}
