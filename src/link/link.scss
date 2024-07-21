@@ -1,0 +1,14 @@
+@import "../colors.scss";
+
+.cm-link {
+    color: inherit;
+    text-decoration: none;
+
+    &:hover {
+        color: $blue-600;
+    }
+
+    &:active {
+        color: $blue-700;
+    }
+}
