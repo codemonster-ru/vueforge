@@ -32,7 +32,7 @@ interface Props {
 
 withDefaults(defineProps<Props>(), {
     to: '',
-    url: '',
+    url: undefined,
     type: 'a',
     label: '',
 });
