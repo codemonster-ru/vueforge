@@ -19,6 +19,7 @@
 
 <script setup lang='ts'>
 import('@/link/link.scss');
+import('@/link/linkTheme.scss');
 
 import { RouteLocationAsRelativeGeneric, RouteLocationAsPathGeneric } from 'vue-router';
 import { defineProps } from 'vue';

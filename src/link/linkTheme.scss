@@ -1,0 +1,6 @@
+@import "../colors.scss";
+
+:root {
+    --cm-link-color-hover: #{$blue-600};
+    --cm-link-color-active: #{$blue-700};
+}
