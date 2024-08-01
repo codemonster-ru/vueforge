@@ -1,5 +1,3 @@
-@import "../colors.scss";
-
 .cm-button {
     display: inline-flex;
     position: relative;
@@ -15,103 +13,103 @@
 
     &.cm-button_primary {
         color: #FFFFFF;
-        border: 1px solid $blue;
-        background-color: $blue;
+        border: 1px solid var(--cm-button-primary-border-color);
+        background-color: var(--cm-button-primary-background-color);
 
         &:hover {
             color: #FFFFFF;
-            border: 1px solid $blue-600;
-            background-color: $blue-600;
+            border: 1px solid var(--cm-button-primary-hover-border-color);
+            background-color: var(--cm-button-primary-hover-background-color);
         }
 
         &:active {
-            border: 1px solid $blue-700;
-            background-color: $blue-700;
+            border: 1px solid var(--cm-button-primary-active-border-color);
+            background-color: var(var(--cm-button-primary-active-border-color));
         }
     }
 
     &.cm-button_secondary {
         color: #FFFFFF;
-        border: 1px solid $gray;
-        background-color: $gray;
+        border: 1px solid var(--cm-button-secondary-border-color);
+        background-color: var(--cm-button-secondary-background-color);
 
         &:hover {
             color: #FFFFFF;
-            border: 1px solid $gray-600;
-            background-color: $gray-600;
+            border: 1px solid var(--cm-button-secondary-hover-border-color);
+            background-color: var(--cm-button-secondary-hover-background-color);
         }
 
         &:active {
-            border: 1px solid $gray-700;
-            background-color: $gray-700;
+            border: 1px solid var(--cm-button-secondary-active-border-color);
+            background-color: var(--cm-button-secondary-active-background-color);
         }
     }
 
     &.cm-button_success {
         color: #FFFFFF;
-        border: 1px solid $green;
-        background-color: $green;
+        border: 1px solid var(--cm-button-success-border-color);
+        background-color: var(--cm-button-success-background-color);
 
         &:hover {
             color: #FFFFFF;
-            border: 1px solid $green-600;
-            background-color: $green-600;
+            border: 1px solid var(--cm-button-success-hover-border-color);
+            background-color: var(--cm-button-success-hover-background-color);
         }
 
         &:active {
-            border: 1px solid $green-700;
-            background-color: $green-700;
+            border: 1px solid var(--cm-button-success-active-border-color);
+            background-color: var(--cm-button-success-active-background-color);
         }
     }
 
     &.cm-button_danger {
         color: #FFFFFF;
-        border: 1px solid $red;
-        background-color: $red;
+        border: 1px solid var(--cm-button-danger-border-color);
+        background-color: var(--cm-button-danger-background-color);
 
         &:hover {
             color: #FFFFFF;
-            border: 1px solid $red-600;
-            background-color: $red-600;
+            border: 1px solid var(--cm-button-danger-hover-border-color);
+            background-color: var(--cm-button-danger-hover-background-color);
         }
 
         &:active {
-            border: 1px solid $red-700;
-            background-color: $red-700;
+            border: 1px solid var(--cm-button-danger-active-border-color);
+            background-color: var(--cm-button-danger-active-background-color);
         }
     }
 
     &.cm-button_warning {
         color: #FFFFFF;
-        border: 1px solid $yellow;
-        background-color: $yellow;
+        border: 1px solid var(--cm-button-warning-border-color);
+        background-color: var(--cm-button-warning-background-color);
 
         &:hover {
             color: #FFFFFF;
-            border: 1px solid $yellow-600;
-            background-color: $yellow-600;
+            border: 1px solid var(--cm-button-warning-hover-border-color);
+            background-color: var(--cm-button-warning-hover-background-color);
         }
 
         &:active {
-            border: 1px solid $yellow-700;
-            background-color: $yellow-700;
+            border: 1px solid var(--cm-button-warning-active-border-color);
+            background-color: var(--cm-button-warning-active-background-color);
         }
     }
 
     &.cm-button_info {
         color: #FFFFFF;
-        border: 1px solid $sky;
-        background-color: $sky;
+        border: 1px solid var(--cm-button-info-border-color);
+        background-color: var(--cm-button-info-background-color);
 
         &:hover {
             color: #FFFFFF;
-            border: 1px solid $sky-600;
-            background-color: $sky-600;
+            border: 1px solid var(--cm-button-info-hover-border-color);
+            background-color: var(--cm-button-info-hover-background-color);
         }
 
         &:active {
-            border: 1px solid $sky-700;
-            background-color: $sky-700;
+            border: 1px solid var(--cm-button-info-active-border-color);
+            background-color: var(--cm-button-info-active-background-color);
         }
     }
 }

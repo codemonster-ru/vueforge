@@ -11,6 +11,7 @@
 
 <script setup lang='ts'>
 import('@/button/button.scss');
+import('@/button/buttonTheme.scss');
 import { defineProps } from 'vue';
 
 interface Props {
