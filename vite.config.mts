@@ -42,6 +42,12 @@ export default defineConfig({
                             return `theme.css`;
                         }
 
+                        if (/Theme$/.test(fileName)) {
+                            let folder = fileName.replace('Theme', '');
+
+                            return `${folder}/theme.css`;
+                        }
+
                         return `${fileName}/${fileName}.css`;
                     }
 
