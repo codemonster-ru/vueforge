@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang='ts'>
-import('./button.scss');
+import('@/button/button.scss');
 import { defineProps } from 'vue';
 
 interface Props {

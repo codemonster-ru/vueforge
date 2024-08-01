@@ -5,5 +5,5 @@
 </template>
 
 <script setup lang='ts'>
-import('./footer.scss');
+import('@/footer/footer.scss');
 </script>
