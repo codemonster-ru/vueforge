@@ -37,6 +37,11 @@ export default defineConfig({
                 assetFileNames: (assetInfo) => {
                     if (/\.css$/.test(assetInfo.name ?? '')) {
                         const fileName = assetInfo.name.replace('.css', '');
+
+                        if (fileName === 'index') {
+                            return `theme.css`;
+                        }
+
                         return `${fileName}/${fileName}.css`;
                     }
 
