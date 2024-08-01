@@ -1,8 +1,2 @@
-@import "colors.scss";
-
-:root {
-    --cm-header-border-color: #{$gray-500};
-
-    --cm-link-color-hover: #{$blue-600};
-    --cm-link-color-active: #{$blue-700};
-}
+@import "header/headerTheme.scss";
+@import "link/linkTheme.scss";
