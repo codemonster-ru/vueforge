@@ -6,7 +6,7 @@ import vue from '@vitejs/plugin-vue';
 import dts from 'vite-plugin-dts';
 
 // https://vitejs.dev/config/
-defineConfig({
+export default defineConfig({
     plugins: [
         vue(),
         dts({
