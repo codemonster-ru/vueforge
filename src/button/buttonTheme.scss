@@ -1,45 +1,66 @@
 @import "../colors.scss";
 
 :root {
+    --cm-button-padding: 6px 12px;
+    --cm-button-border-radius: 6px;
+
+    --cm-button-primary-color: #FFFFFF;
     --cm-button-primary-border-color: #{$blue};
     --cm-button-primary-background-color: #{$blue};
+    --cm-button-primary-hover-color: #FFFFFF;
     --cm-button-primary-hover-border-color: #{$blue-600};
     --cm-button-primary-hover-background-color: #{$blue-600};
+    --cm-button-primary-active-color: #FFFFFF;
     --cm-button-primary-active-border-color: #{$blue-700};
     --cm-button-primary-active-background-color: #{$blue-700};
 
+    --cm-button-secondary-color: #FFFFFF;
     --cm-button-secondary-border-color: #{$gray};
     --cm-button-secondary-background-color: #{$gray};
+    --cm-button-secondary-hover-color: #FFFFFF;
     --cm-button-secondary-hover-border-color: #{$gray-600};
     --cm-button-secondary-hover-background-color: #{$gray-600};
+    --cm-button-secondary-active-color: #FFFFFF;
     --cm-button-secondary-active-border-color: #{$gray-700};
     --cm-button-secondary-active-background-color: #{$gray-700};
 
+    --cm-button-success-color: #FFFFFF;
     --cm-button-success-border-color: #{$green};
     --cm-button-success-background-color: #{$green};
+    --cm-button-success-hover-color: #FFFFFF;
     --cm-button-success-hover-border-color: #{$green-600};
     --cm-button-success-hover-background-color: #{$green-600};
+    --cm-button-success-active-color: #FFFFFF;
     --cm-button-success-active-border-color: #{$green-700};
     --cm-button-success-active-background-color: #{$green-700};
 
+    --cm-button-danger-color: #FFFFFF;
     --cm-button-danger-border-color: #{$red};
     --cm-button-danger-background-color: #{$red};
+    --cm-button-danger-hover-color: #FFFFFF;
     --cm-button-danger-hover-border-color: #{$red-600};
     --cm-button-danger-hover-background-color: #{$red-600};
+    --cm-button-danger-active-color: #FFFFFF;
     --cm-button-danger-active-border-color: #{$red-700};
     --cm-button-danger-active-background-color: #{$red-700};
 
+    --cm-button-warning-color: #FFFFFF;
     --cm-button-warning-border-color: #{$yellow};
     --cm-button-warning-background-color: #{$yellow};
+    --cm-button-warning-hover-color: #FFFFFF;
     --cm-button-warning-hover-border-color: #{$yellow-600};
     --cm-button-warning-hover-background-color: #{$yellow-600};
+    --cm-button-warning-active-color: #FFFFFF;
     --cm-button-warning-active-border-color: #{$yellow-700};
     --cm-button-warning-active-background-color: #{$yellow-700};
 
+    --cm-button-info-color: #FFFFFF;
     --cm-button-info-border-color: #{$sky};
     --cm-button-info-background-color: #{$sky};
+    --cm-button-info-hover-color: #FFFFFF;
     --cm-button-info-hover-border-color: #{$sky-600};
     --cm-button-info-hover-background-color: #{$sky-600};
+    --cm-button-info-active-color: #FFFFFF;
     --cm-button-info-active-border-color: #{$sky-700};
     --cm-button-info-active-background-color: #{$sky-700};
 }
