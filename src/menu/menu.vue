@@ -15,6 +15,7 @@
 
 <script setup lang='ts'>
 import('@/menu/menu.scss');
+import('@/menu/menuTheme.scss');
 import { defineProps } from 'vue';
 
 interface Item {

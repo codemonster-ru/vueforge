@@ -1,0 +1,10 @@
+@import "../colors";
+
+:root {
+    --cm-menu-item-margin-top: .5rem;
+    --cm-menu-item-margin-right: .5rem;
+    --cm-menu-item-margin-bottom: .5rem;
+    --cm-menu-item-margin-left: .5rem;
+
+    --cm-menu-link-hover-color: #{$blue-600};
+}

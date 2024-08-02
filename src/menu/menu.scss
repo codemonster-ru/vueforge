@@ -1,5 +1,3 @@
-@import "../colors";
-
 .cm-menu {
     display: flex;
 }
@@ -11,11 +9,11 @@
 
     .cm-menu__item {
         &:not(:first-child) {
-            margin-left: .5rem;
+            margin-left: var(--cm-menu-item-margin-left);
         }
 
         &:not(:last-child) {
-            margin-right: .5rem;
+            margin-right: var(--cm-menu-item-margin-right);
         }
     }
 }
@@ -27,11 +25,11 @@
 
     .cm-menu__item {
         &:not(:first-child) {
-            margin-top: .5rem;
+            margin-top: var(--cm-menu-item-margin-top);
         }
 
         &:not(:last-child) {
-            margin-bottom: .5rem;
+            margin-bottom: var(--cm-menu-item-margin-bottom);
         }
     }
 }
@@ -48,6 +46,6 @@
     text-decoration: none;
 
     &:hover {
-        color: $blue-600;
+        color: var(--cm-menu-link-hover-color);
     }
 }
