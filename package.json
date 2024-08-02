@@ -9,18 +9,18 @@
         "url": "https://github.com/codemonster-ru/ui.git"
     },
     "keywords": [],
-    "main": "./dist/index.umd.js",
-    "module": "./dist/index.mjs",
+    "main": "./dist/index.ts.umd.js",
+    "module": "./dist/index.ts.mjs",
     "types": "./dist/index.d.ts",
     "exports": {
         ".": {
             "import": {
                 "types": "./dist/index.d.mts",
-                "default": "./dist/index.mjs"
+                "default": "./dist/index.ts.mjs"
             },
             "require": {
                 "types": "./dist/index.d.ts",
-                "default": "./dist/index.umd.js"
+                "default": "./dist/index.ts.umd.js"
             }
         },
         "./dist/*.css": {
@@ -32,7 +32,7 @@
         "dist"
     ],
     "scripts": {
-        "build": "vite build",
+        "build": "set LIB_NAME=index&& vite build && set LIB_NAME=styles&& vite build",
         "dev:link": "npm link"
     },
     "peerDependencies": {

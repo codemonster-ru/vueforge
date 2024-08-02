@@ -14,8 +14,8 @@
 </template>
 
 <script setup lang='ts'>
-import('@/menu/menu.scss');
-import('@/menu/menuTheme.scss');
+import('./menu.scss');
+import('./menuTheme.scss');
 import { defineProps } from 'vue';
 
 interface Item {

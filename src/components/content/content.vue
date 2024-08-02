@@ -5,5 +5,5 @@
 </template>
 
 <script setup lang='ts'>
-import('@/content/content.scss');
+import('./content.scss');
 </script>

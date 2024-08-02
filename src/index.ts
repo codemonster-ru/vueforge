@@ -1,13 +1,11 @@
-import '@/theme.scss';
-
-import { default as CmLink } from '@/link/link.vue';
-import { default as CmLogo } from '@/logo/logo.vue';
-import { default as CmMenu } from '@/menu/menu.vue';
-import { default as CmHeader } from '@/header/header.vue';
-import { default as CmFooter } from '@/footer/footer.vue';
-import { default as CmButton } from '@/button/button.vue';
-import { default as CmContent } from '@/content/content.vue';
-import { default as CmContainer } from '@/container/container.vue';
+import CmLink from '@/components/link/link.vue';
+import CmLogo from '@/components/logo/logo.vue';
+import CmMenu from '@/components/menu/menu.vue';
+import CmHeader from '@/components/header/header.vue';
+import CmFooter from '@/components/footer/footer.vue';
+import CmButton from '@/components/button/button.vue';
+import CmContent from '@/components/content/content.vue';
+import CmContainer from '@/components/container/container.vue';
 
 export {
     CmLink,

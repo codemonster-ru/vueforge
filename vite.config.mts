@@ -1,9 +1,28 @@
 import { resolve } from 'node:path';
 import { defineConfig } from 'vite';
-import { copyFileSync } from 'node:fs';
+import { copyFileSync, unlinkSync } from 'node:fs';
 import { fileURLToPath, URL } from 'url';
 import vue from '@vitejs/plugin-vue';
 import dts from 'vite-plugin-dts';
+
+const config = {
+    index: {
+        name: 'index',
+        entry: resolve(__dirname, './src/index.ts'),
+        fileName: 'index.ts',
+    },
+    styles: {
+        name: 'styles',
+        entry: resolve(__dirname, './src/styles.ts'),
+        fileName: 'styles.js',
+    },
+};
+
+const currentConfig = config[process.env.LIB_NAME];
+
+if (currentConfig === undefined) {
+    throw new Error('LIB_NAME is not defined or is not valid');
+}
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -11,7 +30,17 @@ export default defineConfig({
         vue(),
         dts({
             afterBuild: () => {
-                copyFileSync('dist/index.d.ts', 'dist/index.d.mts');
+                if (process.env.LIB_NAME === 'index') {
+                    copyFileSync('dist/index.d.ts', 'dist/index.d.mts');
+                }
+
+                if (process.env.LIB_NAME === 'styles') {
+                    setTimeout(function() {
+                        unlinkSync('dist/styles.d.ts');
+                        unlinkSync('dist/styles.js.mjs');
+                        unlinkSync('dist/styles.js.umd.js');
+                    }, 100);
+                }
             },
         }),
     ],
@@ -21,11 +50,10 @@ export default defineConfig({
         ],
     },
     build: {
+        emptyOutDir: process.env.LIB_NAME === 'index',
         cssCodeSplit: true,
         lib: {
-            entry: resolve(__dirname, 'src/index.ts'),
-            name: 'index',
-            fileName: 'index',
+            ...currentConfig,
             formats: ['es', 'umd'],
         },
         rollupOptions: {
@@ -35,23 +63,30 @@ export default defineConfig({
                     vue: 'Vue',
                 },
                 assetFileNames: (assetInfo) => {
-                    if (/\.css$/.test(assetInfo.name ?? '')) {
-                        const fileName = assetInfo.name.replace('.css', '');
+                    const fileName = assetInfo.name.replace('.css', '');
 
-                        if (fileName === 'index') {
-                            return `theme.css`;
+                    if (process.env.LIB_NAME === 'index') {
+                        if (/\.css$/.test(assetInfo.name ?? '')) {
+
+                            if (fileName === 'index') {
+                                return `theme.css`;
+                            }
+
+                            if (/Theme$/.test(fileName)) {
+                                let folder = fileName.replace('Theme', '');
+
+                                return `components/${folder}/theme.css`;
+                            }
+
+                            return `components/${fileName}/${fileName}.css`;
                         }
 
-                        if (/Theme$/.test(fileName)) {
-                            let folder = fileName.replace('Theme', '');
-
-                            return `${folder}/theme.css`;
-                        }
-
-                        return `${fileName}/${fileName}.css`;
+                        return assetInfo.name;
                     }
 
-                    return assetInfo.name;
+                    if (process.env.LIB_NAME === 'styles') {
+                        return `styles/${fileName}.css`;
+                    }
                 },
             },
         },
