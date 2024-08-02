@@ -6,4 +6,5 @@
 
 <script setup lang='ts'>
 import('@/container/container.scss');
+import('@/container/containerTheme.scss');
 </script>
