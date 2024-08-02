@@ -1,8 +1,8 @@
 .cm-footer {
     flex: 0 0 auto;
-    padding-top: 12px;
-    padding-bottom: 12px;
-    border-top: 1px solid #CCC;
+    padding-top: var(--cm-footer-padding);
+    padding-bottom: var(--cm-footer-padding);
+    border-top: 1px solid var(--cm-footer-border-color);
 
     .cm-container {
         display: flex;
