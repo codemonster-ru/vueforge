@@ -7,7 +7,9 @@
                     :name='getKey(item, index)'
                     :item='{ ...item, ...{class: "cm-menu__link"} }'
                 />
-                <a v-else class='cm-menu__link' :href='item.url'>{{ item.label }}</a>
+                <cm-link v-else :type='getType(item)' :to='item.to' :url='item.url' class='cm-menu__link'>
+                    {{ item.label }}
+                </cm-link>
             </li>
         </ul>
     </div>
@@ -16,11 +18,13 @@
 <script setup lang='ts'>
 import('./menu.scss');
 import('./menuTheme.scss');
+import { CmLink } from '@/index';
 import { defineProps } from 'vue';
 
 interface Item {
     label: string,
-    url: string,
+    to?: string,
+    url?: string,
 }
 
 interface Props {
@@ -34,5 +38,9 @@ withDefaults(defineProps<Props>(), {
 
 function getKey(item: Item, index: number) {
     return `${item.label}_${index.toString()}`;
+}
+
+function getType(item: Item) {
+    return Object.prototype.hasOwnProperty.call(item, 'to') ? 'router-link' : 'a';
 }
 </script>
