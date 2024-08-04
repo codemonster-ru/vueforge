@@ -2,5 +2,5 @@
 
 :root {
     --cm-header-padding: 12px;
-    --cm-header-border-color: #{$gray-100};
+    --cm-header-border-color: var(--cm-gray-100);
 }

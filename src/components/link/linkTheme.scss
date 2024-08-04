@@ -1,6 +1,6 @@
 @import "../../styles/colors";
 
 :root {
-    --cm-link-color-hover: #{$blue-600};
-    --cm-link-color-active: #{$blue-700};
+    --cm-link-color-hover: var(--cm-blue-600);
+    --cm-link-color-active: var(--cm-blue-700);
 }
