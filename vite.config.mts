@@ -21,6 +21,11 @@ const config = {
         entry: resolve(__dirname, './src/theme.ts'),
         fileName: 'theme.js',
     },
+    colors: {
+        name: 'colors',
+        entry: resolve(__dirname, './src/colors.ts'),
+        fileName: 'colors.js',
+    },
 };
 
 const currentConfig = config[process.env.LIB_NAME];
@@ -37,6 +42,9 @@ const removeUnnecessary = () => {
     if (existsSync('dist/theme.d.ts')) unlinkSync('dist/theme.d.ts');
     if (existsSync('dist/theme.js.mjs')) unlinkSync('dist/theme.js.mjs');
     if (existsSync('dist/theme.js.umd.js')) unlinkSync('dist/theme.js.umd.js');
+    if (existsSync('dist/colors.d.ts')) unlinkSync('dist/colors.d.ts');
+    if (existsSync('dist/colors.js.mjs')) unlinkSync('dist/colors.js.mjs');
+    if (existsSync('dist/colors.js.umd.js')) unlinkSync('dist/colors.js.umd.js');
 };
 
 // https://vitejs.dev/config/
@@ -83,6 +91,10 @@ export default defineConfig({
                     }
 
                     if (process.env.LIB_NAME === 'theme') {
+                        return `styles/${fileName}.css`;
+                    }
+
+                    if (process.env.LIB_NAME === 'colors') {
                         return `styles/${fileName}.css`;
                     }
                 },
