@@ -8,7 +8,7 @@
     @return adjust-color($color, $red: $adjust, $green: $adjust, $blue: $adjust);
 }
 
-$green: #17a589;
+$green: #0cbc87;
 $green-100: lighter($green, 4);
 $green-200: lighter($green, 3);
 $green-300: lighter($green, 2);
@@ -19,7 +19,7 @@ $green-700: darker($green, 2);
 $green-800: darker($green, 3);
 $green-900: darker($green, 4);
 
-$red: #ef4444;
+$red: #d6293e;
 $red-100: lighter($red, 4);
 $red-200: lighter($red, 3);
 $red-300: lighter($red, 2);
@@ -30,7 +30,7 @@ $red-700: darker($red, 2);
 $red-800: darker($red, 3);
 $red-900: darker($red, 4);
 
-$yellow: #d2ab0d;
+$yellow: #f7c32e;
 $yellow-100: lighter($yellow, 4);
 $yellow-200: lighter($yellow, 3);
 $yellow-300: lighter($yellow, 2);
@@ -52,7 +52,7 @@ $sky-700: darker($sky, 2);
 $sky-800: darker($sky, 3);
 $sky-900: darker($sky, 4);
 
-$blue: #2e85bf;
+$blue: #007bff;
 $blue-100: lighter($blue, 4);
 $blue-200: lighter($blue, 3);
 $blue-300: lighter($blue, 2);
@@ -63,7 +63,7 @@ $blue-700: darker($blue, 2);
 $blue-800: darker($blue, 3);
 $blue-900: darker($blue, 4);
 
-$purple: #7c3c97;
+$purple: #6f42c1;
 $purple-100: lighter($purple, 4);
 $purple-200: lighter($purple, 3);
 $purple-300: lighter($purple, 2);
@@ -74,7 +74,7 @@ $purple-700: darker($purple, 2);
 $purple-800: darker($purple, 3);
 $purple-900: darker($purple, 4);
 
-$gray: #5D6D7E;
+$gray: #a1a1a8;
 $gray-100: lighter($gray, 4);
 $gray-200: lighter($gray, 3);
 $gray-300: lighter($gray, 2);
