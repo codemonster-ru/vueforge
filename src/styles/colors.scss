@@ -11,29 +11,33 @@
 }
 
 $colors: (
+    "white": #ffffff,
     "green": #0cbc87,
     "red": #d6293e,
     "yellow": #f7c32e,
     "sky": #0ea5e9,
     "blue": #007bff,
     "purple": #6f42c1,
-    "gray": #a1a1a8,
+    "gray": #6c6e77,
+    "gray-light": #f0f1f3,
 );
 
 :root {
     @each $key, $value in $colors {
         --cm-#{$key}: #{$value};
 
-        @for $i from 1 to 10 {
-            $color: #{$value};
+        @if $key != 'white' {
+            @for $i from 1 to 10 {
+                $color: #{$value};
 
-            @if $i < 5 {
-                $color: lighter($value, 5 - $i);
-            } @else if $i > 5 {
-                $color: darker($value, $i - 5);
+                @if $i < 5 {
+                    $color: lighter($value, 5 - $i);
+                } @else if $i > 5 {
+                    $color: darker($value, $i - 5);
+                }
+
+                --cm-#{$key}-#{$i}00: #{$color};
             }
-
-            --cm-#{$key}-#{$i}00: #{$color};
         }
     }
 }
