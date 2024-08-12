@@ -1,6 +1,7 @@
 .cm-header {
     padding-top: var(--cm-header-padding);
     padding-bottom: var(--cm-header-padding);
+    background-color: var(--cm-header-background-color);
     border-bottom: 1px solid var(--cm-header-border-color);
 
     .cm-container {
