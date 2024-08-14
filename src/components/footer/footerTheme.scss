@@ -3,5 +3,10 @@
 :root {
     --cm-footer-padding: 12px;
     --cm-footer-background-color: var(--cm-white);
-    --cm-footer-border-color: var(--cm-gray-light-700);
+    --cm-footer-border-color: transparent;
+}
+
+[data-theme="dark"] {
+    --cm-footer-background-color: var(--cm-gray-dark);
+    --cm-footer-border-color: transparent;
 }
