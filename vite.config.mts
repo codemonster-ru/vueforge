@@ -6,6 +6,11 @@ import vue from '@vitejs/plugin-vue';
 import dts from 'vite-plugin-dts';
 
 const config = {
+    dev: {
+        name: 'dev',
+        entry: resolve(__dirname, './src/main.ts'),
+        fileName: 'main.ts',
+    },
     index: {
         name: 'index',
         entry: resolve(__dirname, './src/index.ts'),
