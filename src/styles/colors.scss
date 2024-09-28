@@ -20,9 +20,17 @@ $colors: (
     "purple": #6f42c1,
     "gray": #6c6e77,
     "gray-light": #f0f1f3,
+    "gray-lirk": #dfe0e2,
+    "gray-larkle": #d5d7da,
+    "gray-liddle": #3b3d43,
+    "gray-lark": #3f4046,
     "gray-middle": #313338,
     "gray-dark": #2b2d31,
 );
+
+:root {
+    color: #d5d7da;
+}
 
 :root {
     @each $key, $value in $colors {
