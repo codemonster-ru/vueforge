@@ -18,7 +18,7 @@
 <script setup lang='ts'>
 import('./menu.scss');
 import('./menuTheme.scss');
-import { CmLink } from '@/index';
+import { CmLink } from '@/lib';
 import { defineProps } from 'vue';
 
 interface Item {

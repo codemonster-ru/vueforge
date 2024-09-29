@@ -15,7 +15,7 @@
 import { RouteLocationAsPathGeneric, RouteLocationAsRelativeGeneric } from 'vue-router';
 
 import('./logo.scss');
-import { CmLink } from '@/index';
+import { CmLink } from '@/lib';
 import { computed, defineProps } from 'vue';
 
 interface Props {
