@@ -34,6 +34,7 @@
     "scripts": {
         "dev": "set LIB_NAME=dev&& vite",
         "dev:link": "npm link",
+        "build:docs": "set LIB_NAME=docs&& vite build",
         "build:index": "set LIB_NAME=index&& vite build",
         "build:styles": "set LIB_NAME=styles&& vite build",
         "build:theme": "set LIB_NAME=theme&& vite build",

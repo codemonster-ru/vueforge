@@ -1,6 +1,6 @@
 import { resolve } from 'node:path';
 import { defineConfig } from 'vite';
-import { copyFileSync, unlinkSync, existsSync } from 'node:fs';
+import { copyFileSync, unlinkSync, existsSync, rmSync } from 'node:fs';
 import { fileURLToPath, URL } from 'url';
 import vue from '@vitejs/plugin-vue';
 import dts from 'vite-plugin-dts';
@@ -11,25 +11,34 @@ const config = {
         entry: resolve(__dirname, './src/main.ts'),
         fileName: 'main.ts',
     },
+    docs: {
+        name: 'docs',
+        entry: resolve(__dirname, './src/main.ts'),
+        fileName: 'main.ts',
+    },
     index: {
         name: 'index',
-        entry: resolve(__dirname, './src/index.ts'),
+        entry: resolve(__dirname, './src/lib/index.ts'),
         fileName: 'index.ts',
+        formats: ['es', 'umd'],
     },
     styles: {
         name: 'styles',
-        entry: resolve(__dirname, './src/styles.ts'),
+        entry: resolve(__dirname, './src/lib/styles.ts'),
         fileName: 'styles.js',
+        formats: ['es', 'umd'],
     },
     theme: {
         name: 'theme',
-        entry: resolve(__dirname, './src/theme.ts'),
+        entry: resolve(__dirname, './src/lib/theme.ts'),
         fileName: 'theme.js',
+        formats: ['es', 'umd'],
     },
     colors: {
         name: 'colors',
-        entry: resolve(__dirname, './src/colors.ts'),
+        entry: resolve(__dirname, './src/lib/colors.ts'),
         fileName: 'colors.js',
+        formats: ['es', 'umd'],
     },
 };
 
@@ -40,20 +49,23 @@ if (currentConfig === undefined) {
 }
 
 const removeUnnecessary = () => {
-    if (existsSync('dist/styles.d.ts')) copyFileSync('dist/index.d.ts', 'dist/index.d.mts');
-    if (existsSync('dist/styles.d.ts')) unlinkSync('dist/styles.d.ts');
-    if (existsSync('dist/styles.js.mjs')) unlinkSync('dist/styles.js.mjs');
-    if (existsSync('dist/styles.js.umd.js')) unlinkSync('dist/styles.js.umd.js');
-    if (existsSync('dist/theme.d.ts')) unlinkSync('dist/theme.d.ts');
-    if (existsSync('dist/theme.js.mjs')) unlinkSync('dist/theme.js.mjs');
-    if (existsSync('dist/theme.js.umd.js')) unlinkSync('dist/theme.js.umd.js');
-    if (existsSync('dist/colors.d.ts')) unlinkSync('dist/colors.d.ts');
-    if (existsSync('dist/colors.js.mjs')) unlinkSync('dist/colors.js.mjs');
-    if (existsSync('dist/colors.js.umd.js')) unlinkSync('dist/colors.js.umd.js');
+    if (process.env.LIB_NAME === 'docs') {
+        if (existsSync('dist/lib')) rmSync('dist/lib', { recursive: true, force: true });
+    } else {
+        if (existsSync('dist/styles.d.ts')) copyFileSync('dist/index.d.ts', 'dist/index.d.mts');
+        if (existsSync('dist/styles.d.ts')) unlinkSync('dist/styles.d.ts');
+        if (existsSync('dist/styles.js.mjs')) unlinkSync('dist/styles.js.mjs');
+        if (existsSync('dist/styles.js.umd.js')) unlinkSync('dist/styles.js.umd.js');
+        if (existsSync('dist/theme.d.ts')) unlinkSync('dist/theme.d.ts');
+        if (existsSync('dist/theme.js.mjs')) unlinkSync('dist/theme.js.mjs');
+        if (existsSync('dist/theme.js.umd.js')) unlinkSync('dist/theme.js.umd.js');
+        if (existsSync('dist/colors.d.ts')) unlinkSync('dist/colors.d.ts');
+        if (existsSync('dist/colors.js.mjs')) unlinkSync('dist/colors.js.mjs');
+        if (existsSync('dist/colors.js.umd.js')) unlinkSync('dist/colors.js.umd.js');
+    }
 };
 
-// https://vitejs.dev/config/
-export default defineConfig({
+let viteConfig = {
     plugins: [
         vue(),
         dts({
@@ -67,12 +79,14 @@ export default defineConfig({
             { find: '@', replacement: fileURLToPath(new URL('./src', import.meta.url)) },
         ],
     },
-    build: {
-        emptyOutDir: process.env.LIB_NAME === 'index',
+};
+
+if (process.env.LIB_NAME !== 'docs') {
+    viteConfig.build = {
+        emptyOutDir: process.env.LIB_NAME === 'docs' || process.env.LIB_NAME === 'index',
         cssCodeSplit: true,
         lib: {
             ...currentConfig,
-            formats: ['es', 'umd'],
         },
         rollupOptions: {
             external: ['vue'],
@@ -105,5 +119,8 @@ export default defineConfig({
                 },
             },
         },
-    },
-});
+    };
+}
+
+// https://vitejs.dev/config/
+export default defineConfig(viteConfig);
