@@ -1,5 +1,7 @@
 .cm-footer {
     flex: 0 0 auto;
+    color: var(--cm-footer-color);
+    margin-top: 24px;
     padding-top: var(--cm-footer-padding);
     padding-bottom: var(--cm-footer-padding);
     background-color: var(--cm-footer-background-color);

@@ -1,12 +1,8 @@
 @import "../../styles/colors";
 
 :root {
+    --cm-footer-color: var(--cm-text-2);
     --cm-footer-padding: 12px;
-    --cm-footer-background-color: var(--cm-gray-light);
-    --cm-footer-border-color: transparent;
-}
-
-[data-theme="dark"] {
-    --cm-footer-background-color: var(--cm-gray-dark);
-    --cm-footer-border-color: transparent;
+    --cm-footer-border-color: var(--cm-border);
+    --cm-footer-background-color: var(--cm-bg);
 }
