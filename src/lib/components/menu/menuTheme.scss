@@ -6,5 +6,9 @@
     --cm-menu-item-margin-bottom: .5rem;
     --cm-menu-item-margin-left: .5rem;
 
-    --cm-menu-link-hover-color: var(--cm-blue-600);
+    --cm-menu-separator-color: var(--cm-border);
+    --cm-menu-link-hover-color: var(--cm-brand-1);
+    --cm-menu-link-active-color: var(--cm-brand-1);
+    --cm-menu-parent-hover-color: var(--cm-text-2);
+    --cm-menu-parent-active-color: var(--cm-brand-1);
 }
