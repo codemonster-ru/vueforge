@@ -18,18 +18,37 @@ $colors: (
     "sky": #0ea5e9,
     "blue": #007bff,
     "purple": #6f42c1,
-    "gray": #6c6e77,
-    "gray-light": #f0f1f3,
-    "gray-lirk": #dfe0e2,
-    "gray-larkle": #d5d7da,
-    "gray-liddle": #3b3d43,
-    "gray-lark": #3f4046,
-    "gray-middle": #313338,
-    "gray-dark": #2b2d31,
+    "gray": #adb5bd,
 );
 
 :root {
-    color: #d5d7da;
+    --cm-brand-1: #44bd87;
+    --cm-brand-2: #249252;
+    --cm-brand-3: #19633b;
+    --cm-brand-soft: #69e8af50;
+    --cm-text-1: rgba(60, 60, 67);
+    --cm-text-2: rgba(60, 60, 67, .78);
+    --cm-text-3: rgba(60, 60, 67, .56);
+    --cm-border: #c2c2c4;
+    --cm-divider: #e2e2e3;
+    --cm-gutter: #e2e2e3;
+    --cm-bg: #ffffff;
+    --cm-bg-alt: #f6f6f7;
+    --cm-bg-elv: #ffffff;
+    --cm-bg-soft: #f6f6f7;
+}
+
+[data-theme="dark"] {
+    --cm-text-1: rgba(255, 255, 245, .86);
+    --cm-text-2: rgba(235, 235, 245, .6);
+    --cm-text-3: rgba(235, 235, 245, .38);
+    --cm-border: #3c3f44;
+    --cm-divider: #2e2e32;
+    --cm-gutter: #000000;
+    --cm-bg: #1b1b1f;
+    --cm-bg-alt: #161618;
+    --cm-bg-elv: #202127;
+    --cm-bg-soft: #202127;
 }
 
 :root {
