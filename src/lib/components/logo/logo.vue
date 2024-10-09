@@ -12,11 +12,11 @@
 </template>
 
 <script setup lang='ts'>
+import { CmLink } from '@/lib';
+import { computed, defineProps } from 'vue';
 import { RouteLocationAsPathGeneric, RouteLocationAsRelativeGeneric } from 'vue-router';
 
 import('./logo.scss');
-import { CmLink } from '@/lib';
-import { computed, defineProps } from 'vue';
 
 interface Props {
     to?: string | RouteLocationAsRelativeGeneric | RouteLocationAsPathGeneric,
