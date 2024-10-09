@@ -1,12 +1,9 @@
 @import "../../styles/colors";
 
 :root {
+    --cm-header-height: 60px;
     --cm-header-padding: 12px;
-    --cm-header-background-color: var(--cm-gray-light);
-    --cm-header-border-color: transparent;
-}
-
-[data-theme="dark"] {
-    --cm-header-background-color: var(--cm-gray-dark);
-    --cm-header-border-color: transparent;
+    --cm-header-min-height: 60px;
+    --cm-header-background-color: var(--cm-bg);
+    --cm-header-border-color: var(--cm-border);
 }
