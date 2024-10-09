@@ -66,6 +66,9 @@ const removeUnnecessary = () => {
 };
 
 let viteConfig = {
+    define: {
+        '__APP_VERSION__': JSON.stringify(process.env.npm_package_version),
+    },
     plugins: [
         vue(),
         dts({
