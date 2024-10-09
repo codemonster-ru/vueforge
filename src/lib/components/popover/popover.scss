@@ -1,0 +1,13 @@
+.cm-popover {
+    position: relative;
+}
+
+.cm-popover__button {
+    cursor: pointer;
+    user-select: none;
+}
+
+.cm-popover__wrapper {
+    position: absolute;
+    background-color: var(--cm-popover-background-color);
+}
