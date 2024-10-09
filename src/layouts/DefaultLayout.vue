@@ -1,0 +1,118 @@
+<template>
+    <cm-default-layout>
+        <template #headerLeft>
+            <cm-logo
+                alt='Codemonster UI'
+                type='router-link'
+                :to='{ name: "home" }'
+                src='/src/assets/images/logo.svg'
+                height='20px'
+            />
+        </template>
+        <template #headerRight>
+            <cm-menu :items='data.menuList' orientation='horizontal'>
+                <template #[getVersionName]>
+                    {{ data.menuList[2].label }}
+                </template>
+                <template #[getThemePickerName]>
+                    <cm-popover ref='popover' v-cm-click-outside='hide' @on-click='toggle'>
+                        <template #button>
+                            <div class='cm-menu__link'>
+                                <cm-icon :icon='getModeActive' />
+                            </div>
+                        </template>
+                        <template #default>
+                            <cm-menu :items='data.modeList' />
+                        </template>
+                    </cm-popover>
+                </template>
+            </cm-menu>
+        </template>
+        <template #footerDefault>
+            <div class='cm-footer__copyright'>
+                <span>Released under the MIT License.</span>
+                <span>Copyright © 2024-present Kirill Kolesnikov</span>
+            </div>
+        </template>
+    </cm-default-layout>
+</template>
+
+<script setup lang='ts'>
+import { useModeStore } from '@/stores/mode';
+import { ref, computed, reactive, onMounted, shallowRef } from 'vue';
+import { CmIcon, CmSunIcon, CmMoonIcon, CmCircleHalf } from '@codemonster-ru/icons';
+import { CmLogo, CmMenu, CmPopover, vCmClickOutside, CmDefaultLayout } from '@/lib';
+
+onMounted(() => modeStore.getMode());
+
+const modeStore = useModeStore();
+const popover = ref();
+const data = reactive({
+    menuList: [
+        {
+            label: 'Docs',
+            to: { name: 'docs' },
+        },
+        {
+            separator: true,
+        },
+        {
+            label: `v${__APP_VERSION__}`,
+            disabled: true,
+        },
+        {
+            separator: true,
+        },
+        {
+            label: 'Dark',
+        },
+    ],
+    modeList: [
+        {
+            icon: shallowRef(CmSunIcon),
+            label: 'Light',
+            active: false,
+            command: () => setModeActive('light'),
+        },
+        {
+            icon: shallowRef(CmMoonIcon),
+            label: 'Dark',
+            active: false,
+            command: () => setModeActive('dark'),
+        },
+        {
+            icon: shallowRef(CmCircleHalf),
+            label: 'Auto',
+            active: false,
+            command: () => setModeActive('auto'),
+        },
+    ],
+});
+const hide = () => popover.value.hide();
+const toggle = () => popover.value.toggle();
+const getVersionName = computed(() => `${data.menuList[2].label}_2`);
+const getThemePickerName = computed(() => `${data.menuList[4].label}_4`);
+const getModeActive = computed(() => {
+    data.modeList.map((x) => x.active = x.label.toLowerCase() === modeStore.mode);
+
+    let icon = CmSunIcon;
+
+    if (modeStore.mode === 'dark') {
+        icon = CmMoonIcon;
+    } else if (modeStore.mode === 'auto') {
+        icon = CmCircleHalf;
+    }
+
+    if (modeStore.mode === 'dark' || (modeStore.mode === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.dataset.theme = 'dark';
+    } else {
+        delete document.documentElement.dataset.theme;
+    }
+
+    return icon;
+});
+const setModeActive = (value: string) => {
+    modeStore.setMode(value);
+    hide();
+};
+</script>
