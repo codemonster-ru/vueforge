@@ -10,4 +10,13 @@
     &:active {
         color: var(--cm-link-color-active);
     }
+
+    &.cm-link_disabled {
+        cursor: not-allowed;
+    }
+}
+
+.cm-link_active,
+.cm-link_partially-active {
+    color: var(--cm-link-color-active);
 }
