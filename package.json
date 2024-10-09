@@ -1,6 +1,6 @@
 {
     "name": "@codemonster/vue-ui",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "description": "Open source UI components for Vue.",
     "license": "MIT",
     "author": "Kirill Kolesnikov",
@@ -34,18 +34,20 @@
     "scripts": {
         "dev": "set LIB_NAME=dev&& vite",
         "dev:link": "npm link",
+        "build": "npm run build:index && npm run build:styles && npm run build:theme && npm run build:colors",
         "build:docs": "set LIB_NAME=docs&& vite build",
         "build:index": "set LIB_NAME=index&& vite build",
         "build:styles": "set LIB_NAME=styles&& vite build",
         "build:theme": "set LIB_NAME=theme&& vite build",
-        "build:colors": "set LIB_NAME=colors&& vite build",
-        "build": "npm run build:index && npm run build:styles && npm run build:theme && npm run build:colors"
+        "build:colors": "set LIB_NAME=colors&& vite build"
     },
     "peerDependencies": {
         "vue": "^3.0.0",
-        "vue-router": "^4.4.5"
+        "vue-router": "^4.4.5",
+        "@codemonster-ru/icons": "^0.2.0"
     },
     "devDependencies": {
+        "pinia": "^2.2.4",
         "@types/node": "^20.14.10",
         "@typescript-eslint/eslint-plugin": "^7.16.0",
         "@vitejs/plugin-vue": "^5.0.5",
