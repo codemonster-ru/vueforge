@@ -39,8 +39,8 @@
 
 <script setup lang='ts'>
 import { useModeStore } from '@/stores/mode';
-import { ref, computed, reactive, onMounted, shallowRef } from 'vue';
-import { CmIcon, CmSunIcon, CmMoonIcon, CmCircleHalf } from '@codemonster-ru/icons';
+import { ref, computed, reactive, onMounted } from 'vue';
+import { CmIcon } from '@codemonster-ru/icons';
 import { CmLogo, CmMenu, CmPopover, vCmClickOutside, CmDefaultLayout } from '@/lib';
 
 onMounted(() => modeStore.getMode());
@@ -69,19 +69,19 @@ const data = reactive({
     ],
     modeList: [
         {
-            icon: shallowRef(CmSunIcon),
+            icon: 'sun',
             label: 'Light',
             active: false,
             command: () => setModeActive('light'),
         },
         {
-            icon: shallowRef(CmMoonIcon),
+            icon: 'moon',
             label: 'Dark',
             active: false,
             command: () => setModeActive('dark'),
         },
         {
-            icon: shallowRef(CmCircleHalf),
+            icon: 'circleHalf',
             label: 'Auto',
             active: false,
             command: () => setModeActive('auto'),
@@ -95,12 +95,12 @@ const getThemePickerName = computed(() => `${data.menuList[4].label}_4`);
 const getModeActive = computed(() => {
     data.modeList.map((x) => x.active = x.label.toLowerCase() === modeStore.mode);
 
-    let icon = CmSunIcon;
+    let icon = 'sun';
 
     if (modeStore.mode === 'dark') {
-        icon = CmMoonIcon;
+        icon = 'moon';
     } else if (modeStore.mode === 'auto') {
-        icon = CmCircleHalf;
+        icon = 'circleHalf';
     }
 
     if (modeStore.mode === 'dark' || (modeStore.mode === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
