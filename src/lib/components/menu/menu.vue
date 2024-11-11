@@ -16,7 +16,7 @@
                     >
                         <cm-icon v-if='item.icon' :icon='item.icon' class='cm-menu__icon' />
                         {{ item.label }}
-                        <cm-icon :icon='CmChevronDownIcon' />
+                        <cm-icon icon='chevronDown' />
                     </div>
                     <cm-menu
                         v-if='item.items'
@@ -48,14 +48,14 @@
 <script setup lang='ts'>
 import('./menu.scss');
 import('./menuTheme.scss');
-import { CmIcon, CmChevronDownIcon } from '@codemonster-ru/icons';
+import { CmIcon } from '@codemonster-ru/icons';
 import { CmMenu, CmLink } from '@/lib';
-import { Component, defineProps } from 'vue';
+import { defineProps } from 'vue';
 
 interface Item {
     to?: string,
     url?: string,
-    icon?: Component,
+    icon?: string,
     items?: Array<Item>
     label?: string,
     active?: boolean,
