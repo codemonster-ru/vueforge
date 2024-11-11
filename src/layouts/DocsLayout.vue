@@ -21,22 +21,8 @@ const data = reactive({
                     to: { name: 'docs-started-introduction' },
                 },
                 {
-                    label: 'Setup',
-                    to: { name: 'docs-started-setup' },
-                },
-            ],
-        },
-        {
-            label: 'Installation',
-            to: { name: 'docs-installation' },
-            items: [
-                {
-                    label: 'Vite',
-                    to: { name: 'docs-installation-vite' },
-                },
-                {
-                    label: 'CDN',
-                    to: { name: 'docs-installation-cdn' },
+                    label: 'Quick start',
+                    to: { name: 'docs-started-quick-start' },
                 },
             ],
         },
@@ -63,8 +49,8 @@ const data = reactive({
             to: { name: 'docs-components' },
             items: [
                 {
-                    label: 'body',
-                    to: { name: 'docs-components-body' },
+                    label: 'Button',
+                    to: { name: 'docs-components-button' },
                 },
             ],
         },
@@ -73,8 +59,8 @@ const data = reactive({
             to: { name: 'docs-icons' },
             items: [
                 {
-                    label: 'Codemonster icons',
-                    to: { name: 'docs-icons-codemonster' },
+                    label: 'System icons',
+                    to: { name: 'docs-icons-system' },
                 },
                 {
                     label: 'Custom icons',
