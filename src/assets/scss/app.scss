@@ -27,6 +27,8 @@ body,
 .cm-footer__copyright {
     width: 100%;
     display: flex;
+    font-size: 12px;
+    font-weight: 500;
     align-items: center;
     flex-direction: column;
 }
@@ -35,6 +37,52 @@ body,
     html,
     body,
     #app {
-        background-color: #1b1b1f;
+        background-color: var(--cm-bg);
     }
+}
+
+h1 {
+    font-size: 24px;
+    line-height: 32px;
+}
+
+h2 {
+    font-size: 20px;
+    line-height: 28px;
+}
+
+h3 {
+    font-size: 18px;
+    line-height: 26px;
+}
+
+h4 {
+    font-size: 16px;
+    line-height: 24px;
+}
+
+h5 {
+    font-size: 14px;
+    line-height: 22px;
+}
+
+h6 {
+    font-size: 12px;
+    line-height: 20px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin-top: 0;
+    margin-bottom: 12px;
+    font-weight: 600;
+}
+
+p {
+    margin-top: 0;
+    margin-bottom: 12px;
 }
