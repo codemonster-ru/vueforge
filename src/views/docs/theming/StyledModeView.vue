@@ -1,7 +1,4 @@
 <template>
-    <cm-heading>Styled mode</cm-heading>
+    <h1>Styled mode</h1>
+    <p>In development.</p>
 </template>
-
-<script setup lang='ts'>
-import { CmHeading } from '@/lib';
-</script>
