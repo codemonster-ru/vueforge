@@ -1,7 +1,4 @@
 <template>
-    <cm-heading>Introduction</cm-heading>
+    <h1>Introduction</h1>
+    <p>UI component suite for Vue.</p>
 </template>
-
-<script setup lang='ts'>
-import { CmHeading } from '@/lib';
-</script>
