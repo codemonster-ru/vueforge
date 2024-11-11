@@ -20,7 +20,7 @@ const router = createRouter({
                         {
                             path: 'started',
                             name: 'docs-started',
-                            redirect: { name: 'docs-started-setup' },
+                            redirect: { name: 'docs-started-quick-start' },
                             children: [
                                 {
                                     path: 'introduction',
@@ -28,26 +28,9 @@ const router = createRouter({
                                     component: () => import('@/views/docs/started/IntroductionView.vue'),
                                 },
                                 {
-                                    path: 'setup',
-                                    name: 'docs-started-setup',
-                                    component: () => import('@/views/docs/started/SetupView.vue'),
-                                },
-                            ],
-                        },
-                        {
-                            path: 'installation',
-                            name: 'docs-installation',
-                            redirect: { name: 'docs-installation-vite' },
-                            children: [
-                                {
-                                    path: 'vite',
-                                    name: 'docs-installation-vite',
-                                    component: () => import('@/views/docs/installation/ViteView.vue'),
-                                },
-                                {
-                                    path: 'cdn',
-                                    name: 'docs-installation-cdn',
-                                    component: () => import('@/views/docs/installation/CdnView.vue'),
+                                    path: 'quick-start',
+                                    name: 'docs-started-quick-start',
+                                    component: () => import('@/views/docs/started/QuickStartView.vue'),
                                 },
                             ],
                         },
@@ -76,24 +59,24 @@ const router = createRouter({
                         {
                             path: 'components',
                             name: 'docs-components',
-                            redirect: { name: 'docs-components-body' },
+                            redirect: { name: 'docs-components-button' },
                             children: [
                                 {
-                                    path: 'body',
-                                    name: 'docs-components-body',
-                                    component: () => import('@/views/docs/components/BodyView.vue'),
+                                    path: 'button',
+                                    name: 'docs-components-button',
+                                    component: () => import('@/views/docs/components/ButtonView.vue'),
                                 },
                             ],
                         },
                         {
                             path: 'icons',
                             name: 'docs-icons',
-                            redirect: { name: 'docs-icons-codemonster' },
+                            redirect: { name: 'docs-icons-system' },
                             children: [
                                 {
-                                    path: 'codemonster',
-                                    name: 'docs-icons-codemonster',
-                                    component: () => import('@/views/docs/icons/CodemonsterIconsView.vue'),
+                                    path: 'system',
+                                    name: 'docs-icons-system',
+                                    component: () => import('@/views/docs/icons/SystemIconsView.vue'),
                                 },
                                 {
                                     path: 'custom',
