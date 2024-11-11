@@ -1,7 +1,4 @@
 <template>
-    <cm-heading>Configuration</cm-heading>
+    <h1>Configuration</h1>
+    <p>In development.</p>
 </template>
-
-<script setup lang='ts'>
-import { CmHeading } from '@/lib';
-</script>
