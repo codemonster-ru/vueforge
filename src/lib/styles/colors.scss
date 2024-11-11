@@ -10,6 +10,10 @@
     @return adjust-color($color, $red: $adjust, $green: $adjust, $blue: $adjust);
 }
 
+@function to-rgb($value) {
+    @return red($value), green($value), blue($value);
+}
+
 $colors: (
     "white": #ffffff,
     "green": #0cbc87,
@@ -22,7 +26,7 @@ $colors: (
 );
 
 :root {
-    --cm-brand-1: #44bd87;
+    --cm-brand-1: #42b883;
     --cm-brand-2: #249252;
     --cm-brand-3: #19633b;
     --cm-brand-soft: #69e8af50;
@@ -35,37 +39,44 @@ $colors: (
     --cm-bg: #ffffff;
     --cm-bg-alt: #f6f6f7;
     --cm-bg-elv: #ffffff;
-    --cm-bg-soft: #f6f6f7;
+    --cm-bg-soft: #f9f9f9;
 }
 
 [data-theme="dark"] {
-    --cm-text-1: rgba(255, 255, 245, .86);
-    --cm-text-2: rgba(235, 235, 245, .6);
-    --cm-text-3: rgba(235, 235, 245, .38);
+    --cm-text-1: rgba(255, 255, 255, .87);
+    --cm-text-2: rgba(235, 235, 235, .6);
+    --cm-text-3: rgba(235, 235, 235, .38);
     --cm-border: #3c3f44;
     --cm-divider: #2e2e32;
     --cm-gutter: #000000;
-    --cm-bg: #1b1b1f;
+    --cm-bg: #1a1a1a;
     --cm-bg-alt: #161618;
     --cm-bg-elv: #202127;
-    --cm-bg-soft: #202127;
+    --cm-bg-soft: #242424;
 }
 
 :root {
     @each $key, $value in $colors {
         --cm-#{$key}: #{$value};
 
+        $rgb: to-rgb($value);
+        --cm-#{$key}-rgb: #{$rgb};
+
         @if $key != 'white' {
             @for $i from 1 to 10 {
                 $color: #{$value};
+                $color-rgb: to-rgb($value);
 
                 @if $i < 5 {
                     $color: lighter($value, 5 - $i);
+                    $color-rgb: to-rgb($color);
                 } @else if $i > 5 {
                     $color: darker($value, $i - 5);
+                    $color-rgb: to-rgb($color);
                 }
 
                 --cm-#{$key}-#{$i}00: #{$color};
+                --cm-#{$key}-#{$i}00#{'-rgb'}: #{$color-rgb};
             }
         }
     }
