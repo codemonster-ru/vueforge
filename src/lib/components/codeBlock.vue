@@ -8,9 +8,6 @@
     </div>
 </template>
 
-<script setup lang='ts'>
-</script>
-
 <style lang='scss'>
 .cm-code-block {
     display: flex;

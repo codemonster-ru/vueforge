@@ -46,8 +46,6 @@
 </template>
 
 <script setup lang='ts'>
-import('./menu.scss');
-import('./menuTheme.scss');
 import { CmIcon } from '@codemonster-ru/icons';
 import { CmMenu, CmLink } from '@/lib';
 import { defineProps } from 'vue';
@@ -103,3 +101,126 @@ const onActive = (item) => {
     emits('onActive', item);
 };
 </script>
+
+<style lang='scss'>
+.cm-menu {
+    display: flex;
+}
+
+.cm-menu_horizontal {
+    > .cm-menu__list {
+        flex-direction: row;
+
+        > .cm-menu__item {
+            align-items: center;
+
+            &:not(:first-child) {
+                margin-left: var(--cm-menu-item-margin-left);
+            }
+
+            &:not(:last-child) {
+                margin-right: var(--cm-menu-item-margin-right);
+            }
+
+            > .cm-menu__separator {
+                height: 1rem;
+                border-top: none;
+                border-right: none;
+                border-left: 1px solid var(--cm-menu-separator-color);
+                border-bottom: none;
+            }
+        }
+    }
+}
+
+.cm-menu_vertical {
+    > .cm-menu__list {
+        width: 100%;
+        flex-direction: column;
+
+        > .cm-menu__item {
+            flex-direction: column;
+
+            &:not(:first-child) {
+                margin-top: var(--cm-menu-item-margin-top);
+            }
+
+            &:not(:last-child) {
+                margin-bottom: var(--cm-menu-item-margin-bottom);
+            }
+
+            > .cm-menu {
+                overflow: hidden;
+            }
+        }
+    }
+}
+
+.cm-menu__list {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    list-style: none;
+}
+
+.cm-menu__item {
+    display: flex;
+    font-weight: 500;
+}
+
+.cm-menu__link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+
+    &:hover {
+        color: var(--cm-menu-link-hover-color);
+    }
+}
+
+.cm-menu__parent {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    &:hover {
+        color: var(--cm-menu-parent-hover-color);
+    }
+}
+
+//.cm-menu__parent_active {
+//    color: var(--cm-menu-parent-active-color);
+//}
+
+.cm-menu__icon {
+    margin-right: 6px;
+}
+
+.cm-menu__submenu {
+    &.cm-menu__submenu_visible {
+        margin-top: 12px;
+        margin-left: 12px;
+    }
+
+    &:not(.cm-menu__submenu_visible) {
+        height: 0;
+    }
+}
+
+//Theme
+@import "../styles/colors";
+
+:root {
+    --cm-menu-item-margin-top: .5rem;
+    --cm-menu-item-margin-right: .5rem;
+    --cm-menu-item-margin-bottom: .5rem;
+    --cm-menu-item-margin-left: .5rem;
+
+    --cm-menu-separator-color: var(--cm-border);
+    --cm-menu-link-hover-color: var(--cm-brand-1);
+    --cm-menu-link-active-color: var(--cm-brand-1);
+    --cm-menu-parent-hover-color: var(--cm-text-2);
+    --cm-menu-parent-active-color: var(--cm-brand-1);
+}
+</style>

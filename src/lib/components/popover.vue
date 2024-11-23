@@ -22,8 +22,6 @@
 </template>
 
 <script setup lang='ts'>
-import('./popover.scss');
-import('./popoverTheme.scss');
 import { CmCard } from '@/lib';
 import { defineEmits, reactive } from 'vue';
 
@@ -37,3 +35,24 @@ const onClick = () => emits('onClick');
 
 defineExpose({ show, hide, toggle });
 </script>
+
+<style lang='scss'>
+.cm-popover {
+    position: relative;
+}
+
+.cm-popover__button {
+    cursor: pointer;
+    user-select: none;
+}
+
+.cm-popover__wrapper {
+    position: absolute;
+    background-color: var(--cm-popover-background-color);
+}
+
+//Theme
+:root {
+    --cm-popover-background-color: var(--cm-bg);
+}
+</style>

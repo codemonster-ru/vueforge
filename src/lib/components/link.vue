@@ -32,9 +32,6 @@
 </template>
 
 <script setup lang='ts'>
-import('./link.scss');
-import('./linkTheme.scss');
-
 import { useRoute, RouteLocationAsRelativeGeneric, RouteLocationAsPathGeneric } from 'vue-router';
 import { computed, defineProps, ref } from 'vue';
 
@@ -66,3 +63,36 @@ const getActive = computed(() => {
     return props.active;
 });
 </script>
+
+<style lang='scss'>
+.cm-link {
+    color: inherit;
+    cursor: pointer;
+    text-decoration: none;
+
+    &:hover {
+        color: var(--cm-link-color-hover);
+    }
+
+    &:active {
+        color: var(--cm-link-color-active);
+    }
+
+    &.cm-link_disabled {
+        cursor: not-allowed;
+    }
+}
+
+.cm-link_active,
+.cm-link_partially-active {
+    color: var(--cm-link-color-active);
+}
+
+//Theme
+@import "../styles/colors";
+
+:root {
+    --cm-link-color-hover: var(--cm-brand-1);
+    --cm-link-color-active: var(--cm-brand-1);
+}
+</style>

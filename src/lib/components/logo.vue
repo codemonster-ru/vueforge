@@ -16,8 +16,6 @@ import { CmLink } from '@/lib';
 import { computed, defineProps } from 'vue';
 import { RouteLocationAsPathGeneric, RouteLocationAsRelativeGeneric } from 'vue-router';
 
-import('./logo.scss');
-
 interface Props {
     to?: string | RouteLocationAsRelativeGeneric | RouteLocationAsPathGeneric,
     url?: string,
@@ -46,3 +44,9 @@ const getSrc = computed(() => {
     }
 });
 </script>
+
+<style lang='scss'>
+.cm-logo {
+    position: relative;
+}
+</style>

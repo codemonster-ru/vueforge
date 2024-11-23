@@ -1,3 +1,10 @@
+<template>
+    <footer class='cm-footer'>
+        <slot />
+    </footer>
+</template>
+
+<style lang='scss'>
 .cm-footer {
     flex: 0 0 auto;
     color: var(--cm-footer-color);
@@ -13,3 +20,14 @@
         justify-content: space-between;
     }
 }
+
+//Theme
+@import "../styles/colors";
+
+:root {
+    --cm-footer-color: var(--cm-text-2);
+    --cm-footer-padding: 12px;
+    --cm-footer-border-color: var(--cm-border);
+    --cm-footer-background-color: var(--cm-bg);
+}
+</style>

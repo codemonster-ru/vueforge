@@ -15,7 +15,20 @@
     </div>
 </template>
 
-<script setup lang='ts'>
-import('./card.scss');
-import('./cardTheme.scss');
-</script>
+<style lang='scss'>
+.cm-card {
+    border: 1px solid var(--cm-card-border-color);
+    border-radius: var(--cm-card-border-radius);
+}
+
+.cm-card__default {
+    padding: var(--cm-card-padding);
+}
+
+//Theme
+:root {
+    --cm-card-padding: 12px;
+    --cm-card-border-color: var(--cm-border);
+    --cm-card-border-radius: 6px;
+}
+</style>
