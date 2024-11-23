@@ -1,6 +1,6 @@
 import { resolve } from 'node:path';
 import { defineConfig } from 'vite';
-import { copyFileSync, unlinkSync, existsSync, rmSync } from 'node:fs';
+import { copyFileSync, unlinkSync, existsSync } from 'node:fs';
 import { fileURLToPath, URL } from 'url';
 import vue from '@vitejs/plugin-vue';
 import dts from 'vite-plugin-dts';
@@ -49,34 +49,33 @@ if (currentConfig === undefined) {
 }
 
 const removeUnnecessary = () => {
-    if (process.env.LIB_NAME === 'docs') {
-        if (existsSync('dist/lib')) rmSync('dist/lib', { recursive: true, force: true });
-    } else {
-        if (existsSync('dist/styles.d.ts')) copyFileSync('dist/index.d.ts', 'dist/index.d.mts');
-        if (existsSync('dist/styles.d.ts')) unlinkSync('dist/styles.d.ts');
-        if (existsSync('dist/styles.js.mjs')) unlinkSync('dist/styles.js.mjs');
-        if (existsSync('dist/styles.js.umd.js')) unlinkSync('dist/styles.js.umd.js');
-        if (existsSync('dist/theme.d.ts')) unlinkSync('dist/theme.d.ts');
-        if (existsSync('dist/theme.js.mjs')) unlinkSync('dist/theme.js.mjs');
-        if (existsSync('dist/theme.js.umd.js')) unlinkSync('dist/theme.js.umd.js');
-        if (existsSync('dist/colors.d.ts')) unlinkSync('dist/colors.d.ts');
-        if (existsSync('dist/colors.js.mjs')) unlinkSync('dist/colors.js.mjs');
-        if (existsSync('dist/colors.js.umd.js')) unlinkSync('dist/colors.js.umd.js');
-    }
+    if (existsSync('dist/styles.d.ts')) copyFileSync('dist/index.d.ts', 'dist/index.d.mts');
+    if (existsSync('dist/styles.d.ts')) unlinkSync('dist/styles.d.ts');
+    if (existsSync('dist/styles.js.mjs')) unlinkSync('dist/styles.js.mjs');
+    if (existsSync('dist/styles.js.umd.js')) unlinkSync('dist/styles.js.umd.js');
+    if (existsSync('dist/theme.d.ts')) unlinkSync('dist/theme.d.ts');
+    if (existsSync('dist/theme.js.mjs')) unlinkSync('dist/theme.js.mjs');
+    if (existsSync('dist/theme.js.umd.js')) unlinkSync('dist/theme.js.umd.js');
+    if (existsSync('dist/colors.d.ts')) unlinkSync('dist/colors.d.ts');
+    if (existsSync('dist/colors.js.mjs')) unlinkSync('dist/colors.js.mjs');
+    if (existsSync('dist/colors.js.umd.js')) unlinkSync('dist/colors.js.umd.js');
 };
+
+const plugins = [vue()];
+
+if (process.env.LIB_NAME !== 'docs') {
+    plugins.push(dts({
+        afterBuild: () => {
+            setTimeout(removeUnnecessary, 50);
+        },
+    }));
+}
 
 let viteConfig = {
     define: {
         '__APP_VERSION__': JSON.stringify(process.env.npm_package_version),
     },
-    plugins: [
-        vue(),
-        dts({
-            afterBuild: () => {
-                setTimeout(removeUnnecessary, 50);
-            },
-        }),
-    ],
+    plugins: plugins,
     resolve: {
         alias: [
             { find: '@', replacement: fileURLToPath(new URL('./src', import.meta.url)) },
