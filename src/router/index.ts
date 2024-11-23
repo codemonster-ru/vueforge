@@ -9,6 +9,9 @@ const router = createRouter({
                 {
                     path: '/',
                     name: 'home',
+                    meta: {
+                        title: 'Vue UI component library',
+                    },
                     component: () => import('@/views/HomeView.vue'),
                 },
                 {
@@ -25,11 +28,17 @@ const router = createRouter({
                                 {
                                     path: 'introduction',
                                     name: 'docs-started-introduction',
+                                    meta: {
+                                        title: 'Introduction',
+                                    },
                                     component: () => import('@/views/docs/started/IntroductionView.vue'),
                                 },
                                 {
                                     path: 'quick-start',
                                     name: 'docs-started-quick-start',
+                                    meta: {
+                                        title: 'Quick start',
+                                    },
                                     component: () => import('@/views/docs/started/QuickStartView.vue'),
                                 },
                             ],
@@ -37,6 +46,9 @@ const router = createRouter({
                         {
                             path: 'configuration',
                             name: 'docs-configuration',
+                            meta: {
+                                title: 'Configuration',
+                            },
                             component: () => import('@/views/docs/ConfigurationView.vue'),
                         },
                         {
@@ -47,11 +59,17 @@ const router = createRouter({
                                 {
                                     path: 'styled',
                                     name: 'docs-theming-styled',
+                                    meta: {
+                                        title: 'Styled mode',
+                                    },
                                     component: () => import('@/views/docs/theming/StyledModeView.vue'),
                                 },
                                 {
                                     path: 'unstyled',
                                     name: 'docs-theming-unstyled',
+                                    meta: {
+                                        title: 'Unstyled mode',
+                                    },
                                     component: () => import('@/views/docs/theming/UnstyledModeView.vue'),
                                 },
                             ],
@@ -64,6 +82,9 @@ const router = createRouter({
                                 {
                                     path: 'button',
                                     name: 'docs-components-button',
+                                    meta: {
+                                        title: 'Button component',
+                                    },
                                     component: () => import('@/views/docs/components/ButtonView.vue'),
                                 },
                             ],
@@ -76,11 +97,17 @@ const router = createRouter({
                                 {
                                     path: 'system',
                                     name: 'docs-icons-system',
+                                    meta: {
+                                        title: 'System icons',
+                                    },
                                     component: () => import('@/views/docs/icons/SystemIconsView.vue'),
                                 },
                                 {
                                     path: 'custom',
                                     name: 'docs-icons-custom',
+                                    meta: {
+                                        title: 'Custom icons',
+                                    },
                                     component: () => import('@/views/docs/icons/CustomIconsView.vue'),
                                 },
                             ],
@@ -91,6 +118,16 @@ const router = createRouter({
         },
     ],
     history: createWebHistory(),
+});
+
+router.beforeEach((to) => {
+    let title: string = 'Default Title';
+
+    if (Object.prototype.hasOwnProperty.call(to, 'meta') && Object.prototype.hasOwnProperty.call(to.meta, 'title')) {
+        title = to.meta.title as string;
+    }
+
+    document.title = `${title} | Codemonster UI`;
 });
 
 export { router };
