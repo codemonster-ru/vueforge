@@ -37,15 +37,4 @@ import { CmContainer } from '@/lib';
     display: flex;
     align-items: center;
 }
-
-//Theme
-@import "../styles/colors";
-
-:root {
-    --cm-header-height: 60px;
-    --cm-header-padding: 12px;
-    --cm-header-min-height: 60px;
-    --cm-header-background-color: var(--cm-bg);
-    --cm-header-border-color: var(--cm-border);
-}
 </style>

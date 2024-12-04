@@ -50,9 +50,4 @@ defineExpose({ show, hide, toggle });
     position: absolute;
     background-color: var(--cm-popover-background-color);
 }
-
-//Theme
-:root {
-    --cm-popover-background-color: var(--cm-bg);
-}
 </style>

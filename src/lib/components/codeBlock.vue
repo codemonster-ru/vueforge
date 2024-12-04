@@ -14,7 +14,7 @@
     margin-bottom: 12px;
     border-radius: 6px;
     justify-content: space-between;
-    background-color: var(--cm-bg-soft);
+    background-color: var(--cm-bg-soft-color);
 }
 
 .cm-code-block__pre {

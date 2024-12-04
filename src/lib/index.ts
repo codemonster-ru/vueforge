@@ -13,3 +13,6 @@ export { default as CmCodeBlock } from '@/lib/components/codeBlock.vue';
 export { default as CmDefaultLayout } from '@/lib/layouts/defaultLayout.vue';
 export { default as vCmClickOutside } from '@/lib/directives/clickOutside';
 export { default as CmLeftSidebarLayout } from '@/lib/layouts/leftSidebarLayout.vue';
+
+export { default as CmConfig } from '@/lib/config';
+export { default as CmDefaultTheme } from '@/lib/themes/default';

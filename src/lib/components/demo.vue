@@ -12,6 +12,6 @@
     padding: 24px;
     border-radius: 6px;
     margin-bottom: 12px;
-    background-color: var(--cm-bg-soft);
+    background-color: var(--cm-bg-soft-color);
 }
 </style>

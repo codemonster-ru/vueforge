@@ -34,12 +34,8 @@
     "scripts": {
         "dev": "set LIB_NAME=dev&& vite --force",
         "dev:link": "npm link",
-        "build": "npm run build:index && npm run build:styles && npm run build:theme && npm run build:colors",
-        "build:docs": "set LIB_NAME=docs&& vite build",
-        "build:index": "set LIB_NAME=index&& vite build",
-        "build:styles": "set LIB_NAME=styles&& vite build",
-        "build:theme": "set LIB_NAME=theme&& vite build",
-        "build:colors": "set LIB_NAME=colors&& vite build"
+        "build": "set LIB_NAME=index&& vite build",
+        "build:docs": "set LIB_NAME=docs&& vite build"
     },
     "peerDependencies": {
         "vue": "^3.0.0",

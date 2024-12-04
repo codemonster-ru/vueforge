@@ -43,9 +43,4 @@
         max-width: calc(1536px - var(--cm-container-padding) * 2);
     }
 }
-
-//Theme
-:root {
-    --cm-container-padding: 12px;
-}
 </style>

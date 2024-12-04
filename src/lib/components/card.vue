@@ -25,10 +25,4 @@
     padding: var(--cm-card-padding);
 }
 
-//Theme
-:root {
-    --cm-card-padding: 12px;
-    --cm-card-border-color: var(--cm-border);
-    --cm-card-border-radius: 6px;
-}
 </style>

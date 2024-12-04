@@ -71,11 +71,11 @@ const getActive = computed(() => {
     text-decoration: none;
 
     &:hover {
-        color: var(--cm-link-color-hover);
+        color: var(--cm-link-hover-color);
     }
 
     &:active {
-        color: var(--cm-link-color-active);
+        color: var(--cm-link-active-color);
     }
 
     &.cm-link_disabled {
@@ -85,14 +85,6 @@ const getActive = computed(() => {
 
 .cm-link_active,
 .cm-link_partially-active {
-    color: var(--cm-link-color-active);
-}
-
-//Theme
-@import "../styles/colors";
-
-:root {
-    --cm-link-color-hover: var(--cm-brand-1);
-    --cm-link-color-active: var(--cm-brand-1);
+    color: var(--cm-link-active-color);
 }
 </style>

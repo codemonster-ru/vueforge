@@ -25,7 +25,7 @@ import { CmButton } from '@/lib';
 }
 
 .welcome__description {
-    color: var(--cm-text-2);
+    color: var(--cm-secondary-text-color);
     font-size: 18px;
     margin-bottom: 28px;
 }
