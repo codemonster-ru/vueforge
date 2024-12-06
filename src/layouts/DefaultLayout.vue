@@ -90,7 +90,9 @@ const data = reactive({
 });
 const hide = () => popover.value.hide();
 const toggle = () => popover.value.toggle();
+// noinspection JSUnusedGlobalSymbols
 const getVersionName = computed(() => `${data.menuList[2].label}_2`);
+// noinspection JSUnusedGlobalSymbols
 const getThemePickerName = computed(() => `${data.menuList[4].label}_4`);
 const getModeActive = computed(() => {
     data.modeList.map((x) => x.active = x.label.toLowerCase() === modeStore.mode);

@@ -65,6 +65,7 @@ const parseConfig = (options: object, breadcrumbs: Array<string> = []) => {
     }
 };
 
+// noinspection JSUnusedGlobalSymbols
 export default {
     install(_app: App, options: object) {
         parseConfig(options);

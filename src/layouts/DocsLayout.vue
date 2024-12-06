@@ -39,8 +39,8 @@ const data = reactive({
                     to: { name: 'docs-theming-styled' },
                 },
                 {
-                    label: 'Unstyled mode',
-                    to: { name: 'docs-theming-unstyled' },
+                    label: 'Not styled mode',
+                    to: { name: 'docs-theming-not-styled' },
                 },
             ],
         },

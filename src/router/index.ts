@@ -65,12 +65,12 @@ const router = createRouter({
                                     component: () => import('@/views/docs/theming/StyledModeView.vue'),
                                 },
                                 {
-                                    path: 'unstyled',
-                                    name: 'docs-theming-unstyled',
+                                    path: 'not-styled',
+                                    name: 'docs-theming-not-styled',
                                     meta: {
-                                        title: 'Unstyled mode',
+                                        title: 'Not styled mode',
                                     },
-                                    component: () => import('@/views/docs/theming/UnstyledModeView.vue'),
+                                    component: () => import('@/views/docs/theming/NotStyledModeView.vue'),
                                 },
                             ],
                         },
