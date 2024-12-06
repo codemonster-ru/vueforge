@@ -3,12 +3,12 @@
         <h1 class='welcome__heading'>UI component suite for Vue.js</h1>
         <p class='welcome__description'>Enhance your web applications with comprehensive suite of customizable,
             feature-rich UI components.</p>
-        <cm-button :to='{ name: "docs" }' type='router-link'>Get started</cm-button>
+        <Button :to='{ name: "docs" }' type='router-link'>Get started</Button>
     </div>
 </template>
 
 <script setup lang='ts'>
-import { CmButton } from '@/lib';
+import { Button } from '@/lib';
 </script>
 
 <style lang='scss'>

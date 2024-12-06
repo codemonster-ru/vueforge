@@ -1,13 +1,13 @@
 <template>
-    <cm-left-sidebar-layout>
+    <LeftSidebarLayout>
         <template #leftSidebar>
-            <cm-menu :items='data.menuList' />
+            <Menu :items='data.menuList' />
         </template>
-    </cm-left-sidebar-layout>
+    </LeftSidebarLayout>
 </template>
 
 <script setup lang='ts'>
-import { CmMenu, CmLeftSidebarLayout } from '@/lib';
+import { Menu, LeftSidebarLayout } from '@/lib';
 import { reactive } from 'vue';
 
 const data = reactive({

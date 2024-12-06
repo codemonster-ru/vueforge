@@ -1,24 +1,24 @@
 <template>
-    <cm-header>
+    <Header>
         <template #left>
             <slot name='headerLeft' />
         </template>
         <template #right>
             <slot name='headerRight' />
         </template>
-    </cm-header>
-    <cm-content>
-        <cm-container>
+    </Header>
+    <Content>
+        <Container>
             <router-view />
-        </cm-container>
-    </cm-content>
-    <cm-footer>
-        <cm-container>
+        </Container>
+    </Content>
+    <Footer>
+        <Container>
             <slot name='footerDefault' />
-        </cm-container>
-    </cm-footer>
+        </Container>
+    </Footer>
 </template>
 
 <script setup lang='ts'>
-import { CmHeader, CmContent, CmFooter, CmContainer } from '..';
+import { Header, Content, Footer, Container } from '..';
 </script>

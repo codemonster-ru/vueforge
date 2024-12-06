@@ -1,9 +1,9 @@
 <template>
     <div class='cm-logo'>
         <template v-if='type.length'>
-            <cm-link :type='type' :to='to' :url='url'>
+            <Link :type='type' :to='to' :url='url'>
                 <img :src='getSrc' :width='width' :height='height' :alt='alt'>
-            </cm-link>
+            </Link>
         </template>
         <template v-else>
             <img :src='getSrc' :width='width' :height='height' :alt='alt'>
@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang='ts'>
-import { CmLink } from '@/lib';
+import { Link } from '@/lib';
 import { computed, defineProps } from 'vue';
 import { RouteLocationAsPathGeneric, RouteLocationAsRelativeGeneric } from 'vue-router';
 

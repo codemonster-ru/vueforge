@@ -1,7 +1,7 @@
 <template>
-    <cm-default-layout>
+    <DefaultLayout>
         <template #headerLeft>
-            <cm-logo
+            <Logo
                 alt='Codemonster UI'
                 type='router-link'
                 :to='{ name: "home" }'
@@ -10,23 +10,23 @@
             />
         </template>
         <template #headerRight>
-            <cm-menu :items='data.menuList' orientation='horizontal'>
+            <Menu :items='data.menuList' orientation='horizontal'>
                 <template #[getVersionName]>
                     {{ data.menuList[2].label }}
                 </template>
                 <template #[getThemePickerName]>
-                    <cm-popover ref='popover' v-cm-click-outside='hide' @on-click='toggle'>
+                    <Popover ref='popover' v-click-outside='hide' @on-click='toggle'>
                         <template #button>
                             <div class='cm-menu__link'>
                                 <cm-icon :icon='getModeActive' />
                             </div>
                         </template>
                         <template #default>
-                            <cm-menu :items='data.modeList' />
+                            <Menu :items='data.modeList' />
                         </template>
-                    </cm-popover>
+                    </Popover>
                 </template>
-            </cm-menu>
+            </Menu>
         </template>
         <template #footerDefault>
             <div class='cm-footer__copyright'>
@@ -34,14 +34,14 @@
                 <span>Copyright © 2024-present Kirill Kolesnikov</span>
             </div>
         </template>
-    </cm-default-layout>
+    </DefaultLayout>
 </template>
 
 <script setup lang='ts'>
 import { useModeStore } from '@/stores/mode';
 import { ref, computed, reactive, onMounted } from 'vue';
 import { CmIcon } from '@codemonster-ru/icons';
-import { CmLogo, CmMenu, CmPopover, vCmClickOutside, CmDefaultLayout } from '@/lib';
+import { Logo, Menu, Popover, vClickOutside, DefaultLayout } from '@/lib';
 
 onMounted(() => modeStore.getMode());
 

@@ -1,18 +1,18 @@
 <template>
     <header class='cm-header'>
-        <cm-container>
+        <Container>
             <div v-if='$slots.left' class='cm-header__left'>
                 <slot name='left' />
             </div>
             <div v-if='$slots.right' class='cm-header__right'>
                 <slot name='right' />
             </div>
-        </cm-container>
+        </Container>
     </header>
 </template>
 
 <script setup lang='ts'>
-import { CmContainer } from '@/lib';
+import { Container } from '@/lib';
 </script>
 
 <style lang='scss'>

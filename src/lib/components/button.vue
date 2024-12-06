@@ -13,7 +13,7 @@
             </span>
         </template>
     </button>
-    <cm-link v-else :to='props.to' :type='props.type' :class='getClass' :disabled='props.loading || props.disabled'>
+    <Link v-else :to='props.to' :type='props.type' :class='getClass' :disabled='props.loading || props.disabled'>
         <cm-icon v-if='props.icon' :icon='props.icon' :class='getIconClass' />
         <template v-if='$slots.default'>
             <span :class='getLabelClass'>
@@ -25,12 +25,12 @@
                 {{ label }}
             </span>
         </template>
-    </cm-link>
+    </Link>
 </template>
 
 <script setup lang='ts'>
 import { computed, defineProps } from 'vue';
-import { CmLink } from '@/lib';
+import { Link } from '@/lib';
 import { CmIcon } from '@codemonster-ru/icons';
 
 interface Props {

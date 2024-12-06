@@ -3,7 +3,7 @@
         <div class='cm-popover__button' @click='onClick'>
             <slot name='button' />
         </div>
-        <cm-card v-show='data.visible' class='cm-popover__wrapper'>
+        <Card v-show='data.visible' class='cm-popover__wrapper'>
             <template v-if='$slots.default' #default>
                 <slot name='default' />
             </template>
@@ -17,12 +17,12 @@
                 <slot name='popoverFooter' />
             </template>
             <div class='cm-popover__arrow'></div>
-        </cm-card>
+        </Card>
     </div>
 </template>
 
 <script setup lang='ts'>
-import { CmCard } from '@/lib';
+import { Card } from '@/lib';
 import { defineEmits, reactive } from 'vue';
 
 const emits = defineEmits(['onClick']);

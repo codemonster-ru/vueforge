@@ -18,7 +18,7 @@
                         {{ item.label }}
                         <cm-icon icon='chevronDown' />
                     </div>
-                    <cm-menu
+                    <Menu
                         v-if='item.items'
                         :items='item.items'
                         class='cm-menu__submenu'
@@ -26,7 +26,7 @@
                         @on-active='onActive'
                     />
                 </template>
-                <cm-link
+                <Link
                     v-else
                     :to='item.to'
                     :url='item.url'
@@ -39,7 +39,7 @@
                 >
                     <cm-icon v-if='item.icon' :icon='item.icon' class='cm-menu__icon'></cm-icon>
                     {{ item.label }}
-                </cm-link>
+                </Link>
             </li>
         </ul>
     </div>
@@ -47,7 +47,7 @@
 
 <script setup lang='ts'>
 import { CmIcon } from '@codemonster-ru/icons';
-import { CmMenu, CmLink } from '@/lib';
+import { Menu, Link } from '@/lib';
 import { defineProps } from 'vue';
 
 interface Item {
