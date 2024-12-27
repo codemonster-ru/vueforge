@@ -22,7 +22,7 @@
 </template>
 
 <script setup lang='ts'>
-import { Card } from '@/lib';
+import { Card } from '..';
 import { defineEmits, reactive } from 'vue';
 
 const emits = defineEmits(['onClick']);

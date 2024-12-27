@@ -1,6 +1,6 @@
-# Codemonster UI
+# @codemonster-ru/vue-ui
 
-Open source UI components for Vue.
+Open source UI components for Vue.js.
 
 ## Author
 

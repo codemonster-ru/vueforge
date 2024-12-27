@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang='ts'>
-import { Container } from '@/lib';
+import { Container } from '..';
 </script>
 
 <style lang='scss'>

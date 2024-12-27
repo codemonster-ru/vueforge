@@ -30,7 +30,7 @@
 
 <script setup lang='ts'>
 import { computed, defineProps } from 'vue';
-import { Link } from '@/lib';
+import { Link } from '..';
 import { CmIcon } from '@codemonster-ru/icons';
 
 interface Props {

@@ -1,9 +1,17 @@
 import { App } from 'vue';
 
-const adjust = (color: string, amount: number) => '#' + color.replace(/^#/, '').replace(/../g, color => ('0' + Math.min(255, Math.max(0, parseInt(color, 16) + amount)).toString(16)).slice(-2));
+const adjust = (color: string, amount: number): string => {
+    return '#' + color
+        .replace(/^#/, '')
+        .replace(/../g, color => {
+            return ('0' + Math.min(255, Math.max(0, parseInt(color, 16) + amount))
+                .toString(16))
+                .slice(-2);
+        });
+};
 const lighter = (color: string, tone: number) => adjust(color, 16 * tone);
 const darker = (color: string, tone: number) => adjust(color, -16 * tone);
-const hexToRgb = (color: string) => {
+const hexToRgb = (color: string): string => {
     const numericValue: number = parseInt(color.replace('#', ''), 16);
     const r: number = numericValue >> 16 & 0xFF;
     const g: number = numericValue >> 8 & 0xFF;
@@ -11,11 +19,15 @@ const hexToRgb = (color: string) => {
     return `${r}, ${g}, ${b}`;
 };
 const camelCaseToWords = (string: string) => {
-    const result = string.replace(/([A-Z])/g, '-$1');
+    const result: string = string.replace(/([A-Z])/g, '-$1');
 
     return result.charAt(0).toUpperCase() + result.slice(1);
 };
-const breadToRoot = (bread: Array<string>) => bread.filter(x => !systemKeys.includes(x)).map(x => camelCaseToWords(x)).join('-').toLowerCase();
+const breadToRoot = (bread: Array<string>) => bread.filter((x: string) => {
+    return !systemKeys.includes(x);
+}).map((x: string) => {
+    return camelCaseToWords(x);
+}).join('-').toLowerCase();
 const systemKeys: Array<string> = [
     'dark',
     'light',
@@ -70,7 +82,11 @@ export default {
     install(_app: App, options: object) {
         parseConfig(options);
 
-        if (toRootStyles.length) document.styleSheets[0].insertRule(`:root { ${toRootStyles.join(';')} }`);
-        if (toDarkRootStyles.length) document.styleSheets[0].insertRule(`:root[data-theme=dark] { ${toDarkRootStyles.join(';')} }`);
+        if (toRootStyles.length) {
+            document.styleSheets[0].insertRule(`:root { ${toRootStyles.join(';')} }`);
+        }
+        if (toDarkRootStyles.length) {
+            document.styleSheets[0].insertRule(`:root[data-theme=dark] { ${toDarkRootStyles.join(';')} }`);
+        }
     },
 };

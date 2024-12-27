@@ -47,7 +47,7 @@
 
 <script setup lang='ts'>
 import { CmIcon } from '@codemonster-ru/icons';
-import { Menu, Link } from '@/lib';
+import { Menu, Link } from '..';
 import { defineProps } from 'vue';
 
 interface Item {

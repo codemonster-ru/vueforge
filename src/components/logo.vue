@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang='ts'>
-import { Link } from '@/lib';
+import { Link } from '@/index';
 import { computed, defineProps } from 'vue';
 import { RouteLocationAsPathGeneric, RouteLocationAsRelativeGeneric } from 'vue-router';
 
