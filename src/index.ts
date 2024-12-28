@@ -14,5 +14,4 @@ export { default as DefaultLayout } from '@/layouts/defaultLayout.vue';
 export { default as vClickOutside } from '@/directives/clickOutside';
 export { default as LeftSidebarLayout } from '@/layouts/leftSidebarLayout.vue';
 // Theme
-export { default as Config } from '@/config';
 export { default as DefaultTheme } from '@/themes/default';
