@@ -9,6 +9,5 @@ export { default as Button } from '@/components/button.vue';
 export { default as Content } from '@/components/content.vue';
 export { default as Popover } from '@/components/popover.vue';
 export { default as Container } from '@/components/container.vue';
-export { default as CodeBlock } from '@/components/codeBlock.vue';
 export { default as DefaultLayout } from '@/layouts/defaultLayout.vue';
 export { default as LeftSidebarLayout } from '@/layouts/leftSidebarLayout.vue';
