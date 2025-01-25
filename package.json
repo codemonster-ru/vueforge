@@ -1,12 +1,12 @@
 {
-    "name": "@codemonster-ru/vue-ui",
+    "name": "@codemonster-ru/monstervue",
     "version": "0.1.0",
     "description": "Open source UI components for Vue.js.",
     "license": "MIT",
     "author": "Kirill Kolesnikov",
     "repository": {
         "type": "git",
-        "url": "https://github.com/codemonster-ru/vue-ui.git"
+        "url": "https://github.com/codemonster-ru/monstervue.git"
     },
     "keywords": [],
     "main": "./dist/index.ts.umd.js",
@@ -53,8 +53,8 @@
         "prettier": "^3.3.2",
         "sass": "^1.77.8",
         "typescript": "^5.5.3",
-        "vite": "5.4.6",
-        "vite-plugin-dts": "^3.9.1",
+        "vite": "^6.0.11",
+        "vite-plugin-dts": "^4.5.0",
         "vue": "^3.4.31",
         "vue-tsc": "^2.0.21"
     }
