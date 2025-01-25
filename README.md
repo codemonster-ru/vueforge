@@ -1,4 +1,4 @@
-# @codemonster-ru/vue-ui
+# MonsterVue
 
 Open source UI components for Vue.js.
 
