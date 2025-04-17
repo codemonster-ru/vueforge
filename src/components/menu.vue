@@ -46,7 +46,7 @@
 </template>
 
 <script setup lang='ts'>
-import { CmIcon } from '@codemonster-ru/icons';
+import { CmIcon } from '@codemonster-ru/vueiconify';
 import { Menu, Link } from '..';
 import { defineProps } from 'vue';
 

@@ -31,7 +31,7 @@
 <script setup lang='ts'>
 import { computed, defineProps } from 'vue';
 import { Link } from '..';
-import { CmIcon } from '@codemonster-ru/icons';
+import { CmIcon } from '@codemonster-ru/vueiconify';
 
 interface Props {
     to?: string | object,
