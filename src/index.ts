@@ -12,6 +12,6 @@ export { default as Container } from '@/components/container.vue';
 export { default as DefaultLayout } from '@/layouts/defaultLayout.vue';
 export { default as LeftSidebarLayout } from '@/layouts/leftSidebarLayout.vue';
 // config
-export { default as MonsterVue } from '@/config/index';
+export { default as VueForge } from '@/config/index';
 // themes
 export { default as DefaultTheme } from '@/themes/default';

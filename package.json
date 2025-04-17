@@ -1,12 +1,12 @@
 {
-    "name": "@codemonster-ru/monstervue",
+    "name": "@codemonster-ru/vueforge",
     "version": "0.1.0",
     "description": "Open source UI components for Vue.js.",
     "license": "MIT",
     "author": "Kirill Kolesnikov",
     "repository": {
         "type": "git",
-        "url": "https://github.com/codemonster-ru/monstervue.git"
+        "url": "https://github.com/codemonster-ru/vueforge.git"
     },
     "keywords": [],
     "main": "./dist/index.ts.umd.js",

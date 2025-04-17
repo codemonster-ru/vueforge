@@ -1,4 +1,4 @@
-# MonsterVue
+# VueForge
 
 Open source UI components for Vue.js.
 
