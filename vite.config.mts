@@ -9,7 +9,7 @@ import { fileURLToPath, URL } from 'url';
 let entry: string = './src/index.ts';
 
 if (process.env.NODE_ENV === 'development') {
-    entry = './src/dev/main.ts';
+    entry = './src/example/main.ts';
 }
 
 const removeUnnecessaryFiles = () => {
@@ -17,7 +17,7 @@ const removeUnnecessaryFiles = () => {
         name: 'remove-files',
         writeBundle(outputOptions, inputOptions) {
             const outDir = outputOptions.dir;
-            const devDir = path.resolve(outDir, 'dev');
+            const devDir = path.resolve(outDir, 'example');
 
             fs.rm(devDir, { recursive: true }, () => console.log(`Deleted ${devDir}`));
         },
@@ -25,15 +25,9 @@ const removeUnnecessaryFiles = () => {
 };
 
 export default defineConfig({
-    plugins: [
-        vue(),
-        dts(),
-        removeUnnecessaryFiles(),
-    ],
+    plugins: [vue(), dts(), removeUnnecessaryFiles()],
     resolve: {
-        alias: [
-            { find: '@', replacement: fileURLToPath(new URL('./src', import.meta.url)) },
-        ],
+        alias: [{ find: '@', replacement: fileURLToPath(new URL('./src', import.meta.url)) }],
     },
     build: {
         emptyOutDir: true,
