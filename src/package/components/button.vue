@@ -1,50 +1,50 @@
 <template>
-    <button v-if='props.type === "button"' :class='getClass' :disabled='props.loading || props.disabled'>
-        <cm-icon v-if='props.icon && !props.loading' :icon='props.icon' :class='getIconClass' />
-        <cm-icon v-if='props.loading' icon='circleNotch' :class='getIconClass' spin />
-        <template v-if='$slots.default'>
-            <span :class='getLabelClass'>
+    <button v-if="props.type === 'button'" :class="getClass" :disabled="props.loading || props.disabled">
+        <cm-icon v-if="props.icon && !props.loading" :icon="props.icon" :class="getIconClass" />
+        <cm-icon v-if="props.loading" icon="circleNotch" :class="getIconClass" spin />
+        <template v-if="$slots.default">
+            <span :class="getLabelClass">
                 <slot />
             </span>
         </template>
-        <template v-else-if='label'>
-            <span :class='getLabelClass'>
+        <template v-else-if="label">
+            <span :class="getLabelClass">
                 {{ label }}
             </span>
         </template>
     </button>
-    <Link v-else :to='props.to' :type='props.type' :class='getClass' :disabled='props.loading || props.disabled'>
-        <cm-icon v-if='props.icon' :icon='props.icon' :class='getIconClass' />
-        <template v-if='$slots.default'>
-            <span :class='getLabelClass'>
+    <Link v-else :to="props.to" :type="props.type" :class="getClass" :disabled="props.loading || props.disabled">
+        <cm-icon v-if="props.icon" :icon="props.icon" :class="getIconClass" />
+        <template v-if="$slots.default">
+            <span :class="getLabelClass">
                 <slot />
             </span>
         </template>
-        <template v-else-if='label'>
-            <span :class='getLabelClass'>
+        <template v-else-if="label">
+            <span :class="getLabelClass">
                 {{ label }}
             </span>
         </template>
     </Link>
 </template>
 
-<script setup lang='ts'>
+<script setup lang="ts">
 import { computed, defineProps } from 'vue';
-import { Link } from '..';
+import { Link } from '@/index';
 import { CmIcon } from '@codemonster-ru/vueiconify';
 
 interface Props {
-    to?: string | object,
-    icon?: string,
-    type?: string,
-    size?: string,
-    label?: string,
-    loading?: boolean,
-    rounded?: boolean,
-    iconPos?: 'top' | 'right' | 'bottom' | 'left',
-    variant?: string,
-    severity?: string,
-    disabled?: boolean,
+    to?: string | object;
+    icon?: string;
+    type?: string;
+    size?: string;
+    label?: string;
+    loading?: boolean;
+    rounded?: boolean;
+    iconPos?: 'top' | 'right' | 'bottom' | 'left';
+    variant?: string;
+    severity?: string;
+    disabled?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -61,10 +61,7 @@ const props = withDefaults(defineProps<Props>(), {
     disabled: false,
 });
 const getClass = computed(() => {
-    let classes = [
-        'cm-button',
-        `cm-button_${props.severity}`,
-    ];
+    let classes = ['cm-button', `cm-button_${props.severity}`];
 
     if (['top', 'bottom'].includes(props.iconPos)) {
         classes.push('cm-button_vertical');
@@ -100,7 +97,7 @@ const getLabelClass = computed(() => {
 });
 </script>
 
-<style lang='scss'>
+<style lang="scss">
 .cm-button {
     display: inline-flex;
     position: relative;

@@ -1,21 +1,21 @@
 <template>
-    <header class='cm-header'>
+    <header class="cm-header">
         <Container>
-            <div v-if='$slots.left' class='cm-header__left'>
-                <slot name='left' />
+            <div v-if="$slots.left" class="cm-header__left">
+                <slot name="left" />
             </div>
-            <div v-if='$slots.right' class='cm-header__right'>
-                <slot name='right' />
+            <div v-if="$slots.right" class="cm-header__right">
+                <slot name="right" />
             </div>
         </Container>
     </header>
 </template>
 
-<script setup lang='ts'>
-import { Container } from '..';
+<script setup lang="ts">
+import { Container } from '@/index';
 </script>
 
-<style lang='scss'>
+<style lang="scss">
 .cm-header {
     height: var(--cm-header-height);
     min-height: var(--cm-header-min-height);
