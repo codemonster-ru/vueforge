@@ -1,37 +1,29 @@
 {
     "env": {
-        "vue/setup-compiler-macros": true
+        "vue/setup-compiler-macros": true,
     },
     "root": true,
-    "plugins": [
-        "@typescript-eslint"
-    ],
+    "plugins": ["@typescript-eslint"],
     "extends": [
         "eslint:recommended",
         "plugin:@typescript-eslint/recommended",
         "plugin:vue/vue3-recommended",
         "@vue/eslint-config-typescript",
-        "plugin:prettier/recommended"
+        "plugin:prettier/recommended",
     ],
     "parser": "vue-eslint-parser",
     "parserOptions": {
-        "parser": "@typescript-eslint/parser"
+        "parser": "@typescript-eslint/parser",
     },
     "rules": {
         "prettier/prettier": [
             "off",
             {
-                "endOfLine": "auto"
-            }
+                "endOfLine": "auto",
+            },
         ],
-        "indent": [
-            "error",
-            4
-        ],
-        "semi": [
-            2,
-            "always"
-        ],
-        "vue/multi-word-component-names": "off"
-    }
+        "indent": ["error", 4],
+        "semi": [2, "always"],
+        "vue/multi-word-component-names": "off",
+    },
 }
