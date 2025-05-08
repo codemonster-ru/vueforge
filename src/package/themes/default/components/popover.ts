@@ -1,3 +1,3 @@
 export default {
-    backgroundColor: 'var(--cm-bg-color)',
+    backgroundColor: 'var(--vf-bg-color)',
 };

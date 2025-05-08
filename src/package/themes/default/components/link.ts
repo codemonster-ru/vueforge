@@ -1,4 +1,4 @@
 export default {
-    hoverColor: 'var(--cm-blue)',
-    activeColor: 'var(--cm-blue)',
+    hoverColor: 'var(--vf-blue)',
+    activeColor: 'var(--vf-blue)',
 };

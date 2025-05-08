@@ -1,30 +1,30 @@
 <template>
-    <div class='cm-logo'>
-        <template v-if='type.length'>
-            <Link :type='type' :to='to' :url='url'>
-                <img :src='getSrc' :width='width' :height='height' :alt='alt'>
+    <div class="vf-logo">
+        <template v-if="type.length">
+            <Link :type="type" :to="to" :url="url">
+                <img :src="getSrc" :width="width" :height="height" :alt="alt" />
             </Link>
         </template>
         <template v-else>
-            <img :src='getSrc' :width='width' :height='height' :alt='alt'>
+            <img :src="getSrc" :width="width" :height="height" :alt="alt" />
         </template>
     </div>
 </template>
 
-<script setup lang='ts'>
+<script setup lang="ts">
 import { Link } from '@/index';
 import { computed, defineProps } from 'vue';
 import { RouteLocationAsPathGeneric, RouteLocationAsRelativeGeneric } from 'vue-router';
 
 interface Props {
-    to?: string | RouteLocationAsRelativeGeneric | RouteLocationAsPathGeneric,
-    url?: string,
-    src: string | Array<string>,
-    alt?: string,
-    type?: string,
-    dark?: boolean,
-    width?: string,
-    height?: string,
+    to?: string | RouteLocationAsRelativeGeneric | RouteLocationAsPathGeneric;
+    url?: string;
+    src: string | Array<string>;
+    alt?: string;
+    type?: string;
+    dark?: boolean;
+    width?: string;
+    height?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -45,8 +45,8 @@ const getSrc = computed(() => {
 });
 </script>
 
-<style lang='scss'>
-.cm-logo {
+<style lang="scss">
+.vf-logo {
     position: relative;
 }
 </style>

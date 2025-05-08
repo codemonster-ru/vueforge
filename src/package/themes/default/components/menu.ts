@@ -1,12 +1,12 @@
 export default {
-    separatorColor: 'var(--cm-border-color)',
+    separatorColor: 'var(--vf-border-color)',
     link: {
-        hoverColor: 'var(--cm-blue)',
-        activeColor: 'var(--cm-blue)',
+        hoverColor: 'var(--vf-blue)',
+        activeColor: 'var(--vf-blue)',
     },
     parent: {
-        hoverColor: 'var(--cm-secondary-text-color)',
-        activeColor: 'var(--cm-blue)',
+        hoverColor: 'var(--vf-secondary-text-color)',
+        activeColor: 'var(--vf-blue)',
     },
     item: {
         marginTop: '0.5rem',

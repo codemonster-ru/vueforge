@@ -1,15 +1,15 @@
 <template>
-    <div class='cm-content'>
+    <div class="vf-content">
         <slot />
     </div>
 </template>
 
-<style lang='scss'>
-.cm-content {
+<style lang="scss">
+.vf-content {
     display: flex;
     flex: 1;
 
-    .cm-container {
+    .vf-container {
         display: flex;
     }
 }

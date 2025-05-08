@@ -1,6 +1,6 @@
 export default {
-    color: 'var(--cm-secondary-text-color)',
+    color: 'var(--vf-secondary-text-color)',
     padding: '12px',
-    borderColor: 'var(--cm-border-color)',
-    backgroundColor: 'var(--cm-bg-color)',
+    borderColor: 'var(--vf-border-color)',
+    backgroundColor: 'var(--vf-bg-color)',
 };

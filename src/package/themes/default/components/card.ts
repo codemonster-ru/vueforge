@@ -1,5 +1,5 @@
 export default {
     padding: '12px',
-    borderColor: 'var(--cm-border-color)',
+    borderColor: 'var(--vf-border-color)',
     borderRadius: '6px',
 };

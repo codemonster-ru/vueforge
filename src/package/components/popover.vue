@@ -1,9 +1,9 @@
 <template>
-    <div class="cm-popover">
-        <div class="cm-popover__button" @click="onClick">
+    <div class="vf-popover">
+        <div class="vf-popover__button" @click="onClick">
             <slot name="button" />
         </div>
-        <Card v-show="data.visible" class="cm-popover__wrapper">
+        <Card v-show="data.visible" class="vf-popover__wrapper">
             <template v-if="$slots.default" #default>
                 <slot name="default" />
             </template>
@@ -16,7 +16,7 @@
             <template v-if="$slots.popoverFooter" #footer>
                 <slot name="popoverFooter" />
             </template>
-            <div class="cm-popover__arrow"></div>
+            <div class="vf-popover__arrow"></div>
         </Card>
     </div>
 </template>
@@ -37,17 +37,17 @@ defineExpose({ show, hide, toggle });
 </script>
 
 <style lang="scss">
-.cm-popover {
+.vf-popover {
     position: relative;
 }
 
-.cm-popover__button {
+.vf-popover__button {
     cursor: pointer;
     user-select: none;
 }
 
-.cm-popover__wrapper {
+.vf-popover__wrapper {
     position: absolute;
-    background-color: var(--cm-popover-background-color);
+    background-color: var(--vf-popover-background-color);
 }
 </style>

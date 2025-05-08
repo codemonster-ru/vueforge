@@ -1,10 +1,10 @@
 <template>
-    <header class="cm-header">
+    <header class="vf-header">
         <Container>
-            <div v-if="$slots.left" class="cm-header__left">
+            <div v-if="$slots.left" class="vf-header__left">
                 <slot name="left" />
             </div>
-            <div v-if="$slots.right" class="cm-header__right">
+            <div v-if="$slots.right" class="vf-header__right">
                 <slot name="right" />
             </div>
         </Container>
@@ -16,24 +16,24 @@ import { Container } from '@/index';
 </script>
 
 <style lang="scss">
-.cm-header {
-    height: var(--cm-header-height);
-    min-height: var(--cm-header-min-height);
+.vf-header {
+    height: var(--vf-header-height);
+    min-height: var(--vf-header-min-height);
     display: flex;
-    padding-top: var(--cm-header-padding);
-    border-bottom: 1px solid var(--cm-header-border-color);
+    padding-top: var(--vf-header-padding);
+    border-bottom: 1px solid var(--vf-header-border-color);
     margin-bottom: 24px;
-    padding-bottom: var(--cm-header-padding);
-    background-color: var(--cm-header-background-color);
+    padding-bottom: var(--vf-header-padding);
+    background-color: var(--vf-header-background-color);
 
-    .cm-container {
+    .vf-container {
         align-items: center;
         justify-content: space-between;
     }
 }
 
-.cm-header__left,
-.cm-header__right {
+.vf-header__left,
+.vf-header__right {
     display: flex;
     align-items: center;
 }

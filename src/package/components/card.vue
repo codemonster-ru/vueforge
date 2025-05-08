@@ -1,28 +1,27 @@
 <template>
-    <div class='cm-card'>
-        <div v-if='$slots.default' class='cm-card__default'>
-            <slot name='default' />
+    <div class="vf-card">
+        <div v-if="$slots.default" class="vf-card__default">
+            <slot name="default" />
         </div>
-        <div v-if='$slots.header' class='cm-card__header'>
-            <slot name='header' />
+        <div v-if="$slots.header" class="vf-card__header">
+            <slot name="header" />
         </div>
-        <div v-if='$slots.body' class='cm-card__body'>
-            <slot name='body' />
+        <div v-if="$slots.body" class="vf-card__body">
+            <slot name="body" />
         </div>
-        <div v-if='$slots.footer' class='cm-card__footer'>
-            <slot name='footer' />
+        <div v-if="$slots.footer" class="vf-card__footer">
+            <slot name="footer" />
         </div>
     </div>
 </template>
 
-<style lang='scss'>
-.cm-card {
-    border: 1px solid var(--cm-card-border-color);
-    border-radius: var(--cm-card-border-radius);
+<style lang="scss">
+.vf-card {
+    border: 1px solid var(--vf-card-border-color);
+    border-radius: var(--vf-card-border-radius);
 }
 
-.cm-card__default {
-    padding: var(--cm-card-padding);
+.vf-card__default {
+    padding: var(--vf-card-padding);
 }
-
 </style>

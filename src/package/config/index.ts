@@ -1,21 +1,20 @@
 import { App } from 'vue';
 
 const adjust = (color: string, amount: number): string => {
-    return '#' + color
-        .replace(/^#/, '')
-        .replace(/../g, color => {
-            return ('0' + Math.min(255, Math.max(0, parseInt(color, 16) + amount))
-                .toString(16))
-                .slice(-2);
-        });
+    return (
+        '#' +
+        color.replace(/^#/, '').replace(/../g, color => {
+            return ('0' + Math.min(255, Math.max(0, parseInt(color, 16) + amount)).toString(16)).slice(-2);
+        })
+    );
 };
 const lighter = (color: string, tone: number) => adjust(color, 16 * tone);
 const darker = (color: string, tone: number) => adjust(color, -16 * tone);
 const hexToRgb = (color: string): string => {
     const numericValue: number = parseInt(color.replace('#', ''), 16);
-    const r: number = numericValue >> 16 & 0xFF;
-    const g: number = numericValue >> 8 & 0xFF;
-    const b: number = numericValue & 0xFF;
+    const r: number = (numericValue >> 16) & 0xff;
+    const g: number = (numericValue >> 8) & 0xff;
+    const b: number = numericValue & 0xff;
     return `${r}, ${g}, ${b}`;
 };
 const camelCaseToWords = (string: string) => {
@@ -23,20 +22,17 @@ const camelCaseToWords = (string: string) => {
 
     return result.charAt(0).toUpperCase() + result.slice(1);
 };
-const breadToRoot = (bread: Array<string>) => bread.filter((x: string) => {
-    return !systemKeys.includes(x);
-}).map((x: string) => {
-    return camelCaseToWords(x);
-}).join('-').toLowerCase();
-const systemKeys: Array<string> = [
-    'dark',
-    'light',
-    'theme',
-    'preset',
-    'colors',
-    'components',
-    'colorScheme',
-];
+const breadToRoot = (bread: Array<string>) =>
+    bread
+        .filter((x: string) => {
+            return !systemKeys.includes(x);
+        })
+        .map((x: string) => {
+            return camelCaseToWords(x);
+        })
+        .join('-')
+        .toLowerCase();
+const systemKeys: Array<string> = ['dark', 'light', 'theme', 'preset', 'colors', 'components', 'colorScheme'];
 const toRootStyles: Array<string> = [];
 const toDarkRootStyles: Array<string> = [];
 const parseConfig = (options: object, breadcrumbs: Array<string> = []) => {
@@ -49,12 +45,12 @@ const parseConfig = (options: object, breadcrumbs: Array<string> = []) => {
         } else {
             if (bread.some(x => x === 'theme') && bread.some(x => x === 'preset')) {
                 if (bread.some(x => x === 'colorScheme') && bread.some(x => x === 'dark')) {
-                    toDarkRootStyles.push(`--cm-${breadToRoot(bread)}: ${option}`);
+                    toDarkRootStyles.push(`--vf-${breadToRoot(bread)}: ${option}`);
                 } else {
-                    toRootStyles.push(`--cm-${breadToRoot(bread)}: ${option}`);
+                    toRootStyles.push(`--vf-${breadToRoot(bread)}: ${option}`);
 
                     if (bread.some(x => x === 'colors')) {
-                        toRootStyles.push(`--cm-${breadToRoot(bread)}-rgb: ${hexToRgb(option)}`);
+                        toRootStyles.push(`--vf-${breadToRoot(bread)}-rgb: ${hexToRgb(option)}`);
 
                         if (key !== 'white') {
                             for (let i = 1; i < 10; ++i) {
@@ -66,8 +62,8 @@ const parseConfig = (options: object, breadcrumbs: Array<string> = []) => {
                                     processedColor = darker(option, i - 5);
                                 }
 
-                                toRootStyles.push(`--cm-${breadToRoot(bread)}-${i}00: ${processedColor}`);
-                                toRootStyles.push(`--cm-${breadToRoot(bread)}-${i}00-rgb: ${hexToRgb(processedColor)}`);
+                                toRootStyles.push(`--vf-${breadToRoot(bread)}-${i}00: ${processedColor}`);
+                                toRootStyles.push(`--vf-${breadToRoot(bread)}-${i}00-rgb: ${hexToRgb(processedColor)}`);
                             }
                         }
                     }

@@ -1,28 +1,28 @@
 <template>
-    <div class="cm-menu" :class="`cm-menu_${orientation}`">
-        <ul class="cm-menu__list">
-            <li v-for="(item, index) in items" :key="getKey(item, index)" class="cm-menu__item">
+    <div class="vf-menu" :class="`vf-menu_${orientation}`">
+        <ul class="vf-menu__list">
+            <li v-for="(item, index) in items" :key="getKey(item, index)" class="vf-menu__item">
                 <slot
                     v-if="$slots[getKey(item, index)]"
                     :name="getKey(item, index)"
-                    :item="{ ...item, ...{ class: 'cm-menu__link' } }"
+                    :item="{ ...item, ...{ class: 'vf-menu__link' } }"
                 />
-                <hr v-else-if="item.separator" class="cm-menu__separator" />
+                <hr v-else-if="item.separator" class="vf-menu__separator" />
                 <template v-else-if="item.hasOwnProperty('items')">
                     <div
-                        class="cm-menu__parent"
-                        :class="{ 'cm-menu__parent_active': item.active }"
+                        class="vf-menu__parent"
+                        :class="{ 'vf-menu__parent_active': item.active }"
                         @click="onClick(item)"
                     >
-                        <cm-icon v-if="item.icon" :icon="item.icon" class="cm-menu__icon" />
+                        <v-icon v-if="item.icon" :icon="item.icon" class="vf-menu__icon" />
                         {{ item.label }}
-                        <cm-icon icon="chevronDown" />
+                        <v-icon icon="chevronDown" />
                     </div>
                     <Menu
                         v-if="item.items"
                         :items="item.items"
-                        class="cm-menu__submenu"
-                        :class="{ 'cm-menu__submenu_visible': item.subMenuVisible }"
+                        class="vf-menu__submenu"
+                        :class="{ 'vf-menu__submenu_visible': item.subMenuVisible }"
                         @on-active="onActive"
                     />
                 </template>
@@ -31,13 +31,13 @@
                     :to="item.to"
                     :url="item.url"
                     :type="getType(item)"
-                    class="cm-menu__link"
+                    class="vf-menu__link"
                     :active="item.active"
                     :disabled="item.disabled"
                     @click="onClick(item)"
                     @on-active="onActive(item)"
                 >
-                    <cm-icon v-if="item.icon" :icon="item.icon" class="cm-menu__icon"></cm-icon>
+                    <v-icon v-if="item.icon" :icon="item.icon" class="vf-menu__icon"></v-icon>
                     {{ item.label }}
                 </Link>
             </li>
@@ -46,7 +46,7 @@
 </template>
 
 <script setup lang="ts">
-import { CmIcon } from '@codemonster-ru/vueiconify';
+import { CmIcon as VIcon } from '@codemonster-ru/vueiconify';
 import { Menu, Link } from '@/index';
 import { defineProps } from 'vue';
 
@@ -103,107 +103,107 @@ const onActive = item => {
 </script>
 
 <style lang="scss">
-.cm-menu {
+.vf-menu {
     display: flex;
 }
 
-.cm-menu_horizontal {
-    > .cm-menu__list {
+.vf-menu_horizontal {
+    > .vf-menu__list {
         flex-direction: row;
 
-        > .cm-menu__item {
+        > .vf-menu__item {
             align-items: center;
 
             &:not(:first-child) {
-                margin-left: var(--cm-menu-item-margin-left);
+                margin-left: var(--vf-menu-item-margin-left);
             }
 
             &:not(:last-child) {
-                margin-right: var(--cm-menu-item-margin-right);
+                margin-right: var(--vf-menu-item-margin-right);
             }
 
-            > .cm-menu__separator {
+            > .vf-menu__separator {
                 height: 1rem;
                 border-top: none;
                 border-right: none;
-                border-left: 1px solid var(--cm-menu-separator-color);
+                border-left: 1px solid var(--vf-menu-separator-color);
                 border-bottom: none;
             }
         }
     }
 }
 
-.cm-menu_vertical {
-    > .cm-menu__list {
+.vf-menu_vertical {
+    > .vf-menu__list {
         width: 100%;
         flex-direction: column;
 
-        > .cm-menu__item {
+        > .vf-menu__item {
             flex-direction: column;
 
             &:not(:first-child) {
-                margin-top: var(--cm-menu-item-margin-top);
+                margin-top: var(--vf-menu-item-margin-top);
             }
 
             &:not(:last-child) {
-                margin-bottom: var(--cm-menu-item-margin-bottom);
+                margin-bottom: var(--vf-menu-item-margin-bottom);
             }
 
-            > .cm-menu {
+            > .vf-menu {
                 overflow: hidden;
             }
         }
     }
 }
 
-.cm-menu__list {
+.vf-menu__list {
     margin: 0;
     padding: 0;
     display: flex;
     list-style: none;
 }
 
-.cm-menu__item {
+.vf-menu__item {
     display: flex;
     font-weight: 500;
 }
 
-.cm-menu__link {
+.vf-menu__link {
     display: flex;
     align-items: center;
     text-decoration: none;
 
     &:hover {
-        color: var(--cm-menu-link-hover-color);
+        color: var(--vf-menu-link-hover-color);
     }
 }
 
-.cm-menu__parent {
+.vf-menu__parent {
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: space-between;
 
     &:hover {
-        color: var(--cm-menu-parent-hover-color);
+        color: var(--vf-menu-parent-hover-color);
     }
 }
 
-//.cm-menu__parent_active {
-//    color: var(--cm-menu-parent-active-color);
+//.vf-menu__parent_active {
+//    color: var(--vf-menu-parent-active-color);
 //}
 
-.cm-menu__icon {
+.vf-menu__icon {
     margin-right: 6px;
 }
 
-.cm-menu__submenu {
-    &.cm-menu__submenu_visible {
+.vf-menu__submenu {
+    &.vf-menu__submenu_visible {
         margin-top: 12px;
         margin-left: 12px;
     }
 
-    &:not(.cm-menu__submenu_visible) {
+    &:not(.vf-menu__submenu_visible) {
         height: 0;
     }
 }
