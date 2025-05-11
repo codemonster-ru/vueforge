@@ -4,14 +4,14 @@
     </footer>
 </template>
 
-<style lang="scss">
+<style>
 .vf-footer {
     flex: 0 0 auto;
     color: var(--vf-footer-color);
-    margin-top: 24px;
+    margin-top: var(--vf-footer-margin-top);
+    border-top: var(--vf-footer-border-top);
     padding-top: var(--vf-footer-padding);
     padding-bottom: var(--vf-footer-padding);
     background-color: var(--vf-footer-background-color);
-    border-top: 1px solid var(--vf-footer-border-color);
 }
 </style>
