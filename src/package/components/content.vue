@@ -4,9 +4,9 @@
     </div>
 </template>
 
-<style lang="scss">
+<style>
 .vf-content {
-    display: flex;
     flex: 1;
+    display: flex;
 }
 </style>
