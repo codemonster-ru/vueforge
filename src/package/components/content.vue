@@ -8,9 +8,5 @@
 .vf-content {
     display: flex;
     flex: 1;
-
-    .vf-container {
-        display: flex;
-    }
 }
 </style>

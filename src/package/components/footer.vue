@@ -13,11 +13,5 @@
     padding-bottom: var(--vf-footer-padding);
     background-color: var(--vf-footer-background-color);
     border-top: 1px solid var(--vf-footer-border-color);
-
-    .vf-container {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
 }
 </style>

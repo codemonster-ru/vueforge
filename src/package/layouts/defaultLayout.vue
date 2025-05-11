@@ -1,28 +1,19 @@
 <template>
     <div class="vf-layout">
         <Header>
-            <template #left>
-                <slot name="headerLeft" />
-            </template>
-            <template #right>
-                <slot name="headerRight" />
-            </template>
+            <slot name="header" />
         </Header>
         <Content>
-            <Container>
-                <router-view />
-            </Container>
+            <slot name="content" />
         </Content>
         <Footer>
-            <Container>
-                <slot name="footerDefault" />
-            </Container>
+            <slot name="footer" />
         </Footer>
     </div>
 </template>
 
 <script setup lang="ts">
-import { Header, Content, Footer, Container } from '@/index';
+import { Header, Content, Footer } from '@/index';
 </script>
 
 <style>

@@ -1,7 +1,8 @@
 <template>
     <DefaultLayout>
-        <template #headerLeft>111</template>
-        <template #headerRight>222</template>
+        <template #header>Header</template>
+        <template #content>Content</template>
+        <template #footer>Footer</template>
     </DefaultLayout>
 </template>
 
