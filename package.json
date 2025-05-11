@@ -1,6 +1,6 @@
 {
     "name": "@codemonster-ru/vueforge",
-    "version": "0.3.3",
+    "version": "0.3.4",
     "description": "Open source UI components for Vue.js.",
     "license": "MIT",
     "author": "Kirill Kolesnikov",
@@ -15,7 +15,7 @@
     "exports": {
         ".": {
             "import": {
-                "types": "./dist/index.d.mts",
+                "types": "./dist/index.d.ts",
                 "default": "./dist/index.ts.mjs"
             },
             "require": {
