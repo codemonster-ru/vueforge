@@ -15,6 +15,7 @@
     "exports": {
         ".": {
             "import": {
+                "style": "./dist/index.css",
                 "types": "./dist/index.d.ts",
                 "default": "./dist/index.ts.mjs"
             },
