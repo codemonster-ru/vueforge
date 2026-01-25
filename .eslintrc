@@ -1,8 +1,9 @@
 {
     "env": {
-        "vue/setup-compiler-macros": true,
+        "vue/setup-compiler-macros": true
     },
     "root": true,
+    "ignorePatterns": ["dist/**"],
     "plugins": ["@typescript-eslint"],
     "extends": [
         "eslint:recommended",
@@ -13,17 +14,17 @@
     ],
     "parser": "vue-eslint-parser",
     "parserOptions": {
-        "parser": "@typescript-eslint/parser",
+        "parser": "@typescript-eslint/parser"
     },
     "rules": {
         "prettier/prettier": [
             "off",
             {
-                "endOfLine": "auto",
-            },
+                "endOfLine": "auto"
+            }
         ],
         "indent": ["error", 4],
         "semi": [2, "always"],
-        "vue/multi-word-component-names": "off",
-    },
+        "vue/multi-word-component-names": "off"
+    }
 }

@@ -34,7 +34,9 @@
     ],
     "scripts": {
         "dev": "vite dev --force --mode development",
-        "build": "vite build --mode production"
+        "build": "vite build --mode production",
+        "lint": "eslint . --ext .ts,.vue",
+        "typecheck": "vue-tsc --noEmit"
     },
     "peerDependencies": {
         "vue": "^3.0.0",

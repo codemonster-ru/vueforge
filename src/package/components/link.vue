@@ -4,6 +4,9 @@
         :href="url"
         class="vf-link"
         :class="{ 'vf-link_active': active, 'vf-link_disabled': disabled }"
+        :aria-disabled="disabled"
+        :tabindex="disabled ? -1 : undefined"
+        @click="onClick"
     >
         <template v-if="$slots.default">
             <slot />
@@ -19,8 +22,11 @@
         class="vf-link"
         :class="{ 'vf-link_active': getActive }"
         :disabled="disabled"
+        :aria-disabled="disabled"
+        :tabindex="disabled ? -1 : undefined"
         active-class="vf-link_partially-active"
         exact-active-class="vf-link_active"
+        @click="onClick"
     >
         <template v-if="$slots.default">
             <slot />
@@ -33,7 +39,7 @@
 
 <script setup lang="ts">
 import { useRoute, RouteLocationAsRelativeGeneric, RouteLocationAsPathGeneric } from 'vue-router';
-import { computed, defineProps, ref } from 'vue';
+import { computed, ref } from 'vue';
 
 interface Props {
     to?: string | RouteLocationAsRelativeGeneric | RouteLocationAsPathGeneric;
@@ -55,13 +61,28 @@ const route = useRoute();
 const link = ref(null);
 const getActive = computed(() => {
     if (props.type === 'router-link') {
-        if (route.matched.some(({ name }) => props.to.name === name)) {
-            emits('onActive');
+        const to = props.to;
+
+        if (to && typeof to === 'object' && 'name' in to) {
+            const targetName = to.name;
+
+            if (route.matched.some(({ name }) => targetName === name)) {
+                emits('onActive');
+            }
         }
     }
 
     return props.active;
 });
+
+const onClick = (event: MouseEvent) => {
+    if (!props.disabled) {
+        return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+};
 </script>
 
 <style lang="scss">

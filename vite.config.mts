@@ -17,9 +17,12 @@ const removeUnnecessaryFiles = () => {
         name: 'remove-files',
         writeBundle(outputOptions, inputOptions) {
             const outDir = outputOptions.dir;
+            if (!outDir) {
+                return;
+            }
             const devDir = path.resolve(outDir, 'example');
 
-            fs.rm(devDir, { recursive: true }, () => console.log(`Deleted ${devDir}`));
+            fs.rm(devDir, { recursive: true, force: true }, () => console.log(`Deleted ${devDir}`));
         },
     };
 };

@@ -13,7 +13,7 @@
 
 <script setup lang="ts">
 import { Link } from '@/index';
-import { computed, defineProps } from 'vue';
+import { computed } from 'vue';
 import { RouteLocationAsPathGeneric, RouteLocationAsRelativeGeneric } from 'vue-router';
 
 interface Props {

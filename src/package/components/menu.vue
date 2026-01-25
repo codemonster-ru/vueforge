@@ -1,7 +1,7 @@
 <template>
     <div class="vf-menu" :class="`vf-menu_${orientation}`">
         <ul class="vf-menu__list">
-            <li v-for="(item, index) in items" :key="getKey(item, index)" class="vf-menu__item">
+            <li v-for="(item, index) in localItems" :key="getKey(item, index)" class="vf-menu__item">
                 <slot
                     v-if="$slots[getKey(item, index)]"
                     :name="getKey(item, index)"
@@ -18,7 +18,7 @@
                         {{ item.label }}
                         <v-icon icon="chevronDown" />
                     </div>
-                    <Menu
+                    <VfMenu
                         v-if="item.items"
                         :items="item.items"
                         class="vf-menu__submenu"
@@ -47,8 +47,8 @@
 
 <script setup lang="ts">
 import { CmIcon as VIcon } from '@codemonster-ru/vueiconify';
-import { Menu, Link } from '@/index';
-import { defineProps } from 'vue';
+import Link from '@/package/components/link.vue';
+import { ref, watch } from 'vue';
 
 interface Item {
     to?: string;
@@ -60,6 +60,7 @@ interface Item {
     disabled?: boolean;
     separator?: boolean;
     subMenuVisible?: boolean;
+    command?: () => void;
 }
 
 interface Props {
@@ -68,24 +69,36 @@ interface Props {
 }
 
 const emits = defineEmits(['onActive']);
+defineOptions({ name: 'VfMenu' });
 const props = withDefaults(defineProps<Props>(), { orientation: 'vertical' });
+const localItems = ref<Array<Item>>([]);
 const getKey = (item: Item, index: number) => `${item.label}_${index.toString()}`;
 const getType = (item: Item) => (Object.prototype.hasOwnProperty.call(item, 'to') ? 'router-link' : 'a');
-const onClick = item => {
+const cloneItems = (source: Array<Item>): Array<Item> => {
+    return source.map(item => {
+        return {
+            ...item,
+            items: item.items ? cloneItems(item.items) : undefined,
+        };
+    });
+};
+const onClick = (item: Item) => {
     if (Object.prototype.hasOwnProperty.call(item, 'items')) {
-        props.items.map(x => {
+        localItems.value.map(x => {
             if (x !== item) {
                 x.subMenuVisible = false;
             }
         });
         item.subMenuVisible = !item.subMenuVisible;
     } else if (Object.prototype.hasOwnProperty.call(item, 'command')) {
-        item.command();
+        if (typeof item.command === 'function') {
+            item.command();
+        }
     }
 };
-const onActive = item => {
-    for (const index in props.items) {
-        const loopItem = props.items[index];
+const onActive = (item: Item) => {
+    for (const index in localItems.value) {
+        const loopItem = localItems.value[index];
 
         if (Object.prototype.hasOwnProperty.call(loopItem, 'items')) {
             if (loopItem.items?.some(x => x === item)) {
@@ -100,6 +113,14 @@ const onActive = item => {
 
     emits('onActive', item);
 };
+
+watch(
+    () => props.items,
+    value => {
+        localItems.value = cloneItems(value);
+    },
+    { deep: true, immediate: true }
+);
 </script>
 
 <style lang="scss">

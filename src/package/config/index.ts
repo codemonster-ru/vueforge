@@ -33,16 +33,27 @@ const breadToRoot = (bread: Array<string>) =>
         .join('-')
         .toLowerCase();
 const systemKeys: Array<string> = ['dark', 'light', 'theme', 'preset', 'colors', 'components', 'colorScheme'];
-const toRootStyles: Array<string> = [];
-const toDarkRootStyles: Array<string> = [];
 const parseConfig = (options: object, breadcrumbs: Array<string> = []) => {
-    for (const key in options) {
-        const option: string = options[key as keyof object];
-        const bread = breadcrumbs.concat([key]);
+    const toRootStyles: Array<string> = [];
+    const toDarkRootStyles: Array<string> = [];
+    const walk = (node: object, trail: Array<string>) => {
+        if (!node || typeof node !== 'object') {
+            return;
+        }
 
-        if (typeof option === 'object') {
-            parseConfig(option, bread);
-        } else {
+        for (const key in node) {
+            const option = (node as Record<string, unknown>)[key];
+            const bread = trail.concat([key]);
+
+            if (option && typeof option === 'object') {
+                walk(option as object, bread);
+                continue;
+            }
+
+            if (typeof option !== 'string') {
+                continue;
+            }
+
             if (bread.some(x => x === 'theme') && bread.some(x => x === 'preset')) {
                 if (bread.some(x => x === 'colorScheme') && bread.some(x => x === 'dark')) {
                     toDarkRootStyles.push(`--vf-${breadToRoot(bread)}: ${option}`);
@@ -70,19 +81,48 @@ const parseConfig = (options: object, breadcrumbs: Array<string> = []) => {
                 }
             }
         }
+    };
+
+    walk(options, breadcrumbs);
+
+    return { toRootStyles, toDarkRootStyles };
+};
+
+const ensureStyleElement = (id: string) => {
+    if (typeof document === 'undefined') {
+        return null;
     }
+
+    const existing = document.getElementById(id);
+    if (existing && existing.tagName.toLowerCase() === 'style') {
+        return existing as HTMLStyleElement;
+    }
+
+    const style = document.createElement('style');
+    style.id = id;
+    document.head.appendChild(style);
+    return style;
 };
 
 // noinspection JSUnusedGlobalSymbols
 export default {
     install(_app: App, options: object) {
-        parseConfig(options);
+        const { toRootStyles, toDarkRootStyles } = parseConfig(options);
+        const style = ensureStyleElement('vueforge-theme');
+
+        if (!style) {
+            return;
+        }
+
+        const rules: Array<string> = [];
 
         if (toRootStyles.length) {
-            document.styleSheets[0].insertRule(`:root { ${toRootStyles.join(';')} }`);
+            rules.push(`:root { ${toRootStyles.join(';')} }`);
         }
         if (toDarkRootStyles.length) {
-            document.styleSheets[0].insertRule(`:root[data-theme=dark] { ${toDarkRootStyles.join(';')} }`);
+            rules.push(`:root[data-theme=dark] { ${toDarkRootStyles.join(';')} }`);
         }
+
+        style.textContent = rules.join('\n');
     },
 };

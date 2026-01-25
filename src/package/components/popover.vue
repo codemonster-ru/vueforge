@@ -23,7 +23,7 @@
 
 <script setup lang="ts">
 import { Card } from '@/index';
-import { defineEmits, reactive } from 'vue';
+import { reactive } from 'vue';
 
 const emits = defineEmits(['onClick']);
 

@@ -1,5 +1,5 @@
 <template>
-    <button v-if="props.type === 'button'" :class="getClass" :disabled="props.loading || props.disabled">
+    <button v-if="props.type === 'button'" type="button" :class="getClass" :disabled="props.loading || props.disabled">
         <v-icon v-if="props.icon && !props.loading" :icon="props.icon" :class="getIconClass" />
         <v-icon v-if="props.loading" icon="circleNotch" :class="getIconClass" spin />
         <template v-if="$slots.default">
@@ -29,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineProps } from 'vue';
+import { computed } from 'vue';
 import { Link } from '@/index';
 import { CmIcon as VIcon } from '@codemonster-ru/vueiconify';
 
@@ -158,7 +158,7 @@ const getLabelClass = computed(() => {
             &:active {
                 color: var(--vf-button-primary-active-color);
                 border: 1px solid var(--vf-button-primary-active-border-color);
-                background-color: var(var(--vf-button-primary-active-border-color));
+                background-color: var(--vf-button-primary-active-background-color);
             }
         }
     }
