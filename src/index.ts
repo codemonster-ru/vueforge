@@ -14,6 +14,6 @@ export { default as Content } from '@/package/components/content.vue';
 export { default as Popover } from '@/package/components/popover.vue';
 export { default as Container } from '@/package/components/container.vue';
 // config
-export { default as VueForge } from '@/package/config/index';
+export { default as VueForge, setTheme, updateTheme, getTheme } from '@/package/config/index';
 // themes
 export { default as DefaultTheme } from '@/package/themes/default';

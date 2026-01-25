@@ -41,13 +41,27 @@ VueForge maps the theme preset to CSS variables. You can override parts of the p
 ```ts
 app.use(VueForge, {
     theme: {
-        preset: {
-            ...DefaultTheme,
+        preset: DefaultTheme,
+        overrides: {
             colors: {
-                ...DefaultTheme.colors,
                 green: '#18a66a',
             },
         },
+        selector: ':root',
+        darkSelector: ':root[data-theme=dark]',
+    },
+});
+```
+
+You can also update the theme at runtime:
+
+```ts
+import { setTheme, updateTheme } from '@codemonster-ru/vueforge';
+
+setTheme({ preset: DefaultTheme });
+updateTheme({
+    overrides: {
+        colors: { blue: '#2b6cb0' },
     },
 });
 ```
