@@ -84,6 +84,10 @@ updateTheme({
 });
 ```
 
+## License
+
+[MIT](https://github.com/codemonster-ru/vueforge/blob/main/LICENSE)
+
 ## Author
 
 [@KolesnikovKirill](https://github.com/kolesnikovKirill)
