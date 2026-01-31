@@ -1,20 +1,33 @@
 <template>
     <div class="vf-popover">
-        <div class="vf-popover__button" @click="onClick">
+        <div
+            class="vf-popover__button"
+            role="button"
+            tabindex="0"
+            aria-haspopup="dialog"
+            :aria-expanded="data.visible"
+            :aria-controls="panelId"
+            @click="onClick"
+            @keydown.enter.prevent="onClick"
+            @keydown.space.prevent="onClick"
+        >
             <slot name="button" />
         </div>
-        <Card v-show="data.visible" class="vf-popover__wrapper">
+        <Card v-show="data.visible" :id="panelId" class="vf-popover__wrapper">
             <template v-if="$slots.default" #default>
                 <slot name="default" />
             </template>
-            <template v-if="$slots.popoverHeader" #header>
-                <slot name="popoverHeader" />
+            <template v-if="$slots.header || $slots.popoverHeader" #header>
+                <slot name="header" />
+                <slot v-if="!$slots.header" name="popoverHeader" />
             </template>
-            <template v-if="$slots.popoverBody" #body>
-                <slot name="popoverBody" />
+            <template v-if="$slots.body || $slots.popoverBody" #body>
+                <slot name="body" />
+                <slot v-if="!$slots.body" name="popoverBody" />
             </template>
-            <template v-if="$slots.popoverFooter" #footer>
-                <slot name="popoverFooter" />
+            <template v-if="$slots.footer || $slots.popoverFooter" #footer>
+                <slot name="footer" />
+                <slot v-if="!$slots.footer" name="popoverFooter" />
             </template>
             <div class="vf-popover__arrow"></div>
         </Card>
@@ -22,16 +35,22 @@
 </template>
 
 <script setup lang="ts">
-import { Card } from '@/index';
+import Card from '@/package/components/card.vue';
 import { reactive } from 'vue';
 
-const emits = defineEmits(['onClick']);
+const emits = defineEmits(['click', 'onClick']);
 
 const data = reactive({ visible: false });
+let popoverIdCounter = 0;
+const panelId = `vf-popover-panel-${++popoverIdCounter}`;
 const show = () => (data.visible = true);
 const hide = () => (data.visible = false);
 const toggle = () => (data.visible = !data.visible);
-const onClick = () => emits('onClick');
+const onClick = () => {
+    toggle();
+    emits('click');
+    emits('onClick');
+};
 
 defineExpose({ show, hide, toggle });
 </script>

@@ -6,12 +6,6 @@ import { resolve } from 'node:path';
 import { defineConfig } from 'vite';
 import { fileURLToPath, URL } from 'url';
 
-let entry: string = './src/index.ts';
-
-if (process.env.NODE_ENV === 'development') {
-    entry = './src/example/main.ts';
-}
-
 const removeUnnecessaryFiles = () => {
     return {
         name: 'remove-files',
@@ -27,27 +21,33 @@ const removeUnnecessaryFiles = () => {
     };
 };
 
-export default defineConfig({
-    plugins: [vue(), dts(), removeUnnecessaryFiles()],
-    resolve: {
-        alias: [{ find: '@', replacement: fileURLToPath(new URL('./src', import.meta.url)) }],
-    },
-    build: {
-        emptyOutDir: true,
-        cssCodeSplit: true,
-        lib: {
-            name: 'index',
-            entry: resolve(__dirname, entry),
-            fileName: 'index.ts',
-            formats: ['es', 'umd'],
+export default defineConfig(({ mode }) => {
+    const entry = mode === 'development' ? './src/example/main.ts' : './src/index.ts';
+
+    return {
+        plugins: [vue(), dts(), removeUnnecessaryFiles()],
+        resolve: {
+            alias: [{ find: '@', replacement: fileURLToPath(new URL('./src', import.meta.url)) }],
         },
-        rollupOptions: {
-            external: ['vue'],
-            output: {
-                globals: {
-                    vue: 'Vue',
+        build: {
+            emptyOutDir: true,
+            cssCodeSplit: true,
+            lib: {
+                name: 'index',
+                entry: resolve(__dirname, entry),
+                fileName: 'index.ts',
+                formats: ['es', 'umd'],
+            },
+            rollupOptions: {
+                external: ['vue', 'vue-router', '@codemonster-ru/vueiconify'],
+                output: {
+                    globals: {
+                        vue: 'Vue',
+                        'vue-router': 'VueRouter',
+                        '@codemonster-ru/vueiconify': 'index',
+                    },
                 },
             },
         },
-    },
+    };
 });

@@ -13,7 +13,9 @@
 </template>
 
 <script setup lang="ts">
-import { Header, Content, Footer } from '@/index';
+import Header from '@/package/components/header.vue';
+import Content from '@/package/components/content.vue';
+import Footer from '@/package/components/footer.vue';
 </script>
 
 <style>

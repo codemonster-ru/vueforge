@@ -1,0 +1,24 @@
+export default {
+    padding: '0.5rem 0.75rem',
+    borderRadius: '6px',
+    borderColor: 'var(--vf-border-color)',
+    backgroundColor: 'var(--vf-bg-color)',
+    textColor: 'var(--vf-text-color)',
+    focusBorderColor: 'var(--vf-blue-600)',
+    hoverBorderColor: 'var(--vf-blue-500)',
+    disabledOpacity: '0.6',
+    panelBackgroundColor: 'var(--vf-bg-color)',
+    panelBorderColor: 'var(--vf-border-color)',
+    panelShadow: '0 10px 30px rgba(0, 0, 0, 0.12)',
+    optionHoverBackgroundColor: 'rgba(var(--vf-blue-600-rgb), 0.08)',
+    optionActiveBackgroundColor: 'rgba(var(--vf-blue-600-rgb), 0.14)',
+    optionActiveTextColor: 'var(--vf-text-color)',
+    small: {
+        padding: '0.375rem 0.5rem',
+        fontSize: '0.875rem',
+    },
+    large: {
+        padding: '0.625rem 0.875rem',
+        fontSize: '1.125rem',
+    },
+};

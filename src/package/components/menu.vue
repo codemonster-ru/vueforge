@@ -1,18 +1,23 @@
 <template>
     <div class="vf-menu" :class="`vf-menu_${orientation}`">
-        <ul class="vf-menu__list">
-            <li v-for="(item, index) in localItems" :key="getKey(item, index)" class="vf-menu__item">
+        <ul class="vf-menu__list" role="menu">
+            <li v-for="(item, index) in localItems" :key="getKey(item, index)" class="vf-menu__item" role="none">
                 <slot
                     v-if="$slots[getKey(item, index)]"
                     :name="getKey(item, index)"
                     :item="{ ...item, ...{ class: 'vf-menu__link' } }"
                 />
-                <hr v-else-if="item.separator" class="vf-menu__separator" />
-                <template v-else-if="item.hasOwnProperty('items')">
+                <hr v-else-if="item.separator" class="vf-menu__separator" role="separator" />
+                <template v-else-if="item.items && item.items.length">
                     <div
                         class="vf-menu__parent"
                         :class="{ 'vf-menu__parent_active': item.active }"
+                        role="menuitem"
+                        tabindex="0"
+                        :aria-expanded="item.subMenuVisible ? 'true' : 'false'"
                         @click="onClick(item)"
+                        @keydown.enter.prevent="onClick(item)"
+                        @keydown.space.prevent="onClick(item)"
                     >
                         <v-icon v-if="item.icon" :icon="item.icon" class="vf-menu__icon" />
                         {{ item.label }}
@@ -29,13 +34,15 @@
                 <Link
                     v-else
                     :to="item.to"
-                    :url="item.url"
-                    :type="getType(item)"
+                    :href="item.href ?? item.url"
+                    :as="getType(item)"
                     class="vf-menu__link"
                     :active="item.active"
                     :disabled="item.disabled"
+                    role="menuitem"
+                    :aria-disabled="item.disabled ? 'true' : 'false'"
                     @click="onClick(item)"
-                    @on-active="onActive(item)"
+                    @active="onActive(item)"
                 >
                     <v-icon v-if="item.icon" :icon="item.icon" class="vf-menu__icon"></v-icon>
                     {{ item.label }}
@@ -52,6 +59,7 @@ import { ref, watch } from 'vue';
 
 interface Item {
     to?: string;
+    href?: string;
     url?: string;
     icon?: string;
     items?: Array<Item>;
@@ -68,12 +76,15 @@ interface Props {
     orientation?: string;
 }
 
-const emits = defineEmits(['onActive']);
+const emits = defineEmits(['active', 'onActive']);
 defineOptions({ name: 'VfMenu' });
 const props = withDefaults(defineProps<Props>(), { orientation: 'vertical' });
 const localItems = ref<Array<Item>>([]);
-const getKey = (item: Item, index: number) => `${item.label}_${index.toString()}`;
-const getType = (item: Item) => (Object.prototype.hasOwnProperty.call(item, 'to') ? 'router-link' : 'a');
+const getKey = (item: Item, index: number) => {
+    const base = item.label ?? item.to ?? item.href ?? item.url ?? 'item';
+    return `${base}_${index.toString()}`;
+};
+const getType = (item: Item) => (item.to ? 'router-link' : 'a');
 const cloneItems = (source: Array<Item>): Array<Item> => {
     return source.map(item => {
         return {
@@ -83,7 +94,7 @@ const cloneItems = (source: Array<Item>): Array<Item> => {
     });
 };
 const onClick = (item: Item) => {
-    if (Object.prototype.hasOwnProperty.call(item, 'items')) {
+    if (item.items && item.items.length) {
         localItems.value.map(x => {
             if (x !== item) {
                 x.subMenuVisible = false;
@@ -111,6 +122,7 @@ const onActive = (item: Item) => {
         }
     }
 
+    emits('active', item);
     emits('onActive', item);
 };
 
@@ -182,6 +194,14 @@ watch(
     padding: 0;
     display: flex;
     list-style: none;
+}
+
+.vf-menu__separator {
+    width: 100%;
+    height: 1px;
+    border: none;
+    margin: 0;
+    background-color: var(--vf-menu-separator-color);
 }
 
 .vf-menu__item {

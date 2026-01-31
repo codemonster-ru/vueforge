@@ -1,9 +1,9 @@
 <template>
     <a
-        v-if="type === 'a'"
-        :href="url"
+        v-if="resolvedType === 'a'"
+        :href="resolvedHref"
         class="vf-link"
-        :class="{ 'vf-link_active': active, 'vf-link_disabled': disabled }"
+        :class="{ 'vf-link_active': getActive, 'vf-link_disabled': disabled }"
         :aria-disabled="disabled"
         :tabindex="disabled ? -1 : undefined"
         @click="onClick"
@@ -21,7 +21,6 @@
         :to="to"
         class="vf-link"
         :class="{ 'vf-link_active': getActive }"
-        :disabled="disabled"
         :aria-disabled="disabled"
         :tabindex="disabled ? -1 : undefined"
         active-class="vf-link_partially-active"
@@ -38,51 +37,95 @@
 </template>
 
 <script setup lang="ts">
-import { useRoute, RouteLocationAsRelativeGeneric, RouteLocationAsPathGeneric } from 'vue-router';
-import { computed, ref } from 'vue';
+import { useRoute, useRouter, RouteLocationAsRelativeGeneric, RouteLocationAsPathGeneric } from 'vue-router';
+import { computed, ref, watch } from 'vue';
 
 interface Props {
     to?: string | RouteLocationAsRelativeGeneric | RouteLocationAsPathGeneric;
+    href?: string;
     url?: string;
-    type: string;
+    as?: 'a' | 'router-link';
+    type?: string;
     label?: string;
     active?: boolean;
     disabled?: boolean;
 }
 
-const emits = defineEmits(['onActive']);
+const emits = defineEmits(['click', 'active', 'update:active', 'onActive']);
 const props = withDefaults(defineProps<Props>(), {
-    to: '',
+    to: undefined,
+    href: undefined,
     url: undefined,
-    type: 'a',
+    as: undefined,
+    type: undefined,
     label: '',
 });
 const route = useRoute();
+const router = useRouter();
 const link = ref(null);
-const getActive = computed(() => {
-    if (props.type === 'router-link') {
-        const to = props.to;
-
-        if (to && typeof to === 'object' && 'name' in to) {
-            const targetName = to.name;
-
-            if (route.matched.some(({ name }) => targetName === name)) {
-                emits('onActive');
-            }
-        }
+const resolvedHref = computed(() => props.href ?? props.url);
+const resolvedType = computed(() => {
+    if (props.as) {
+        return props.as;
+    }
+    if (props.type === 'router-link' || props.type === 'a') {
+        return props.type;
+    }
+    if (props.to) {
+        return 'router-link';
+    }
+    return 'a';
+});
+const resolvedTo = computed(() => {
+    if (!props.to) {
+        return null;
+    }
+    return router.resolve(props.to);
+});
+const isRouteActive = computed(() => {
+    if (resolvedType.value !== 'router-link') {
+        return false;
     }
 
+    const resolved = resolvedTo.value;
+    if (!resolved) {
+        return false;
+    }
+
+    if (resolved.name) {
+        return route.matched.some(({ name }) => name === resolved.name);
+    }
+
+    if (resolved.fullPath) {
+        return route.fullPath === resolved.fullPath;
+    }
+
+    return route.path === resolved.path;
+});
+const getActive = computed(() => {
+    if (props.active === undefined) {
+        return isRouteActive.value;
+    }
     return props.active;
 });
 
 const onClick = (event: MouseEvent) => {
     if (!props.disabled) {
+        emits('click', event);
         return;
     }
 
     event.preventDefault();
     event.stopPropagation();
 };
+
+watch(isRouteActive, value => {
+    if (value) {
+        emits('active');
+        emits('onActive');
+    }
+    emits('update:active', value);
+});
 </script>
 
 <style lang="scss">

@@ -1,5 +1,11 @@
 # VueForge
 
+[![npm](https://img.shields.io/npm/v/@codemonster-ru/vueforge)](https://www.npmjs.com/package/@codemonster-ru/vueforge)
+[![downloads](https://img.shields.io/npm/dw/@codemonster-ru/vueforge)](https://www.npmjs.com/package/@codemonster-ru/vueforge)
+[![license](https://img.shields.io/npm/l/@codemonster-ru/vueforge)](LICENSE.md)
+[![CI](https://github.com/codemonster-ru/vueforge/actions/workflows/publish.yml/badge.svg)](https://github.com/codemonster-ru/vueforge/actions/workflows/publish.yml)
+[![bundle size](https://img.shields.io/bundlephobia/minzip/@codemonster-ru/vueforge)](https://bundlephobia.com/package/@codemonster-ru/vueforge)
+
 Open source UI components for Vue.js.
 
 ## Install
@@ -18,7 +24,7 @@ Peer dependencies:
 
 ```ts
 import { createApp } from 'vue';
-import { VueForge, DefaultTheme, Button } from '@codemonster-ru/vueforge';
+import { VueForge, DefaultTheme, Button, Input, Select, Checkbox, Switch } from '@codemonster-ru/vueforge';
 import '@codemonster-ru/vueforge/dist/index.css';
 
 const app = createApp(App);
@@ -32,6 +38,18 @@ app.use(VueForge, {
 
 ```vue
 <Button label="Hello" severity="primary" />
+<Input v-model="name" placeholder="Your name" />
+<Select v-model="role" :options="roles" placeholder="Choose role" />
+<Checkbox v-model="agreed" label="I agree" />
+<Switch v-model="darkMode" label="Dark mode" />
+```
+
+## Examples
+
+The example app lives in `src/example` and showcases all components and layouts.
+
+```bash
+npm run dev
 ```
 
 ## Theming

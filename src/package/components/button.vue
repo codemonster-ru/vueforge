@@ -1,5 +1,10 @@
 <template>
-    <button v-if="props.type === 'button'" type="button" :class="getClass" :disabled="props.loading || props.disabled">
+    <button
+        v-if="isButton"
+        :type="buttonType"
+        :class="getClass"
+        :disabled="props.loading || props.disabled"
+    >
         <v-icon v-if="props.icon && !props.loading" :icon="props.icon" :class="getIconClass" />
         <v-icon v-if="props.loading" icon="circleNotch" :class="getIconClass" spin />
         <template v-if="$slots.default">
@@ -13,7 +18,14 @@
             </span>
         </template>
     </button>
-    <Link v-else :to="props.to" :type="props.type" :class="getClass" :disabled="props.loading || props.disabled">
+    <Link
+        v-else
+        :to="props.to"
+        :href="props.href ?? props.url"
+        :as="linkType"
+        :class="getClass"
+        :disabled="props.loading || props.disabled"
+    >
         <v-icon v-if="props.icon" :icon="props.icon" :class="getIconClass" />
         <template v-if="$slots.default">
             <span :class="getLabelClass">
@@ -30,11 +42,17 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { Link } from '@/index';
+import Link from '@/package/components/link.vue';
 import { CmIcon as VIcon } from '@codemonster-ru/vueiconify';
+
+type ButtonType = 'button' | 'submit' | 'reset';
+type LinkType = 'a' | 'router-link';
 
 interface Props {
     to?: string | object;
+    href?: string;
+    url?: string;
+    as?: 'button' | 'link';
     icon?: string;
     type?: string;
     size?: string;
@@ -49,6 +67,9 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
     to: undefined,
+    href: undefined,
+    url: undefined,
+    as: undefined,
     icon: undefined,
     type: 'button',
     size: 'normal',
@@ -59,6 +80,37 @@ const props = withDefaults(defineProps<Props>(), {
     variant: undefined,
     severity: 'primary',
     disabled: false,
+});
+const buttonTypes: Array<ButtonType> = ['button', 'submit', 'reset'];
+const isButtonType = (value: string | undefined): value is ButtonType => {
+    return !!value && buttonTypes.includes(value as ButtonType);
+};
+const isButton = computed(() => {
+    if (props.as) {
+        return props.as === 'button';
+    }
+    if (props.to || props.href || props.url) {
+        return false;
+    }
+    if (props.type && !isButtonType(props.type)) {
+        return false;
+    }
+    return true;
+});
+const buttonType = computed<ButtonType>(() => {
+    return isButtonType(props.type) ? props.type : 'button';
+});
+const linkType = computed<LinkType>(() => {
+    if (props.as === 'link') {
+        return props.to ? 'router-link' : 'a';
+    }
+    if (props.type && !isButtonType(props.type)) {
+        if (props.type === 'router-link') {
+            return props.to ? 'router-link' : 'a';
+        }
+        return 'a';
+    }
+    return props.to ? 'router-link' : 'a';
 });
 const getClass = computed(() => {
     let classes = ['vf-button', `vf-button_${props.severity}`];
