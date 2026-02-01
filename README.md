@@ -54,6 +54,67 @@ app.use(VueForge, {
 - Select
 - Switch
 
+## Tokens
+
+VueForge exposes design tokens as CSS variables generated from the theme preset. Core groups:
+
+- `colors.*` → `--vf-{color}` + shades (`--vf-{color}-100..900`)
+- `radii.*` → corner radii
+- `typography.*` → base font size & line height
+- `states.*` → focus ring, disabled opacity
+- `controls.*` → base control sizing (height, padding)
+- `sizes.sm/lg` → shared small/large sizing for Button/Input/Select
+
+Typed tokens:
+
+- `ThemeTokens`/`ThemeOptions`/`ThemePreset` are exported for type-safe theming in TS.
+- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/codeBlock/input/link/menu/popover/select/switch).
+
+Default core values (from `DefaultTheme`):
+
+| Token                    | Value                                          |
+| ------------------------ | ---------------------------------------------- |
+| `borderWidth`            | `1px`                                          |
+| `controls.height`        | `2rem`                                         |
+| `controls.paddingY`      | `0.25rem`                                      |
+| `controls.paddingX`      | `0.6rem`                                       |
+| `radii.sm`               | `4px`                                          |
+| `radii.md`               | `6px`                                          |
+| `radii.lg`               | `10px`                                         |
+| `typography.fontSize`    | `1rem`                                         |
+| `typography.lineHeight`  | `1.4`                                          |
+| `states.disabledOpacity` | `0.6`                                          |
+| `states.focusRingShadow` | `0 0 0 3px rgba(var(--vf-blue-600-rgb), 0.12)` |
+| `sizes.sm.fontSize`      | `0.875rem`                                     |
+| `sizes.sm.paddingY`      | `0.2rem`                                       |
+| `sizes.sm.paddingX`      | `0.5rem`                                       |
+| `sizes.lg.fontSize`      | `1.125rem`                                     |
+| `sizes.lg.paddingY`      | `0.5rem`                                       |
+| `sizes.lg.paddingX`      | `1rem`                                         |
+
+Example override:
+
+```ts
+setTheme({
+    preset: DefaultTheme,
+    overrides: {
+        typography: {
+            fontSize: '0.9375rem',
+            lineHeight: '1.4',
+        },
+        controls: {
+            height: '2rem',
+            paddingY: '0.25rem',
+            paddingX: '0.6rem',
+        },
+        sizes: {
+            sm: { fontSize: '0.8125rem', paddingY: '0.2rem', paddingX: '0.45rem' },
+            lg: { fontSize: '1.125rem', paddingY: '0.5rem', paddingX: '1rem' },
+        },
+    },
+});
+```
+
 ## Examples
 
 The example app lives in `src/example` and showcases all components.
@@ -70,6 +131,7 @@ VueForge maps the theme preset to CSS variables. You can override parts of the p
 app.use(VueForge, {
     theme: {
         preset: DefaultTheme,
+        strict: false,
         overrides: {
             colors: {
                 green: '#18a66a',
@@ -91,6 +153,40 @@ updateTheme({
     overrides: {
         colors: { blue: '#2b6cb0' },
     },
+});
+```
+
+Notes:
+
+- Non-hex colors (e.g. `rgb(...)`, `hsl(...)`, `var(--brand)`) are allowed, but shade variables (`--vf-*-100..900`) will not be generated.
+- Set `theme.strict: true` to throw on invalid token values (non-string / non-plain object) during theme application.
+
+## Theme API
+
+Core methods:
+
+- `setTheme(options)` — apply a theme preset (with optional overrides).
+- `updateTheme(partial)` — update only parts of the current theme.
+- `getTheme()` — get the last applied theme options.
+
+Key options:
+
+- `preset`: base theme object (e.g. `DefaultTheme`)
+- `overrides`: partial overrides merged into preset
+- `selector`: CSS selector for base variables (default `:root`)
+- `darkSelector`: selector for dark scheme (default `:root[data-theme=dark]`)
+- `strict`: throw on invalid token values (otherwise warnings)
+
+Example:
+
+```ts
+setTheme({
+    preset: DefaultTheme,
+    overrides: {
+        colors: { blue: '#2b6cb0' },
+        typography: { fontSize: '0.95rem' },
+    },
+    strict: true,
 });
 ```
 

@@ -31,6 +31,10 @@ export default defineConfig(({ mode }) => {
         resolve: {
             alias: [{ find: '@', replacement: fileURLToPath(new URL('./src', import.meta.url)) }],
         },
+        test: {
+            globals: true,
+            environment: 'node',
+        },
         build: {
             emptyOutDir: true,
             cssCodeSplit: true,

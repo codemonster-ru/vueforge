@@ -1,6 +1,6 @@
 {
     "name": "@codemonster-ru/vueforge",
-    "version": "0.7.0",
+    "version": "0.8.0",
     "description": "Open source UI components for Vue.js.",
     "license": "MIT",
     "author": "Kirill Kolesnikov",
@@ -47,7 +47,8 @@
         "dev": "vite dev --force --mode development",
         "build": "vite build --mode production",
         "lint": "eslint . --ext .ts,.vue",
-        "typecheck": "vue-tsc --noEmit"
+        "typecheck": "vue-tsc --noEmit",
+        "test": "vitest run"
     },
     "peerDependencies": {
         "@codemonster-ru/vueiconify": "^0.7.0",
@@ -70,7 +71,8 @@
         "vite": "^6.0.11",
         "vite-plugin-dts": "^4.5.0",
         "vue": "^3.4.31",
-        "vue-tsc": "^2.0.21"
+        "vue-tsc": "^2.0.21",
+        "vitest": "^1.6.0"
     },
     "dependencies": {
         "@codemonster-ru/floater.js": "^1.0.8"

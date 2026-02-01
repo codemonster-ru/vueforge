@@ -5,12 +5,12 @@ export default {
     roundedBorderRadius: '2rem',
     iconGap: '6px',
     small: {
-        fontSize: '0.875rem',
-        padding: '4px 8px',
+        fontSize: 'var(--vf-sizes-sm-font-size)',
+        padding: 'var(--vf-sizes-sm-padding-y) var(--vf-sizes-sm-padding-x)',
     },
     large: {
-        fontSize: '1.125rem',
-        padding: '4px 8px',
+        fontSize: 'var(--vf-sizes-lg-font-size)',
+        padding: 'var(--vf-sizes-lg-padding-y) var(--vf-sizes-lg-padding-x)',
     },
     colorScheme: {
         light: {

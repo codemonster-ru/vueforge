@@ -10,5 +10,6 @@ export { default as Switch } from '@/package/components/switch.vue';
 export { default as Popover } from '@/package/components/popover.vue';
 // config
 export { default as VueForge, setTheme, updateTheme, getTheme } from '@/package/config/index';
+export type { ThemeTokens, ThemeOptions, ThemePreset } from '@/package/config/theme-core';
 // themes
 export { default as DefaultTheme } from '@/package/themes/default';

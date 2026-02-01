@@ -12,11 +12,11 @@ export default {
     hoverBorderColor: 'var(--vf-blue-500)',
     disabledOpacity: 'var(--vf-states-disabled-opacity)',
     small: {
-        padding: '0.375rem 0.5rem',
-        fontSize: '0.875rem',
+        padding: 'var(--vf-sizes-sm-padding-y) var(--vf-sizes-sm-padding-x)',
+        fontSize: 'var(--vf-sizes-sm-font-size)',
     },
     large: {
-        padding: '0.625rem 0.875rem',
-        fontSize: '1.125rem',
+        padding: 'var(--vf-sizes-lg-padding-y) var(--vf-sizes-lg-padding-x)',
+        fontSize: 'var(--vf-sizes-lg-font-size)',
     },
 };

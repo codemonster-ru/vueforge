@@ -28,6 +28,18 @@ export default {
         disabledOpacity: '0.6',
         focusRingShadow: '0 0 0 3px rgba(var(--vf-blue-600-rgb), 0.12)',
     },
+    sizes: {
+        sm: {
+            fontSize: '0.875rem',
+            paddingY: '0.2rem',
+            paddingX: '0.5rem',
+        },
+        lg: {
+            fontSize: '1.125rem',
+            paddingY: '0.5rem',
+            paddingX: '1rem',
+        },
+    },
     colorScheme: {
         light: {
             bgColor: '#ffffff',

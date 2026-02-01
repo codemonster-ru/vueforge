@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.8.0] - 2026-02-01
+
+- Theme core/runtime split: extracted pure theming logic and added runtime warnings for invalid token values.
+- Theme sizes: centralized sm/lg sizing tokens and wired Button/Input/Select to them.
+- Theme sizes: refined sm/lg padding values for better rhythm.
+- Docs: added Tokens section with override examples.
+- Lint: aligned switch/case indentation rule to avoid formatting conflicts.
+- Theme strict mode: added `strict` option for invalid token values; non-hex colors now skip shade generation.
+- Tests: added vitest coverage for theme core helpers.
+- Types: exported `ThemeTokens`/`ThemeOptions`/`ThemePreset` and typed `components` tokens.
+- Docs: documented default core token values.
+- Theme API: added documentation for core theming methods and options.
+- CI: added workflow to run lint/typecheck/test/build on push/PR.
+
 ## [0.7.0] - 2026-02-01
 
 - UI sizing: unified control heights (32px) and box-sizing for Button/Input/Select.
@@ -8,15 +22,16 @@
 - Example app: applied base typography on body.
 - Dependencies: bumped `@codemonster-ru/floater.js` to 1.0.8 and removed local type shims.
 
+## [0.6.1] - 2026-02-01
+
+- Link: RouterLink type handling tightened to avoid undefined `to` at compile time.
+
 ## [0.6.0] - 2026-02-01
 
 - Removed layout-related components and exports (Container, Header, Footer, Content, DefaultLayout, LeftSidebarLayout).
 - Removed Demo and Logo components and their theme tokens.
 - Example app now focuses only on component-level UI demos (layouts/routes removed).
 - Styling tokens expanded to cover previously hardcoded component sizes/spacing and a shared border width token.
-- Link: RouterLink type handling tightened to avoid undefined `to` at compile time.
-## [0.6.1] - 2026-02-01
-
 - Link: RouterLink type handling tightened to avoid undefined `to` at compile time.
 
 ## [0.5.0] - 2026-01-31
