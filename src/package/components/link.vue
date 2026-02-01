@@ -18,7 +18,7 @@
     <router-link
         v-else
         ref="link"
-        :to="to"
+        :to="routerLinkTo"
         class="vf-link"
         :class="{ 'vf-link_active': getActive }"
         :aria-disabled="disabled"
@@ -37,7 +37,13 @@
 </template>
 
 <script setup lang="ts">
-import { useRoute, useRouter, RouteLocationAsRelativeGeneric, RouteLocationAsPathGeneric } from 'vue-router';
+import {
+    useRoute,
+    useRouter,
+    RouteLocationAsRelativeGeneric,
+    RouteLocationAsPathGeneric,
+    RouteLocationRaw,
+} from 'vue-router';
 import { computed, ref, watch } from 'vue';
 
 interface Props {
@@ -66,15 +72,18 @@ const link = ref(null);
 const resolvedHref = computed(() => props.href ?? props.url);
 const resolvedType = computed(() => {
     if (props.as) {
-        return props.as;
+        return props.as === 'router-link' && !props.to ? 'a' : props.as;
     }
     if (props.type === 'router-link' || props.type === 'a') {
-        return props.type;
+        return props.type === 'router-link' && !props.to ? 'a' : props.type;
     }
     if (props.to) {
         return 'router-link';
     }
     return 'a';
+});
+const routerLinkTo = computed<RouteLocationRaw>(() => {
+    return props.to as RouteLocationRaw;
 });
 const resolvedTo = computed(() => {
     if (!props.to) {

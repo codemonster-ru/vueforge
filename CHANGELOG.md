@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.6.0] - 2026-02-01
+
+- Removed layout-related components and exports (Container, Header, Footer, Content, DefaultLayout, LeftSidebarLayout).
+- Removed Demo and Logo components and their theme tokens.
+- Example app now focuses only on component-level UI demos (layouts/routes removed).
+- Styling tokens expanded to cover previously hardcoded component sizes/spacing and a shared border width token.
+- Link: RouterLink type handling tightened to avoid undefined `to` at compile time.
+
 ## [0.5.0] - 2026-01-31
 
 - Example app now includes demos for all components and layout previews.

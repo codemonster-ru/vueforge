@@ -131,7 +131,7 @@ watch(
     value => {
         localItems.value = cloneItems(value);
     },
-    { deep: true, immediate: true }
+    { deep: true, immediate: true },
 );
 </script>
 
@@ -156,10 +156,10 @@ watch(
             }
 
             > .vf-menu__separator {
-                height: 1rem;
+                height: var(--vf-menu-separator-height);
                 border-top: none;
                 border-right: none;
-                border-left: 1px solid var(--vf-menu-separator-color);
+                border-left: var(--vf-menu-separator-thickness) solid var(--vf-menu-separator-color);
                 border-bottom: none;
             }
         }
@@ -198,7 +198,7 @@ watch(
 
 .vf-menu__separator {
     width: 100%;
-    height: 1px;
+    height: var(--vf-menu-separator-thickness);
     border: none;
     margin: 0;
     background-color: var(--vf-menu-separator-color);
@@ -235,13 +235,13 @@ watch(
 //}
 
 .vf-menu__icon {
-    margin-right: 6px;
+    margin-right: var(--vf-menu-icon-gap);
 }
 
 .vf-menu__submenu {
     &.vf-menu__submenu_visible {
-        margin-top: 12px;
-        margin-left: 12px;
+        margin-top: var(--vf-menu-submenu-offset);
+        margin-left: var(--vf-menu-submenu-offset);
     }
 
     &:not(.vf-menu__submenu_visible) {

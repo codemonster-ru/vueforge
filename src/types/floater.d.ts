@@ -11,13 +11,10 @@ declare module '@codemonster-ru/floater.js' {
             placement?: Placement;
             strategy?: 'absolute' | 'fixed';
             middleware?: Array<Middleware>;
-        }
+        },
     ): Promise<{ x: number; y: number; placement?: string }>;
 
-    export function autoUpdate(
-        reference: HTMLElement,
-        update: () => void
-    ): () => void;
+    export function autoUpdate(reference: HTMLElement, update: () => void): () => void;
 
     export const offset: (value?: number) => Middleware;
     export const flip: MiddlewareFactory;

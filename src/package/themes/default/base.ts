@@ -9,6 +9,7 @@ export default {
         purple: '#6f42c1',
         gray: '#adb5bd',
     },
+    borderWidth: '1px',
     colorScheme: {
         light: {
             bgColor: '#ffffff',

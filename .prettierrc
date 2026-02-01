@@ -7,5 +7,12 @@
     "trailingComma": "all",
     "arrowParens": "avoid",
     "endOfLine": "lf",
-    "insertFinalNewLine": false
+    "overrides": [
+        {
+            "files": ".eslintrc",
+            "options": {
+                "trailingComma": "none"
+            }
+        }
+    ]
 }

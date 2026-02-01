@@ -1,10 +1,5 @@
 <template>
-    <button
-        v-if="isButton"
-        :type="buttonType"
-        :class="getClass"
-        :disabled="props.loading || props.disabled"
-    >
+    <button v-if="isButton" :type="buttonType" :class="getClass" :disabled="props.loading || props.disabled">
         <v-icon v-if="props.icon && !props.loading" :icon="props.icon" :class="getIconClass" />
         <v-icon v-if="props.loading" icon="circleNotch" :class="getIconClass" spin />
         <template v-if="$slots.default">
@@ -158,14 +153,14 @@ const getLabelClass = computed(() => {
     align-items: center;
     justify-content: center;
     padding: var(--vf-button-padding);
-    font-size: 1rem;
+    font-size: var(--vf-button-font-size);
     font-family: inherit;
     border-radius: var(--vf-button-border-radius);
     overflow: hidden;
 }
 
 .vf-button_text {
-    border: 1px solid transparent;
+    border: var(--vf-border-width) solid transparent;
     background-color: transparent;
 }
 
@@ -186,7 +181,7 @@ const getLabelClass = computed(() => {
 
     &.vf-button_outlined {
         color: var(--vf-button-outlined-primary-color);
-        border: 1px solid var(--vf-button-outlined-primary-border-color);
+        border: var(--vf-border-width) solid var(--vf-button-outlined-primary-border-color);
 
         &:not(.vf-button_disabled) {
             &:hover {
@@ -197,19 +192,19 @@ const getLabelClass = computed(() => {
 
     &:not(.vf-button_text):not(.vf-button_outlined) {
         color: var(--vf-button-primary-color);
-        border: 1px solid var(--vf-button-primary-border-color);
+        border: var(--vf-border-width) solid var(--vf-button-primary-border-color);
         background-color: var(--vf-button-primary-background-color);
 
         &:not(.vf-button_disabled) {
             &:hover {
                 color: var(--vf-button-primary-hover-color);
-                border: 1px solid var(--vf-button-primary-hover-border-color);
+                border: var(--vf-border-width) solid var(--vf-button-primary-hover-border-color);
                 background-color: var(--vf-button-primary-hover-background-color);
             }
 
             &:active {
                 color: var(--vf-button-primary-active-color);
-                border: 1px solid var(--vf-button-primary-active-border-color);
+                border: var(--vf-border-width) solid var(--vf-button-primary-active-border-color);
                 background-color: var(--vf-button-primary-active-background-color);
             }
         }
@@ -229,7 +224,7 @@ const getLabelClass = computed(() => {
 
     &.vf-button_outlined {
         color: var(--vf-button-outlined-secondary-color);
-        border: 1px solid var(--vf-button-outlined-secondary-border-color);
+        border: var(--vf-border-width) solid var(--vf-button-outlined-secondary-border-color);
 
         &:not(.vf-button_disabled) {
             &:hover {
@@ -240,19 +235,19 @@ const getLabelClass = computed(() => {
 
     &:not(.vf-button_text):not(.vf-button_outlined) {
         color: var(--vf-button-secondary-color);
-        border: 1px solid var(--vf-button-secondary-border-color);
+        border: var(--vf-border-width) solid var(--vf-button-secondary-border-color);
         background-color: var(--vf-button-secondary-background-color);
 
         &:not(.vf-button_disabled) {
             &:hover {
                 color: var(--vf-button-secondary-hover-color);
-                border: 1px solid var(--vf-button-secondary-hover-border-color);
+                border: var(--vf-border-width) solid var(--vf-button-secondary-hover-border-color);
                 background-color: var(--vf-button-secondary-hover-background-color);
             }
 
             &:active {
                 color: var(--vf-button-secondary-active-color);
-                border: 1px solid var(--vf-button-secondary-active-border-color);
+                border: var(--vf-border-width) solid var(--vf-button-secondary-active-border-color);
                 background-color: var(--vf-button-secondary-active-background-color);
             }
         }
@@ -272,7 +267,7 @@ const getLabelClass = computed(() => {
 
     &.vf-button_outlined {
         color: var(--vf-button-outlined-success-color);
-        border: 1px solid var(--vf-button-outlined-success-border-color);
+        border: var(--vf-border-width) solid var(--vf-button-outlined-success-border-color);
 
         &:not(.vf-button_disabled) {
             &:hover {
@@ -283,19 +278,19 @@ const getLabelClass = computed(() => {
 
     &:not(.vf-button_text):not(.vf-button_outlined) {
         color: var(--vf-button-success-color);
-        border: 1px solid var(--vf-button-success-border-color);
+        border: var(--vf-border-width) solid var(--vf-button-success-border-color);
         background-color: var(--vf-button-success-background-color);
 
         &:not(.vf-button_disabled) {
             &:hover {
                 color: var(--vf-button-success-hover-color);
-                border: 1px solid var(--vf-button-success-hover-border-color);
+                border: var(--vf-border-width) solid var(--vf-button-success-hover-border-color);
                 background-color: var(--vf-button-success-hover-background-color);
             }
 
             &:active {
                 color: var(--vf-button-success-active-color);
-                border: 1px solid var(--vf-button-success-active-border-color);
+                border: var(--vf-border-width) solid var(--vf-button-success-active-border-color);
                 background-color: var(--vf-button-success-active-background-color);
             }
         }
@@ -315,7 +310,7 @@ const getLabelClass = computed(() => {
 
     &.vf-button_outlined {
         color: var(--vf-button-outlined-info-color);
-        border: 1px solid var(--vf-button-outlined-info-border-color);
+        border: var(--vf-border-width) solid var(--vf-button-outlined-info-border-color);
 
         &:not(.vf-button_disabled) {
             &:hover {
@@ -326,19 +321,19 @@ const getLabelClass = computed(() => {
 
     &:not(.vf-button_text):not(.vf-button_outlined) {
         color: var(--vf-button-info-color);
-        border: 1px solid var(--vf-button-info-border-color);
+        border: var(--vf-border-width) solid var(--vf-button-info-border-color);
         background-color: var(--vf-button-info-background-color);
 
         &:not(.vf-button_disabled) {
             &:hover {
                 color: var(--vf-button-info-hover-color);
-                border: 1px solid var(--vf-button-info-hover-border-color);
+                border: var(--vf-border-width) solid var(--vf-button-info-hover-border-color);
                 background-color: var(--vf-button-info-hover-background-color);
             }
 
             &:active {
                 color: var(--vf-button-info-active-color);
-                border: 1px solid var(--vf-button-info-active-border-color);
+                border: var(--vf-border-width) solid var(--vf-button-info-active-border-color);
                 background-color: var(--vf-button-info-active-background-color);
             }
         }
@@ -358,7 +353,7 @@ const getLabelClass = computed(() => {
 
     &.vf-button_outlined {
         color: var(--vf-button-outlined-warning-color);
-        border: 1px solid var(--vf-button-outlined-warning-border-color);
+        border: var(--vf-border-width) solid var(--vf-button-outlined-warning-border-color);
 
         &:not(.vf-button_disabled) {
             &:hover {
@@ -369,19 +364,19 @@ const getLabelClass = computed(() => {
 
     &:not(.vf-button_text):not(.vf-button_outlined) {
         color: var(--vf-button-warning-color);
-        border: 1px solid var(--vf-button-warning-border-color);
+        border: var(--vf-border-width) solid var(--vf-button-warning-border-color);
         background-color: var(--vf-button-warning-background-color);
 
         &:not(.vf-button_disabled) {
             &:hover {
                 color: var(--vf-button-warning-hover-color);
-                border: 1px solid var(--vf-button-warning-hover-border-color);
+                border: var(--vf-border-width) solid var(--vf-button-warning-hover-border-color);
                 background-color: var(--vf-button-warning-hover-background-color);
             }
 
             &:active {
                 color: var(--vf-button-warning-active-color);
-                border: 1px solid var(--vf-button-warning-active-border-color);
+                border: var(--vf-border-width) solid var(--vf-button-warning-active-border-color);
                 background-color: var(--vf-button-warning-active-background-color);
             }
         }
@@ -401,7 +396,7 @@ const getLabelClass = computed(() => {
 
     &.vf-button_outlined {
         color: var(--vf-button-outlined-danger-color);
-        border: 1px solid var(--vf-button-outlined-danger-border-color);
+        border: var(--vf-border-width) solid var(--vf-button-outlined-danger-border-color);
 
         &:not(.vf-button_disabled) {
             &:hover {
@@ -412,19 +407,19 @@ const getLabelClass = computed(() => {
 
     &:not(.vf-button_text):not(.vf-button_outlined) {
         color: var(--vf-button-danger-color);
-        border: 1px solid var(--vf-button-danger-border-color);
+        border: var(--vf-border-width) solid var(--vf-button-danger-border-color);
         background-color: var(--vf-button-danger-background-color);
 
         &:not(.vf-button_disabled) {
             &:hover {
                 color: var(--vf-button-danger-hover-color);
-                border: 1px solid var(--vf-button-danger-hover-border-color);
+                border: var(--vf-border-width) solid var(--vf-button-danger-hover-border-color);
                 background-color: var(--vf-button-danger-hover-background-color);
             }
 
             &:active {
                 color: var(--vf-button-danger-active-color);
-                border: 1px solid var(--vf-button-danger-active-border-color);
+                border: var(--vf-border-width) solid var(--vf-button-danger-active-border-color);
                 background-color: var(--vf-button-danger-active-background-color);
             }
         }
@@ -441,7 +436,7 @@ const getLabelClass = computed(() => {
 
 .vf-button__icon_top {
     + .vf-button__label {
-        margin-top: 6px;
+        margin-top: var(--vf-button-icon-gap);
     }
 }
 
@@ -449,7 +444,7 @@ const getLabelClass = computed(() => {
     order: 1;
 
     + .vf-button__label {
-        margin-right: 6px;
+        margin-right: var(--vf-button-icon-gap);
     }
 }
 
@@ -457,13 +452,13 @@ const getLabelClass = computed(() => {
     order: 1;
 
     + .vf-button__label {
-        margin-bottom: 6px;
+        margin-bottom: var(--vf-button-icon-gap);
     }
 }
 
 .vf-button__icon_left {
     + .vf-button__label {
-        margin-left: 6px;
+        margin-left: var(--vf-button-icon-gap);
     }
 }
 

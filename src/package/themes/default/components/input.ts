@@ -1,4 +1,6 @@
 export default {
+    gap: '0.5rem',
+    fontSize: '1rem',
     padding: '0.5rem 0.75rem',
     borderRadius: '6px',
     borderColor: 'var(--vf-border-color)',

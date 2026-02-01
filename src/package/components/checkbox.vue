@@ -63,13 +63,15 @@ const onChange = (event: Event) => {
 .vf-checkbox__box {
     width: var(--vf-checkbox-size);
     height: var(--vf-checkbox-size);
-    border: 1px solid var(--vf-checkbox-border-color);
+    border: var(--vf-border-width) solid var(--vf-checkbox-border-color);
     border-radius: var(--vf-checkbox-border-radius);
     background-color: var(--vf-checkbox-background-color);
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    transition: background-color 0.2s ease, border-color 0.2s ease;
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease;
 }
 
 .vf-checkbox__control:checked + .vf-checkbox__box {
@@ -82,7 +84,7 @@ const onChange = (event: Event) => {
     width: calc(var(--vf-checkbox-size) / 2);
     height: calc(var(--vf-checkbox-size) / 2);
     background-color: var(--vf-checkbox-check-color);
-    border-radius: 2px;
+    border-radius: var(--vf-checkbox-check-border-radius);
 }
 
 .vf-checkbox_disabled {

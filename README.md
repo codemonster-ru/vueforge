@@ -4,7 +4,7 @@
 [![downloads](https://img.shields.io/npm/dw/@codemonster-ru/vueforge)](https://www.npmjs.com/package/@codemonster-ru/vueforge)
 [![license](https://img.shields.io/npm/l/@codemonster-ru/vueforge)](LICENSE.md)
 
-Open source UI components for Vue.js.
+Open source component-level UI library for Vue.js.
 
 ## Install
 
@@ -42,9 +42,21 @@ app.use(VueForge, {
 <Switch v-model="darkMode" label="Dark mode" />
 ```
 
+## Components
+
+- Button
+- Card
+- Checkbox
+- Input
+- Link
+- Menu
+- Popover
+- Select
+- Switch
+
 ## Examples
 
-The example app lives in `src/example` and showcases all components and layouts.
+The example app lives in `src/example` and showcases all components.
 
 ```bash
 npm run dev

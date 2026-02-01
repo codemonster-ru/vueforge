@@ -17,7 +17,7 @@
 
 <style lang="scss">
 .vf-card {
-    border: 1px solid var(--vf-card-border-color);
+    border: var(--vf-border-width) solid var(--vf-card-border-color);
     border-radius: var(--vf-card-border-radius);
 }
 

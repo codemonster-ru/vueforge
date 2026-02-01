@@ -74,7 +74,7 @@ const onChange = (event: Event) => {
 .vf-switch__thumb {
     position: absolute;
     top: 50%;
-    left: 2px;
+    left: var(--vf-switch-thumb-offset);
     width: var(--vf-switch-thumb-size);
     height: var(--vf-switch-thumb-size);
     border-radius: 50%;
@@ -88,7 +88,10 @@ const onChange = (event: Event) => {
 }
 
 .vf-switch__control:checked + .vf-switch__track .vf-switch__thumb {
-    transform: translate(calc(var(--vf-switch-width) - var(--vf-switch-thumb-size) - 4px), -50%);
+    transform: translate(
+        calc(var(--vf-switch-width) - var(--vf-switch-thumb-size) - var(--vf-switch-thumb-translate-offset)),
+        -50%
+    );
 }
 
 .vf-switch_disabled {

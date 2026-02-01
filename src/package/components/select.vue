@@ -252,9 +252,9 @@ onBeforeUnmount(() => {
 .vf-select {
     position: relative;
     display: inline-block;
-    min-width: 12rem;
+    min-width: var(--vf-select-min-width);
     border-radius: var(--vf-select-border-radius);
-    border: 1px solid var(--vf-select-border-color);
+    border: var(--vf-border-width) solid var(--vf-select-border-color);
     background-color: var(--vf-select-background-color);
     color: var(--vf-select-text-color);
     transition:
@@ -268,12 +268,12 @@ onBeforeUnmount(() => {
     border: none;
     background: transparent;
     color: inherit;
-    font-size: 1rem;
+    font-size: var(--vf-select-font-size);
     outline: none;
     display: inline-flex;
     align-items: center;
     justify-content: space-between;
-    gap: 0.75rem;
+    gap: var(--vf-select-control-gap);
     cursor: pointer;
 }
 
@@ -286,18 +286,18 @@ onBeforeUnmount(() => {
 }
 
 .vf-select__chevron {
-    font-size: 0.9em;
+    font-size: var(--vf-select-chevron-size);
     opacity: 0.7;
 }
 
 .vf-select__panel {
     position: fixed;
     z-index: 50;
-    padding: 0.35rem;
-    max-height: 16rem;
+    padding: var(--vf-select-panel-padding);
+    max-height: var(--vf-select-panel-max-height);
     overflow: auto;
-    border-radius: calc(var(--vf-select-border-radius) + 2px);
-    border: 1px solid var(--vf-select-panel-border-color);
+    border-radius: calc(var(--vf-select-border-radius) + var(--vf-select-panel-radius-offset));
+    border: var(--vf-border-width) solid var(--vf-select-panel-border-color);
     background-color: var(--vf-select-panel-background-color);
     box-shadow: var(--vf-select-panel-shadow);
     color: var(--vf-select-text-color);
@@ -308,8 +308,8 @@ onBeforeUnmount(() => {
     text-align: left;
     border: none;
     background: transparent;
-    padding: 0.5rem 0.6rem;
-    border-radius: 6px;
+    padding: var(--vf-select-option-padding);
+    border-radius: var(--vf-select-option-border-radius);
     color: inherit;
     cursor: pointer;
 }
@@ -332,7 +332,7 @@ onBeforeUnmount(() => {
 
 .vf-select_open {
     border-color: var(--vf-select-focus-border-color);
-    box-shadow: 0 0 0 3px rgba(var(--vf-blue-600-rgb), 0.12);
+    box-shadow: var(--vf-select-focus-ring-shadow);
 }
 
 .vf-select:hover:not(.vf-select_disabled) {

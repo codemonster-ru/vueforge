@@ -1,7 +1,9 @@
 export default {
+    fontSize: '1rem',
     padding: '6px 10px',
     borderRadius: '6px',
     roundedBorderRadius: '2rem',
+    iconGap: '6px',
     small: {
         fontSize: '0.875rem',
         padding: '4px 8px',

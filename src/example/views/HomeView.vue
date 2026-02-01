@@ -75,43 +75,8 @@
                     <h3>Menu</h3>
                     <Menu :items="menuItems" />
                 </div>
-                <div class="vf-home__card">
-                    <h3>Logo</h3>
-                    <Logo :src="[logoLight, logoDark]" :dark="isDark" width="120" height="32" />
-                </div>
-                <div class="vf-home__card">
-                    <h3>Demo</h3>
-                    <Demo>Demo block</Demo>
-                </div>
-                <div class="vf-home__card">
-                    <h3>Container / Header / Content / Footer</h3>
-                    <Container class="vf-home__container-demo">
-                        <Header class="vf-home__header-demo">Header slot</Header>
-                        <Content class="vf-home__content-demo">Content slot</Content>
-                        <Footer class="vf-home__footer-demo">Footer slot</Footer>
-                    </Container>
-                </div>
-                <div class="vf-home__card">
-                    <h3>Layouts</h3>
-                    <DefaultLayout class="vf-home__layout-demo">
-                        <template #header>Layout header</template>
-                        <template #content>Layout content</template>
-                        <template #footer>Layout footer</template>
-                    </DefaultLayout>
-                    <LeftSidebarLayout class="vf-home__layout-demo vf-home__layout-demo_sidebar">
-                        <template #leftSidebar>
-                            <div class="vf-home__sidebar-demo">Sidebar slot</div>
-                        </template>
-                    </LeftSidebarLayout>
-                </div>
             </div>
         </section>
-        <h2>Layouts</h2>
-        <ul>
-            <li>
-                <router-link to="/layouts/default">Default</router-link>
-            </li>
-        </ul>
     </div>
 </template>
 
@@ -121,17 +86,9 @@ import {
     Button,
     Card,
     Checkbox,
-    Container,
-    Content,
-    DefaultLayout,
     DefaultTheme,
-    Demo,
-    Footer,
-    Header,
     Input,
-    LeftSidebarLayout,
     Link,
-    Logo,
     Menu,
     Popover,
     Select,
@@ -170,19 +127,7 @@ const roles = [
     { label: 'Designer', value: 'design' },
     { label: 'Product', value: 'product' },
 ];
-const menuItems = [
-    { label: 'Home', to: '/' },
-    { label: 'Layouts', items: [{ label: 'Default', to: '/layouts/default' }] },
-    { separator: true },
-    { label: 'Docs', href: 'https://example.com' },
-];
-const encodeSvg = (svg: string) => `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
-const logoLight = encodeSvg(
-    '<svg xmlns="http://www.w3.org/2000/svg" width="120" height="32"><rect width="120" height="32" rx="6" fill="#2563eb"/><text x="16" y="21" font-family="Arial" font-size="14" fill="#fff">VueForge</text></svg>',
-);
-const logoDark = encodeSvg(
-    '<svg xmlns="http://www.w3.org/2000/svg" width="120" height="32"><rect width="120" height="32" rx="6" fill="#0f172a"/><text x="16" y="21" font-family="Arial" font-size="14" fill="#e2e8f0">VueForge</text></svg>',
-);
+const menuItems = [{ label: 'Home', to: '/' }, { separator: true }, { label: 'Docs', href: 'https://example.com' }];
 </script>
 
 <style>
@@ -230,39 +175,6 @@ body {
 
 .vf-home__popover-content {
     padding: 0.75rem;
-}
-
-.vf-home__container-demo {
-    flex-direction: column;
-    border: 1px dashed var(--vf-border-color);
-}
-
-.vf-home__header-demo,
-.vf-home__footer-demo {
-    padding-left: 1rem;
-    padding-right: 1rem;
-}
-
-.vf-home__content-demo {
-    padding: 1rem;
-}
-
-.vf-home__layout-demo {
-    margin-top: 0.5rem;
-}
-
-.vf-home .vf-layout {
-    height: auto;
-    min-height: 160px;
-}
-
-.vf-home__layout-demo_sidebar {
-    margin-top: 0.75rem;
-}
-
-.vf-home__sidebar-demo {
-    padding: 0.75rem;
-    border: 1px dashed var(--vf-border-color);
 }
 
 .vf-home__text {

@@ -3,8 +3,6 @@ import { VueForge, DefaultTheme } from '@/index';
 import { createRouter, createWebHistory } from 'vue-router';
 import App from '@/example/App.vue';
 import HomeView from './views/HomeView.vue';
-import LayoutsView from './views/layouts/LayoutsView.vue';
-import DefaultLayoutView from './views/layouts/DefaultLayoutView.vue';
 
 const router = createRouter({
     history: createWebHistory(),
@@ -12,17 +10,6 @@ const router = createRouter({
         {
             path: '/',
             component: HomeView,
-        },
-        {
-            path: '/layouts',
-            redirect: '/layouts/default',
-            component: LayoutsView,
-            children: [
-                {
-                    path: 'default',
-                    component: DefaultLayoutView,
-                },
-            ],
         },
     ],
 });

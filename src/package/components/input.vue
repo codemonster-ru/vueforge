@@ -75,10 +75,10 @@ const onBlur = (event: FocusEvent) => emits('blur', event);
 .vf-input {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: var(--vf-input-gap);
     padding: var(--vf-input-padding);
     border-radius: var(--vf-input-border-radius);
-    border: 1px solid var(--vf-input-border-color);
+    border: var(--vf-border-width) solid var(--vf-input-border-color);
     background-color: var(--vf-input-background-color);
     color: var(--vf-input-text-color);
     transition: border-color 0.2s ease;
@@ -89,7 +89,7 @@ const onBlur = (event: FocusEvent) => emits('blur', event);
     border: none;
     background: transparent;
     color: inherit;
-    font-size: 1rem;
+    font-size: var(--vf-input-font-size);
     outline: none;
 
     &::placeholder {
