@@ -1,7 +1,7 @@
 export default {
-    fontSize: '1rem',
-    padding: '6px 10px',
-    borderRadius: '6px',
+    fontSize: 'var(--vf-typography-font-size)',
+    padding: 'var(--vf-controls-padding-y) var(--vf-controls-padding-x)',
+    borderRadius: 'var(--vf-radii-md)',
     roundedBorderRadius: '2rem',
     iconGap: '6px',
     small: {

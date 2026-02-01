@@ -52,6 +52,8 @@ const onChange = (event: Event) => {
     gap: var(--vf-checkbox-gap);
     cursor: pointer;
     color: var(--vf-checkbox-text-color);
+    font-size: var(--vf-typography-font-size);
+    line-height: var(--vf-typography-line-height);
 }
 
 .vf-checkbox__control {

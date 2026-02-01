@@ -1,11 +1,22 @@
 # Changelog
 
+## [0.7.0] - 2026-02-01
+
+- UI sizing: unified control heights (32px) and box-sizing for Button/Input/Select.
+- Typography: normalized font-size/line-height across components and enforced inherited font-family on form controls.
+- Theme tokens: added base typography/radii/states/controls tokens and aligned component tokens to them.
+- Example app: applied base typography on body.
+- Dependencies: bumped `@codemonster-ru/floater.js` to 1.0.8 and removed local type shims.
+
 ## [0.6.0] - 2026-02-01
 
 - Removed layout-related components and exports (Container, Header, Footer, Content, DefaultLayout, LeftSidebarLayout).
 - Removed Demo and Logo components and their theme tokens.
 - Example app now focuses only on component-level UI demos (layouts/routes removed).
 - Styling tokens expanded to cover previously hardcoded component sizes/spacing and a shared border width token.
+- Link: RouterLink type handling tightened to avoid undefined `to` at compile time.
+## [0.6.1] - 2026-02-01
+
 - Link: RouterLink type handling tightened to avoid undefined `to` at compile time.
 
 ## [0.5.0] - 2026-01-31

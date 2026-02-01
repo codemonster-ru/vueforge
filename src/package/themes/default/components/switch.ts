@@ -9,5 +9,5 @@ export default {
     checkedBackgroundColor: 'var(--vf-blue)',
     thumbColor: '#ffffff',
     textColor: 'var(--vf-text-color)',
-    disabledOpacity: '0.6',
+    disabledOpacity: 'var(--vf-states-disabled-opacity)',
 };

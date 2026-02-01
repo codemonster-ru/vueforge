@@ -213,6 +213,8 @@ watch(
     display: flex;
     align-items: center;
     text-decoration: none;
+    font-size: var(--vf-typography-font-size);
+    line-height: var(--vf-typography-line-height);
 
     &:hover {
         color: var(--vf-menu-link-hover-color);
@@ -224,6 +226,8 @@ watch(
     display: flex;
     align-items: center;
     justify-content: space-between;
+    font-size: var(--vf-typography-font-size);
+    line-height: var(--vf-typography-line-height);
 
     &:hover {
         color: var(--vf-menu-parent-hover-color);

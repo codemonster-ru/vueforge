@@ -253,6 +253,8 @@ onBeforeUnmount(() => {
     position: relative;
     display: inline-block;
     min-width: var(--vf-select-min-width);
+    height: var(--vf-controls-height);
+    box-sizing: border-box;
     border-radius: var(--vf-select-border-radius);
     border: var(--vf-border-width) solid var(--vf-select-border-color);
     background-color: var(--vf-select-background-color);
@@ -269,10 +271,14 @@ onBeforeUnmount(() => {
     background: transparent;
     color: inherit;
     font-size: var(--vf-select-font-size);
+    line-height: var(--vf-typography-line-height);
+    font-family: inherit;
     outline: none;
     display: inline-flex;
     align-items: center;
     justify-content: space-between;
+    height: var(--vf-controls-height);
+    box-sizing: border-box;
     gap: var(--vf-select-control-gap);
     cursor: pointer;
 }
@@ -312,6 +318,9 @@ onBeforeUnmount(() => {
     border-radius: var(--vf-select-option-border-radius);
     color: inherit;
     cursor: pointer;
+    font-size: var(--vf-typography-font-size);
+    line-height: var(--vf-typography-line-height);
+    font-family: inherit;
 }
 
 .vf-select__option:hover:not(.is-disabled),

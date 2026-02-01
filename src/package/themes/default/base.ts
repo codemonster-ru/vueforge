@@ -10,6 +10,24 @@ export default {
         gray: '#adb5bd',
     },
     borderWidth: '1px',
+    controls: {
+        height: '2rem',
+        paddingY: '0.25rem',
+        paddingX: '0.6rem',
+    },
+    radii: {
+        sm: '4px',
+        md: '6px',
+        lg: '10px',
+    },
+    typography: {
+        fontSize: '1rem',
+        lineHeight: '1.4',
+    },
+    states: {
+        disabledOpacity: '0.6',
+        focusRingShadow: '0 0 0 3px rgba(var(--vf-blue-600-rgb), 0.12)',
+    },
     colorScheme: {
         light: {
             bgColor: '#ffffff',

@@ -73,15 +73,15 @@ const rgbToHsl = (r: number, g: number, b: number): [number, number, number] => 
         s = delta / (1 - Math.abs(2 * l - 1));
 
         switch (max) {
-            case rNorm:
-                h = ((gNorm - bNorm) / delta) % 6;
-                break;
-            case gNorm:
-                h = (bNorm - rNorm) / delta + 2;
-                break;
-            case bNorm:
-                h = (rNorm - gNorm) / delta + 4;
-                break;
+        case rNorm:
+            h = ((gNorm - bNorm) / delta) % 6;
+            break;
+        case gNorm:
+            h = (bNorm - rNorm) / delta + 2;
+            break;
+        case bNorm:
+            h = (rNorm - gNorm) / delta + 4;
+            break;
         }
 
         h *= 60;

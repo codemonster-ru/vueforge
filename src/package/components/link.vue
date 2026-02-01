@@ -142,6 +142,8 @@ watch(isRouteActive, value => {
     color: inherit;
     cursor: pointer;
     text-decoration: none;
+    font-size: var(--vf-typography-font-size);
+    line-height: var(--vf-typography-line-height);
 
     &:hover {
         color: var(--vf-link-hover-color);

@@ -54,6 +54,8 @@ const onChange = (event: Event) => {
     gap: var(--vf-switch-gap);
     cursor: pointer;
     color: var(--vf-switch-text-color);
+    font-size: var(--vf-typography-font-size);
+    line-height: var(--vf-typography-line-height);
 }
 
 .vf-switch__control {

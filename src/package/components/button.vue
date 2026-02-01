@@ -152,8 +152,11 @@ const getLabelClass = computed(() => {
     user-select: none;
     align-items: center;
     justify-content: center;
+    height: var(--vf-controls-height);
+    box-sizing: border-box;
     padding: var(--vf-button-padding);
     font-size: var(--vf-button-font-size);
+    line-height: var(--vf-typography-line-height);
     font-family: inherit;
     border-radius: var(--vf-button-border-radius);
     overflow: hidden;
@@ -463,7 +466,7 @@ const getLabelClass = computed(() => {
 }
 
 .vf-button_disabled {
-    opacity: 0.6;
+    opacity: var(--vf-states-disabled-opacity);
     cursor: default;
 }
 
