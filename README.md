@@ -3,8 +3,6 @@
 [![npm](https://img.shields.io/npm/v/@codemonster-ru/vueforge)](https://www.npmjs.com/package/@codemonster-ru/vueforge)
 [![downloads](https://img.shields.io/npm/dw/@codemonster-ru/vueforge)](https://www.npmjs.com/package/@codemonster-ru/vueforge)
 [![license](https://img.shields.io/npm/l/@codemonster-ru/vueforge)](LICENSE.md)
-[![CI](https://github.com/codemonster-ru/vueforge/actions/workflows/publish.yml/badge.svg)](https://github.com/codemonster-ru/vueforge/actions/workflows/publish.yml)
-[![bundle size](https://img.shields.io/packagephobia/minzip/%40codemonster-ru%2Fvueforge)](https://packagephobia.com/result?p=@codemonster-ru/vueforge)
 
 Open source UI components for Vue.js.
 
