@@ -54,6 +54,7 @@ app.use(VueForge, {
 - Popover
 - Select
 - Switch
+- Tooltip
 
 ## Modal
 
@@ -111,6 +112,28 @@ Component tokens (override via `theme.overrides.components.modal`):
 - `titleFontSize`, `titleLineHeight`, `titleFontWeight`
 - `closeSize`, `closeRadius`, `closeOffset`
 - `closeColor`, `closeFontSize`, `closeHoverBackgroundColor`
+
+## Tooltip
+
+Props:
+
+- `text?: string`
+- `placement?: 'top' | 'bottom' | 'left' | 'right'` (default `top`)
+- `disabled?: boolean`
+- `arrow?: boolean` (default `false`)
+
+Slots:
+
+- `default` - trigger content
+- `content` (optional) - tooltip content (fallbacks to `text`)
+
+Example:
+
+```vue
+<Tooltip text="Helpful hint" arrow>
+    <Button label="Hover me" />
+</Tooltip>
+```
 
 ## Tokens
 

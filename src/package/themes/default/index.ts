@@ -10,6 +10,7 @@ import popover from './components/popover';
 import select from './components/select';
 import checkbox from './components/checkbox';
 import switchComponent from './components/switch';
+import tooltip from './components/tooltip';
 
 export default {
     ...base,
@@ -26,5 +27,6 @@ export default {
         select,
         checkbox,
         switch: switchComponent,
+        tooltip,
     },
 };

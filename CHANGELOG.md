@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.0] - 2026-02-02
+
+- Added Tooltip component with theming tokens, arrow option, and example usage.
+- Tooltip styling: arrow sizing/placement refinements and drop-shadow to match tooltip appearance.
+- Tests: added tooltip unit tests.
+- Tooling: migrated ESLint config to `eslint.config.ts` and updated lint script/deps.
+
 ## [0.9.0] - 2026-02-01
 
 - Added Modal/Dialog component with theming tokens, size variants, and focus management.

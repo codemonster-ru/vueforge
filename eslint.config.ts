@@ -1,13 +1,21 @@
-const { FlatCompat } = require('@eslint/eslintrc');
-const js = require('@eslint/js');
+import { fileURLToPath } from 'node:url';
+import { dirname } from 'node:path';
+import js from '@eslint/js';
+import { FlatCompat } from '@eslint/eslintrc';
+import typescriptEslint from '@typescript-eslint/eslint-plugin';
+import tsParser from '@typescript-eslint/parser';
+import vue from 'eslint-plugin-vue';
+import prettier from 'eslint-plugin-prettier';
+import vueParser from 'vue-eslint-parser';
 
+const __dirname = dirname(fileURLToPath(import.meta.url));
 const compat = new FlatCompat({
     baseDirectory: __dirname,
     recommendedConfig: js.configs.recommended,
     allConfig: js.configs.all,
 });
 
-module.exports = [
+export default [
     { ignores: ['dist/**'] },
     ...compat.extends(
         'eslint:recommended',
@@ -17,14 +25,14 @@ module.exports = [
     ),
     {
         plugins: {
-            '@typescript-eslint': require('@typescript-eslint/eslint-plugin'),
-            vue: require('eslint-plugin-vue'),
-            prettier: require('eslint-plugin-prettier'),
+            '@typescript-eslint': typescriptEslint,
+            vue,
+            prettier,
         },
         languageOptions: {
-            parser: require('vue-eslint-parser'),
+            parser: vueParser,
             parserOptions: {
-                parser: require('@typescript-eslint/parser'),
+                parser: tsParser,
             },
             globals: {
                 defineProps: 'readonly',
@@ -43,21 +51,6 @@ module.exports = [
             indent: ['error', 4, { SwitchCase: 1 }],
             semi: [2, 'always'],
             'vue/multi-word-component-names': 'off',
-        },
-    },
-    {
-        files: ['eslint.config.js'],
-        languageOptions: {
-            sourceType: 'commonjs',
-            globals: {
-                module: 'readonly',
-                require: 'readonly',
-                __dirname: 'readonly',
-            },
-        },
-        rules: {
-            '@typescript-eslint/no-require-imports': 'off',
-            'no-undef': 'off',
         },
     },
 ];

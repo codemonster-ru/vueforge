@@ -173,6 +173,18 @@ export type SwitchTokens = {
     textColor?: string;
     disabledOpacity?: string;
 };
+export type TooltipTokens = {
+    padding?: string;
+    borderRadius?: string;
+    backgroundColor?: string;
+    textColor?: string;
+    fontSize?: string;
+    lineHeight?: string;
+    shadow?: string;
+    zIndex?: string;
+    maxWidth?: string;
+    arrowSize?: string;
+};
 export type ThemeComponentTokens = {
     button?: ButtonTokens;
     card?: CardTokens;
@@ -185,6 +197,7 @@ export type ThemeComponentTokens = {
     popover?: PopoverTokens;
     select?: SelectTokens;
     switch?: SwitchTokens;
+    tooltip?: TooltipTokens;
     [key: string]: unknown;
 };
 export type ThemeTokens = {

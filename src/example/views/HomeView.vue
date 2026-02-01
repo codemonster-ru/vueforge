@@ -88,6 +88,12 @@
                     <h3>Menu</h3>
                     <Menu :items="menuItems" />
                 </div>
+                <div class="vf-home__card">
+                    <h3>Tooltip</h3>
+                    <Tooltip text="Helpful hint" arrow>
+                        <Button label="Hover me" />
+                    </Tooltip>
+                </div>
             </div>
         </section>
     </div>
@@ -107,6 +113,7 @@ import {
     Popover,
     Select,
     Switch,
+    Tooltip,
     setTheme,
     updateTheme,
 } from '@/index';
