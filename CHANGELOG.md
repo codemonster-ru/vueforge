@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.9.0] - 2026-02-01
+
+- Added Modal/Dialog component with theming tokens, size variants, and focus management.
+- Docs: documented Modal API and theming tokens.
+- Tooling: migrated ESLint config to flat format and upgraded lint/test tooling.
+
 ## [0.8.0] - 2026-02-01
 
 - Theme core/runtime split: extracted pure theming logic and added runtime warnings for invalid token values.

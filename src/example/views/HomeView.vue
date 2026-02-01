@@ -28,7 +28,7 @@
                     <h3>Link</h3>
                     <div class="vf-home__stack">
                         <Link href="https://example.com" target="_blank">External link</Link>
-                        <Link to="/layouts/default">Router link</Link>
+                        <Link to="/">Router link</Link>
                         <Link href="https://example.com" disabled>Disabled link</Link>
                     </div>
                 </div>
@@ -72,6 +72,19 @@
                     </Popover>
                 </div>
                 <div class="vf-home__card">
+                    <h3>Modal</h3>
+                    <Button label="Open Modal" @click="modalOpen = true" />
+                    <Modal v-model="modalOpen" title="Modal title">
+                        <template #body>
+                            <p class="vf-home__modal-text">Modal content with any layout.</p>
+                        </template>
+                        <template #footer>
+                            <Button label="Cancel" severity="secondary" @click="modalOpen = false" />
+                            <Button label="Confirm" @click="modalOpen = false" />
+                        </template>
+                    </Modal>
+                </div>
+                <div class="vf-home__card">
                     <h3>Menu</h3>
                     <Menu :items="menuItems" />
                 </div>
@@ -90,6 +103,7 @@ import {
     Input,
     Link,
     Menu,
+    Modal,
     Popover,
     Select,
     Switch,
@@ -121,6 +135,7 @@ const search = ref('');
 const role = ref('');
 const agreed = ref(false);
 const notifications = ref(true);
+const modalOpen = ref(false);
 const isDark = ref(document.documentElement.getAttribute('data-theme') === 'dark');
 const roles = [
     { label: 'Developer', value: 'dev' },
@@ -175,6 +190,10 @@ body {
 
 .vf-home__popover-content {
     padding: 0.75rem;
+}
+
+.vf-home__modal-text {
+    margin: 0;
 }
 
 .vf-home__text {

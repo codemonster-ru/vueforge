@@ -45,13 +45,11 @@ const applyTheme = (theme: ThemePreset, selector: string, darkSelector: string, 
         }
 
         for (const error of errors) {
-            // eslint-disable-next-line no-console
             console.warn(`[VueForge] ${error}`);
         }
     }
     if (warnings.length) {
         for (const warning of warnings) {
-            // eslint-disable-next-line no-console
             console.warn(`[VueForge] ${warning}`);
         }
     }

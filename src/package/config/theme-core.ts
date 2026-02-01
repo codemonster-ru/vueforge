@@ -92,6 +92,34 @@ export type MenuTokens = {
         marginLeft?: string;
     };
 };
+export type ModalTokens = {
+    width?: string;
+    maxWidth?: string;
+    maxHeight?: string;
+    widthSm?: string;
+    maxWidthSm?: string;
+    widthLg?: string;
+    maxWidthLg?: string;
+    padding?: string;
+    borderRadius?: string;
+    backgroundColor?: string;
+    textColor?: string;
+    overlayBackgroundColor?: string;
+    shadow?: string;
+    zIndex?: string;
+    headerGap?: string;
+    bodyGap?: string;
+    footerGap?: string;
+    titleFontSize?: string;
+    titleLineHeight?: string;
+    titleFontWeight?: string;
+    closeSize?: string;
+    closeRadius?: string;
+    closeOffset?: string;
+    closeColor?: string;
+    closeFontSize?: string;
+    closeHoverBackgroundColor?: string;
+};
 export type PopoverTokens = {
     borderRadius?: string;
     borderColor?: string;
@@ -153,6 +181,7 @@ export type ThemeComponentTokens = {
     input?: InputTokens;
     link?: LinkTokens;
     menu?: MenuTokens;
+    modal?: ModalTokens;
     popover?: PopoverTokens;
     select?: SelectTokens;
     switch?: SwitchTokens;

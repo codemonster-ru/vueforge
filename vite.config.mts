@@ -9,7 +9,7 @@ import { fileURLToPath, URL } from 'url';
 const removeUnnecessaryFiles = () => {
     return {
         name: 'remove-files',
-        writeBundle(outputOptions, inputOptions) {
+        writeBundle(outputOptions) {
             const outDir = outputOptions.dir;
 
             if (!outDir) {
@@ -33,7 +33,7 @@ export default defineConfig(({ mode }) => {
         },
         test: {
             globals: true,
-            environment: 'node',
+            environment: 'jsdom',
         },
         build: {
             emptyOutDir: true,

@@ -5,6 +5,7 @@ import codeBlock from './components/codeBlock';
 import input from './components/input';
 import link from './components/link';
 import menu from './components/menu';
+import modal from './components/modal';
 import popover from './components/popover';
 import select from './components/select';
 import checkbox from './components/checkbox';
@@ -20,6 +21,7 @@ export default {
         input,
         link,
         menu,
+        modal,
         popover,
         select,
         checkbox,
