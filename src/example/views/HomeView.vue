@@ -45,7 +45,7 @@
                     <h3>Textarea</h3>
                     <div class="vf-home__stack">
                         <Textarea v-model="bio" placeholder="Tell us about yourself" />
-                        <Textarea v-model="notes" placeholder="Outlined note" variant="outlined" rows="4" />
+                        <Textarea v-model="notes" placeholder="Outlined note" variant="outlined" :rows="4" />
                         <Textarea v-model="feedback" placeholder="Small feedback" size="small" />
                     </div>
                 </div>
