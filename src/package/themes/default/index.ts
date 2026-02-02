@@ -1,8 +1,8 @@
 import base from './base';
 import button from './components/button';
 import card from './components/card';
-import codeBlock from './components/codeBlock';
 import input from './components/input';
+import textarea from './components/textarea';
 import link from './components/link';
 import menu from './components/menu';
 import modal from './components/modal';
@@ -18,8 +18,8 @@ export default {
         base,
         button,
         card,
-        codeBlock,
         input,
+        textarea,
         link,
         menu,
         modal,

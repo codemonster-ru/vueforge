@@ -22,7 +22,7 @@ Peer dependencies:
 
 ```ts
 import { createApp } from 'vue';
-import { VueForge, DefaultTheme, Button, Input, Select, Checkbox, Switch } from '@codemonster-ru/vueforge';
+import { VueForge, DefaultTheme, Button, Input, Textarea, Select, Checkbox, Switch } from '@codemonster-ru/vueforge';
 import '@codemonster-ru/vueforge/dist/index.css';
 
 const app = createApp(App);
@@ -37,6 +37,7 @@ app.use(VueForge, {
 ```vue
 <Button label="Hello" severity="primary" />
 <Input v-model="name" placeholder="Your name" />
+<Textarea v-model="bio" placeholder="Tell us about yourself" />
 <Select v-model="role" :options="roles" placeholder="Choose role" />
 <Checkbox v-model="agreed" label="I agree" />
 <Switch v-model="darkMode" label="Dark mode" />
@@ -48,6 +49,7 @@ app.use(VueForge, {
 - Card
 - Checkbox
 - Input
+- Textarea
 - Link
 - Menu
 - Modal
@@ -55,6 +57,53 @@ app.use(VueForge, {
 - Select
 - Switch
 - Tooltip
+
+Input / Textarea (quick API):
+
+- `Input`: single-line control, supports `v-model`, `size`, `variant`, `disabled`, `readonly`.
+- `Textarea`: multi-line control, same as Input plus `rows`.
+- `Checkbox` and `Select` also support `variant: 'filled' | 'outlined'`.
+
+Note: default filled backgrounds for Input/Select/Textarea use `controls.backgroundColor` (defaults to `bgSoftColor`). Set it to `bgColor` to disable soft backgrounds.
+
+## Textarea
+
+Props:
+
+- `modelValue?: string` (v-model)
+- `placeholder?: string`
+- `disabled?: boolean`
+- `readonly?: boolean`
+- `size?: 'small' | 'normal' | 'large'` (default `normal`)
+- `variant?: 'filled' | 'outlined'` (default `filled`)
+- `rows?: number` (default `3`)
+
+Events:
+
+- `update:modelValue`
+- `input`
+- `change`
+- `focus`
+- `blur`
+
+Example:
+
+```vue
+<Textarea v-model="bio" placeholder="Tell us about yourself" rows="4" />
+```
+
+### Textarea tokens
+
+Component tokens (override via `theme.overrides.components.textarea`):
+
+- `gap`, `fontSize`, `padding`
+- `borderRadius`, `borderColor`
+- `backgroundColor`, `textColor`, `placeholderColor`
+- `focusBorderColor`, `focusRingShadow`, `hoverBorderColor`
+- `disabledOpacity`
+- `minHeight`, `resize`
+- `small.fontSize`, `small.padding`
+- `large.fontSize`, `large.padding`
 
 ## Modal
 
@@ -149,7 +198,7 @@ VueForge exposes design tokens as CSS variables generated from the theme preset.
 Typed tokens:
 
 - `ThemeTokens`/`ThemeOptions`/`ThemePreset` are exported for type-safe theming in TS.
-- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/codeBlock/input/link/menu/popover/select/switch).
+- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/input/textarea/link/menu/popover/select/switch).
 
 Default core values (from `DefaultTheme`):
 

@@ -14,6 +14,7 @@ export default {
         height: '2rem',
         paddingY: '0.25rem',
         paddingX: '0.6rem',
+        backgroundColor: 'var(--vf-bg-soft-color)',
     },
     radii: {
         sm: '4px',

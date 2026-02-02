@@ -52,6 +52,7 @@ import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { autoUpdate, computePosition, flip, offset } from '@codemonster-ru/floater.js';
 
 type Size = 'small' | 'normal' | 'large';
+type Variant = 'filled' | 'outlined';
 
 let selectIdCounter = 0;
 
@@ -68,6 +69,7 @@ interface Props {
     optionValue?: string;
     placeholder?: string;
     disabled?: boolean;
+    variant?: Variant;
     size?: Size;
 }
 
@@ -79,6 +81,7 @@ const props = withDefaults(defineProps<Props>(), {
     optionValue: 'value',
     placeholder: '',
     disabled: false,
+    variant: 'filled',
     size: 'normal',
 });
 
@@ -111,11 +114,12 @@ const selectedOption = computed(() => {
 const selectedLabel = computed(() => selectedOption.value?.label ?? '');
 
 const getClass = computed(() => {
-    const classes = ['vf-select', open.value ? 'vf-select_open' : ''];
+    const classes = ['vf-select', `vf-select_${props.variant}`, open.value ? 'vf-select_open' : ''];
 
     if (props.size !== 'normal') {
         classes.push(`vf-select_${props.size}`);
     }
+
     if (props.disabled) {
         classes.push('vf-select_disabled');
     }
@@ -128,8 +132,10 @@ const selectOption = (option: { value: string | number; disabled?: boolean }) =>
     if (option.disabled) {
         return;
     }
+
     emits('update:modelValue', option.value);
     emits('change', option.value);
+
     close();
 };
 const onFocus = (event: FocusEvent) => emits('focus', event);
@@ -144,7 +150,9 @@ const toggle = () => {
     if (props.disabled) {
         return;
     }
+
     open.value = !open.value;
+
     if (open.value) {
         basePlacement.value = 'bottom';
         currentPlacement.value = 'bottom';
@@ -155,6 +163,7 @@ const openAndFocus = async () => {
         open.value = true;
         await nextTick();
     }
+
     panel.value?.querySelector<HTMLButtonElement>('.vf-select__option:not(.is-disabled)')?.focus();
 };
 
@@ -162,10 +171,13 @@ const onDocumentClick = (event: MouseEvent) => {
     if (!open.value || !root.value) {
         return;
     }
+
     const target = event.target as Node;
+
     if (root.value.contains(target) || panel.value?.contains(target)) {
         return;
     }
+
     close();
 };
 
@@ -173,6 +185,7 @@ const mountFloater = () => {
     if (!trigger.value || !panel.value) {
         return;
     }
+
     const reference = trigger.value;
     const floating = panel.value;
 
@@ -202,6 +215,7 @@ const mountFloater = () => {
     const onScrollOrResize = () => {
         void update();
     };
+
     document.addEventListener('scroll', onScrollOrResize, true);
     window.addEventListener('resize', onScrollOrResize, false);
 
@@ -222,12 +236,16 @@ watch(open, async value => {
             floater.destroy();
             floater = null;
         }
+
         return;
     }
+
     await nextTick();
+
     if (!floater) {
         mountFloater();
     }
+
     void floater?.update();
 });
 watch(
@@ -262,6 +280,10 @@ onBeforeUnmount(() => {
     transition:
         border-color 0.2s ease,
         box-shadow 0.2s ease;
+}
+
+.vf-select_outlined {
+    background-color: transparent;
 }
 
 .vf-select__control {

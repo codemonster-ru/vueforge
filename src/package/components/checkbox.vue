@@ -17,10 +17,13 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 
+type Variant = 'filled' | 'outlined';
+
 interface Props {
     modelValue?: boolean;
     label?: string;
     disabled?: boolean;
+    variant?: Variant;
 }
 
 const emits = defineEmits(['update:modelValue', 'change']);
@@ -28,18 +31,22 @@ const props = withDefaults(defineProps<Props>(), {
     modelValue: false,
     label: '',
     disabled: false,
+    variant: 'filled',
 });
 
 const getClass = computed(() => {
-    const classes = ['vf-checkbox'];
+    const classes = ['vf-checkbox', `vf-checkbox_${props.variant}`];
+
     if (props.disabled) {
         classes.push('vf-checkbox_disabled');
     }
+
     return classes;
 });
 
 const onChange = (event: Event) => {
     const target = event.target as HTMLInputElement;
+
     emits('update:modelValue', target.checked);
     emits('change', event);
 };
@@ -87,6 +94,10 @@ const onChange = (event: Event) => {
     height: calc(var(--vf-checkbox-size) / 2);
     background-color: var(--vf-checkbox-check-color);
     border-radius: var(--vf-checkbox-check-border-radius);
+}
+
+.vf-checkbox_outlined .vf-checkbox__box {
+    background-color: transparent;
 }
 
 .vf-checkbox_disabled {

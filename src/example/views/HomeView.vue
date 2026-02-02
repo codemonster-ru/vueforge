@@ -42,13 +42,25 @@
                     </div>
                 </div>
                 <div class="vf-home__card">
+                    <h3>Textarea</h3>
+                    <div class="vf-home__stack">
+                        <Textarea v-model="bio" placeholder="Tell us about yourself" />
+                        <Textarea v-model="notes" placeholder="Outlined note" variant="outlined" rows="4" />
+                        <Textarea v-model="feedback" placeholder="Small feedback" size="small" />
+                    </div>
+                </div>
+                <div class="vf-home__card">
                     <h3>Select</h3>
-                    <Select v-model="role" :options="roles" placeholder="Role" />
+                    <div class="vf-home__stack">
+                        <Select v-model="role" :options="roles" placeholder="Role" />
+                        <Select v-model="roleAlt" :options="roles" placeholder="Role (outlined)" variant="outlined" />
+                    </div>
                 </div>
                 <div class="vf-home__card">
                     <h3>Checkbox & Switch</h3>
                     <div class="vf-home__stack">
                         <Checkbox v-model="agreed">Agree to terms</Checkbox>
+                        <Checkbox v-model="agreedAlt" variant="outlined">Agree (outlined)</Checkbox>
                         <Switch v-model="notifications">Notifications</Switch>
                     </div>
                 </div>
@@ -107,6 +119,7 @@ import {
     Checkbox,
     DefaultTheme,
     Input,
+    Textarea,
     Link,
     Menu,
     Modal,
@@ -139,8 +152,13 @@ const toggleDark = () => {
 
 const email = ref('');
 const search = ref('');
+const bio = ref('');
+const notes = ref('');
+const feedback = ref('');
 const role = ref('');
+const roleAlt = ref('');
 const agreed = ref(false);
+const agreedAlt = ref(false);
 const notifications = ref(true);
 const modalOpen = ref(false);
 const isDark = ref(document.documentElement.getAttribute('data-theme') === 'dark');

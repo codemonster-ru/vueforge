@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.11.0] - 2026-02-02
+
+- Added Textarea component with theming tokens, example usage, and unit tests.
+- Added `variant` support for Checkbox and Select (`filled`/`outlined`).
+- Theme: added `controls.backgroundColor` token (defaults to `bgSoftColor`) and wired Input/Select/Textarea/Checkbox to it.
+- Theme: removed CodeBlock tokens and default theme entry (component moved to separate package).
+
 ## [0.10.0] - 2026-02-02
 
 - Added Tooltip component with theming tokens, arrow option, and example usage.

@@ -4,6 +4,7 @@ export { default as Card } from '@/package/components/card.vue';
 export { default as Menu } from '@/package/components/menu.vue';
 export { default as Button } from '@/package/components/button.vue';
 export { default as Input } from '@/package/components/input.vue';
+export { default as Textarea } from '@/package/components/textarea.vue';
 export { default as Select } from '@/package/components/select.vue';
 export { default as Checkbox } from '@/package/components/checkbox.vue';
 export { default as Switch } from '@/package/components/switch.vue';

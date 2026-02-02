@@ -11,6 +11,8 @@ export default {
     focusRingShadow: 'var(--vf-states-focus-ring-shadow)',
     hoverBorderColor: 'var(--vf-blue-500)',
     disabledOpacity: 'var(--vf-states-disabled-opacity)',
+    minHeight: 'calc(var(--vf-controls-height) * 2)',
+    resize: 'vertical',
     small: {
         padding: 'var(--vf-sizes-sm-padding-y) var(--vf-sizes-sm-padding-x)',
         fontSize: 'var(--vf-sizes-sm-font-size)',

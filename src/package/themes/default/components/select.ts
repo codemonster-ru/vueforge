@@ -6,7 +6,7 @@ export default {
     padding: 'var(--vf-controls-padding-y) var(--vf-controls-padding-x)',
     borderRadius: 'var(--vf-radii-md)',
     borderColor: 'var(--vf-border-color)',
-    backgroundColor: 'var(--vf-bg-color)',
+    backgroundColor: 'var(--vf-controls-background-color)',
     textColor: 'var(--vf-text-color)',
     focusBorderColor: 'var(--vf-blue-600)',
     hoverBorderColor: 'var(--vf-blue-500)',

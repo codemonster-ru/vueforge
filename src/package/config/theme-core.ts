@@ -40,11 +40,6 @@ export type CheckboxTokens = {
     textColor?: string;
     disabledOpacity?: string;
 };
-export type CodeBlockTokens = {
-    borderRadius?: string;
-    backgroundColor?: string;
-    textColor?: string;
-};
 export type InputTokens = {
     gap?: string;
     fontSize?: string;
@@ -58,6 +53,30 @@ export type InputTokens = {
     focusRingShadow?: string;
     hoverBorderColor?: string;
     disabledOpacity?: string;
+    small?: {
+        padding?: string;
+        fontSize?: string;
+    };
+    large?: {
+        padding?: string;
+        fontSize?: string;
+    };
+};
+export type TextareaTokens = {
+    gap?: string;
+    fontSize?: string;
+    padding?: string;
+    borderRadius?: string;
+    borderColor?: string;
+    backgroundColor?: string;
+    textColor?: string;
+    placeholderColor?: string;
+    focusBorderColor?: string;
+    focusRingShadow?: string;
+    hoverBorderColor?: string;
+    disabledOpacity?: string;
+    minHeight?: string;
+    resize?: string;
     small?: {
         padding?: string;
         fontSize?: string;
@@ -189,8 +208,8 @@ export type ThemeComponentTokens = {
     button?: ButtonTokens;
     card?: CardTokens;
     checkbox?: CheckboxTokens;
-    codeBlock?: CodeBlockTokens;
     input?: InputTokens;
+    textarea?: TextareaTokens;
     link?: LinkTokens;
     menu?: MenuTokens;
     modal?: ModalTokens;
