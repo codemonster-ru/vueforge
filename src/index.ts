@@ -7,6 +7,8 @@ export { default as Input } from '@/package/components/input.vue';
 export { default as Textarea } from '@/package/components/textarea.vue';
 export { default as Select } from '@/package/components/select.vue';
 export { default as Checkbox } from '@/package/components/checkbox.vue';
+export { default as RadioGroup } from '@/package/components/radio-group.vue';
+export { default as RadioButton } from '@/package/components/radio-button.vue';
 export { default as Switch } from '@/package/components/switch.vue';
 export { default as Popover } from '@/package/components/popover.vue';
 export { default as Modal } from '@/package/components/modal.vue';

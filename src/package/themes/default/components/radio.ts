@@ -1,0 +1,15 @@
+export default {
+    size: '1rem',
+    dotSize: '0.45rem',
+    gap: '0.5rem',
+    groupGap: '0.5rem',
+    borderRadius: '999px',
+    dotBorderRadius: '999px',
+    borderColor: 'var(--vf-border-color)',
+    backgroundColor: 'var(--vf-controls-background-color)',
+    checkedBackgroundColor: 'var(--vf-blue)',
+    checkedBorderColor: 'var(--vf-blue)',
+    dotColor: '#ffffff',
+    textColor: 'var(--vf-text-color)',
+    disabledOpacity: 'var(--vf-states-disabled-opacity)',
+};

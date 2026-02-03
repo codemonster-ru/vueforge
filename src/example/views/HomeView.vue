@@ -65,6 +65,20 @@
                     </div>
                 </div>
                 <div class="vf-home__card">
+                    <h3>Radio</h3>
+                    <div class="vf-home__stack">
+                        <RadioGroup v-model="plan">
+                            <RadioButton value="basic">Basic</RadioButton>
+                            <RadioButton value="pro">Pro</RadioButton>
+                            <RadioButton value="team" disabled>Team (disabled)</RadioButton>
+                        </RadioGroup>
+                        <RadioGroup v-model="layout" direction="horizontal" variant="outlined">
+                            <RadioButton value="grid">Grid</RadioButton>
+                            <RadioButton value="list">List</RadioButton>
+                        </RadioGroup>
+                    </div>
+                </div>
+                <div class="vf-home__card">
                     <h3>Card</h3>
                     <Card>
                         <template #header>Card header</template>
@@ -124,6 +138,8 @@ import {
     Menu,
     Modal,
     Popover,
+    RadioButton,
+    RadioGroup,
     Select,
     Switch,
     Tooltip,
@@ -160,6 +176,8 @@ const roleAlt = ref('');
 const agreed = ref(false);
 const agreedAlt = ref(false);
 const notifications = ref(true);
+const plan = ref('basic');
+const layout = ref('grid');
 const modalOpen = ref(false);
 const isDark = ref(document.documentElement.getAttribute('data-theme') === 'dark');
 const roles = [

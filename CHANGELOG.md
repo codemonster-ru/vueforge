@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.12.0] - 2026-02-03
+
+- Added RadioGroup and RadioButton components with theming tokens.
+- Example app: added RadioGroup/RadioButton showcase.
+- Tests: added radio component unit tests.
+- Docs: documented RadioGroup/RadioButton API.
+
 ## [0.11.0] - 2026-02-02
 
 - Added Textarea component with theming tokens, example usage, and unit tests.

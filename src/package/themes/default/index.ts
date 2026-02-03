@@ -9,6 +9,7 @@ import modal from './components/modal';
 import popover from './components/popover';
 import select from './components/select';
 import checkbox from './components/checkbox';
+import radio from './components/radio';
 import switchComponent from './components/switch';
 import tooltip from './components/tooltip';
 
@@ -26,6 +27,7 @@ export default {
         popover,
         select,
         checkbox,
+        radio,
         switch: switchComponent,
         tooltip,
     },

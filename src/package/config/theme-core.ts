@@ -40,6 +40,21 @@ export type CheckboxTokens = {
     textColor?: string;
     disabledOpacity?: string;
 };
+export type RadioTokens = {
+    size?: string;
+    dotSize?: string;
+    gap?: string;
+    groupGap?: string;
+    borderRadius?: string;
+    dotBorderRadius?: string;
+    borderColor?: string;
+    backgroundColor?: string;
+    checkedBackgroundColor?: string;
+    checkedBorderColor?: string;
+    dotColor?: string;
+    textColor?: string;
+    disabledOpacity?: string;
+};
 export type InputTokens = {
     gap?: string;
     fontSize?: string;
@@ -208,6 +223,7 @@ export type ThemeComponentTokens = {
     button?: ButtonTokens;
     card?: CardTokens;
     checkbox?: CheckboxTokens;
+    radio?: RadioTokens;
     input?: InputTokens;
     textarea?: TextareaTokens;
     link?: LinkTokens;

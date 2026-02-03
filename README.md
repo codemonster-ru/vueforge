@@ -48,6 +48,8 @@ app.use(VueForge, {
 - Button
 - Card
 - Checkbox
+- RadioGroup
+- RadioButton
 - Input
 - Textarea
 - Link
@@ -90,6 +92,33 @@ Example:
 
 ```vue
 <Textarea v-model="bio" placeholder="Tell us about yourself" rows="4" />
+```
+
+## RadioGroup / RadioButton
+
+Props (RadioGroup):
+
+- `modelValue?: string | number | boolean` (v-model)
+- `name?: string`
+- `disabled?: boolean`
+- `variant?: 'filled' | 'outlined'` (default `filled`)
+- `direction?: 'vertical' | 'horizontal'` (default `vertical`)
+
+Props (RadioButton):
+
+- `value?: string | number | boolean`
+- `label?: string`
+- `disabled?: boolean`
+- `name?: string`
+- `variant?: 'filled' | 'outlined'` (default `filled`)
+
+Example:
+
+```vue
+<RadioGroup v-model="plan" direction="horizontal">
+    <RadioButton value="basic">Basic</RadioButton>
+    <RadioButton value="pro">Pro</RadioButton>
+</RadioGroup>
 ```
 
 ### Textarea tokens
@@ -198,7 +227,7 @@ VueForge exposes design tokens as CSS variables generated from the theme preset.
 Typed tokens:
 
 - `ThemeTokens`/`ThemeOptions`/`ThemePreset` are exported for type-safe theming in TS.
-- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/input/textarea/link/menu/popover/select/switch).
+- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/input/textarea/link/menu/popover/select/switch).
 
 Default core values (from `DefaultTheme`):
 
