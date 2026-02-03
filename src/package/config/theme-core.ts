@@ -241,6 +241,46 @@ export type TooltipTokens = {
     maxWidth?: string;
     arrowSize?: string;
 };
+export type ToastTokens = {
+    gap?: string;
+    padding?: string;
+    borderRadius?: string;
+    borderColor?: string;
+    backgroundColor?: string;
+    textColor?: string;
+    shadow?: string;
+    minWidth?: string;
+    fontSize?: string;
+    lineHeight?: string;
+    bodyGap?: string;
+    titleFontSize?: string;
+    titleFontWeight?: string;
+    closeSize?: string;
+    containerGap?: string;
+    containerPadding?: string;
+    containerMaxWidth?: string;
+    zIndex?: string;
+    info?: {
+        backgroundColor?: string;
+        borderColor?: string;
+        textColor?: string;
+    };
+    success?: {
+        backgroundColor?: string;
+        borderColor?: string;
+        textColor?: string;
+    };
+    warn?: {
+        backgroundColor?: string;
+        borderColor?: string;
+        textColor?: string;
+    };
+    danger?: {
+        backgroundColor?: string;
+        borderColor?: string;
+        textColor?: string;
+    };
+};
 export type ThemeComponentTokens = {
     button?: ButtonTokens;
     card?: CardTokens;
@@ -256,6 +296,7 @@ export type ThemeComponentTokens = {
     select?: SelectTokens;
     switch?: SwitchTokens;
     tooltip?: TooltipTokens;
+    toast?: ToastTokens;
     [key: string]: unknown;
 };
 export type ThemeTokens = {

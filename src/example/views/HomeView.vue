@@ -100,6 +100,21 @@
                     </Tabs>
                 </div>
                 <div class="vf-home__card">
+                    <h3>Toast</h3>
+                    <div class="vf-home__stack">
+                        <Button label="Show Toast" @click="toastOpen = true" />
+                    </div>
+                    <ToastContainer position="top-right">
+                        <Toast
+                            v-model="toastOpen"
+                            title="Saved"
+                            message="Changes are saved."
+                            severity="success"
+                            :duration="2500"
+                        />
+                    </ToastContainer>
+                </div>
+                <div class="vf-home__card">
                     <h3>Card</h3>
                     <Card>
                         <template #header>Card header</template>
@@ -164,6 +179,8 @@ import {
     Tab,
     TabPanel,
     Tabs,
+    Toast,
+    ToastContainer,
     Select,
     Switch,
     Tooltip,
@@ -203,6 +220,7 @@ const notifications = ref(true);
 const plan = ref('basic');
 const layout = ref('grid');
 const tab = ref('overview');
+const toastOpen = ref(false);
 const modalOpen = ref(false);
 const isDark = ref(document.documentElement.getAttribute('data-theme') === 'dark');
 const roles = [

@@ -13,6 +13,7 @@ import radio from './components/radio';
 import switchComponent from './components/switch';
 import tabs from './components/tabs';
 import tooltip from './components/tooltip';
+import toast from './components/toast';
 
 export default {
     ...base,
@@ -32,5 +33,6 @@ export default {
         switch: switchComponent,
         tabs,
         tooltip,
+        toast,
     },
 };

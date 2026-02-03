@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.14.0] - 2026-02-03
+
+- Added Toast and ToastContainer components with theming tokens and auto-close support.
+- Example app: added Toast showcase.
+- Tests: added toast unit tests.
+- Toast UI: close button aligned to the right.
+- Docs: documented Toast API and tokens.
+
 ## [0.13.0] - 2026-02-03
 
 - Added Tabs components (Tabs/Tab/TabPanel) with keyboard navigation and theming tokens.

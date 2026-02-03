@@ -12,6 +12,8 @@ export { default as RadioButton } from '@/package/components/radio-button.vue';
 export { default as Tabs } from '@/package/components/tabs.vue';
 export { default as Tab } from '@/package/components/tab.vue';
 export { default as TabPanel } from '@/package/components/tab-panel.vue';
+export { default as Toast } from '@/package/components/toast.vue';
+export { default as ToastContainer } from '@/package/components/toast-container.vue';
 export { default as Switch } from '@/package/components/switch.vue';
 export { default as Popover } from '@/package/components/popover.vue';
 export { default as Modal } from '@/package/components/modal.vue';

@@ -53,6 +53,8 @@ app.use(VueForge, {
 - Tabs
 - Tab
 - TabPanel
+- Toast
+- ToastContainer
 - Input
 - Textarea
 - Link
@@ -168,6 +170,40 @@ Component tokens (override via `theme.overrides.components.tabs`):
 - `panelPadding`, `panelBorderRadius`, `panelBackgroundColor`, `panelTextColor`
 - `disabledOpacity`
 
+## Toast / ToastContainer
+
+Props (Toast):
+
+- `modelValue?: boolean` (v-model)
+- `title?: string`
+- `message?: string`
+- `severity?: 'neutral' | 'info' | 'success' | 'warn' | 'danger'` (default `neutral`)
+- `closable?: boolean` (default `true`)
+- `duration?: number` (ms, default `0`, no auto-close)
+
+Props (ToastContainer):
+
+- `position?: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left'` (default `top-right`)
+
+Example:
+
+```vue
+<ToastContainer position="top-right">
+    <Toast v-model="toastOpen" title="Saved" message="Changes are saved." severity="success" :duration="2500" />
+</ToastContainer>
+```
+
+### Toast tokens
+
+Component tokens (override via `theme.overrides.components.toast`):
+
+- `gap`, `padding`, `borderRadius`, `borderColor`
+- `backgroundColor`, `textColor`, `shadow`, `minWidth`
+- `fontSize`, `lineHeight`, `bodyGap`
+- `titleFontSize`, `titleFontWeight`, `closeSize`
+- `containerGap`, `containerPadding`, `containerMaxWidth`, `zIndex`
+- `info.*`, `success.*`, `warn.*`, `danger.*` (backgroundColor/borderColor/textColor)
+
 ### Textarea tokens
 
 Component tokens (override via `theme.overrides.components.textarea`):
@@ -274,7 +310,7 @@ VueForge exposes design tokens as CSS variables generated from the theme preset.
 Typed tokens:
 
 - `ThemeTokens`/`ThemeOptions`/`ThemePreset` are exported for type-safe theming in TS.
-- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/input/textarea/link/menu/popover/select/switch).
+- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/toast/input/textarea/link/menu/popover/select/switch).
 
 Default core values (from `DefaultTheme`):
 
