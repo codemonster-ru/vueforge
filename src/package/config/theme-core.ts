@@ -207,6 +207,28 @@ export type SwitchTokens = {
     textColor?: string;
     disabledOpacity?: string;
 };
+export type TabsTokens = {
+    gap?: string;
+    listGap?: string;
+    listBorderWidth?: string;
+    listBorderColor?: string;
+    listVerticalPadding?: string;
+    tabPadding?: string;
+    tabFontSize?: string;
+    tabBorderRadius?: string;
+    tabTextColor?: string;
+    tabBackgroundColor?: string;
+    tabHoverBackgroundColor?: string;
+    tabActiveTextColor?: string;
+    tabActiveBackgroundColor?: string;
+    tabActiveBorderColor?: string;
+    tabActiveBorderWidth?: string;
+    panelPadding?: string;
+    panelBorderRadius?: string;
+    panelBackgroundColor?: string;
+    panelTextColor?: string;
+    disabledOpacity?: string;
+};
 export type TooltipTokens = {
     padding?: string;
     borderRadius?: string;
@@ -224,6 +246,7 @@ export type ThemeComponentTokens = {
     card?: CardTokens;
     checkbox?: CheckboxTokens;
     radio?: RadioTokens;
+    tabs?: TabsTokens;
     input?: InputTokens;
     textarea?: TextareaTokens;
     link?: LinkTokens;

@@ -50,6 +50,9 @@ app.use(VueForge, {
 - Checkbox
 - RadioGroup
 - RadioButton
+- Tabs
+- Tab
+- TabPanel
 - Input
 - Textarea
 - Link
@@ -120,6 +123,50 @@ Example:
     <RadioButton value="pro">Pro</RadioButton>
 </RadioGroup>
 ```
+
+## Tabs / Tab / TabPanel
+
+Props (Tabs):
+
+- `modelValue?: string | number` (v-model)
+- `disabled?: boolean`
+- `orientation?: 'horizontal' | 'vertical'` (default `horizontal`)
+
+Props (Tab):
+
+- `value: string | number`
+- `label?: string`
+- `disabled?: boolean`
+
+Props (TabPanel):
+
+- `value: string | number`
+
+Example:
+
+```vue
+<Tabs v-model="tab">
+    <template #tabs>
+        <Tab value="overview">Overview</Tab>
+        <Tab value="settings">Settings</Tab>
+    </template>
+    <template #panels>
+        <TabPanel value="overview">Overview content</TabPanel>
+        <TabPanel value="settings">Settings content</TabPanel>
+    </template>
+</Tabs>
+```
+
+### Tabs tokens
+
+Component tokens (override via `theme.overrides.components.tabs`):
+
+- `gap`, `listGap`, `listBorderWidth`, `listBorderColor`, `listVerticalPadding`
+- `tabPadding`, `tabFontSize`, `tabBorderRadius`
+- `tabTextColor`, `tabBackgroundColor`, `tabHoverBackgroundColor`
+- `tabActiveTextColor`, `tabActiveBackgroundColor`, `tabActiveBorderColor`, `tabActiveBorderWidth`
+- `panelPadding`, `panelBorderRadius`, `panelBackgroundColor`, `panelTextColor`
+- `disabledOpacity`
 
 ### Textarea tokens
 
@@ -227,7 +274,7 @@ VueForge exposes design tokens as CSS variables generated from the theme preset.
 Typed tokens:
 
 - `ThemeTokens`/`ThemeOptions`/`ThemePreset` are exported for type-safe theming in TS.
-- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/input/textarea/link/menu/popover/select/switch).
+- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/input/textarea/link/menu/popover/select/switch).
 
 Default core values (from `DefaultTheme`):
 

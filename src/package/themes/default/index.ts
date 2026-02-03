@@ -11,6 +11,7 @@ import select from './components/select';
 import checkbox from './components/checkbox';
 import radio from './components/radio';
 import switchComponent from './components/switch';
+import tabs from './components/tabs';
 import tooltip from './components/tooltip';
 
 export default {
@@ -29,6 +30,7 @@ export default {
         checkbox,
         radio,
         switch: switchComponent,
+        tabs,
         tooltip,
     },
 };

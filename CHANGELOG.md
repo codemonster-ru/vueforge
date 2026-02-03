@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.13.0] - 2026-02-03
+
+- Added Tabs components (Tabs/Tab/TabPanel) with keyboard navigation and theming tokens.
+- Example app: added Tabs showcase.
+- Docs: documented Tabs API.
+
 ## [0.12.0] - 2026-02-03
 
 - Added RadioGroup and RadioButton components with theming tokens.

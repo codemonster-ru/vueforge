@@ -79,6 +79,27 @@
                     </div>
                 </div>
                 <div class="vf-home__card">
+                    <h3>Tabs</h3>
+                    <Tabs v-model="tab">
+                        <template #tabs>
+                            <Tab value="overview">Overview</Tab>
+                            <Tab value="team">Team</Tab>
+                            <Tab value="billing" disabled>Billing</Tab>
+                        </template>
+                        <template #panels>
+                            <TabPanel value="overview">
+                                <div class="vf-home__panel">Overview content</div>
+                            </TabPanel>
+                            <TabPanel value="team">
+                                <div class="vf-home__panel">Team content</div>
+                            </TabPanel>
+                            <TabPanel value="billing">
+                                <div class="vf-home__panel">Billing content</div>
+                            </TabPanel>
+                        </template>
+                    </Tabs>
+                </div>
+                <div class="vf-home__card">
                     <h3>Card</h3>
                     <Card>
                         <template #header>Card header</template>
@@ -140,6 +161,9 @@ import {
     Popover,
     RadioButton,
     RadioGroup,
+    Tab,
+    TabPanel,
+    Tabs,
     Select,
     Switch,
     Tooltip,
@@ -178,6 +202,7 @@ const agreedAlt = ref(false);
 const notifications = ref(true);
 const plan = ref('basic');
 const layout = ref('grid');
+const tab = ref('overview');
 const modalOpen = ref(false);
 const isDark = ref(document.documentElement.getAttribute('data-theme') === 'dark');
 const roles = [
@@ -237,6 +262,10 @@ body {
 
 .vf-home__modal-text {
     margin: 0;
+}
+
+.vf-home__panel {
+    padding: 0.5rem 0;
 }
 
 .vf-home__text {

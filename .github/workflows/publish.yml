@@ -26,7 +26,7 @@ jobs:
               run: |
                   VERSION="${GITHUB_REF_NAME#v}"
                   awk -v ver="$VERSION" '
-                      $0 ~ "^##[[:space:]]+" ver "([[:space:]]|$)" {found=1; next}
+                      $0 ~ "^##[[:space:]]+\\[" ver "\\]([[:space:]]|$)" {found=1; next}
                       found && $0 ~ "^##[[:space:]]+" {exit}
                       found {print}
                   ' CHANGELOG.md > release.md
