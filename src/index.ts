@@ -8,6 +8,7 @@ export { default as FormField } from '@/package/components/form-field.vue';
 export { default as Textarea } from '@/package/components/textarea.vue';
 export { default as Select } from '@/package/components/select.vue';
 export { default as Autocomplete } from '@/package/components/autocomplete.vue';
+export { default as MultiSelect } from '@/package/components/multi-select.vue';
 export { default as DatePicker } from '@/package/components/datepicker.vue';
 export { default as Checkbox } from '@/package/components/checkbox.vue';
 export { default as RadioGroup } from '@/package/components/radio-group.vue';

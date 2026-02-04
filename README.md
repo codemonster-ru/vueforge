@@ -31,6 +31,7 @@ import {
     Textarea,
     Select,
     Autocomplete,
+    MultiSelect,
     DatePicker,
     Checkbox,
     Switch,
@@ -55,6 +56,7 @@ app.use(VueForge, {
 <Textarea v-model="bio" placeholder="Tell us about yourself" />
 <Select v-model="role" :options="roles" placeholder="Choose role" />
 <Autocomplete v-model="country" :options="countries" placeholder="Find country" />
+<MultiSelect v-model="countries" :options="countryOptions" placeholder="Select countries" clearable />
 <DatePicker v-model="birthday" placeholder="Pick birthday" />
 <Checkbox v-model="agreed" label="I agree" />
 <Switch v-model="darkMode" label="Dark mode" />
@@ -83,6 +85,7 @@ app.use(VueForge, {
 - Popover
 - Select
 - Autocomplete
+- MultiSelect
 - DatePicker
 - Switch
 - Tooltip
@@ -91,7 +94,7 @@ Input / Textarea (quick API):
 
 - `Input`: single-line control, supports `v-model`, `size`, `variant`, `disabled`, `readonly`.
 - `Textarea`: multi-line control, same as Input plus `rows`.
-- `Checkbox`, `Select`, `Autocomplete`, and `DatePicker` also support `variant: 'filled' | 'outlined'`.
+- `Checkbox`, `Select`, `Autocomplete`, `MultiSelect`, and `DatePicker` also support `variant: 'filled' | 'outlined'`.
 
 ## FormField
 
@@ -155,6 +158,59 @@ Example:
 ```vue
 <Autocomplete v-model="country" :options="countries" placeholder="Find country" />
 ```
+
+## MultiSelect
+
+Props:
+
+- `modelValue?: Array<string | number>` (v-model)
+- `options?: Array<{ label: string; value: string | number; disabled?: boolean }>`
+- `optionLabel?: string` (default `label`)
+- `optionValue?: string` (default `value`)
+- `placeholder?: string`
+- `searchPlaceholder?: string` (default `Search...`)
+- `disabled?: boolean`
+- `readonly?: boolean`
+- `loading?: boolean`
+- `loadingText?: string` (default `Loading...`)
+- `emptyText?: string` (default `No results`)
+- `filter?: boolean` (default `true`)
+- `clearable?: boolean` (default `false`)
+- `size?: 'small' | 'normal' | 'large'` (default `normal`)
+- `variant?: 'filled' | 'outlined'` (default `filled`)
+
+Events:
+
+- `update:modelValue`
+- `change`
+- `search`
+- `focus`
+- `blur`
+
+Example:
+
+```vue
+<MultiSelect v-model="countries" :options="countryOptions" placeholder="Select countries" clearable />
+```
+
+### MultiSelect tokens
+
+Component tokens (override via `theme.overrides.components.multiselect`):
+
+- `minWidth`, `fontSize`, `controlGap`, `chevronSize`
+- `padding`, `borderRadius`, `borderColor`
+- `backgroundColor`, `textColor`, `placeholderColor`
+- `focusBorderColor`, `focusRingShadow`, `hoverBorderColor`
+- `disabledOpacity`
+- `panelBackgroundColor`, `panelBorderColor`, `panelPadding`, `panelMaxHeight`, `panelRadiusOffset`, `panelShadow`
+- `searchPadding`, `searchBorderColor`, `searchBorderRadius`
+- `optionPadding`, `optionBorderRadius`
+- `optionHoverBackgroundColor`, `optionActiveBackgroundColor`, `optionActiveTextColor`, `optionHighlightedBackgroundColor`
+- `emptyPadding`, `emptyColor`
+- `loadingPadding`, `loadingColor`
+- `clearSize`, `clearRadius`, `clearHoverBackgroundColor`
+- `small.fontSize`, `small.padding`
+- `large.fontSize`, `large.padding`
 
 ## DatePicker
 
@@ -467,7 +523,7 @@ VueForge exposes design tokens as CSS variables generated from the theme preset.
 Typed tokens:
 
 - `ThemeTokens`/`ThemeOptions`/`ThemePreset` are exported for type-safe theming in TS.
-- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/toast/alert/input/formField/textarea/link/menu/popover/select/autocomplete/datepicker/switch).
+- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/toast/alert/input/formField/textarea/link/menu/popover/select/autocomplete/multiselect/datepicker/switch).
 
 Default core values (from `DefaultTheme`):
 

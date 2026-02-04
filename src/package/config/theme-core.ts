@@ -255,6 +255,52 @@ export type AutocompleteTokens = {
         fontSize?: string;
     };
 };
+export type MultiSelectTokens = {
+    minWidth?: string;
+    fontSize?: string;
+    controlGap?: string;
+    chevronSize?: string;
+    padding?: string;
+    borderRadius?: string;
+    borderColor?: string;
+    backgroundColor?: string;
+    textColor?: string;
+    placeholderColor?: string;
+    focusBorderColor?: string;
+    hoverBorderColor?: string;
+    disabledOpacity?: string;
+    panelBackgroundColor?: string;
+    panelBorderColor?: string;
+    panelPadding?: string;
+    panelMaxHeight?: string;
+    panelRadiusOffset?: string;
+    panelShadow?: string;
+    focusRingShadow?: string;
+    optionPadding?: string;
+    optionBorderRadius?: string;
+    optionHoverBackgroundColor?: string;
+    optionActiveBackgroundColor?: string;
+    optionActiveTextColor?: string;
+    optionHighlightedBackgroundColor?: string;
+    emptyPadding?: string;
+    emptyColor?: string;
+    loadingPadding?: string;
+    loadingColor?: string;
+    searchPadding?: string;
+    searchBorderColor?: string;
+    searchBorderRadius?: string;
+    clearSize?: string;
+    clearRadius?: string;
+    clearHoverBackgroundColor?: string;
+    small?: {
+        padding?: string;
+        fontSize?: string;
+    };
+    large?: {
+        padding?: string;
+        fontSize?: string;
+    };
+};
 export type DatePickerTokens = {
     minWidth?: string;
     fontSize?: string;
@@ -447,6 +493,7 @@ export type ThemeComponentTokens = {
     popover?: PopoverTokens;
     select?: SelectTokens;
     autocomplete?: AutocompleteTokens;
+    multiselect?: MultiSelectTokens;
     datepicker?: DatePickerTokens;
     switch?: SwitchTokens;
     tooltip?: TooltipTokens;

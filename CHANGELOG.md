@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.19.0] - 2026-02-04
+
+- Added MultiSelect component with multi-value selection, local filtering, clear control, keyboard navigation, and loading/empty states.
+- Added default theme tokens and typed token support for `components.multiselect`.
+- Added MultiSelect export, README docs, unit tests, and example app showcase.
+
 ## [0.18.0] - 2026-02-04
 
 - Added Alert component for inline status messages with severity variants, optional close control, and action slots.

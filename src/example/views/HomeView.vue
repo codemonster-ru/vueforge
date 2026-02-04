@@ -89,6 +89,19 @@
                     </div>
                 </div>
                 <div class="vf-home__card">
+                    <h3>MultiSelect</h3>
+                    <div class="vf-home__stack">
+                        <MultiSelect v-model="countriesMulti" :options="countries" placeholder="Select countries" clearable />
+                        <MultiSelect
+                            v-model="countriesMulti"
+                            :options="countries"
+                            placeholder="Select countries (outlined)"
+                            variant="outlined"
+                            filter
+                        />
+                    </div>
+                </div>
+                <div class="vf-home__card">
                     <h3>DatePicker</h3>
                     <div class="vf-home__stack">
                         <DatePicker v-model="dueDate" placeholder="Pick a date" />
@@ -239,6 +252,7 @@ import {
     Modal,
     Popover,
     DatePicker,
+    MultiSelect,
     RadioButton,
     RadioGroup,
     Tab,
@@ -285,6 +299,7 @@ const role = ref('');
 const roleAlt = ref('');
 const country = ref('');
 const countryAlt = ref('');
+const countriesMulti = ref<Array<string | number>>([]);
 const dueDate = ref('');
 const dueDateAlt = ref('');
 const agreed = ref(false);
