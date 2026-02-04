@@ -33,6 +33,7 @@ import {
     Autocomplete,
     MultiSelect,
     DatePicker,
+    Pagination,
     Checkbox,
     Switch,
     Alert,
@@ -58,6 +59,7 @@ app.use(VueForge, {
 <Autocomplete v-model="country" :options="countries" placeholder="Find country" />
 <MultiSelect v-model="countries" :options="countryOptions" placeholder="Select countries" clearable />
 <DatePicker v-model="birthday" placeholder="Pick birthday" />
+<Pagination v-model="page" :total-items="240" :page-size="20" />
 <Checkbox v-model="agreed" label="I agree" />
 <Switch v-model="darkMode" label="Dark mode" />
 <Alert severity="info" title="Heads up" message="Project settings were updated." />
@@ -87,6 +89,7 @@ app.use(VueForge, {
 - Autocomplete
 - MultiSelect
 - DatePicker
+- Pagination
 - Switch
 - Tooltip
 
@@ -94,7 +97,7 @@ Input / Textarea (quick API):
 
 - `Input`: single-line control, supports `v-model`, `size`, `variant`, `disabled`, `readonly`.
 - `Textarea`: multi-line control, same as Input plus `rows`.
-- `Checkbox`, `Select`, `Autocomplete`, `MultiSelect`, and `DatePicker` also support `variant: 'filled' | 'outlined'`.
+- `Checkbox`, `Select`, `Autocomplete`, `MultiSelect`, `DatePicker`, and `Pagination` also support `variant: 'filled' | 'outlined'`.
 
 ## FormField
 
@@ -239,6 +242,48 @@ Example:
 ```vue
 <DatePicker v-model="startDate" placeholder="Pick date" min="2026-01-01" max="2026-12-31" />
 ```
+
+## Pagination
+
+Props:
+
+- `modelValue?: number` (v-model, default `1`)
+- `totalItems?: number` (default `0`)
+- `pageSize?: number` (default `10`)
+- `totalPages?: number` (optional override instead of `totalItems/pageSize`)
+- `siblingCount?: number` (default `1`)
+- `boundaryCount?: number` (default `1`)
+- `disabled?: boolean`
+- `size?: 'small' | 'normal' | 'large'` (default `normal`)
+- `variant?: 'filled' | 'outlined'` (default `filled`)
+- `prevLabel?: string` (default `Prev`)
+- `nextLabel?: string` (default `Next`)
+- `ellipsisLabel?: string` (default `...`)
+
+Events:
+
+- `update:modelValue`
+- `change`
+
+Example:
+
+```vue
+<Pagination v-model="page" :total-items="240" :page-size="20" />
+```
+
+### Pagination tokens
+
+Component tokens (override via `theme.overrides.components.pagination`):
+
+- `gap`, `itemMinWidth`, `fontSize`, `padding`
+- `borderRadius`, `borderColor`
+- `backgroundColor`, `textColor`
+- `hoverBackgroundColor`
+- `activeBorderColor`, `activeBackgroundColor`, `activeTextColor`
+- `focusBorderColor`, `focusRingShadow`
+- `disabledOpacity`, `ellipsisPadding`
+- `small.fontSize`, `small.padding`
+- `large.fontSize`, `large.padding`
 
 ## Textarea
 
@@ -524,6 +569,7 @@ Typed tokens:
 
 - `ThemeTokens`/`ThemeOptions`/`ThemePreset` are exported for type-safe theming in TS.
 - `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/toast/alert/input/formField/textarea/link/menu/popover/select/autocomplete/multiselect/datepicker/switch).
+- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/toast/alert/input/formField/textarea/link/menu/popover/select/autocomplete/multiselect/datepicker/pagination/switch).
 
 Default core values (from `DefaultTheme`):
 

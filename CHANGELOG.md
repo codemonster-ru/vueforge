@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.20.0] - 2026-02-04
+
+- Added Pagination component with page range rendering, ellipsis compression, Prev/Next controls, and keyboard-focusable page buttons.
+- Added default theme tokens and typed token support for `components.pagination`.
+- Added Pagination export, README docs, unit tests, and example app showcase.
+
 ## [0.19.0] - 2026-02-04
 
 - Added MultiSelect component with multi-value selection, local filtering, clear control, keyboard navigation, and loading/empty states.

@@ -115,6 +115,19 @@
                     </div>
                 </div>
                 <div class="vf-home__card">
+                    <h3>Pagination</h3>
+                    <div class="vf-home__stack">
+                        <Pagination v-model="page" :total-items="240" :page-size="20" :sibling-count="0" size="small" />
+                        <Pagination
+                            v-model="page"
+                            :total-pages="24"
+                            :sibling-count="0"
+                            variant="outlined"
+                            size="small"
+                        />
+                    </div>
+                </div>
+                <div class="vf-home__card">
                     <h3>Checkbox & Switch</h3>
                     <div class="vf-home__stack">
                         <Checkbox v-model="agreed">Agree to terms</Checkbox>
@@ -252,6 +265,7 @@ import {
     Modal,
     Popover,
     DatePicker,
+    Pagination,
     MultiSelect,
     RadioButton,
     RadioGroup,
@@ -302,6 +316,7 @@ const countryAlt = ref('');
 const countriesMulti = ref<Array<string | number>>([]);
 const dueDate = ref('');
 const dueDateAlt = ref('');
+const page = ref(6);
 const agreed = ref(false);
 const agreedAlt = ref(false);
 const notifications = ref(true);

@@ -352,6 +352,32 @@ export type DatePickerTokens = {
         daySize?: string;
     };
 };
+export type PaginationTokens = {
+    gap?: string;
+    itemMinWidth?: string;
+    fontSize?: string;
+    padding?: string;
+    borderRadius?: string;
+    borderColor?: string;
+    backgroundColor?: string;
+    textColor?: string;
+    hoverBackgroundColor?: string;
+    activeBorderColor?: string;
+    activeBackgroundColor?: string;
+    activeTextColor?: string;
+    focusBorderColor?: string;
+    focusRingShadow?: string;
+    disabledOpacity?: string;
+    ellipsisPadding?: string;
+    small?: {
+        padding?: string;
+        fontSize?: string;
+    };
+    large?: {
+        padding?: string;
+        fontSize?: string;
+    };
+};
 export type SwitchTokens = {
     width?: string;
     height?: string;
@@ -495,6 +521,7 @@ export type ThemeComponentTokens = {
     autocomplete?: AutocompleteTokens;
     multiselect?: MultiSelectTokens;
     datepicker?: DatePickerTokens;
+    pagination?: PaginationTokens;
     switch?: SwitchTokens;
     tooltip?: TooltipTokens;
     toast?: ToastTokens;
