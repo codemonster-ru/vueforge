@@ -393,6 +393,45 @@ export type ToastTokens = {
         textColor?: string;
     };
 };
+export type AlertTokens = {
+    gap?: string;
+    padding?: string;
+    borderRadius?: string;
+    borderColor?: string;
+    backgroundColor?: string;
+    textColor?: string;
+    iconColor?: string;
+    fontSize?: string;
+    lineHeight?: string;
+    bodyGap?: string;
+    titleFontSize?: string;
+    titleFontWeight?: string;
+    actionsGap?: string;
+    closeSize?: string;
+    closeRadius?: string;
+    closeFontSize?: string;
+    closeHoverBackgroundColor?: string;
+    info?: {
+        backgroundColor?: string;
+        borderColor?: string;
+        textColor?: string;
+    };
+    success?: {
+        backgroundColor?: string;
+        borderColor?: string;
+        textColor?: string;
+    };
+    warn?: {
+        backgroundColor?: string;
+        borderColor?: string;
+        textColor?: string;
+    };
+    danger?: {
+        backgroundColor?: string;
+        borderColor?: string;
+        textColor?: string;
+    };
+};
 export type ThemeComponentTokens = {
     button?: ButtonTokens;
     card?: CardTokens;
@@ -412,6 +451,7 @@ export type ThemeComponentTokens = {
     switch?: SwitchTokens;
     tooltip?: TooltipTokens;
     toast?: ToastTokens;
+    alert?: AlertTokens;
     [key: string]: unknown;
 };
 export type ThemeTokens = {

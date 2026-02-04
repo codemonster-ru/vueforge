@@ -17,6 +17,7 @@ import switchComponent from './components/switch';
 import tabs from './components/tabs';
 import tooltip from './components/tooltip';
 import toast from './components/toast';
+import alert from './components/alert';
 
 export default {
     ...base,
@@ -40,5 +41,6 @@ export default {
         tabs,
         tooltip,
         toast,
+        alert,
     },
 };

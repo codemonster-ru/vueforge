@@ -17,6 +17,7 @@ export { default as Tab } from '@/package/components/tab.vue';
 export { default as TabPanel } from '@/package/components/tab-panel.vue';
 export { default as Toast } from '@/package/components/toast.vue';
 export { default as ToastContainer } from '@/package/components/toast-container.vue';
+export { default as Alert } from '@/package/components/alert.vue';
 export { default as Switch } from '@/package/components/switch.vue';
 export { default as Popover } from '@/package/components/popover.vue';
 export { default as Modal } from '@/package/components/modal.vue';

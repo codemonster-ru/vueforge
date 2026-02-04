@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.18.0] - 2026-02-04
+
+- Added Alert component for inline status messages with severity variants, optional close control, and action slots.
+- Added default theme tokens and typed token support for `components.alert`.
+- Added Alert export, README docs, unit tests, and example app showcase.
+
 ## [0.17.0] - 2026-02-04
 
 - Added FormField component with label/hint/error/required states and size variants.

@@ -160,6 +160,23 @@
                     </ToastContainer>
                 </div>
                 <div class="vf-home__card">
+                    <h3>Alert</h3>
+                    <div class="vf-home__stack">
+                        <Button label="Show Alert" size="small" @click="alertOpen = true" />
+                        <Alert
+                            v-model="alertOpen"
+                            title="Unsaved changes"
+                            severity="warn"
+                            closable
+                            message="You have unsaved form changes."
+                        >
+                            <template #actions>
+                                <Button label="Save" size="small" />
+                            </template>
+                        </Alert>
+                    </div>
+                </div>
+                <div class="vf-home__card">
                     <h3>Card</h3>
                     <Card>
                         <template #header>Card header</template>
@@ -209,6 +226,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import {
+    Alert,
     Button,
     Card,
     Checkbox,
@@ -276,6 +294,7 @@ const plan = ref('basic');
 const layout = ref('grid');
 const tab = ref('overview');
 const toastOpen = ref(false);
+const alertOpen = ref(true);
 const modalOpen = ref(false);
 const isDark = ref(document.documentElement.getAttribute('data-theme') === 'dark');
 const roles = [

@@ -34,6 +34,7 @@ import {
     DatePicker,
     Checkbox,
     Switch,
+    Alert,
 } from '@codemonster-ru/vueforge';
 import '@codemonster-ru/vueforge/dist/index.css';
 
@@ -57,6 +58,7 @@ app.use(VueForge, {
 <DatePicker v-model="birthday" placeholder="Pick birthday" />
 <Checkbox v-model="agreed" label="I agree" />
 <Switch v-model="darkMode" label="Dark mode" />
+<Alert severity="info" title="Heads up" message="Project settings were updated." />
 ```
 
 ## Components
@@ -71,6 +73,7 @@ app.use(VueForge, {
 - TabPanel
 - Toast
 - ToastContainer
+- Alert
 - Input
 - FormField
 - Textarea
@@ -312,6 +315,52 @@ Component tokens (override via `theme.overrides.components.toast`):
 - `containerGap`, `containerPadding`, `containerMaxWidth`, `zIndex`
 - `info.*`, `success.*`, `warn.*`, `danger.*` (backgroundColor/borderColor/textColor)
 
+## Alert
+
+Props:
+
+- `modelValue?: boolean` (optional v-model)
+- `title?: string`
+- `message?: string`
+- `severity?: 'neutral' | 'info' | 'success' | 'warn' | 'danger'` (default `neutral`)
+- `closable?: boolean` (default `false`)
+- `icon?: string`
+
+Slots:
+
+- `default` - message content (fallbacks to `message`)
+- `title` (optional)
+- `icon` (optional)
+- `actions` (optional)
+- `close` (optional)
+
+Events:
+
+- `update:modelValue`
+- `close`
+
+Example:
+
+```vue
+<Alert v-model="alertOpen" severity="warn" title="Unsaved changes" closable>
+    You have unsaved form changes.
+    <template #actions>
+        <Button label="Save" size="small" />
+    </template>
+</Alert>
+```
+
+### Alert tokens
+
+Component tokens (override via `theme.overrides.components.alert`):
+
+- `gap`, `padding`, `borderRadius`, `borderColor`
+- `backgroundColor`, `textColor`, `iconColor`
+- `fontSize`, `lineHeight`, `bodyGap`
+- `titleFontSize`, `titleFontWeight`
+- `actionsGap`, `closeSize`, `closeRadius`, `closeFontSize`, `closeHoverBackgroundColor`
+- `info.*`, `success.*`, `warn.*`, `danger.*` (backgroundColor/borderColor/textColor)
+
 ### Textarea tokens
 
 Component tokens (override via `theme.overrides.components.textarea`):
@@ -418,7 +467,7 @@ VueForge exposes design tokens as CSS variables generated from the theme preset.
 Typed tokens:
 
 - `ThemeTokens`/`ThemeOptions`/`ThemePreset` are exported for type-safe theming in TS.
-- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/toast/input/formField/textarea/link/menu/popover/select/autocomplete/datepicker/switch).
+- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/toast/alert/input/formField/textarea/link/menu/popover/select/autocomplete/datepicker/switch).
 
 Default core values (from `DefaultTheme`):
 
