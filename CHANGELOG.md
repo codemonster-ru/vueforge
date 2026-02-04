@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.15.0] - 2026-02-04
+
+- Added Autocomplete component (combobox behavior) with local filtering, keyboard navigation, and search event.
+- Added default theme tokens and typed token support for `components.autocomplete`.
+- Added Autocomplete export, README docs, and example app showcase.
+- Tests: added autocomplete unit tests.
+
 ## [0.14.0] - 2026-02-03
 
 - Added Toast and ToastContainer components with theming tokens and auto-close support.

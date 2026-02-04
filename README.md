@@ -22,7 +22,17 @@ Peer dependencies:
 
 ```ts
 import { createApp } from 'vue';
-import { VueForge, DefaultTheme, Button, Input, Textarea, Select, Checkbox, Switch } from '@codemonster-ru/vueforge';
+import {
+    VueForge,
+    DefaultTheme,
+    Button,
+    Input,
+    Textarea,
+    Select,
+    Autocomplete,
+    Checkbox,
+    Switch,
+} from '@codemonster-ru/vueforge';
 import '@codemonster-ru/vueforge/dist/index.css';
 
 const app = createApp(App);
@@ -39,6 +49,7 @@ app.use(VueForge, {
 <Input v-model="name" placeholder="Your name" />
 <Textarea v-model="bio" placeholder="Tell us about yourself" />
 <Select v-model="role" :options="roles" placeholder="Choose role" />
+<Autocomplete v-model="country" :options="countries" placeholder="Find country" />
 <Checkbox v-model="agreed" label="I agree" />
 <Switch v-model="darkMode" label="Dark mode" />
 ```
@@ -62,6 +73,7 @@ app.use(VueForge, {
 - Modal
 - Popover
 - Select
+- Autocomplete
 - Switch
 - Tooltip
 
@@ -72,6 +84,38 @@ Input / Textarea (quick API):
 - `Checkbox` and `Select` also support `variant: 'filled' | 'outlined'`.
 
 Note: default filled backgrounds for Input/Select/Textarea use `controls.backgroundColor` (defaults to `bgSoftColor`). Set it to `bgColor` to disable soft backgrounds.
+
+## Autocomplete
+
+Props:
+
+- `modelValue?: string | number` (v-model)
+- `options?: Array<{ label: string; value: string | number; disabled?: boolean }>`
+- `optionLabel?: string` (default `label`)
+- `optionValue?: string` (default `value`)
+- `placeholder?: string`
+- `disabled?: boolean`
+- `readonly?: boolean`
+- `loading?: boolean`
+- `loadingText?: string` (default `Loading...`)
+- `emptyText?: string` (default `No results`)
+- `filter?: boolean` (default `true`)
+- `size?: 'small' | 'normal' | 'large'` (default `normal`)
+- `variant?: 'filled' | 'outlined'` (default `filled`)
+
+Events:
+
+- `update:modelValue`
+- `change`
+- `search`
+- `focus`
+- `blur`
+
+Example:
+
+```vue
+<Autocomplete v-model="country" :options="countries" placeholder="Find country" />
+```
 
 ## Textarea
 
@@ -311,6 +355,7 @@ Typed tokens:
 
 - `ThemeTokens`/`ThemeOptions`/`ThemePreset` are exported for type-safe theming in TS.
 - `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/toast/input/textarea/link/menu/popover/select/switch).
+- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/toast/input/textarea/link/menu/popover/select/autocomplete/switch).
 
 Default core values (from `DefaultTheme`):
 

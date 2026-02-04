@@ -57,6 +57,18 @@
                     </div>
                 </div>
                 <div class="vf-home__card">
+                    <h3>Autocomplete</h3>
+                    <div class="vf-home__stack">
+                        <Autocomplete v-model="country" :options="countries" placeholder="Find country" />
+                        <Autocomplete
+                            v-model="countryAlt"
+                            :options="countries"
+                            placeholder="Find country (outlined)"
+                            variant="outlined"
+                        />
+                    </div>
+                </div>
+                <div class="vf-home__card">
                     <h3>Checkbox & Switch</h3>
                     <div class="vf-home__stack">
                         <Checkbox v-model="agreed">Agree to terms</Checkbox>
@@ -182,6 +194,7 @@ import {
     Toast,
     ToastContainer,
     Select,
+    Autocomplete,
     Switch,
     Tooltip,
     setTheme,
@@ -214,6 +227,8 @@ const notes = ref('');
 const feedback = ref('');
 const role = ref('');
 const roleAlt = ref('');
+const country = ref('');
+const countryAlt = ref('');
 const agreed = ref(false);
 const agreedAlt = ref(false);
 const notifications = ref(true);
@@ -227,6 +242,11 @@ const roles = [
     { label: 'Developer', value: 'dev' },
     { label: 'Designer', value: 'design' },
     { label: 'Product', value: 'product' },
+];
+const countries = [
+    { label: 'United States', value: 'us' },
+    { label: 'Germany', value: 'de' },
+    { label: 'Japan', value: 'jp' },
 ];
 const menuItems = [{ label: 'Home', to: '/' }, { separator: true }, { label: 'Docs', href: 'https://example.com' }];
 </script>

@@ -194,6 +194,46 @@ export type SelectTokens = {
         fontSize?: string;
     };
 };
+export type AutocompleteTokens = {
+    minWidth?: string;
+    fontSize?: string;
+    controlGap?: string;
+    chevronSize?: string;
+    padding?: string;
+    borderRadius?: string;
+    borderColor?: string;
+    backgroundColor?: string;
+    textColor?: string;
+    placeholderColor?: string;
+    focusBorderColor?: string;
+    hoverBorderColor?: string;
+    disabledOpacity?: string;
+    panelBackgroundColor?: string;
+    panelBorderColor?: string;
+    panelPadding?: string;
+    panelMaxHeight?: string;
+    panelRadiusOffset?: string;
+    panelShadow?: string;
+    focusRingShadow?: string;
+    optionPadding?: string;
+    optionBorderRadius?: string;
+    optionHoverBackgroundColor?: string;
+    optionActiveBackgroundColor?: string;
+    optionActiveTextColor?: string;
+    optionHighlightedBackgroundColor?: string;
+    emptyPadding?: string;
+    emptyColor?: string;
+    loadingPadding?: string;
+    loadingColor?: string;
+    small?: {
+        padding?: string;
+        fontSize?: string;
+    };
+    large?: {
+        padding?: string;
+        fontSize?: string;
+    };
+};
 export type SwitchTokens = {
     width?: string;
     height?: string;
@@ -294,6 +334,7 @@ export type ThemeComponentTokens = {
     modal?: ModalTokens;
     popover?: PopoverTokens;
     select?: SelectTokens;
+    autocomplete?: AutocompleteTokens;
     switch?: SwitchTokens;
     tooltip?: TooltipTokens;
     toast?: ToastTokens;
