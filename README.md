@@ -27,6 +27,7 @@ import {
     DefaultTheme,
     Button,
     Input,
+    FormField,
     Textarea,
     Select,
     Autocomplete,
@@ -47,7 +48,9 @@ app.use(VueForge, {
 
 ```vue
 <Button label="Hello" severity="primary" />
-<Input v-model="name" placeholder="Your name" />
+<FormField label="Name" hint="Required field">
+    <Input v-model="name" placeholder="Your name" />
+</FormField>
 <Textarea v-model="bio" placeholder="Tell us about yourself" />
 <Select v-model="role" :options="roles" placeholder="Choose role" />
 <Autocomplete v-model="country" :options="countries" placeholder="Find country" />
@@ -69,6 +72,7 @@ app.use(VueForge, {
 - Toast
 - ToastContainer
 - Input
+- FormField
 - Textarea
 - Link
 - Menu
@@ -85,6 +89,35 @@ Input / Textarea (quick API):
 - `Input`: single-line control, supports `v-model`, `size`, `variant`, `disabled`, `readonly`.
 - `Textarea`: multi-line control, same as Input plus `rows`.
 - `Checkbox`, `Select`, `Autocomplete`, and `DatePicker` also support `variant: 'filled' | 'outlined'`.
+
+## FormField
+
+Props:
+
+- `id?: string` (used in `label for` and slot props)
+- `label?: string`
+- `hint?: string`
+- `error?: string`
+- `required?: boolean`
+- `disabled?: boolean`
+- `size?: 'small' | 'normal' | 'large'` (default `normal`)
+
+Slots:
+
+- `default` - form control wrapper slot props: `{ id, describedBy, invalid, required }`
+- `label` (optional)
+- `hint` (optional)
+- `error` (optional)
+
+Example:
+
+```vue
+<FormField label="Email" hint="We never share it" :error="emailError">
+    <template #default="{ id, describedBy }">
+        <Input :id="id" v-model="email" :aria-describedby="describedBy" placeholder="name@example.com" />
+    </template>
+</FormField>
+```
 
 Note: default filled backgrounds for Input/Select/Textarea use `controls.backgroundColor` (defaults to `bgSoftColor`). Set it to `bgColor` to disable soft backgrounds.
 
@@ -385,7 +418,7 @@ VueForge exposes design tokens as CSS variables generated from the theme preset.
 Typed tokens:
 
 - `ThemeTokens`/`ThemeOptions`/`ThemePreset` are exported for type-safe theming in TS.
-- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/toast/input/textarea/link/menu/popover/select/autocomplete/datepicker/switch).
+- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/toast/input/formField/textarea/link/menu/popover/select/autocomplete/datepicker/switch).
 
 Default core values (from `DefaultTheme`):
 

@@ -2,6 +2,7 @@ import base from './base';
 import button from './components/button';
 import card from './components/card';
 import input from './components/input';
+import formField from './components/form-field';
 import textarea from './components/textarea';
 import link from './components/link';
 import menu from './components/menu';
@@ -24,6 +25,7 @@ export default {
         button,
         card,
         input,
+        formField,
         textarea,
         link,
         menu,

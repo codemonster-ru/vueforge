@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.17.0] - 2026-02-04
+
+- Added FormField component with label/hint/error/required states and size variants.
+- Added slot props (`id`, `describedBy`, `invalid`, `required`) to wire accessibility attributes on nested controls.
+- Added default theme tokens and typed token support for `components.formField`.
+- Added FormField export, README docs, unit tests, and example app showcase.
+
 ## [0.16.0] - 2026-02-04
 
 - Added DatePicker component with calendar popup, min/max bounds, locale support, and keyboard/open-close handling.

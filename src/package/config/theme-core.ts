@@ -77,6 +77,27 @@ export type InputTokens = {
         fontSize?: string;
     };
 };
+export type FormFieldTokens = {
+    gap?: string;
+    textColor?: string;
+    labelFontSize?: string;
+    labelColor?: string;
+    requiredColor?: string;
+    hintFontSize?: string;
+    hintColor?: string;
+    errorColor?: string;
+    disabledOpacity?: string;
+    small?: {
+        gap?: string;
+        labelFontSize?: string;
+        hintFontSize?: string;
+    };
+    large?: {
+        gap?: string;
+        labelFontSize?: string;
+        hintFontSize?: string;
+    };
+};
 export type TextareaTokens = {
     gap?: string;
     fontSize?: string;
@@ -379,6 +400,7 @@ export type ThemeComponentTokens = {
     radio?: RadioTokens;
     tabs?: TabsTokens;
     input?: InputTokens;
+    formField?: FormFieldTokens;
     textarea?: TextareaTokens;
     link?: LinkTokens;
     menu?: MenuTokens;

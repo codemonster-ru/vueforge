@@ -42,6 +42,26 @@
                     </div>
                 </div>
                 <div class="vf-home__card">
+                    <h3>FormField</h3>
+                    <div class="vf-home__stack">
+                        <FormField label="Email" hint="We never share it">
+                            <template #default="{ id, describedBy }">
+                                <Input
+                                    :id="id"
+                                    v-model="emailField"
+                                    placeholder="name@example.com"
+                                    :aria-describedby="describedBy"
+                                />
+                            </template>
+                        </FormField>
+                        <FormField label="Username" :error="usernameError" required>
+                            <template #default="{ id, describedBy }">
+                                <Input :id="id" v-model="username" placeholder="Username" :aria-describedby="describedBy" />
+                            </template>
+                        </FormField>
+                    </div>
+                </div>
+                <div class="vf-home__card">
                     <h3>Textarea</h3>
                     <div class="vf-home__stack">
                         <Textarea v-model="bio" placeholder="Tell us about yourself" />
@@ -193,6 +213,7 @@ import {
     Card,
     Checkbox,
     DefaultTheme,
+    FormField,
     Input,
     Textarea,
     Link,
@@ -236,6 +257,9 @@ const toggleDark = () => {
 
 const email = ref('');
 const search = ref('');
+const emailField = ref('');
+const username = ref('');
+const usernameError = ref('Username is required');
 const bio = ref('');
 const notes = ref('');
 const feedback = ref('');
