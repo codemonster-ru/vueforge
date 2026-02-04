@@ -69,6 +69,19 @@
                     </div>
                 </div>
                 <div class="vf-home__card">
+                    <h3>DatePicker</h3>
+                    <div class="vf-home__stack">
+                        <DatePicker v-model="dueDate" placeholder="Pick a date" />
+                        <DatePicker
+                            v-model="dueDateAlt"
+                            placeholder="Pick a date (outlined)"
+                            variant="outlined"
+                            min="2026-01-10"
+                            max="2026-12-31"
+                        />
+                    </div>
+                </div>
+                <div class="vf-home__card">
                     <h3>Checkbox & Switch</h3>
                     <div class="vf-home__stack">
                         <Checkbox v-model="agreed">Agree to terms</Checkbox>
@@ -186,6 +199,7 @@ import {
     Menu,
     Modal,
     Popover,
+    DatePicker,
     RadioButton,
     RadioGroup,
     Tab,
@@ -229,6 +243,8 @@ const role = ref('');
 const roleAlt = ref('');
 const country = ref('');
 const countryAlt = ref('');
+const dueDate = ref('');
+const dueDateAlt = ref('');
 const agreed = ref(false);
 const agreedAlt = ref(false);
 const notifications = ref(true);

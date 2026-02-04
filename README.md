@@ -30,6 +30,7 @@ import {
     Textarea,
     Select,
     Autocomplete,
+    DatePicker,
     Checkbox,
     Switch,
 } from '@codemonster-ru/vueforge';
@@ -50,6 +51,7 @@ app.use(VueForge, {
 <Textarea v-model="bio" placeholder="Tell us about yourself" />
 <Select v-model="role" :options="roles" placeholder="Choose role" />
 <Autocomplete v-model="country" :options="countries" placeholder="Find country" />
+<DatePicker v-model="birthday" placeholder="Pick birthday" />
 <Checkbox v-model="agreed" label="I agree" />
 <Switch v-model="darkMode" label="Dark mode" />
 ```
@@ -74,6 +76,7 @@ app.use(VueForge, {
 - Popover
 - Select
 - Autocomplete
+- DatePicker
 - Switch
 - Tooltip
 
@@ -81,7 +84,7 @@ Input / Textarea (quick API):
 
 - `Input`: single-line control, supports `v-model`, `size`, `variant`, `disabled`, `readonly`.
 - `Textarea`: multi-line control, same as Input plus `rows`.
-- `Checkbox` and `Select` also support `variant: 'filled' | 'outlined'`.
+- `Checkbox`, `Select`, `Autocomplete`, and `DatePicker` also support `variant: 'filled' | 'outlined'`.
 
 Note: default filled backgrounds for Input/Select/Textarea use `controls.backgroundColor` (defaults to `bgSoftColor`). Set it to `bgColor` to disable soft backgrounds.
 
@@ -115,6 +118,34 @@ Example:
 
 ```vue
 <Autocomplete v-model="country" :options="countries" placeholder="Find country" />
+```
+
+## DatePicker
+
+Props:
+
+- `modelValue?: string` (v-model, ISO date `YYYY-MM-DD`)
+- `placeholder?: string`
+- `disabled?: boolean`
+- `readonly?: boolean`
+- `min?: string` (ISO date `YYYY-MM-DD`)
+- `max?: string` (ISO date `YYYY-MM-DD`)
+- `locale?: string` (default `en-US`)
+- `firstDayOfWeek?: number` (default `0`, Sunday)
+- `size?: 'small' | 'normal' | 'large'` (default `normal`)
+- `variant?: 'filled' | 'outlined'` (default `filled`)
+
+Events:
+
+- `update:modelValue`
+- `change`
+- `focus`
+- `blur`
+
+Example:
+
+```vue
+<DatePicker v-model="startDate" placeholder="Pick date" min="2026-01-01" max="2026-12-31" />
 ```
 
 ## Textarea
@@ -354,8 +385,7 @@ VueForge exposes design tokens as CSS variables generated from the theme preset.
 Typed tokens:
 
 - `ThemeTokens`/`ThemeOptions`/`ThemePreset` are exported for type-safe theming in TS.
-- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/toast/input/textarea/link/menu/popover/select/switch).
-- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/toast/input/textarea/link/menu/popover/select/autocomplete/switch).
+- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/toast/input/textarea/link/menu/popover/select/autocomplete/datepicker/switch).
 
 Default core values (from `DefaultTheme`):
 

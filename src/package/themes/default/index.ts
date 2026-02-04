@@ -9,6 +9,7 @@ import modal from './components/modal';
 import popover from './components/popover';
 import select from './components/select';
 import autocomplete from './components/autocomplete';
+import datepicker from './components/datepicker';
 import checkbox from './components/checkbox';
 import radio from './components/radio';
 import switchComponent from './components/switch';
@@ -30,6 +31,7 @@ export default {
         popover,
         select,
         autocomplete,
+        datepicker,
         checkbox,
         radio,
         switch: switchComponent,

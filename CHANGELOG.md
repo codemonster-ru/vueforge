@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.16.0] - 2026-02-04
+
+- Added DatePicker component with calendar popup, min/max bounds, locale support, and keyboard/open-close handling.
+- Added default theme tokens and typed token support for `components.datepicker`.
+- Added DatePicker export, README docs, unit tests, and example app showcase.
+
 ## [0.15.0] - 2026-02-04
 
 - Added Autocomplete component (combobox behavior) with local filtering, keyboard navigation, and search event.

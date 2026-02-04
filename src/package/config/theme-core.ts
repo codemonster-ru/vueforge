@@ -234,6 +234,57 @@ export type AutocompleteTokens = {
         fontSize?: string;
     };
 };
+export type DatePickerTokens = {
+    minWidth?: string;
+    fontSize?: string;
+    controlGap?: string;
+    chevronSize?: string;
+    padding?: string;
+    borderRadius?: string;
+    borderColor?: string;
+    backgroundColor?: string;
+    textColor?: string;
+    placeholderColor?: string;
+    focusBorderColor?: string;
+    hoverBorderColor?: string;
+    disabledOpacity?: string;
+    panelWidth?: string;
+    panelBackgroundColor?: string;
+    panelBorderColor?: string;
+    panelPadding?: string;
+    panelRadiusOffset?: string;
+    panelShadow?: string;
+    focusRingShadow?: string;
+    headerGap?: string;
+    headerPadding?: string;
+    monthLabelFontSize?: string;
+    monthLabelFontWeight?: string;
+    navButtonSize?: string;
+    navButtonRadius?: string;
+    navButtonFontSize?: string;
+    weekdayColor?: string;
+    weekdayFontSize?: string;
+    weekdaysMarginBottom?: string;
+    daysGap?: string;
+    daySize?: string;
+    dayFontSize?: string;
+    dayBorderRadius?: string;
+    dayHoverBackgroundColor?: string;
+    daySelectedBackgroundColor?: string;
+    daySelectedTextColor?: string;
+    dayMutedColor?: string;
+    dayTodayBorderColor?: string;
+    small?: {
+        padding?: string;
+        fontSize?: string;
+        daySize?: string;
+    };
+    large?: {
+        padding?: string;
+        fontSize?: string;
+        daySize?: string;
+    };
+};
 export type SwitchTokens = {
     width?: string;
     height?: string;
@@ -335,6 +386,7 @@ export type ThemeComponentTokens = {
     popover?: PopoverTokens;
     select?: SelectTokens;
     autocomplete?: AutocompleteTokens;
+    datepicker?: DatePickerTokens;
     switch?: SwitchTokens;
     tooltip?: TooltipTokens;
     toast?: ToastTokens;
