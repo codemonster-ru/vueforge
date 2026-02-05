@@ -1,0 +1,27 @@
+export default {
+    size: '2.5rem',
+    fontSize: '0.9rem',
+    fontWeight: '600',
+    backgroundColor: 'var(--vf-gutter-color)',
+    textColor: 'var(--vf-secondary-text-color)',
+    borderColor: 'rgba(var(--vf-gray-500-rgb), 0.2)',
+    borderWidth: '1px',
+    borderRadius: 'var(--vf-radii-md)',
+    statusSize: '0.6rem',
+    statusBorderWidth: '2px',
+    statusBorderColor: 'var(--vf-bg-color)',
+    statusOnlineColor: 'var(--vf-green-500)',
+    statusOfflineColor: 'var(--vf-gray-400)',
+    statusBusyColor: 'var(--vf-red-500)',
+    statusAwayColor: 'var(--vf-yellow-500)',
+    small: {
+        size: '2rem',
+        fontSize: '0.75rem',
+        statusSize: '0.5rem',
+    },
+    large: {
+        size: '3rem',
+        fontSize: '1rem',
+        statusSize: '0.75rem',
+    },
+};

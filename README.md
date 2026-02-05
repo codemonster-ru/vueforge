@@ -116,6 +116,7 @@ app.use(VueForge, {
 - Skeleton
 - Progress
 - Badge
+- Avatar
 
 Input / Textarea (quick API):
 
@@ -746,6 +747,40 @@ Component tokens (override via `theme.overrides.components.badge`):
 - `small.fontSize`, `small.paddingX`, `small.paddingY`
 - `large.fontSize`, `large.paddingX`, `large.paddingY`
 
+## Avatar
+
+Props:
+
+- `src?: string`
+- `alt?: string`
+- `name?: string`
+- `size?: 'small' | 'normal' | 'large'` (default `normal`)
+- `shape?: 'circle' | 'rounded'` (default `circle`)
+- `status?: 'online' | 'offline' | 'busy' | 'away'`
+
+Slots:
+
+- `default` - custom avatar content
+
+Example:
+
+```vue
+<Avatar name="Ada Lovelace" />
+<Avatar src="/img/ada.png" alt="Ada Lovelace" size="large" />
+<Avatar name="Ada Lovelace" status="online" />
+```
+
+### Avatar tokens
+
+Component tokens (override via `theme.overrides.components.avatar`):
+
+- `size`, `fontSize`, `fontWeight`
+- `backgroundColor`, `textColor`, `borderColor`, `borderWidth`, `borderRadius`
+- `statusSize`, `statusBorderWidth`, `statusBorderColor`
+- `statusOnlineColor`, `statusOfflineColor`, `statusBusyColor`, `statusAwayColor`
+- `small.size`, `small.fontSize`, `small.statusSize`
+- `large.size`, `large.fontSize`, `large.statusSize`
+
 ## Progress
 
 Props:
@@ -794,7 +829,7 @@ VueForge exposes design tokens as CSS variables generated from the theme preset.
 Typed tokens:
 
 - `ThemeTokens`/`ThemeOptions`/`ThemePreset` are exported for type-safe theming in TS.
-- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/formField/textarea/link/menu/popover/select/autocomplete/multiselect/datepicker/pagination/switch/tooltip/skeleton/progress/badge/datatable).
+- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/formField/textarea/link/menu/popover/select/autocomplete/multiselect/datepicker/pagination/switch/tooltip/skeleton/progress/badge/avatar/datatable).
 
 Default core values (from `DefaultTheme`):
 

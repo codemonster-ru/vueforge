@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.26.0] - 2026-02-05
+
+- Added Avatar component with image/initials fallback, sizes, shapes, and status indicator.
+- Added default theme tokens and typed token support for `components.avatar`.
+- Added Avatar export, README docs, and example app showcase.
+
 ## [0.25.0] - 2026-02-05
 
 - Added Badge component with solid/soft/outline variants, severity colors, and size variants.

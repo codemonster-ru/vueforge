@@ -25,6 +25,7 @@ import toast from './components/toast';
 import alert from './components/alert';
 import progress from './components/progress';
 import badge from './components/badge';
+import avatar from './components/avatar';
 
 export default {
     ...base,
@@ -56,5 +57,6 @@ export default {
         alert,
         progress,
         badge,
+        avatar,
     },
 };

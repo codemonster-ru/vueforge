@@ -654,6 +654,33 @@ export type BadgeTokens = {
         paddingY?: string;
     };
 };
+export type AvatarTokens = {
+    size?: string;
+    fontSize?: string;
+    fontWeight?: string;
+    backgroundColor?: string;
+    textColor?: string;
+    borderColor?: string;
+    borderWidth?: string;
+    borderRadius?: string;
+    statusSize?: string;
+    statusBorderWidth?: string;
+    statusBorderColor?: string;
+    statusOnlineColor?: string;
+    statusOfflineColor?: string;
+    statusBusyColor?: string;
+    statusAwayColor?: string;
+    small?: {
+        size?: string;
+        fontSize?: string;
+        statusSize?: string;
+    };
+    large?: {
+        size?: string;
+        fontSize?: string;
+        statusSize?: string;
+    };
+};
 export type ThemeComponentTokens = {
     button?: ButtonTokens;
     card?: CardTokens;
@@ -681,6 +708,7 @@ export type ThemeComponentTokens = {
     toast?: ToastTokens;
     alert?: AlertTokens;
     badge?: BadgeTokens;
+    avatar?: AvatarTokens;
     [key: string]: unknown;
 };
 export type ThemeTokens = {

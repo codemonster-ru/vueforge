@@ -277,6 +277,14 @@
                     </div>
                 </div>
                 <div class="vf-home__card">
+                    <h3>Avatar</h3>
+                    <div class="vf-home__stack-inline">
+                        <Avatar name="Ada Lovelace" />
+                        <Avatar name="Grace Hopper" status="online" />
+                        <Avatar name="Alan Turing" size="large" status="away" />
+                    </div>
+                </div>
+                <div class="vf-home__card">
                     <h3>Progress</h3>
                     <div class="vf-home__stack">
                         <Progress :value="42" />
@@ -324,6 +332,7 @@ import {
     Tooltip,
     Skeleton,
     Badge,
+    Avatar,
     Progress,
     setTheme,
     updateTheme,
