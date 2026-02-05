@@ -17,6 +17,7 @@ import checkbox from './components/checkbox';
 import radio from './components/radio';
 import switchComponent from './components/switch';
 import tabs from './components/tabs';
+import accordion from './components/accordion';
 import tooltip from './components/tooltip';
 import skeleton from './components/skeleton';
 import toast from './components/toast';
@@ -44,6 +45,7 @@ export default {
         radio,
         switch: switchComponent,
         tabs,
+        accordion,
         tooltip,
         skeleton,
         toast,

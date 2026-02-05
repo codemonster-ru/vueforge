@@ -171,6 +171,17 @@
                     </Tabs>
                 </div>
                 <div class="vf-home__card">
+                    <h3>Accordion</h3>
+                    <Accordion v-model="accordion">
+                        <AccordionItem value="shipping" title="Shipping">
+                            Free delivery within 3-5 business days.
+                        </AccordionItem>
+                        <AccordionItem value="returns" title="Returns">
+                            Return items within 30 days of purchase.
+                        </AccordionItem>
+                    </Accordion>
+                </div>
+                <div class="vf-home__card">
                     <h3>Toast</h3>
                     <div class="vf-home__stack">
                         <Button label="Show Toast" @click="toastOpen = true" />
@@ -261,6 +272,8 @@
 import { ref } from 'vue';
 import {
     Alert,
+    Accordion,
+    AccordionItem,
     Button,
     Card,
     Checkbox,
@@ -332,6 +345,7 @@ const notifications = ref(true);
 const plan = ref('basic');
 const layout = ref('grid');
 const tab = ref('overview');
+const accordion = ref('shipping');
 const toastOpen = ref(false);
 const alertOpen = ref(true);
 const modalOpen = ref(false);

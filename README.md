@@ -38,6 +38,8 @@ import {
     Switch,
     Alert,
     Skeleton,
+    Accordion,
+    AccordionItem,
 } from '@codemonster-ru/vueforge';
 import '@codemonster-ru/vueforge/dist/index.css';
 
@@ -65,6 +67,14 @@ app.use(VueForge, {
 <Switch v-model="darkMode" label="Dark mode" />
 <Alert severity="info" title="Heads up" message="Project settings were updated." />
 <Skeleton height="12px" width="140px" />
+<Accordion v-model="faq">
+    <AccordionItem value="shipping" title="Shipping">
+        Shipping details
+    </AccordionItem>
+    <AccordionItem value="returns" title="Returns">
+        Returns policy
+    </AccordionItem>
+</Accordion>
 ```
 
 ## Components
@@ -77,6 +87,8 @@ app.use(VueForge, {
 - Tabs
 - Tab
 - TabPanel
+- Accordion
+- AccordionItem
 - Toast
 - ToastContainer
 - Alert
@@ -385,6 +397,56 @@ Component tokens (override via `theme.overrides.components.tabs`):
 - `panelPadding`, `panelBorderRadius`, `panelBackgroundColor`, `panelTextColor`
 - `disabledOpacity`
 
+## Accordion / AccordionItem
+
+Props (Accordion):
+
+- `modelValue?: string | number | Array<string | number>` (v-model)
+- `multiple?: boolean` (default `false`)
+- `disabled?: boolean`
+- `variant?: 'filled' | 'outlined'` (default `filled`)
+- `size?: 'small' | 'normal' | 'large'` (default `normal`)
+- `ariaLabel?: string`
+- `ariaLabelledby?: string`
+
+Props (AccordionItem):
+
+- `value: string | number`
+- `title?: string`
+- `disabled?: boolean`
+- `unmount?: boolean` (default `false`)
+
+Events:
+
+- `update:modelValue`
+- `change`
+
+Example:
+
+```vue
+<Accordion v-model="faq">
+    <AccordionItem value="shipping" title="Shipping">
+        Shipping details
+    </AccordionItem>
+    <AccordionItem value="returns" title="Returns">
+        Returns policy
+    </AccordionItem>
+</Accordion>
+```
+
+### Accordion tokens
+
+Component tokens (override via `theme.overrides.components.accordion`):
+
+- `gap`, `borderRadius`, `borderColor`, `backgroundColor`
+- `headerGap`, `headerPadding`, `headerFontSize`, `headerFontWeight`
+- `headerTextColor`, `headerBackgroundColor`, `headerHoverBackgroundColor`, `headerActiveBackgroundColor`
+- `contentPadding`, `contentTextColor`, `contentBackgroundColor`
+- `iconSize`, `iconColor`, `dividerColor`
+- `focusRingShadow`, `disabledOpacity`
+- `small.headerPadding`, `small.headerFontSize`, `small.contentPadding`
+- `large.headerPadding`, `large.headerFontSize`, `large.contentPadding`
+
 ## Toast / ToastContainer
 
 Props (Toast):
@@ -588,8 +650,8 @@ VueForge exposes design tokens as CSS variables generated from the theme preset.
 Typed tokens:
 
 - `ThemeTokens`/`ThemeOptions`/`ThemePreset` are exported for type-safe theming in TS.
-- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/toast/alert/input/formField/textarea/link/menu/popover/select/autocomplete/multiselect/datepicker/pagination/switch/tooltip/skeleton).
-- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/toast/alert/input/formField/textarea/link/menu/popover/select/autocomplete/multiselect/datepicker/pagination/switch/tooltip/skeleton).
+- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/formField/textarea/link/menu/popover/select/autocomplete/multiselect/datepicker/pagination/switch/tooltip/skeleton).
+- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/formField/textarea/link/menu/popover/select/autocomplete/multiselect/datepicker/pagination/switch/tooltip/skeleton).
 
 Default core values (from `DefaultTheme`):
 

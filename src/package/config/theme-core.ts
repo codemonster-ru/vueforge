@@ -413,6 +413,38 @@ export type TabsTokens = {
     panelTextColor?: string;
     disabledOpacity?: string;
 };
+export type AccordionTokens = {
+    gap?: string;
+    borderRadius?: string;
+    borderColor?: string;
+    backgroundColor?: string;
+    headerGap?: string;
+    headerPadding?: string;
+    headerFontSize?: string;
+    headerFontWeight?: string;
+    headerTextColor?: string;
+    headerBackgroundColor?: string;
+    headerHoverBackgroundColor?: string;
+    headerActiveBackgroundColor?: string;
+    contentPadding?: string;
+    contentTextColor?: string;
+    contentBackgroundColor?: string;
+    iconSize?: string;
+    iconColor?: string;
+    dividerColor?: string;
+    focusRingShadow?: string;
+    disabledOpacity?: string;
+    small?: {
+        headerPadding?: string;
+        headerFontSize?: string;
+        contentPadding?: string;
+    };
+    large?: {
+        headerPadding?: string;
+        headerFontSize?: string;
+        contentPadding?: string;
+    };
+};
 export type TooltipTokens = {
     padding?: string;
     borderRadius?: string;
@@ -519,6 +551,7 @@ export type ThemeComponentTokens = {
     checkbox?: CheckboxTokens;
     radio?: RadioTokens;
     tabs?: TabsTokens;
+    accordion?: AccordionTokens;
     input?: InputTokens;
     formField?: FormFieldTokens;
     textarea?: TextareaTokens;

@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.22.0] - 2026-02-05
+
+- Added Accordion and AccordionItem components with single/multiple modes and optional unmount.
+- Added default theme tokens and typed token support for `components.accordion`.
+- Added Accordion export, README docs, unit tests, and example app showcase.
+
 ## [0.21.0] - 2026-02-05
 
 - Added Skeleton component with shimmer animation and `text/rect/circle` variants.
