@@ -267,6 +267,15 @@
                         <Skeleton variant="circle" width="40px" />
                     </div>
                 </div>
+                <div class="vf-home__card">
+                    <h3>Progress</h3>
+                    <div class="vf-home__stack">
+                        <Progress :value="42" />
+                        <Progress :value="72" severity="success" show-value />
+                        <Progress variant="circular" :value="64" size="small" />
+                        <Progress variant="linear" />
+                    </div>
+                </div>
             </div>
         </section>
     </div>
@@ -305,6 +314,7 @@ import {
     Switch,
     Tooltip,
     Skeleton,
+    Progress,
     setTheme,
     updateTheme,
 } from '@/index';

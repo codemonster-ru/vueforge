@@ -39,6 +39,7 @@ import {
     Switch,
     Alert,
     Skeleton,
+    Progress,
     Accordion,
     AccordionItem,
 } from '@codemonster-ru/vueforge';
@@ -69,6 +70,7 @@ app.use(VueForge, {
 <Switch v-model="darkMode" label="Dark mode" />
 <Alert severity="info" title="Heads up" message="Project settings were updated." />
 <Skeleton height="12px" width="140px" />
+<Progress :value="64" />
 <Accordion v-model="faq">
     <AccordionItem value="shipping" title="Shipping">
         Shipping details
@@ -110,6 +112,7 @@ app.use(VueForge, {
 - Switch
 - Tooltip
 - Skeleton
+- Progress
 
 Input / Textarea (quick API):
 
@@ -707,6 +710,40 @@ Example:
 <Skeleton variant="circle" width="48" />
 ```
 
+## Progress
+
+Props:
+
+- `value?: number` (0-100; omit for indeterminate)
+- `variant?: 'linear' | 'circular'` (default `linear`)
+- `size?: 'small' | 'normal' | 'large'` (default `normal`)
+- `label?: string`
+- `showValue?: boolean` (default `false`)
+- `severity?: 'neutral' | 'info' | 'success' | 'warn' | 'danger'` (default `neutral`)
+- `ariaLabel?: string`
+
+Example:
+
+```vue
+<Progress :value="64" />
+<Progress variant="circular" :value="42" size="small" />
+<Progress variant="linear" severity="success" showValue :value="85" />
+<Progress variant="linear" />
+```
+
+### Progress tokens
+
+Component tokens (override via `theme.overrides.components.progress`):
+
+- `width`, `height`, `borderRadius`
+- `backgroundColor`, `barColor`
+- `labelColor`, `labelFontSize`, `gap`
+- `circularSize`, `circularThickness`
+- `animationDuration`
+- `info.barColor`, `success.barColor`, `warn.barColor`, `danger.barColor`
+- `small.height`, `small.labelFontSize`, `small.circularSize`, `small.circularThickness`
+- `large.height`, `large.labelFontSize`, `large.circularSize`, `large.circularThickness`
+
 ## Tokens
 
 VueForge exposes design tokens as CSS variables generated from the theme preset. Core groups:
@@ -721,8 +758,7 @@ VueForge exposes design tokens as CSS variables generated from the theme preset.
 Typed tokens:
 
 - `ThemeTokens`/`ThemeOptions`/`ThemePreset` are exported for type-safe theming in TS.
-- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/formField/textarea/link/menu/popover/select/autocomplete/multiselect/datepicker/pagination/switch/tooltip/skeleton/datatable).
-- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/formField/textarea/link/menu/popover/select/autocomplete/multiselect/datepicker/pagination/switch/tooltip/skeleton/datatable).
+- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/formField/textarea/link/menu/popover/select/autocomplete/multiselect/datepicker/pagination/switch/tooltip/skeleton/progress/datatable).
 
 Default core values (from `DefaultTheme`):
 

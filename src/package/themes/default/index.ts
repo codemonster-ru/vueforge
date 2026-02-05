@@ -23,6 +23,7 @@ import skeleton from './components/skeleton';
 import datatable from './components/datatable';
 import toast from './components/toast';
 import alert from './components/alert';
+import progress from './components/progress';
 
 export default {
     ...base,
@@ -52,5 +53,6 @@ export default {
         datatable,
         toast,
         alert,
+        progress,
     },
 };

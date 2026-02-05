@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.24.0] - 2026-02-05
+
+- Added Progress component with linear/circular variants, determinate/indeterminate modes, severity colors, and size variants.
+- Added default theme tokens and typed token support for `components.progress`.
+- Added Progress export, README docs, unit tests, and example app showcase.
+
 ## [0.23.0] - 2026-02-05
 
 - Added DataTable component with sorting, empty/loading states, and row click events.

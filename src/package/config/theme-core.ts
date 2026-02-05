@@ -466,6 +466,43 @@ export type SkeletonTokens = {
     shimmerColor?: string;
     animationDuration?: string;
 };
+export type ProgressTokens = {
+    width?: string;
+    height?: string;
+    borderRadius?: string;
+    backgroundColor?: string;
+    barColor?: string;
+    labelColor?: string;
+    labelFontSize?: string;
+    gap?: string;
+    circularSize?: string;
+    circularThickness?: string;
+    animationDuration?: string;
+    info?: {
+        barColor?: string;
+    };
+    success?: {
+        barColor?: string;
+    };
+    warn?: {
+        barColor?: string;
+    };
+    danger?: {
+        barColor?: string;
+    };
+    small?: {
+        height?: string;
+        labelFontSize?: string;
+        circularSize?: string;
+        circularThickness?: string;
+    };
+    large?: {
+        height?: string;
+        labelFontSize?: string;
+        circularSize?: string;
+        circularThickness?: string;
+    };
+};
 export type DataTableTokens = {
     borderColor?: string;
     borderRadius?: string;
@@ -599,6 +636,7 @@ export type ThemeComponentTokens = {
     switch?: SwitchTokens;
     tooltip?: TooltipTokens;
     skeleton?: SkeletonTokens;
+    progress?: ProgressTokens;
     datatable?: DataTableTokens;
     toast?: ToastTokens;
     alert?: AlertTokens;
