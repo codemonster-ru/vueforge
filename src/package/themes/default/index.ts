@@ -24,6 +24,7 @@ import datatable from './components/datatable';
 import toast from './components/toast';
 import alert from './components/alert';
 import progress from './components/progress';
+import badge from './components/badge';
 
 export default {
     ...base,
@@ -54,5 +55,6 @@ export default {
         toast,
         alert,
         progress,
+        badge,
     },
 };

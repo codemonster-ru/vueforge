@@ -268,6 +268,15 @@
                     </div>
                 </div>
                 <div class="vf-home__card">
+                    <h3>Badge</h3>
+                    <div class="vf-home__stack-inline">
+                        <Badge label="Beta" />
+                        <Badge severity="info" variant="soft">Info</Badge>
+                        <Badge severity="success" variant="outline">Active</Badge>
+                        <Badge severity="danger" variant="solid">Blocked</Badge>
+                    </div>
+                </div>
+                <div class="vf-home__card">
                     <h3>Progress</h3>
                     <div class="vf-home__stack">
                         <Progress :value="42" />
@@ -314,6 +323,7 @@ import {
     Switch,
     Tooltip,
     Skeleton,
+    Badge,
     Progress,
     setTheme,
     updateTheme,
@@ -429,6 +439,13 @@ body {
 
 .vf-home__stack {
     display: grid;
+    gap: 0.5rem;
+}
+
+.vf-home__stack-inline {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
     gap: 0.5rem;
 }
 

@@ -614,6 +614,46 @@ export type AlertTokens = {
         textColor?: string;
     };
 };
+export type BadgeSeverityTokens = {
+    backgroundColor?: string;
+    textColor?: string;
+    borderColor?: string;
+    softBackgroundColor?: string;
+    softTextColor?: string;
+    softBorderColor?: string;
+    outlineTextColor?: string;
+    outlineBorderColor?: string;
+};
+export type BadgeTokens = {
+    fontSize?: string;
+    lineHeight?: string;
+    paddingX?: string;
+    paddingY?: string;
+    borderRadius?: string;
+    gap?: string;
+    backgroundColor?: string;
+    textColor?: string;
+    borderColor?: string;
+    softBackgroundColor?: string;
+    softTextColor?: string;
+    softBorderColor?: string;
+    outlineTextColor?: string;
+    outlineBorderColor?: string;
+    info?: BadgeSeverityTokens;
+    success?: BadgeSeverityTokens;
+    warn?: BadgeSeverityTokens;
+    danger?: BadgeSeverityTokens;
+    small?: {
+        fontSize?: string;
+        paddingX?: string;
+        paddingY?: string;
+    };
+    large?: {
+        fontSize?: string;
+        paddingX?: string;
+        paddingY?: string;
+    };
+};
 export type ThemeComponentTokens = {
     button?: ButtonTokens;
     card?: CardTokens;
@@ -640,6 +680,7 @@ export type ThemeComponentTokens = {
     datatable?: DataTableTokens;
     toast?: ToastTokens;
     alert?: AlertTokens;
+    badge?: BadgeTokens;
     [key: string]: unknown;
 };
 export type ThemeTokens = {

@@ -28,6 +28,7 @@ export { default as Modal } from '@/package/components/modal.vue';
 export { default as Tooltip } from '@/package/components/tooltip.vue';
 export { default as Skeleton } from '@/package/components/skeleton.vue';
 export { default as Progress } from '@/package/components/progress.vue';
+export { default as Badge } from '@/package/components/badge.vue';
 export { default as DataTable } from '@/package/components/data-table.vue';
 export type { DataTableColumn } from '@/package/components/data-table.vue';
 // config

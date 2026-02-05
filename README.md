@@ -40,6 +40,7 @@ import {
     Alert,
     Skeleton,
     Progress,
+    Badge,
     Accordion,
     AccordionItem,
 } from '@codemonster-ru/vueforge';
@@ -71,6 +72,7 @@ app.use(VueForge, {
 <Alert severity="info" title="Heads up" message="Project settings were updated." />
 <Skeleton height="12px" width="140px" />
 <Progress :value="64" />
+<Badge label="Beta" />
 <Accordion v-model="faq">
     <AccordionItem value="shipping" title="Shipping">
         Shipping details
@@ -113,6 +115,7 @@ app.use(VueForge, {
 - Tooltip
 - Skeleton
 - Progress
+- Badge
 
 Input / Textarea (quick API):
 
@@ -710,6 +713,39 @@ Example:
 <Skeleton variant="circle" width="48" />
 ```
 
+## Badge
+
+Props:
+
+- `label?: string`
+- `size?: 'small' | 'normal' | 'large'` (default `normal`)
+- `variant?: 'solid' | 'soft' | 'outline'` (default `soft`)
+- `severity?: 'neutral' | 'info' | 'success' | 'warn' | 'danger'` (default `neutral`)
+- `ariaLabel?: string`
+
+Slots:
+
+- `default` - badge content (fallbacks to `label`)
+
+Example:
+
+```vue
+<Badge label="Beta" />
+<Badge severity="success" variant="outline">Active</Badge>
+```
+
+### Badge tokens
+
+Component tokens (override via `theme.overrides.components.badge`):
+
+- `fontSize`, `lineHeight`, `paddingX`, `paddingY`, `borderRadius`, `gap`
+- `backgroundColor`, `textColor`, `borderColor`
+- `softBackgroundColor`, `softTextColor`, `softBorderColor`
+- `outlineTextColor`, `outlineBorderColor`
+- `info.*`, `success.*`, `warn.*`, `danger.*` (backgroundColor/textColor/borderColor/soft*/outline*)
+- `small.fontSize`, `small.paddingX`, `small.paddingY`
+- `large.fontSize`, `large.paddingX`, `large.paddingY`
+
 ## Progress
 
 Props:
@@ -758,7 +794,7 @@ VueForge exposes design tokens as CSS variables generated from the theme preset.
 Typed tokens:
 
 - `ThemeTokens`/`ThemeOptions`/`ThemePreset` are exported for type-safe theming in TS.
-- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/formField/textarea/link/menu/popover/select/autocomplete/multiselect/datepicker/pagination/switch/tooltip/skeleton/progress/datatable).
+- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/formField/textarea/link/menu/popover/select/autocomplete/multiselect/datepicker/pagination/switch/tooltip/skeleton/progress/badge/datatable).
 
 Default core values (from `DefaultTheme`):
 

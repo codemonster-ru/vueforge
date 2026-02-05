@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.25.0] - 2026-02-05
+
+- Added Badge component with solid/soft/outline variants, severity colors, and size variants.
+- Added default theme tokens and typed token support for `components.badge`.
+- Added Badge export, README docs, and example app showcase.
+
 ## [0.24.0] - 2026-02-05
 
 - Added Progress component with linear/circular variants, determinate/indeterminate modes, severity colors, and size variants.
