@@ -24,6 +24,7 @@ export { default as Switch } from '@/package/components/switch.vue';
 export { default as Popover } from '@/package/components/popover.vue';
 export { default as Modal } from '@/package/components/modal.vue';
 export { default as Tooltip } from '@/package/components/tooltip.vue';
+export { default as Skeleton } from '@/package/components/skeleton.vue';
 // config
 export { default as VueForge, setTheme, updateTheme, getTheme } from '@/package/config/index';
 export type { ThemeTokens, ThemeOptions, ThemePreset } from '@/package/config/theme-core';

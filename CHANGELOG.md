@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.21.0] - 2026-02-05
+
+- Added Skeleton component with shimmer animation and `text/rect/circle` variants.
+- Added default theme tokens and typed token support for `components.skeleton`.
+- Added Skeleton export, README docs, unit tests, and example app showcase.
+
 ## [0.20.0] - 2026-02-04
 
 - Added Pagination component with page range rendering, ellipsis compression, Prev/Next controls, and keyboard-focusable page buttons.

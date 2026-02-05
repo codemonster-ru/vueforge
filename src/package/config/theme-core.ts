@@ -425,6 +425,15 @@ export type TooltipTokens = {
     maxWidth?: string;
     arrowSize?: string;
 };
+export type SkeletonTokens = {
+    width?: string;
+    height?: string;
+    lineHeight?: string;
+    borderRadius?: string;
+    backgroundColor?: string;
+    shimmerColor?: string;
+    animationDuration?: string;
+};
 export type ToastTokens = {
     gap?: string;
     padding?: string;
@@ -524,6 +533,7 @@ export type ThemeComponentTokens = {
     pagination?: PaginationTokens;
     switch?: SwitchTokens;
     tooltip?: TooltipTokens;
+    skeleton?: SkeletonTokens;
     toast?: ToastTokens;
     alert?: AlertTokens;
     [key: string]: unknown;

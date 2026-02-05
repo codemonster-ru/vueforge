@@ -244,6 +244,14 @@
                         <Button label="Hover me" />
                     </Tooltip>
                 </div>
+                <div class="vf-home__card">
+                    <h3>Skeleton</h3>
+                    <div class="vf-home__stack">
+                        <Skeleton width="180px" height="12px" />
+                        <Skeleton width="140px" height="12px" />
+                        <Skeleton variant="circle" width="40px" />
+                    </div>
+                </div>
             </div>
         </section>
     </div>
@@ -278,6 +286,7 @@ import {
     Autocomplete,
     Switch,
     Tooltip,
+    Skeleton,
     setTheme,
     updateTheme,
 } from '@/index';

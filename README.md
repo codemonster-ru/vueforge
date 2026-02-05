@@ -37,6 +37,7 @@ import {
     Checkbox,
     Switch,
     Alert,
+    Skeleton,
 } from '@codemonster-ru/vueforge';
 import '@codemonster-ru/vueforge/dist/index.css';
 
@@ -63,6 +64,7 @@ app.use(VueForge, {
 <Checkbox v-model="agreed" label="I agree" />
 <Switch v-model="darkMode" label="Dark mode" />
 <Alert severity="info" title="Heads up" message="Project settings were updated." />
+<Skeleton height="12px" width="140px" />
 ```
 
 ## Components
@@ -92,6 +94,7 @@ app.use(VueForge, {
 - Pagination
 - Switch
 - Tooltip
+- Skeleton
 
 Input / Textarea (quick API):
 
@@ -554,6 +557,23 @@ Example:
 </Tooltip>
 ```
 
+## Skeleton
+
+Props:
+
+- `width?: string | number`
+- `height?: string | number`
+- `variant?: 'text' | 'rect' | 'circle'` (default `text`)
+- `animated?: boolean` (default `true`)
+
+Example:
+
+```vue
+<Skeleton width="240px" height="14px" />
+<Skeleton width="180px" height="14px" />
+<Skeleton variant="circle" width="48" />
+```
+
 ## Tokens
 
 VueForge exposes design tokens as CSS variables generated from the theme preset. Core groups:
@@ -568,8 +588,8 @@ VueForge exposes design tokens as CSS variables generated from the theme preset.
 Typed tokens:
 
 - `ThemeTokens`/`ThemeOptions`/`ThemePreset` are exported for type-safe theming in TS.
-- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/toast/alert/input/formField/textarea/link/menu/popover/select/autocomplete/multiselect/datepicker/switch).
-- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/toast/alert/input/formField/textarea/link/menu/popover/select/autocomplete/multiselect/datepicker/pagination/switch).
+- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/toast/alert/input/formField/textarea/link/menu/popover/select/autocomplete/multiselect/datepicker/pagination/switch/tooltip/skeleton).
+- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/toast/alert/input/formField/textarea/link/menu/popover/select/autocomplete/multiselect/datepicker/pagination/switch/tooltip/skeleton).
 
 Default core values (from `DefaultTheme`):
 
