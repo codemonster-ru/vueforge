@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.23.0] - 2026-02-05
+
+- Added DataTable component with sorting, empty/loading states, and row click events.
+- Added default theme tokens and typed token support for `components.datatable`.
+- Added DataTable export, README docs, unit tests, and example app showcase.
+
 ## [0.22.0] - 2026-02-05
 
 - Added Accordion and AccordionItem components with single/multiple modes and optional unmount.

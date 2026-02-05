@@ -20,6 +20,7 @@ import tabs from './components/tabs';
 import accordion from './components/accordion';
 import tooltip from './components/tooltip';
 import skeleton from './components/skeleton';
+import datatable from './components/datatable';
 import toast from './components/toast';
 import alert from './components/alert';
 
@@ -48,6 +49,7 @@ export default {
         accordion,
         tooltip,
         skeleton,
+        datatable,
         toast,
         alert,
     },

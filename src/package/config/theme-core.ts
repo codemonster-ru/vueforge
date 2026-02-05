@@ -466,6 +466,38 @@ export type SkeletonTokens = {
     shimmerColor?: string;
     animationDuration?: string;
 };
+export type DataTableTokens = {
+    borderColor?: string;
+    borderRadius?: string;
+    backgroundColor?: string;
+    fontSize?: string;
+    textColor?: string;
+    headerBackgroundColor?: string;
+    headerTextColor?: string;
+    headerFontSize?: string;
+    headerFontWeight?: string;
+    headerBorderColor?: string;
+    headerGap?: string;
+    rowBackgroundColor?: string;
+    rowTextColor?: string;
+    rowBorderColor?: string;
+    cellPadding?: string;
+    stripedBackgroundColor?: string;
+    hoverBackgroundColor?: string;
+    sortIconColor?: string;
+    sortIconActiveColor?: string;
+    sortIconSize?: string;
+    statePadding?: string;
+    stateTextColor?: string;
+    small?: {
+        fontSize?: string;
+        cellPadding?: string;
+    };
+    large?: {
+        fontSize?: string;
+        cellPadding?: string;
+    };
+};
 export type ToastTokens = {
     gap?: string;
     padding?: string;
@@ -567,6 +599,7 @@ export type ThemeComponentTokens = {
     switch?: SwitchTokens;
     tooltip?: TooltipTokens;
     skeleton?: SkeletonTokens;
+    datatable?: DataTableTokens;
     toast?: ToastTokens;
     alert?: AlertTokens;
     [key: string]: unknown;

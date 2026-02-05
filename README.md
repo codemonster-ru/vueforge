@@ -34,6 +34,7 @@ import {
     MultiSelect,
     DatePicker,
     Pagination,
+    DataTable,
     Checkbox,
     Switch,
     Alert,
@@ -63,6 +64,7 @@ app.use(VueForge, {
 <MultiSelect v-model="countries" :options="countryOptions" placeholder="Select countries" clearable />
 <DatePicker v-model="birthday" placeholder="Pick birthday" />
 <Pagination v-model="page" :total-items="240" :page-size="20" />
+<DataTable :columns="columns" :rows="rows" sortable striped />
 <Checkbox v-model="agreed" label="I agree" />
 <Switch v-model="darkMode" label="Dark mode" />
 <Alert severity="info" title="Heads up" message="Project settings were updated." />
@@ -104,6 +106,7 @@ app.use(VueForge, {
 - MultiSelect
 - DatePicker
 - Pagination
+- DataTable
 - Switch
 - Tooltip
 - Skeleton
@@ -112,7 +115,7 @@ Input / Textarea (quick API):
 
 - `Input`: single-line control, supports `v-model`, `size`, `variant`, `disabled`, `readonly`.
 - `Textarea`: multi-line control, same as Input plus `rows`.
-- `Checkbox`, `Select`, `Autocomplete`, `MultiSelect`, `DatePicker`, and `Pagination` also support `variant: 'filled' | 'outlined'`.
+- `Checkbox`, `Select`, `Autocomplete`, `MultiSelect`, `DatePicker`, `Pagination`, and `DataTable` also support `variant: 'filled' | 'outlined'`.
 
 ## FormField
 
@@ -299,6 +302,74 @@ Component tokens (override via `theme.overrides.components.pagination`):
 - `disabledOpacity`, `ellipsisPadding`
 - `small.fontSize`, `small.padding`
 - `large.fontSize`, `large.padding`
+
+## DataTable
+
+Props:
+
+- `rows?: Array<Record<string, unknown>>`
+- `columns?: Array<{ field: string; header?: string; sortable?: boolean; align?: 'left' | 'center' | 'right'; width?: string; minWidth?: string; formatter?: (row, value, column) => string | number }>`
+- `rowKey?: string | ((row, index) => string | number)`
+- `sortable?: boolean`
+- `sortField?: string | null`
+- `sortOrder?: 'asc' | 'desc' | null`
+- `loading?: boolean`
+- `loadingText?: string` (default `Loading...`)
+- `emptyText?: string` (default `No data`)
+- `striped?: boolean` (default `false`)
+- `hover?: boolean` (default `true`)
+- `size?: 'small' | 'normal' | 'large'` (default `normal`)
+- `variant?: 'filled' | 'outlined'` (default `filled`)
+- `showHeader?: boolean` (default `true`)
+- `ariaLabel?: string` (default `Data table`)
+
+Events:
+
+- `update:sortField`
+- `update:sortOrder`
+- `sort`
+- `rowClick`
+
+Slots:
+
+- `header-{field}`
+- `cell-{field}`
+- `empty`
+- `loading`
+
+Example:
+
+```vue
+<DataTable
+    :columns="[
+        { field: 'name', header: 'Name', sortable: true },
+        { field: 'role', header: 'Role' },
+        { field: 'age', header: 'Age', align: 'right', sortable: true },
+    ]"
+    :rows="[
+        { id: 1, name: 'Alice', role: 'Developer', age: 29 },
+        { id: 2, name: 'Bob', role: 'Designer', age: 34 },
+    ]"
+    row-key="id"
+    sortable
+    striped
+/>
+```
+
+### DataTable tokens
+
+Component tokens (override via `theme.overrides.components.datatable`):
+
+- `borderColor`, `borderRadius`, `backgroundColor`
+- `fontSize`, `textColor`
+- `headerBackgroundColor`, `headerTextColor`, `headerFontSize`, `headerFontWeight`, `headerBorderColor`, `headerGap`
+- `rowBackgroundColor`, `rowTextColor`, `rowBorderColor`
+- `cellPadding`
+- `stripedBackgroundColor`, `hoverBackgroundColor`
+- `sortIconColor`, `sortIconActiveColor`, `sortIconSize`
+- `statePadding`, `stateTextColor`
+- `small.fontSize`, `small.cellPadding`
+- `large.fontSize`, `large.cellPadding`
 
 ## Textarea
 
@@ -650,8 +721,8 @@ VueForge exposes design tokens as CSS variables generated from the theme preset.
 Typed tokens:
 
 - `ThemeTokens`/`ThemeOptions`/`ThemePreset` are exported for type-safe theming in TS.
-- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/formField/textarea/link/menu/popover/select/autocomplete/multiselect/datepicker/pagination/switch/tooltip/skeleton).
-- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/formField/textarea/link/menu/popover/select/autocomplete/multiselect/datepicker/pagination/switch/tooltip/skeleton).
+- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/formField/textarea/link/menu/popover/select/autocomplete/multiselect/datepicker/pagination/switch/tooltip/skeleton/datatable).
+- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/formField/textarea/link/menu/popover/select/autocomplete/multiselect/datepicker/pagination/switch/tooltip/skeleton/datatable).
 
 Default core values (from `DefaultTheme`):
 

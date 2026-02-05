@@ -128,6 +128,10 @@
                     </div>
                 </div>
                 <div class="vf-home__card">
+                    <h3>DataTable</h3>
+                    <DataTable :columns="tableColumns" :rows="tableRows" row-key="id" sortable striped size="small" />
+                </div>
+                <div class="vf-home__card">
                     <h3>Checkbox & Switch</h3>
                     <div class="vf-home__stack">
                         <Checkbox v-model="agreed">Agree to terms</Checkbox>
@@ -287,6 +291,7 @@ import {
     Popover,
     DatePicker,
     Pagination,
+    DataTable,
     MultiSelect,
     RadioButton,
     RadioGroup,
@@ -303,6 +308,7 @@ import {
     setTheme,
     updateTheme,
 } from '@/index';
+import type { DataTableColumn } from '@/index';
 
 const applyBlueTheme = () => {
     updateTheme({
@@ -359,6 +365,16 @@ const countries = [
     { label: 'United States', value: 'us' },
     { label: 'Germany', value: 'de' },
     { label: 'Japan', value: 'jp' },
+];
+const tableColumns: DataTableColumn[] = [
+    { field: 'name', header: 'Name', sortable: true },
+    { field: 'role', header: 'Role' },
+    { field: 'age', header: 'Age', align: 'right', sortable: true },
+];
+const tableRows = [
+    { id: 1, name: 'Alice', role: 'Developer', age: 29 },
+    { id: 2, name: 'Bob', role: 'Designer', age: 34 },
+    { id: 3, name: 'Chen', role: 'Product', age: 31 },
 ];
 const menuItems = [{ label: 'Home', to: '/' }, { separator: true }, { label: 'Docs', href: 'https://example.com' }];
 </script>
