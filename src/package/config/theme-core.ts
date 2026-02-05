@@ -503,6 +503,39 @@ export type ProgressTokens = {
         circularThickness?: string;
     };
 };
+export type SliderTokens = {
+    width?: string;
+    gap?: string;
+    textColor?: string;
+    trackHeight?: string;
+    trackBackgroundColor?: string;
+    trackRadius?: string;
+    fillBackgroundColor?: string;
+    thumbSize?: string;
+    thumbColor?: string;
+    thumbBorderColor?: string;
+    thumbBorderWidth?: string;
+    thumbShadow?: string;
+    focusRingShadow?: string;
+    disabledOpacity?: string;
+    markSize?: string;
+    markColor?: string;
+    markLabelFontSize?: string;
+    markLabelColor?: string;
+    marksHeight?: string;
+    valueFontSize?: string;
+    valueColor?: string;
+    small?: {
+        trackHeight?: string;
+        thumbSize?: string;
+        valueFontSize?: string;
+    };
+    large?: {
+        trackHeight?: string;
+        thumbSize?: string;
+        valueFontSize?: string;
+    };
+};
 export type DataTableTokens = {
     borderColor?: string;
     borderRadius?: string;
@@ -704,6 +737,7 @@ export type ThemeComponentTokens = {
     tooltip?: TooltipTokens;
     skeleton?: SkeletonTokens;
     progress?: ProgressTokens;
+    slider?: SliderTokens;
     datatable?: DataTableTokens;
     toast?: ToastTokens;
     alert?: AlertTokens;

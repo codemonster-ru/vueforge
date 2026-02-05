@@ -43,6 +43,7 @@ import {
     Badge,
     Accordion,
     AccordionItem,
+    Slider,
 } from '@codemonster-ru/vueforge';
 import '@codemonster-ru/vueforge/dist/index.css';
 
@@ -73,6 +74,7 @@ app.use(VueForge, {
 <Skeleton height="12px" width="140px" />
 <Progress :value="64" />
 <Badge label="Beta" />
+<Slider v-model="volume" :min="0" :max="100" :step="5" show-value />
 <Accordion v-model="faq">
     <AccordionItem value="shipping" title="Shipping">
         Shipping details
@@ -117,6 +119,7 @@ app.use(VueForge, {
 - Progress
 - Badge
 - Avatar
+- Slider
 
 Input / Textarea (quick API):
 
@@ -815,6 +818,50 @@ Component tokens (override via `theme.overrides.components.progress`):
 - `small.height`, `small.labelFontSize`, `small.circularSize`, `small.circularThickness`
 - `large.height`, `large.labelFontSize`, `large.circularSize`, `large.circularThickness`
 
+## Slider
+
+Props:
+
+- `modelValue?: number | [number, number]` (v-model)
+- `min?: number` (default `0`)
+- `max?: number` (default `100`)
+- `step?: number` (default `1`)
+- `range?: boolean` (default `false`)
+- `disabled?: boolean`
+- `size?: 'small' | 'normal' | 'large'` (default `normal`)
+- `variant?: 'filled' | 'outlined'` (default `filled`)
+- `showValue?: boolean` (default `false`)
+- `marks?: Array<{ value: number; label?: string }>`
+
+Events:
+
+- `update:modelValue`
+- `input`
+- `change`
+- `focus`
+- `blur`
+
+Example:
+
+```vue
+<Slider v-model="volume" :min="0" :max="100" :step="5" show-value />
+<Slider v-model="priceRange" :min="0" :max="1000" :step="10" range />
+```
+
+### Slider tokens
+
+Component tokens (override via `theme.overrides.components.slider`):
+
+- `width`, `gap`
+- `textColor`
+- `trackHeight`, `trackBackgroundColor`, `trackRadius`, `fillBackgroundColor`
+- `thumbSize`, `thumbColor`, `thumbBorderColor`, `thumbBorderWidth`, `thumbShadow`
+- `focusRingShadow`, `disabledOpacity`
+- `markSize`, `markColor`, `markLabelFontSize`, `markLabelColor`, `marksHeight`
+- `valueFontSize`, `valueColor`
+- `small.trackHeight`, `small.thumbSize`, `small.valueFontSize`
+- `large.trackHeight`, `large.thumbSize`, `large.valueFontSize`
+
 ## Tokens
 
 VueForge exposes design tokens as CSS variables generated from the theme preset. Core groups:
@@ -829,7 +876,7 @@ VueForge exposes design tokens as CSS variables generated from the theme preset.
 Typed tokens:
 
 - `ThemeTokens`/`ThemeOptions`/`ThemePreset` are exported for type-safe theming in TS.
-- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/formField/textarea/link/menu/popover/select/autocomplete/multiselect/datepicker/pagination/switch/tooltip/skeleton/progress/badge/avatar/datatable).
+- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/formField/textarea/link/menu/popover/select/autocomplete/multiselect/datepicker/pagination/switch/tooltip/skeleton/progress/badge/avatar/datatable/slider).
 
 Default core values (from `DefaultTheme`):
 

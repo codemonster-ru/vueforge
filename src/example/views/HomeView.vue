@@ -293,6 +293,14 @@
                         <Progress variant="linear" />
                     </div>
                 </div>
+                <div class="vf-home__card">
+                    <h3>Slider</h3>
+                    <div class="vf-home__stack">
+                        <Slider v-model="volume" :min="0" :max="100" :step="5" show-value />
+                        <Slider v-model="priceRange" :min="0" :max="1000" :step="25" range />
+                        <Slider v-model="rating" :min="1" :max="5" :step="1" :marks="ratingMarks" show-value />
+                    </div>
+                </div>
             </div>
         </section>
     </div>
@@ -334,6 +342,7 @@ import {
     Badge,
     Avatar,
     Progress,
+    Slider,
     setTheme,
     updateTheme,
 } from '@/index';
@@ -385,6 +394,16 @@ const toastOpen = ref(false);
 const alertOpen = ref(true);
 const modalOpen = ref(false);
 const isDark = ref(document.documentElement.getAttribute('data-theme') === 'dark');
+const volume = ref(40);
+const priceRange = ref<[number, number]>([200, 700]);
+const rating = ref(3);
+const ratingMarks = [
+    { value: 1, label: '1' },
+    { value: 2, label: '2' },
+    { value: 3, label: '3' },
+    { value: 4, label: '4' },
+    { value: 5, label: '5' },
+];
 const roles = [
     { label: 'Developer', value: 'dev' },
     { label: 'Designer', value: 'design' },

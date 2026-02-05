@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.27.0] - 2026-02-05
+
+- Added Slider component with single/range modes, marks, and size variants.
+- Added default theme tokens and typed token support for `components.slider`.
+- Added Slider export, README docs, unit tests, and example app showcase.
+
 ## [0.26.0] - 2026-02-05
 
 - Added Avatar component with image/initials fallback, sizes, shapes, and status indicator.
