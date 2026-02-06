@@ -36,6 +36,7 @@ import {
     MultiSelect,
     DatePicker,
     DateRangePicker,
+    TimePicker,
     Pagination,
     DataTable,
     Checkbox,
@@ -76,6 +77,7 @@ app.use(VueForge, {
 <MultiSelect v-model="countries" :options="countryOptions" placeholder="Select countries" clearable />
 <DatePicker v-model="birthday" placeholder="Pick birthday" />
 <DateRangePicker v-model="range" placeholder="Pick range" />
+<TimePicker v-model="meetingTime" placeholder="Pick time" />
 <Pagination v-model="page" :total-items="240" :page-size="20" />
 <DataTable :columns="columns" :rows="rows" sortable striped />
 <Checkbox v-model="agreed" label="I agree" />
@@ -138,6 +140,7 @@ app.use(VueForge, {
 - MultiSelect
 - DatePicker
 - DateRangePicker
+- TimePicker
 - Pagination
 - DataTable
 - Switch
@@ -331,6 +334,49 @@ Example:
 ```vue
 <DateRangePicker v-model="dateRange" placeholder="Pick date range" min="2026-01-01" max="2026-12-31" />
 ```
+
+## TimePicker
+
+Props:
+
+- `modelValue?: string` (v-model, time `HH:mm`)
+- `placeholder?: string`
+- `disabled?: boolean`
+- `readonly?: boolean`
+- `min?: string` (time `HH:mm`)
+- `max?: string` (time `HH:mm`)
+- `step?: number` (minutes, default `30`)
+- `format?: '24h' | '12h'` (default `24h`)
+- `size?: 'small' | 'normal' | 'large'` (default `normal`)
+- `variant?: 'filled' | 'outlined'` (default `filled`)
+
+Events:
+
+- `update:modelValue`
+- `change`
+- `focus`
+- `blur`
+
+Example:
+
+```vue
+<TimePicker v-model="meetingTime" placeholder="Pick time" min="09:00" max="18:00" :step="15" />
+```
+
+### TimePicker tokens
+
+Component tokens (override via `theme.overrides.components.timepicker`):
+
+- `minWidth`, `fontSize`, `controlGap`, `chevronSize`
+- `padding`, `borderRadius`, `borderColor`
+- `backgroundColor`, `textColor`, `placeholderColor`
+- `focusBorderColor`, `focusRingShadow`, `hoverBorderColor`
+- `disabledOpacity`
+- `panelBackgroundColor`, `panelBorderColor`, `panelPadding`, `panelMaxHeight`, `panelRadiusOffset`, `panelShadow`
+- `optionPadding`, `optionBorderRadius`
+- `optionHoverBackgroundColor`, `optionActiveBackgroundColor`, `optionActiveTextColor`
+- `small.fontSize`, `small.padding`
+- `large.fontSize`, `large.padding`
 
 ## Pagination
 
@@ -1191,7 +1237,7 @@ VueForge exposes design tokens as CSS variables generated from the theme preset.
 Typed tokens:
 
 - `ThemeTokens`/`ThemeOptions`/`ThemePreset` are exported for type-safe theming in TS.
-- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/numberInput/formField/textarea/link/breadcrumbs/menu/modal/drawer/popover/dropdown/select/autocomplete/multiselect/datepicker/daterangepicker/pagination/switch/tooltip/skeleton/progress/badge/chip/avatar/datatable/slider/stepper).
+- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/numberInput/formField/textarea/link/breadcrumbs/menu/modal/drawer/popover/dropdown/select/autocomplete/multiselect/datepicker/daterangepicker/timepicker/pagination/switch/tooltip/skeleton/progress/badge/chip/avatar/datatable/slider/stepper).
 
 Default core values (from `DefaultTheme`):
 

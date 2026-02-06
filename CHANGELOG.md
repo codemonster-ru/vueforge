@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.35.0] - 2026-02-06
+
+- Added TimePicker component with step/min/max bounds, 12h/24h display, and size/variant options.
+- Added default theme tokens and typed token support for `components.timepicker`.
+- Added TimePicker export, README docs, unit tests, and example app showcase.
+
 ## [0.34.0] - 2026-02-06
 
 - Added Stepper component with horizontal/vertical layouts, status states, and sizing.

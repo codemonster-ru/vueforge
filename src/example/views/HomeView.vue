@@ -156,6 +156,21 @@
                     </div>
                 </div>
                 <div class="vf-home__card">
+                    <h3>TimePicker</h3>
+                    <div class="vf-home__stack">
+                        <TimePicker v-model="meetingTime" placeholder="Pick time" />
+                        <TimePicker
+                            v-model="meetingTimeAlt"
+                            placeholder="Pick time (outlined)"
+                            variant="outlined"
+                            min="09:00"
+                            max="18:00"
+                            :step="15"
+                            format="12h"
+                        />
+                    </div>
+                </div>
+                <div class="vf-home__card">
                     <h3>Pagination</h3>
                     <div class="vf-home__stack">
                         <Pagination v-model="page" :total-items="240" :page-size="20" :sibling-count="0" size="small" />
@@ -411,6 +426,7 @@ import {
     Dropdown,
     DatePicker,
     DateRangePicker,
+    TimePicker,
     Pagination,
     DataTable,
     MultiSelect,
@@ -475,6 +491,8 @@ const dueDate = ref('');
 const dueDateAlt = ref('');
 const dateRange = ref<[string | null, string | null] | null>([null, null]);
 const dateRangeAlt = ref<[string | null, string | null] | null>([null, null]);
+const meetingTime = ref('');
+const meetingTimeAlt = ref('');
 const page = ref(6);
 const agreed = ref(false);
 const agreedAlt = ref(false);

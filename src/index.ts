@@ -12,6 +12,7 @@ export { default as Autocomplete } from '@/package/components/autocomplete.vue';
 export { default as MultiSelect } from '@/package/components/multi-select.vue';
 export { default as DatePicker } from '@/package/components/datepicker.vue';
 export { default as DateRangePicker } from '@/package/components/date-range-picker.vue';
+export { default as TimePicker } from '@/package/components/timepicker.vue';
 export { default as Pagination } from '@/package/components/pagination.vue';
 export { default as Checkbox } from '@/package/components/checkbox.vue';
 export { default as RadioGroup } from '@/package/components/radio-group.vue';
