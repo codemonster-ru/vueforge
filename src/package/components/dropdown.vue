@@ -34,7 +34,7 @@
 
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
-import { autoUpdate, computePosition, flip, offset } from '@codemonster-ru/floater.js';
+import { autoUpdate, computePosition, flip, offset as offsetMiddleware } from '@codemonster-ru/floater.js';
 import Menu from '@/package/components/menu.vue';
 
 type Placement = 'bottom-start' | 'bottom-end' | 'top-start' | 'top-end' | 'bottom' | 'top';
@@ -215,7 +215,7 @@ const mountFloater = () => {
         } = await computePosition(reference, floating, {
             placement: basePlacement.value,
             strategy: 'fixed',
-            middleware: [offset(props.offset), flip({ placements: fallbackPlacements(basePlacement.value) })],
+            middleware: [offsetMiddleware(props.offset), flip({ placements: fallbackPlacements(basePlacement.value) })],
         });
 
         currentPlacement.value = (resolvedPlacement as Placement) ?? basePlacement.value;
