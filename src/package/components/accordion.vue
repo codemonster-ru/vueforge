@@ -33,6 +33,8 @@ const props = withDefaults(defineProps<Props>(), {
     disabled: false,
     variant: 'filled',
     size: 'normal',
+    ariaLabel: '',
+    ariaLabelledby: '',
 });
 
 const uid = ++accordionIdCounter;

@@ -77,6 +77,7 @@ const emits = defineEmits(['update:modelValue', 'input', 'change', 'focus', 'blu
 defineOptions({ name: 'VfSlider' });
 
 const props = withDefaults(defineProps<Props>(), {
+    modelValue: undefined,
     min: 0,
     max: 100,
     step: 1,

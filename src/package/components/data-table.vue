@@ -53,8 +53,8 @@
                     </td>
                 </tr>
                 <tr
-                    v-else
                     v-for="(row, rowIndex) in sortedRows"
+                    v-else
                     :key="getRowKey(row, rowIndex)"
                     class="vf-datatable__row"
                     :class="getRowClass(rowIndex)"

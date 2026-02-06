@@ -15,6 +15,8 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
+    width: '',
+    height: '',
     variant: 'text',
     animated: true,
 });

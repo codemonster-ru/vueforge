@@ -36,6 +36,8 @@ const props = withDefaults(defineProps<Props>(), {
     modelValue: undefined,
     disabled: false,
     orientation: 'horizontal',
+    ariaLabel: '',
+    ariaLabelledby: '',
 });
 
 const uid = ++tabsIdCounter;

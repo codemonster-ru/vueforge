@@ -41,6 +41,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
+    value: null,
     variant: 'linear',
     size: 'normal',
     label: '',

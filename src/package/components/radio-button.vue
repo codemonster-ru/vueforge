@@ -35,6 +35,7 @@ const props = withDefaults(defineProps<Props>(), {
     value: undefined,
     label: '',
     disabled: false,
+    name: '',
     variant: 'filled',
 });
 

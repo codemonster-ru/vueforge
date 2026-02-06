@@ -1,7 +1,7 @@
 <template>
     <div class="vf-home">
         <h1>Examples</h1>
-        <section class="vf-home__section" id="components">
+        <section id="components" class="vf-home__section">
             <h2>Theming</h2>
             <div class="vf-home__actions">
                 <Button label="Apply Blue Theme" @click="applyBlueTheme" />

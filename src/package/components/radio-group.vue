@@ -29,9 +29,12 @@ interface Props {
 const emits = defineEmits(['update:modelValue', 'change']);
 const props = withDefaults(defineProps<Props>(), {
     modelValue: undefined,
+    name: '',
     disabled: false,
     variant: 'filled',
     direction: 'vertical',
+    ariaLabel: '',
+    ariaLabelledby: '',
 });
 
 const getClass = computed(() => {

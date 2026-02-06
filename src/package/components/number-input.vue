@@ -159,17 +159,24 @@ const onChange = (event: Event) => emits('change', event);
 const onFocus = (event: FocusEvent) => emits('focus', event);
 const onBlur = (event: FocusEvent) => emits('blur', event);
 
+const getBaseValue = () => {
+    if (Number.isFinite(props.modelValue as number)) {
+        return props.modelValue as number;
+    }
+
+    if (typeof minValue.value === 'number') {
+        return minValue.value;
+    }
+
+    return 0;
+};
+
 const stepUp = () => {
     if (props.disabled || props.readonly) {
         return;
     }
 
-    const base = Number.isFinite(props.modelValue as number)
-        ? (props.modelValue as number)
-        : typeof minValue.value === 'number'
-          ? minValue.value
-          : 0;
-    const next = applyPrecision(clamp(base + stepValue.value));
+    const next = applyPrecision(clamp(getBaseValue() + stepValue.value));
 
     emits('update:modelValue', next);
 };
@@ -178,12 +185,7 @@ const stepDown = () => {
         return;
     }
 
-    const base = Number.isFinite(props.modelValue as number)
-        ? (props.modelValue as number)
-        : typeof minValue.value === 'number'
-          ? minValue.value
-          : 0;
-    const next = applyPrecision(clamp(base - stepValue.value));
+    const next = applyPrecision(clamp(getBaseValue() - stepValue.value));
 
     emits('update:modelValue', next);
 };
