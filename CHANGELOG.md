@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.37.0] - 2026-02-07
+
+- Added Rating component with half-step support, keyboard navigation, and theming tokens.
+- Added default theme tokens and typed token support for `components.rating`.
+- Added Rating export, README docs, unit tests, and example app showcase.
+
 ## [0.36.0] - 2026-02-07
 
 - Added FileUpload component with drag-and-drop support, multi-file handling, and size/count limits.

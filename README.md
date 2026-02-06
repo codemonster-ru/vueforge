@@ -51,6 +51,7 @@ import {
     AccordionItem,
     Slider,
     Stepper,
+    Rating,
     Drawer,
     Dropdown,
 } from '@codemonster-ru/vueforge';
@@ -91,6 +92,7 @@ app.use(VueForge, {
 <Chip label="New" />
 <Slider v-model="volume" :min="0" :max="100" :step="5" show-value />
 <Stepper v-model="step" :steps="steps" clickable />
+<Rating v-model="rating" allow-half />
 <Accordion v-model="faq">
     <AccordionItem value="shipping" title="Shipping">
         Shipping details
@@ -155,6 +157,7 @@ app.use(VueForge, {
 - Avatar
 - Slider
 - Stepper
+- Rating
 
 Input / Textarea (quick API):
 
@@ -1271,6 +1274,41 @@ Component tokens (override via `theme.overrides.components.stepper`):
 - `small.indicatorSize`, `small.indicatorFontSize`, `small.labelFontSize`, `small.descriptionFontSize`, `small.lineLength`, `small.itemGap`
 - `large.indicatorSize`, `large.indicatorFontSize`, `large.labelFontSize`, `large.descriptionFontSize`, `large.lineLength`, `large.itemGap`
 
+## Rating
+
+Props:
+
+- `modelValue?: number` (v-model)
+- `max?: number` (default `5`)
+- `allowHalf?: boolean` (default `false`)
+- `readonly?: boolean`
+- `disabled?: boolean`
+- `size?: 'small' | 'normal' | 'large'` (default `normal`)
+- `ariaLabel?: string`
+
+Events:
+
+- `update:modelValue`
+- `change`
+- `focus`
+- `blur`
+
+Example:
+
+```vue
+<Rating v-model="score" />
+<Rating v-model="score" allow-half size="large" />
+```
+
+### Rating tokens
+
+Component tokens (override via `theme.overrides.components.rating`):
+
+- `gap`, `size`, `color`, `activeColor`, `hoverColor`
+- `focusRingShadow`, `focusRadius`, `disabledOpacity`
+- `small.size`
+- `large.size`
+
 ## Tokens
 
 VueForge exposes design tokens as CSS variables generated from the theme preset. Core groups:
@@ -1285,7 +1323,7 @@ VueForge exposes design tokens as CSS variables generated from the theme preset.
 Typed tokens:
 
 - `ThemeTokens`/`ThemeOptions`/`ThemePreset` are exported for type-safe theming in TS.
-- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/numberInput/formField/textarea/link/breadcrumbs/menu/modal/drawer/popover/dropdown/select/autocomplete/multiselect/datepicker/daterangepicker/timepicker/pagination/switch/tooltip/skeleton/progress/badge/chip/avatar/datatable/slider/stepper).
+- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/numberInput/formField/textarea/link/breadcrumbs/menu/modal/drawer/popover/dropdown/select/autocomplete/multiselect/datepicker/daterangepicker/timepicker/pagination/switch/tooltip/skeleton/progress/badge/chip/avatar/datatable/slider/stepper/rating).
 
 Default core values (from `DefaultTheme`):
 

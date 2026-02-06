@@ -746,6 +746,22 @@ export type SliderTokens = {
         valueFontSize?: string;
     };
 };
+export type RatingTokens = {
+    gap?: string;
+    size?: string;
+    color?: string;
+    activeColor?: string;
+    hoverColor?: string;
+    focusRingShadow?: string;
+    focusRadius?: string;
+    disabledOpacity?: string;
+    small?: {
+        size?: string;
+    };
+    large?: {
+        size?: string;
+    };
+};
 export type StepperTokens = {
     gap?: string;
     itemGap?: string;
@@ -1053,6 +1069,7 @@ export type ThemeComponentTokens = {
     badge?: BadgeTokens;
     chip?: ChipTokens;
     avatar?: AvatarTokens;
+    rating?: RatingTokens;
     [key: string]: unknown;
 };
 export type ThemeTokens = {

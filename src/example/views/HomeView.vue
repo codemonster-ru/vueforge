@@ -245,6 +245,13 @@
                     </div>
                 </div>
                 <div class="vf-home__card">
+                    <h3>Rating</h3>
+                    <div class="vf-home__stack">
+                        <Rating v-model="ratingValue" />
+                        <Rating v-model="ratingHalf" allow-half size="large" />
+                    </div>
+                </div>
+                <div class="vf-home__card">
                     <h3>Accordion</h3>
                     <Accordion v-model="accordion">
                         <AccordionItem value="shipping" title="Shipping">
@@ -456,6 +463,7 @@ import {
     Progress,
     Slider,
     Stepper,
+    Rating,
     setTheme,
     updateTheme,
 } from '@/index';
@@ -523,6 +531,8 @@ const isDark = ref(document.documentElement.getAttribute('data-theme') === 'dark
 const volume = ref(40);
 const priceRange = ref<[number, number]>([200, 700]);
 const rating = ref(3);
+const ratingValue = ref(4);
+const ratingHalf = ref(3.5);
 const ratingMarks = [
     { value: 1, label: '1' },
     { value: 2, label: '2' },
