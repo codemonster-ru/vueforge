@@ -432,6 +432,59 @@ export type DatePickerTokens = {
         daySize?: string;
     };
 };
+export type DateRangePickerTokens = {
+    minWidth?: string;
+    fontSize?: string;
+    controlGap?: string;
+    chevronSize?: string;
+    padding?: string;
+    borderRadius?: string;
+    borderColor?: string;
+    backgroundColor?: string;
+    textColor?: string;
+    placeholderColor?: string;
+    focusBorderColor?: string;
+    hoverBorderColor?: string;
+    disabledOpacity?: string;
+    panelWidth?: string;
+    panelBackgroundColor?: string;
+    panelBorderColor?: string;
+    panelPadding?: string;
+    panelRadiusOffset?: string;
+    panelShadow?: string;
+    focusRingShadow?: string;
+    headerGap?: string;
+    headerPadding?: string;
+    monthLabelFontSize?: string;
+    monthLabelFontWeight?: string;
+    navButtonSize?: string;
+    navButtonRadius?: string;
+    navButtonFontSize?: string;
+    weekdayColor?: string;
+    weekdayFontSize?: string;
+    weekdaysMarginBottom?: string;
+    daysGap?: string;
+    daySize?: string;
+    dayFontSize?: string;
+    dayBorderRadius?: string;
+    dayHoverBackgroundColor?: string;
+    daySelectedBackgroundColor?: string;
+    daySelectedTextColor?: string;
+    dayRangeBackgroundColor?: string;
+    dayRangeTextColor?: string;
+    dayMutedColor?: string;
+    dayTodayBorderColor?: string;
+    small?: {
+        padding?: string;
+        fontSize?: string;
+        daySize?: string;
+    };
+    large?: {
+        padding?: string;
+        fontSize?: string;
+        daySize?: string;
+    };
+};
 export type PaginationTokens = {
     gap?: string;
     itemMinWidth?: string;
@@ -863,6 +916,7 @@ export type ThemeComponentTokens = {
     autocomplete?: AutocompleteTokens;
     multiselect?: MultiSelectTokens;
     datepicker?: DatePickerTokens;
+    daterangepicker?: DateRangePickerTokens;
     pagination?: PaginationTokens;
     switch?: SwitchTokens;
     tooltip?: TooltipTokens;

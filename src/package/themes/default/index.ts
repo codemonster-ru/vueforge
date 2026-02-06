@@ -16,6 +16,7 @@ import select from './components/select';
 import autocomplete from './components/autocomplete';
 import multiselect from './components/multiselect';
 import datepicker from './components/datepicker';
+import daterangepicker from './components/daterangepicker';
 import pagination from './components/pagination';
 import checkbox from './components/checkbox';
 import radio from './components/radio';
@@ -54,6 +55,7 @@ export default {
         autocomplete,
         multiselect,
         datepicker,
+        daterangepicker,
         pagination,
         checkbox,
         radio,

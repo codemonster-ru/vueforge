@@ -35,6 +35,7 @@ import {
     Autocomplete,
     MultiSelect,
     DatePicker,
+    DateRangePicker,
     Pagination,
     DataTable,
     Checkbox,
@@ -73,6 +74,7 @@ app.use(VueForge, {
 <Autocomplete v-model="country" :options="countries" placeholder="Find country" />
 <MultiSelect v-model="countries" :options="countryOptions" placeholder="Select countries" clearable />
 <DatePicker v-model="birthday" placeholder="Pick birthday" />
+<DateRangePicker v-model="range" placeholder="Pick range" />
 <Pagination v-model="page" :total-items="240" :page-size="20" />
 <DataTable :columns="columns" :rows="rows" sortable striped />
 <Checkbox v-model="agreed" label="I agree" />
@@ -133,6 +135,7 @@ app.use(VueForge, {
 - Autocomplete
 - MultiSelect
 - DatePicker
+- DateRangePicker
 - Pagination
 - DataTable
 - Switch
@@ -149,7 +152,7 @@ Input / Textarea (quick API):
 - `Input`: single-line control, supports `v-model`, `size`, `variant`, `disabled`, `readonly`.
 - `NumberInput`: numeric control, supports `v-model`, `min`, `max`, `step`, `precision`, `controls`, `size`, `variant`.
 - `Textarea`: multi-line control, same as Input plus `rows`.
-- `Checkbox`, `Select`, `Autocomplete`, `MultiSelect`, `DatePicker`, `Pagination`, and `DataTable` also support `variant: 'filled' | 'outlined'`.
+- `Checkbox`, `Select`, `Autocomplete`, `MultiSelect`, `DatePicker`, `DateRangePicker`, `Pagination`, and `DataTable` also support `variant: 'filled' | 'outlined'`.
 
 ## FormField
 
@@ -293,6 +296,37 @@ Example:
 
 ```vue
 <DatePicker v-model="startDate" placeholder="Pick date" min="2026-01-01" max="2026-12-31" />
+```
+
+## DateRangePicker
+
+Props:
+
+- `modelValue?: [string | null, string | null] | null` (v-model, ISO date `YYYY-MM-DD`)
+- `placeholder?: string`
+- `startPlaceholder?: string` (default `Start`)
+- `endPlaceholder?: string` (default `End`)
+- `separator?: string` (default `-`)
+- `disabled?: boolean`
+- `readonly?: boolean`
+- `min?: string` (ISO date `YYYY-MM-DD`)
+- `max?: string` (ISO date `YYYY-MM-DD`)
+- `locale?: string` (default `en-US`)
+- `firstDayOfWeek?: number` (default `0`, Sunday)
+- `size?: 'small' | 'normal' | 'large'` (default `normal`)
+- `variant?: 'filled' | 'outlined'` (default `filled`)
+
+Events:
+
+- `update:modelValue`
+- `change`
+- `focus`
+- `blur`
+
+Example:
+
+```vue
+<DateRangePicker v-model="dateRange" placeholder="Pick date range" min="2026-01-01" max="2026-12-31" />
 ```
 
 ## Pagination
@@ -1110,7 +1144,7 @@ VueForge exposes design tokens as CSS variables generated from the theme preset.
 Typed tokens:
 
 - `ThemeTokens`/`ThemeOptions`/`ThemePreset` are exported for type-safe theming in TS.
-- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/numberInput/formField/textarea/link/breadcrumbs/menu/modal/drawer/popover/dropdown/select/autocomplete/multiselect/datepicker/pagination/switch/tooltip/skeleton/progress/badge/chip/avatar/datatable/slider).
+- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/numberInput/formField/textarea/link/breadcrumbs/menu/modal/drawer/popover/dropdown/select/autocomplete/multiselect/datepicker/daterangepicker/pagination/switch/tooltip/skeleton/progress/badge/chip/avatar/datatable/slider).
 
 Default core values (from `DefaultTheme`):
 

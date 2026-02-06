@@ -126,6 +126,19 @@
                     </div>
                 </div>
                 <div class="vf-home__card">
+                    <h3>DateRangePicker</h3>
+                    <div class="vf-home__stack">
+                        <DateRangePicker v-model="dateRange" placeholder="Pick a range" />
+                        <DateRangePicker
+                            v-model="dateRangeAlt"
+                            placeholder="Pick a range (outlined)"
+                            variant="outlined"
+                            min="2026-01-10"
+                            max="2026-12-31"
+                        />
+                    </div>
+                </div>
+                <div class="vf-home__card">
                     <h3>Pagination</h3>
                     <div class="vf-home__stack">
                         <Pagination v-model="page" :total-items="240" :page-size="20" :sibling-count="0" size="small" />
@@ -373,6 +386,7 @@ import {
     Popover,
     Dropdown,
     DatePicker,
+    DateRangePicker,
     Pagination,
     DataTable,
     MultiSelect,
@@ -434,6 +448,8 @@ const countryAlt = ref('');
 const countriesMulti = ref<Array<string | number>>([]);
 const dueDate = ref('');
 const dueDateAlt = ref('');
+const dateRange = ref<[string | null, string | null] | null>([null, null]);
+const dateRangeAlt = ref<[string | null, string | null] | null>([null, null]);
 const page = ref(6);
 const agreed = ref(false);
 const agreedAlt = ref(false);

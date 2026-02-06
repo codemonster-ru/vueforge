@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.33.0] - 2026-02-06
+
+- Added DateRangePicker component with range selection, min/max bounds, and locale support.
+- Added default theme tokens and typed token support for `components.daterangepicker`.
+- Added DateRangePicker export, README docs, unit tests, and example app showcase.
+
 ## [0.32.0] - 2026-02-06
 
 - Added Dropdown component with trigger slot, Menu-based items rendering, and floater positioning.
