@@ -305,6 +305,15 @@
                     </div>
                 </div>
                 <div class="vf-home__card">
+                    <h3>Chip</h3>
+                    <div class="vf-home__stack-inline">
+                        <Chip label="New" />
+                        <Chip severity="info" variant="soft" closable>Info</Chip>
+                        <Chip severity="success" variant="outline" closable>Active</Chip>
+                        <Chip severity="danger" variant="solid" closable>Blocked</Chip>
+                    </div>
+                </div>
+                <div class="vf-home__card">
                     <h3>Avatar</h3>
                     <div class="vf-home__stack-inline">
                         <Avatar name="Ada Lovelace" />
@@ -371,6 +380,7 @@ import {
     Tooltip,
     Skeleton,
     Badge,
+    Chip,
     Avatar,
     Progress,
     Slider,

@@ -28,6 +28,7 @@ import toast from './components/toast';
 import alert from './components/alert';
 import progress from './components/progress';
 import badge from './components/badge';
+import chip from './components/chip';
 import avatar from './components/avatar';
 import slider from './components/slider';
 
@@ -64,6 +65,7 @@ export default {
         alert,
         progress,
         badge,
+        chip,
         avatar,
         slider,
     },

@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.31.0] - 2026-02-06
+
+- Added Chip component with size/variant/severity options, optional icon, and close action.
+- Added default theme tokens and typed token support for `components.chip`.
+- Added Chip export, README docs, and example app showcase.
+
 ## [0.30.0] - 2026-02-06
 
 - Added NumberInput component with min/max/step/precision support and optional controls.

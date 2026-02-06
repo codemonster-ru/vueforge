@@ -43,6 +43,7 @@ import {
     Skeleton,
     Progress,
     Badge,
+    Chip,
     Accordion,
     AccordionItem,
     Slider,
@@ -79,6 +80,7 @@ app.use(VueForge, {
 <Skeleton height="12px" width="140px" />
 <Progress :value="64" />
 <Badge label="Beta" />
+<Chip label="New" />
 <Slider v-model="volume" :min="0" :max="100" :step="5" show-value />
 <Accordion v-model="faq">
     <AccordionItem value="shipping" title="Shipping">
@@ -131,6 +133,7 @@ app.use(VueForge, {
 - Skeleton
 - Progress
 - Badge
+- Chip
 - Avatar
 - Slider
 
@@ -885,6 +888,50 @@ Component tokens (override via `theme.overrides.components.badge`):
 - `small.fontSize`, `small.paddingX`, `small.paddingY`
 - `large.fontSize`, `large.paddingX`, `large.paddingY`
 
+## Chip
+
+Props:
+
+- `label?: string`
+- `size?: 'small' | 'normal' | 'large'` (default `normal`)
+- `variant?: 'solid' | 'soft' | 'outline'` (default `soft`)
+- `severity?: 'neutral' | 'info' | 'success' | 'warn' | 'danger'` (default `neutral`)
+- `disabled?: boolean`
+- `closable?: boolean` (default `false`)
+- `icon?: string`
+- `ariaLabel?: string`
+- `closeLabel?: string` (default `Remove`)
+
+Slots:
+
+- `default` - chip content (fallbacks to `label`)
+- `icon` (optional)
+- `close` (optional)
+
+Events:
+
+- `close`
+
+Example:
+
+```vue
+<Chip label="New" />
+<Chip severity="info" closable>Info</Chip>
+```
+
+### Chip tokens
+
+Component tokens (override via `theme.overrides.components.chip`):
+
+- `fontSize`, `lineHeight`, `paddingX`, `paddingY`, `borderRadius`, `gap`
+- `backgroundColor`, `textColor`, `borderColor`
+- `softBackgroundColor`, `softTextColor`, `softBorderColor`
+- `outlineTextColor`, `outlineBorderColor`
+- `iconSize`, `closeSize`, `closeFontSize`, `closeRadius`, `closeColor`, `closeHoverBackgroundColor`, `disabledOpacity`
+- `info.*`, `success.*`, `warn.*`, `danger.*` (backgroundColor/textColor/borderColor/soft*/outline*)
+- `small.fontSize`, `small.paddingX`, `small.paddingY`
+- `large.fontSize`, `large.paddingX`, `large.paddingY`
+
 ## Avatar
 
 Props:
@@ -1011,7 +1058,7 @@ VueForge exposes design tokens as CSS variables generated from the theme preset.
 Typed tokens:
 
 - `ThemeTokens`/`ThemeOptions`/`ThemePreset` are exported for type-safe theming in TS.
-- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/numberInput/formField/textarea/link/breadcrumbs/menu/modal/drawer/popover/select/autocomplete/multiselect/datepicker/pagination/switch/tooltip/skeleton/progress/badge/avatar/datatable/slider).
+- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/numberInput/formField/textarea/link/breadcrumbs/menu/modal/drawer/popover/select/autocomplete/multiselect/datepicker/pagination/switch/tooltip/skeleton/progress/badge/chip/avatar/datatable/slider).
 
 Default core values (from `DefaultTheme`):
 

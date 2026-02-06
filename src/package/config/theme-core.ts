@@ -757,6 +757,53 @@ export type BadgeTokens = {
         paddingY?: string;
     };
 };
+type ChipSeverityTokens = {
+    backgroundColor?: string;
+    textColor?: string;
+    borderColor?: string;
+    softBackgroundColor?: string;
+    softTextColor?: string;
+    softBorderColor?: string;
+    outlineTextColor?: string;
+    outlineBorderColor?: string;
+};
+export type ChipTokens = {
+    fontSize?: string;
+    lineHeight?: string;
+    paddingX?: string;
+    paddingY?: string;
+    borderRadius?: string;
+    gap?: string;
+    backgroundColor?: string;
+    textColor?: string;
+    borderColor?: string;
+    softBackgroundColor?: string;
+    softTextColor?: string;
+    softBorderColor?: string;
+    outlineTextColor?: string;
+    outlineBorderColor?: string;
+    iconSize?: string;
+    closeSize?: string;
+    closeFontSize?: string;
+    closeRadius?: string;
+    closeColor?: string;
+    closeHoverBackgroundColor?: string;
+    disabledOpacity?: string;
+    info?: ChipSeverityTokens;
+    success?: ChipSeverityTokens;
+    warn?: ChipSeverityTokens;
+    danger?: ChipSeverityTokens;
+    small?: {
+        fontSize?: string;
+        paddingX?: string;
+        paddingY?: string;
+    };
+    large?: {
+        fontSize?: string;
+        paddingX?: string;
+        paddingY?: string;
+    };
+};
 export type AvatarTokens = {
     size?: string;
     fontSize?: string;
@@ -815,6 +862,7 @@ export type ThemeComponentTokens = {
     toast?: ToastTokens;
     alert?: AlertTokens;
     badge?: BadgeTokens;
+    chip?: ChipTokens;
     avatar?: AvatarTokens;
     [key: string]: unknown;
 };
