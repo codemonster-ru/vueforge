@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.29.0] - 2026-02-06
+
+- Added Breadcrumbs component with slots, separator customization, and theme tokens.
+- Added default theme tokens and typed token support for `components.breadcrumbs`.
+- Added Breadcrumbs export, README docs, unit tests, and example app showcase.
+
 ## [0.28.0] - 2026-02-06
 
 - Added Drawer component with positions, overlay, focus handling, and close controls.

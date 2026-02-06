@@ -126,6 +126,15 @@ export type LinkTokens = {
     hoverColor?: string;
     activeColor?: string;
 };
+export type BreadcrumbsTokens = {
+    gap?: string;
+    fontSize?: string;
+    textColor?: string;
+    hoverColor?: string;
+    activeColor?: string;
+    separatorColor?: string;
+    disabledOpacity?: string;
+};
 export type MenuTokens = {
     iconGap?: string;
     submenuOffset?: string;
@@ -752,6 +761,7 @@ export type ThemeComponentTokens = {
     formField?: FormFieldTokens;
     textarea?: TextareaTokens;
     link?: LinkTokens;
+    breadcrumbs?: BreadcrumbsTokens;
     menu?: MenuTokens;
     modal?: ModalTokens;
     drawer?: DrawerTokens;

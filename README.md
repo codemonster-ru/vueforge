@@ -29,6 +29,7 @@ import {
     Input,
     FormField,
     Textarea,
+    Breadcrumbs,
     Select,
     Autocomplete,
     MultiSelect,
@@ -63,6 +64,7 @@ app.use(VueForge, {
     <Input v-model="name" placeholder="Your name" />
 </FormField>
 <Textarea v-model="bio" placeholder="Tell us about yourself" />
+<Breadcrumbs :items="breadcrumbItems" />
 <Select v-model="role" :options="roles" placeholder="Choose role" />
 <Autocomplete v-model="country" :options="countries" placeholder="Find country" />
 <MultiSelect v-model="countries" :options="countryOptions" placeholder="Select countries" clearable />
@@ -110,6 +112,7 @@ app.use(VueForge, {
 - FormField
 - Textarea
 - Link
+- Breadcrumbs
 - Menu
 - Modal
 - Drawer
@@ -440,6 +443,38 @@ Example:
     <RadioButton value="pro">Pro</RadioButton>
 </RadioGroup>
 ```
+
+## Breadcrumbs
+
+Props:
+
+- `items?: Array<{ label?: string; to?: string; href?: string; url?: string; active?: boolean; disabled?: boolean }>`
+- `separator?: string` (default `/`)
+- `ariaLabel?: string` (default `Breadcrumbs`)
+
+Slots:
+
+- `item` - slot props: `{ item, index, isLast, active }`
+- `separator` (optional) - slot props: `{ separator }`
+
+Example:
+
+```vue
+<Breadcrumbs
+    :items="[
+        { label: 'Home', to: '/' },
+        { label: 'Settings', to: '/settings' },
+        { label: 'Profile', active: true },
+    ]"
+/>
+```
+
+### Breadcrumbs tokens
+
+Component tokens (override via `theme.overrides.components.breadcrumbs`):
+
+- `gap`, `fontSize`, `textColor`, `hoverColor`, `activeColor`
+- `separatorColor`, `disabledOpacity`
 
 ## Tabs / Tab / TabPanel
 
@@ -941,7 +976,7 @@ VueForge exposes design tokens as CSS variables generated from the theme preset.
 Typed tokens:
 
 - `ThemeTokens`/`ThemeOptions`/`ThemePreset` are exported for type-safe theming in TS.
-- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/formField/textarea/link/menu/modal/drawer/popover/select/autocomplete/multiselect/datepicker/pagination/switch/tooltip/skeleton/progress/badge/avatar/datatable/slider).
+- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/formField/textarea/link/breadcrumbs/menu/modal/drawer/popover/select/autocomplete/multiselect/datepicker/pagination/switch/tooltip/skeleton/progress/badge/avatar/datatable/slider).
 
 Default core values (from `DefaultTheme`):
 

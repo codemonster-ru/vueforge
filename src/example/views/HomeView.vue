@@ -1,7 +1,7 @@
 <template>
     <div class="vf-home">
         <h1>Examples</h1>
-        <section class="vf-home__section">
+        <section class="vf-home__section" id="components">
             <h2>Theming</h2>
             <div class="vf-home__actions">
                 <Button label="Apply Blue Theme" @click="applyBlueTheme" />
@@ -31,6 +31,10 @@
                         <Link to="/">Router link</Link>
                         <Link href="https://example.com" disabled>Disabled link</Link>
                     </div>
+                </div>
+                <div class="vf-home__card">
+                    <h3>Breadcrumbs</h3>
+                    <Breadcrumbs :items="breadcrumbItems" />
                 </div>
                 <div class="vf-home__card">
                     <h3>Input</h3>
@@ -332,6 +336,7 @@ import {
     Button,
     Card,
     Checkbox,
+    Breadcrumbs,
     DefaultTheme,
     FormField,
     Input,
@@ -447,6 +452,11 @@ const tableRows = [
     { id: 3, name: 'Chen', role: 'Product', age: 31 },
 ];
 const menuItems = [{ label: 'Home', to: '/' }, { separator: true }, { label: 'Docs', href: 'https://example.com' }];
+const breadcrumbItems = [
+    { label: 'Home', to: '/' },
+    { label: 'Components', href: '#components' },
+    { label: 'Breadcrumbs', active: true },
+];
 const resetDrawer = () => {
     drawerNew.value = true;
     drawerPopular.value = false;

@@ -5,6 +5,7 @@ import input from './components/input';
 import formField from './components/form-field';
 import textarea from './components/textarea';
 import link from './components/link';
+import breadcrumbs from './components/breadcrumbs';
 import menu from './components/menu';
 import modal from './components/modal';
 import drawer from './components/drawer';
@@ -39,6 +40,7 @@ export default {
         formField,
         textarea,
         link,
+        breadcrumbs,
         menu,
         modal,
         drawer,
