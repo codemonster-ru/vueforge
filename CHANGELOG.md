@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.34.0] - 2026-02-06
+
+- Added Stepper component with horizontal/vertical layouts, status states, and sizing.
+- Added default theme tokens and typed token support for `components.stepper`.
+- Added Stepper export, README docs, unit tests, and example app showcase.
+
 ## [0.33.0] - 2026-02-06
 
 - Added DateRangePicker component with range selection, min/max bounds, and locale support.

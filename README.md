@@ -48,6 +48,7 @@ import {
     Accordion,
     AccordionItem,
     Slider,
+    Stepper,
     Drawer,
     Dropdown,
 } from '@codemonster-ru/vueforge';
@@ -85,6 +86,7 @@ app.use(VueForge, {
 <Badge label="Beta" />
 <Chip label="New" />
 <Slider v-model="volume" :min="0" :max="100" :step="5" show-value />
+<Stepper v-model="step" :steps="steps" clickable />
 <Accordion v-model="faq">
     <AccordionItem value="shipping" title="Shipping">
         Shipping details
@@ -146,6 +148,7 @@ app.use(VueForge, {
 - Chip
 - Avatar
 - Slider
+- Stepper
 
 Input / Textarea (quick API):
 
@@ -350,6 +353,11 @@ Events:
 
 - `update:modelValue`
 - `change`
+
+Slots:
+
+- `indicator` - slot props: `{ step, index, status, active, completed, upcoming, error }`
+- `step` - slot props: `{ step, index, status, active, completed, upcoming, error }`
 
 Example:
 
@@ -1130,6 +1138,45 @@ Component tokens (override via `theme.overrides.components.slider`):
 - `small.trackHeight`, `small.thumbSize`, `small.valueFontSize`
 - `large.trackHeight`, `large.thumbSize`, `large.valueFontSize`
 
+## Stepper
+
+Props:
+
+- `modelValue?: string | number` (v-model)
+- `steps?: Array<{ label?: string; description?: string; value?: string | number; disabled?: boolean; status?: 'completed' | 'active' | 'upcoming' | 'error' }>`
+- `orientation?: 'horizontal' | 'vertical'` (default `horizontal`)
+- `size?: 'small' | 'normal' | 'large'` (default `normal`)
+- `clickable?: boolean` (default `false`)
+- `ariaLabel?: string`
+- `ariaLabelledby?: string`
+
+Events:
+
+- `update:modelValue`
+- `change`
+
+Example:
+
+```vue
+<Stepper v-model="step" :steps="steps" clickable />
+<Stepper v-model="step" :steps="steps" orientation="vertical" size="small" />
+```
+
+### Stepper tokens
+
+Component tokens (override via `theme.overrides.components.stepper`):
+
+- `gap`, `itemGap`, `lineThickness`, `lineLength`, `lineColor`
+- `indicatorSize`, `indicatorBorderRadius`, `indicatorBorderWidth`, `indicatorFontSize`
+- `indicatorBackgroundColor`, `indicatorTextColor`, `indicatorBorderColor`
+- `activeIndicatorBackgroundColor`, `activeIndicatorTextColor`, `activeIndicatorBorderColor`
+- `completedIndicatorBackgroundColor`, `completedIndicatorTextColor`, `completedIndicatorBorderColor`
+- `errorIndicatorBackgroundColor`, `errorIndicatorTextColor`, `errorIndicatorBorderColor`
+- `labelFontSize`, `labelColor`, `descriptionFontSize`, `descriptionColor`
+- `disabledOpacity`
+- `small.indicatorSize`, `small.indicatorFontSize`, `small.labelFontSize`, `small.descriptionFontSize`, `small.lineLength`, `small.itemGap`
+- `large.indicatorSize`, `large.indicatorFontSize`, `large.labelFontSize`, `large.descriptionFontSize`, `large.lineLength`, `large.itemGap`
+
 ## Tokens
 
 VueForge exposes design tokens as CSS variables generated from the theme preset. Core groups:
@@ -1144,7 +1191,7 @@ VueForge exposes design tokens as CSS variables generated from the theme preset.
 Typed tokens:
 
 - `ThemeTokens`/`ThemeOptions`/`ThemePreset` are exported for type-safe theming in TS.
-- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/numberInput/formField/textarea/link/breadcrumbs/menu/modal/drawer/popover/dropdown/select/autocomplete/multiselect/datepicker/daterangepicker/pagination/switch/tooltip/skeleton/progress/badge/chip/avatar/datatable/slider).
+- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/numberInput/formField/textarea/link/breadcrumbs/menu/modal/drawer/popover/dropdown/select/autocomplete/multiselect/datepicker/daterangepicker/pagination/switch/tooltip/skeleton/progress/badge/chip/avatar/datatable/slider/stepper).
 
 Default core values (from `DefaultTheme`):
 

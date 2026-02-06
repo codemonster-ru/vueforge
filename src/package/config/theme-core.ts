@@ -669,6 +669,50 @@ export type SliderTokens = {
         valueFontSize?: string;
     };
 };
+export type StepperTokens = {
+    gap?: string;
+    itemGap?: string;
+    lineThickness?: string;
+    lineLength?: string;
+    lineColor?: string;
+    indicatorSize?: string;
+    indicatorBorderRadius?: string;
+    indicatorBorderWidth?: string;
+    indicatorFontSize?: string;
+    indicatorBackgroundColor?: string;
+    indicatorTextColor?: string;
+    indicatorBorderColor?: string;
+    activeIndicatorBackgroundColor?: string;
+    activeIndicatorTextColor?: string;
+    activeIndicatorBorderColor?: string;
+    completedIndicatorBackgroundColor?: string;
+    completedIndicatorTextColor?: string;
+    completedIndicatorBorderColor?: string;
+    errorIndicatorBackgroundColor?: string;
+    errorIndicatorTextColor?: string;
+    errorIndicatorBorderColor?: string;
+    labelFontSize?: string;
+    labelColor?: string;
+    descriptionFontSize?: string;
+    descriptionColor?: string;
+    disabledOpacity?: string;
+    small?: {
+        indicatorSize?: string;
+        indicatorFontSize?: string;
+        labelFontSize?: string;
+        descriptionFontSize?: string;
+        lineLength?: string;
+        itemGap?: string;
+    };
+    large?: {
+        indicatorSize?: string;
+        indicatorFontSize?: string;
+        labelFontSize?: string;
+        descriptionFontSize?: string;
+        lineLength?: string;
+        itemGap?: string;
+    };
+};
 export type DataTableTokens = {
     borderColor?: string;
     borderRadius?: string;
@@ -923,6 +967,7 @@ export type ThemeComponentTokens = {
     skeleton?: SkeletonTokens;
     progress?: ProgressTokens;
     slider?: SliderTokens;
+    stepper?: StepperTokens;
     datatable?: DataTableTokens;
     toast?: ToastTokens;
     alert?: AlertTokens;

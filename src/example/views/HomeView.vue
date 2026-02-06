@@ -49,7 +49,14 @@
                     <h3>NumberInput</h3>
                     <div class="vf-home__stack">
                         <NumberInput v-model="quantity" :min="0" :max="20" :step="1" />
-                        <NumberInput v-model="price" :min="0" :max="999" :step="0.5" :precision="2" variant="outlined" />
+                        <NumberInput
+                            v-model="price"
+                            :min="0"
+                            :max="999"
+                            :step="0.5"
+                            :precision="2"
+                            variant="outlined"
+                        />
                     </div>
                 </div>
                 <div class="vf-home__card">
@@ -67,7 +74,12 @@
                         </FormField>
                         <FormField label="Username" :error="usernameError" required>
                             <template #default="{ id, describedBy }">
-                                <Input :id="id" v-model="username" placeholder="Username" :aria-describedby="describedBy" />
+                                <Input
+                                    :id="id"
+                                    v-model="username"
+                                    placeholder="Username"
+                                    :aria-describedby="describedBy"
+                                />
                             </template>
                         </FormField>
                     </div>
@@ -102,7 +114,12 @@
                 <div class="vf-home__card">
                     <h3>MultiSelect</h3>
                     <div class="vf-home__stack">
-                        <MultiSelect v-model="countriesMulti" :options="countries" placeholder="Select countries" clearable />
+                        <MultiSelect
+                            v-model="countriesMulti"
+                            :options="countries"
+                            placeholder="Select countries"
+                            clearable
+                        />
                         <MultiSelect
                             v-model="countriesMulti"
                             :options="countries"
@@ -197,6 +214,13 @@
                             </TabPanel>
                         </template>
                     </Tabs>
+                </div>
+                <div class="vf-home__card">
+                    <h3>Stepper</h3>
+                    <div class="vf-home__stack">
+                        <Stepper v-model="step" :steps="stepperSteps" clickable />
+                        <Stepper v-model="step" :steps="stepperSteps" orientation="vertical" size="small" clickable />
+                    </div>
                 </div>
                 <div class="vf-home__card">
                     <h3>Accordion</h3>
@@ -407,6 +431,7 @@ import {
     Avatar,
     Progress,
     Slider,
+    Stepper,
     setTheme,
     updateTheme,
 } from '@/index';
@@ -457,6 +482,7 @@ const notifications = ref(true);
 const plan = ref('basic');
 const layout = ref('grid');
 const tab = ref('overview');
+const step = ref(1);
 const accordion = ref('shipping');
 const toastOpen = ref(false);
 const alertOpen = ref(true);
@@ -475,6 +501,11 @@ const ratingMarks = [
     { value: 3, label: '3' },
     { value: 4, label: '4' },
     { value: 5, label: '5' },
+];
+const stepperSteps = [
+    { label: 'Account', description: 'Create a profile' },
+    { label: 'Plan', description: 'Select a plan' },
+    { label: 'Confirm', description: 'Review details' },
 ];
 const roles = [
     { label: 'Developer', value: 'dev' },
