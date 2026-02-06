@@ -251,6 +251,16 @@ export type PopoverTokens = {
     backgroundColor?: string;
     shadow?: string;
 };
+export type DropdownTokens = {
+    panelPadding?: string;
+    panelBorderRadius?: string;
+    panelBorderColor?: string;
+    panelBackgroundColor?: string;
+    panelShadow?: string;
+    zIndex?: string;
+    disabledOpacity?: string;
+    itemPadding?: string;
+};
 export type SelectTokens = {
     minWidth?: string;
     fontSize?: string;
@@ -848,6 +858,7 @@ export type ThemeComponentTokens = {
     modal?: ModalTokens;
     drawer?: DrawerTokens;
     popover?: PopoverTokens;
+    dropdown?: DropdownTokens;
     select?: SelectTokens;
     autocomplete?: AutocompleteTokens;
     multiselect?: MultiSelectTokens;

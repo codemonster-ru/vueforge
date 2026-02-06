@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.32.0] - 2026-02-06
+
+- Added Dropdown component with trigger slot, Menu-based items rendering, and floater positioning.
+- Added default theme tokens and typed token support for `components.dropdown`.
+- Added Dropdown export, README docs, and example app showcase.
+
 ## [0.31.0] - 2026-02-06
 
 - Added Chip component with size/variant/severity options, optional icon, and close action.

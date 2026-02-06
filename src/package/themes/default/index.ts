@@ -11,6 +11,7 @@ import menu from './components/menu';
 import modal from './components/modal';
 import drawer from './components/drawer';
 import popover from './components/popover';
+import dropdown from './components/dropdown';
 import select from './components/select';
 import autocomplete from './components/autocomplete';
 import multiselect from './components/multiselect';
@@ -48,6 +49,7 @@ export default {
         modal,
         drawer,
         popover,
+        dropdown,
         select,
         autocomplete,
         multiselect,

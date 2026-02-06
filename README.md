@@ -48,6 +48,7 @@ import {
     AccordionItem,
     Slider,
     Drawer,
+    Dropdown,
 } from '@codemonster-ru/vueforge';
 import '@codemonster-ru/vueforge/dist/index.css';
 
@@ -95,6 +96,11 @@ app.use(VueForge, {
         Drawer content
     </template>
 </Drawer>
+<Dropdown :items="menuItems">
+    <template #trigger>
+        <Button label="Actions" />
+    </template>
+</Dropdown>
 ```
 
 ## Components
@@ -121,6 +127,7 @@ app.use(VueForge, {
 - Menu
 - Modal
 - Drawer
+- Dropdown
 - Popover
 - Select
 - Autocomplete
@@ -816,6 +823,51 @@ Component tokens (override via `theme.overrides.components.drawer`):
 - `closeSize`, `closeRadius`, `closeOffset`
 - `closeColor`, `closeFontSize`, `closeHoverBackgroundColor`
 
+## Dropdown
+
+Props:
+
+- `modelValue?: boolean` (v-model)
+- `items?: Array<{ label?: string; to?: string; href?: string; url?: string; icon?: string; disabled?: boolean; separator?: boolean; command?: () => void }>`
+- `placement?: 'bottom-start' | 'bottom-end' | 'top-start' | 'top-end' | 'bottom' | 'top'` (default `bottom-start`)
+- `offset?: number` (default `6`)
+- `disabled?: boolean`
+- `closeOnSelect?: boolean` (default `true`)
+- `closeOnEsc?: boolean` (default `true`)
+- `matchTriggerWidth?: boolean` (default `true`)
+
+Slots:
+
+- `trigger`
+- `default` (optional) - dropdown content (defaults to `items` list if provided)
+
+Note: For custom dropdown content, add `data-dropdown-close` to clickable elements to auto-close on click.
+
+Events:
+
+- `update:modelValue`
+- `open`
+- `close`
+- `select`
+
+Example:
+
+```vue
+<Dropdown :items="menuItems">
+    <template #trigger>
+        <Button label="Actions" />
+    </template>
+</Dropdown>
+```
+
+### Dropdown tokens
+
+Component tokens (override via `theme.overrides.components.dropdown`):
+
+- `panelPadding`, `panelBorderRadius`, `panelBorderColor`
+- `panelBackgroundColor`, `panelShadow`, `zIndex`
+- `disabledOpacity`, `itemPadding`
+
 ## Tooltip
 
 Props:
@@ -1058,7 +1110,7 @@ VueForge exposes design tokens as CSS variables generated from the theme preset.
 Typed tokens:
 
 - `ThemeTokens`/`ThemeOptions`/`ThemePreset` are exported for type-safe theming in TS.
-- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/numberInput/formField/textarea/link/breadcrumbs/menu/modal/drawer/popover/select/autocomplete/multiselect/datepicker/pagination/switch/tooltip/skeleton/progress/badge/chip/avatar/datatable/slider).
+- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/numberInput/formField/textarea/link/breadcrumbs/menu/modal/drawer/popover/dropdown/select/autocomplete/multiselect/datepicker/pagination/switch/tooltip/skeleton/progress/badge/chip/avatar/datatable/slider).
 
 Default core values (from `DefaultTheme`):
 

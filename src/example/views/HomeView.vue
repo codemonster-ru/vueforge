@@ -282,6 +282,14 @@
                     <Menu :items="menuItems" />
                 </div>
                 <div class="vf-home__card">
+                    <h3>Dropdown</h3>
+                    <Dropdown :items="menuItems">
+                        <template #trigger>
+                            <Button label="Actions" />
+                        </template>
+                    </Dropdown>
+                </div>
+                <div class="vf-home__card">
                     <h3>Tooltip</h3>
                     <Tooltip text="Helpful hint" arrow>
                         <Button label="Hover me" />
@@ -363,6 +371,7 @@ import {
     Modal,
     Drawer,
     Popover,
+    Dropdown,
     DatePicker,
     Pagination,
     DataTable,
