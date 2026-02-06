@@ -156,6 +156,48 @@ export type TextareaTokens = {
         fontSize?: string;
     };
 };
+export type FileUploadTokens = {
+    minHeight?: string;
+    fontSize?: string;
+    gap?: string;
+    padding?: string;
+    borderRadius?: string;
+    borderColor?: string;
+    backgroundColor?: string;
+    textColor?: string;
+    placeholderColor?: string;
+    focusBorderColor?: string;
+    focusRingShadow?: string;
+    hoverBorderColor?: string;
+    disabledOpacity?: string;
+    dragBackgroundColor?: string;
+    listGap?: string;
+    itemPadding?: string;
+    itemBorderColor?: string;
+    itemBackgroundColor?: string;
+    itemRadius?: string;
+    itemTextColor?: string;
+    sizeTextColor?: string;
+    buttonPadding?: string;
+    buttonRadius?: string;
+    buttonBorderColor?: string;
+    buttonBackgroundColor?: string;
+    buttonTextColor?: string;
+    buttonHoverBackgroundColor?: string;
+    removeSize?: string;
+    removeRadius?: string;
+    removeHoverBackgroundColor?: string;
+    small?: {
+        padding?: string;
+        fontSize?: string;
+        buttonPadding?: string;
+    };
+    large?: {
+        padding?: string;
+        fontSize?: string;
+        buttonPadding?: string;
+    };
+};
 export type LinkTokens = {
     hoverColor?: string;
     activeColor?: string;
@@ -984,6 +1026,7 @@ export type ThemeComponentTokens = {
     numberInput?: NumberInputTokens;
     formField?: FormFieldTokens;
     textarea?: TextareaTokens;
+    fileUpload?: FileUploadTokens;
     link?: LinkTokens;
     breadcrumbs?: BreadcrumbsTokens;
     menu?: MenuTokens;

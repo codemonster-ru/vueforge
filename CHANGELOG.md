@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.36.0] - 2026-02-07
+
+- Added FileUpload component with drag-and-drop support, multi-file handling, and size/count limits.
+- Added default theme tokens and typed token support for `components.fileUpload`.
+- Added FileUpload export, README docs, unit tests, and example app showcase.
+- Fixed FileUpload layout to prevent long filenames from overflowing demo grid cards.
+
 ## [0.35.0] - 2026-02-06
 
 - Added TimePicker component with step/min/max bounds, 12h/24h display, and size/variant options.

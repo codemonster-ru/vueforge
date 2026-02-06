@@ -30,6 +30,7 @@ import {
     NumberInput,
     FormField,
     Textarea,
+    FileUpload,
     Breadcrumbs,
     Select,
     Autocomplete,
@@ -71,6 +72,7 @@ app.use(VueForge, {
 </FormField>
 <NumberInput v-model="age" :min="0" :max="120" :step="1" />
 <Textarea v-model="bio" placeholder="Tell us about yourself" />
+<FileUpload v-model="resume" accept=".pdf,.doc,.docx" />
 <Breadcrumbs :items="breadcrumbItems" />
 <Select v-model="role" :options="roles" placeholder="Choose role" />
 <Autocomplete v-model="country" :options="countries" placeholder="Find country" />
@@ -128,6 +130,7 @@ app.use(VueForge, {
 - NumberInput
 - FormField
 - Textarea
+- FileUpload
 - Link
 - Breadcrumbs
 - Menu
@@ -518,6 +521,51 @@ Example:
 ```vue
 <Textarea v-model="bio" placeholder="Tell us about yourself" rows="4" />
 ```
+
+## FileUpload
+
+Props:
+
+- `modelValue?: File | File[] | null` (v-model)
+- `multiple?: boolean`
+- `accept?: string`
+- `disabled?: boolean`
+- `readonly?: boolean`
+- `maxSize?: number` (bytes)
+- `maxFiles?: number`
+- `placeholder?: string`
+- `buttonLabel?: string` (default `Browse`)
+- `size?: 'small' | 'normal' | 'large'` (default `normal`)
+- `variant?: 'filled' | 'outlined'` (default `filled`)
+
+Events:
+
+- `update:modelValue`
+- `change`
+- `reject` (payload: `Array<{ file: File; reason: 'maxSize' | 'maxFiles'; maxSize?: number; maxFiles?: number }>` )
+- `focus`
+- `blur`
+
+Example:
+
+```vue
+<FileUpload v-model="attachments" multiple :max-files="5" :max-size="10_000_000" />
+```
+
+### FileUpload tokens
+
+Component tokens (override via `theme.overrides.components.fileUpload`):
+
+- `minHeight`, `fontSize`, `gap`, `padding`
+- `borderRadius`, `borderColor`
+- `backgroundColor`, `textColor`, `placeholderColor`
+- `focusBorderColor`, `focusRingShadow`, `hoverBorderColor`
+- `disabledOpacity`, `dragBackgroundColor`
+- `listGap`, `itemPadding`, `itemBorderColor`, `itemBackgroundColor`, `itemRadius`, `itemTextColor`, `sizeTextColor`
+- `buttonPadding`, `buttonRadius`, `buttonBorderColor`, `buttonBackgroundColor`, `buttonTextColor`, `buttonHoverBackgroundColor`
+- `removeSize`, `removeRadius`, `removeHoverBackgroundColor`
+- `small.fontSize`, `small.padding`, `small.buttonPadding`
+- `large.fontSize`, `large.padding`, `large.buttonPadding`
 
 ## NumberInput
 

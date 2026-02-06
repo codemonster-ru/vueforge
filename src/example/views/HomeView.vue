@@ -93,6 +93,13 @@
                     </div>
                 </div>
                 <div class="vf-home__card">
+                    <h3>FileUpload</h3>
+                    <div class="vf-home__stack">
+                        <FileUpload v-model="resume" accept=".pdf,.doc,.docx" />
+                        <FileUpload v-model="attachments" multiple :max-files="3" :max-size="5_000_000" />
+                    </div>
+                </div>
+                <div class="vf-home__card">
                     <h3>Select</h3>
                     <div class="vf-home__stack">
                         <Select v-model="role" :options="roles" placeholder="Role" />
@@ -418,6 +425,7 @@ import {
     Input,
     NumberInput,
     Textarea,
+    FileUpload,
     Link,
     Menu,
     Modal,
@@ -482,6 +490,8 @@ const usernameError = ref('Username is required');
 const bio = ref('');
 const notes = ref('');
 const feedback = ref('');
+const resume = ref<File | null>(null);
+const attachments = ref<File[]>([]);
 const role = ref('');
 const roleAlt = ref('');
 const country = ref('');
@@ -589,16 +599,26 @@ body {
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 }
 
+.vf-home__grid > * {
+    min-width: 0;
+}
+
 .vf-home__card {
     padding: 1rem;
     border: 1px solid var(--vf-border-color);
     border-radius: 10px;
     background-color: var(--vf-bg-color);
+    min-width: 0;
 }
 
 .vf-home__stack {
     display: grid;
     gap: 0.5rem;
+    min-width: 0;
+}
+
+.vf-home__stack > * {
+    min-width: 0;
 }
 
 .vf-home__stack-inline {

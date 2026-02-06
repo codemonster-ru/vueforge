@@ -5,6 +5,7 @@ import input from './components/input';
 import numberInput from './components/number-input';
 import formField from './components/form-field';
 import textarea from './components/textarea';
+import fileUpload from './components/file-upload';
 import link from './components/link';
 import breadcrumbs from './components/breadcrumbs';
 import menu from './components/menu';
@@ -46,6 +47,7 @@ export default {
         numberInput,
         formField,
         textarea,
+        fileUpload,
         link,
         breadcrumbs,
         menu,

@@ -7,6 +7,7 @@ export { default as Input } from '@/package/components/input.vue';
 export { default as NumberInput } from '@/package/components/number-input.vue';
 export { default as FormField } from '@/package/components/form-field.vue';
 export { default as Textarea } from '@/package/components/textarea.vue';
+export { default as FileUpload } from '@/package/components/file-upload.vue';
 export { default as Select } from '@/package/components/select.vue';
 export { default as Autocomplete } from '@/package/components/autocomplete.vue';
 export { default as MultiSelect } from '@/package/components/multi-select.vue';
