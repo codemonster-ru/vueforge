@@ -250,6 +250,23 @@
                     </Modal>
                 </div>
                 <div class="vf-home__card">
+                    <h3>Drawer</h3>
+                    <Button label="Open Drawer" @click="drawerOpen = true" />
+                    <Drawer v-model="drawerOpen" title="Quick filters" position="right">
+                        <template #body>
+                            <div class="vf-home__stack">
+                                <Checkbox v-model="drawerNew">New only</Checkbox>
+                                <Checkbox v-model="drawerPopular">Popular</Checkbox>
+                                <Checkbox v-model="drawerFree">Free tier</Checkbox>
+                            </div>
+                        </template>
+                        <template #footer>
+                            <Button label="Reset" severity="secondary" size="small" @click="resetDrawer" />
+                            <Button label="Apply" size="small" @click="drawerOpen = false" />
+                        </template>
+                    </Drawer>
+                </div>
+                <div class="vf-home__card">
                     <h3>Menu</h3>
                     <Menu :items="menuItems" />
                 </div>
@@ -322,6 +339,7 @@ import {
     Link,
     Menu,
     Modal,
+    Drawer,
     Popover,
     DatePicker,
     Pagination,
@@ -393,6 +411,10 @@ const accordion = ref('shipping');
 const toastOpen = ref(false);
 const alertOpen = ref(true);
 const modalOpen = ref(false);
+const drawerOpen = ref(false);
+const drawerNew = ref(true);
+const drawerPopular = ref(false);
+const drawerFree = ref(false);
 const isDark = ref(document.documentElement.getAttribute('data-theme') === 'dark');
 const volume = ref(40);
 const priceRange = ref<[number, number]>([200, 700]);
@@ -425,6 +447,11 @@ const tableRows = [
     { id: 3, name: 'Chen', role: 'Product', age: 31 },
 ];
 const menuItems = [{ label: 'Home', to: '/' }, { separator: true }, { label: 'Docs', href: 'https://example.com' }];
+const resetDrawer = () => {
+    drawerNew.value = true;
+    drawerPopular.value = false;
+    drawerFree.value = false;
+};
 </script>
 
 <style>

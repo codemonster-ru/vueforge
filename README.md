@@ -44,6 +44,7 @@ import {
     Accordion,
     AccordionItem,
     Slider,
+    Drawer,
 } from '@codemonster-ru/vueforge';
 import '@codemonster-ru/vueforge/dist/index.css';
 
@@ -83,6 +84,11 @@ app.use(VueForge, {
         Returns policy
     </AccordionItem>
 </Accordion>
+<Drawer v-model="drawerOpen" title="Filters" position="right">
+    <template #body>
+        Drawer content
+    </template>
+</Drawer>
 ```
 
 ## Components
@@ -106,6 +112,7 @@ app.use(VueForge, {
 - Link
 - Menu
 - Modal
+- Drawer
 - Popover
 - Select
 - Autocomplete
@@ -678,6 +685,64 @@ Component tokens (override via `theme.overrides.components.modal`):
 - `closeSize`, `closeRadius`, `closeOffset`
 - `closeColor`, `closeFontSize`, `closeHoverBackgroundColor`
 
+## Drawer
+
+Props:
+
+- `modelValue?: boolean` (v-model)
+- `title?: string`
+- `position?: 'left' | 'right' | 'top' | 'bottom'` (default `right`)
+- `size?: 'sm' | 'md' | 'lg'`
+- `overlay?: boolean` (default `true`)
+- `closeOnOverlay?: boolean` (default `true`)
+- `closeOnEsc?: boolean` (default `true`)
+- `showClose?: boolean` (default `true`)
+- `lockScroll?: boolean` (default `true`)
+
+Slots:
+
+- `header` (optional) - replaces the title area
+- `body` (optional) - drawer content (defaults to default slot if not provided)
+- `default` (optional) - drawer content if `body` slot is not used
+- `footer` (optional)
+- `close` (optional) - custom close button; slot props: `{ close }`
+
+Events:
+
+- `update:modelValue`
+- `open`
+- `close`
+
+Example:
+
+```vue
+<Drawer v-model="open" title="Filters" position="right">
+    <template #body>
+        <p>Drawer content</p>
+    </template>
+    <template #footer>
+        <Button label="Reset" severity="secondary" size="small" />
+        <Button label="Apply" size="small" @click="open = false" />
+    </template>
+</Drawer>
+```
+
+### Drawer tokens
+
+Component tokens (override via `theme.overrides.components.drawer`):
+
+- `width`, `widthSm`, `widthLg`
+- `height`, `heightSm`, `heightLg`
+- `padding`, `borderRadius`
+- `backgroundColor`, `textColor`
+- `overlayBackgroundColor`
+- `shadow`
+- `zIndex`
+- `headerGap`, `bodyGap`, `footerGap`
+- `titleFontSize`, `titleLineHeight`, `titleFontWeight`
+- `closeSize`, `closeRadius`, `closeOffset`
+- `closeColor`, `closeFontSize`, `closeHoverBackgroundColor`
+
 ## Tooltip
 
 Props:
@@ -876,7 +941,7 @@ VueForge exposes design tokens as CSS variables generated from the theme preset.
 Typed tokens:
 
 - `ThemeTokens`/`ThemeOptions`/`ThemePreset` are exported for type-safe theming in TS.
-- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/formField/textarea/link/menu/popover/select/autocomplete/multiselect/datepicker/pagination/switch/tooltip/skeleton/progress/badge/avatar/datatable/slider).
+- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/formField/textarea/link/menu/modal/drawer/popover/select/autocomplete/multiselect/datepicker/pagination/switch/tooltip/skeleton/progress/badge/avatar/datatable/slider).
 
 Default core values (from `DefaultTheme`):
 

@@ -175,6 +175,33 @@ export type ModalTokens = {
     closeFontSize?: string;
     closeHoverBackgroundColor?: string;
 };
+export type DrawerTokens = {
+    width?: string;
+    widthSm?: string;
+    widthLg?: string;
+    height?: string;
+    heightSm?: string;
+    heightLg?: string;
+    padding?: string;
+    borderRadius?: string;
+    backgroundColor?: string;
+    textColor?: string;
+    overlayBackgroundColor?: string;
+    shadow?: string;
+    zIndex?: string;
+    headerGap?: string;
+    bodyGap?: string;
+    footerGap?: string;
+    titleFontSize?: string;
+    titleLineHeight?: string;
+    titleFontWeight?: string;
+    closeSize?: string;
+    closeRadius?: string;
+    closeOffset?: string;
+    closeColor?: string;
+    closeFontSize?: string;
+    closeHoverBackgroundColor?: string;
+};
 export type PopoverTokens = {
     borderRadius?: string;
     borderColor?: string;
@@ -727,6 +754,7 @@ export type ThemeComponentTokens = {
     link?: LinkTokens;
     menu?: MenuTokens;
     modal?: ModalTokens;
+    drawer?: DrawerTokens;
     popover?: PopoverTokens;
     select?: SelectTokens;
     autocomplete?: AutocompleteTokens;

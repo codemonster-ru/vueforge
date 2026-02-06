@@ -7,6 +7,7 @@ import textarea from './components/textarea';
 import link from './components/link';
 import menu from './components/menu';
 import modal from './components/modal';
+import drawer from './components/drawer';
 import popover from './components/popover';
 import select from './components/select';
 import autocomplete from './components/autocomplete';
@@ -40,6 +41,7 @@ export default {
         link,
         menu,
         modal,
+        drawer,
         popover,
         select,
         autocomplete,

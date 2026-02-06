@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.28.0] - 2026-02-06
+
+- Added Drawer component with positions, overlay, focus handling, and close controls.
+- Added default theme tokens and typed token support for `components.drawer`.
+- Added Drawer export, README docs, unit tests, example app showcase, and entry/exit animations.
+
 ## [0.27.0] - 2026-02-05
 
 - Added Slider component with single/range modes, marks, and size variants.
