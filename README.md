@@ -27,6 +27,7 @@ import {
     DefaultTheme,
     Button,
     Input,
+    NumberInput,
     FormField,
     Textarea,
     Breadcrumbs,
@@ -63,6 +64,7 @@ app.use(VueForge, {
 <FormField label="Name" hint="Required field">
     <Input v-model="name" placeholder="Your name" />
 </FormField>
+<NumberInput v-model="age" :min="0" :max="120" :step="1" />
 <Textarea v-model="bio" placeholder="Tell us about yourself" />
 <Breadcrumbs :items="breadcrumbItems" />
 <Select v-model="role" :options="roles" placeholder="Choose role" />
@@ -109,6 +111,7 @@ app.use(VueForge, {
 - ToastContainer
 - Alert
 - Input
+- NumberInput
 - FormField
 - Textarea
 - Link
@@ -134,6 +137,7 @@ app.use(VueForge, {
 Input / Textarea (quick API):
 
 - `Input`: single-line control, supports `v-model`, `size`, `variant`, `disabled`, `readonly`.
+- `NumberInput`: numeric control, supports `v-model`, `min`, `max`, `step`, `precision`, `controls`, `size`, `variant`.
 - `Textarea`: multi-line control, same as Input plus `rows`.
 - `Checkbox`, `Select`, `Autocomplete`, `MultiSelect`, `DatePicker`, `Pagination`, and `DataTable` also support `variant: 'filled' | 'outlined'`.
 
@@ -415,6 +419,37 @@ Example:
 
 ```vue
 <Textarea v-model="bio" placeholder="Tell us about yourself" rows="4" />
+```
+
+## NumberInput
+
+Props:
+
+- `modelValue?: number | null` (v-model)
+- `min?: number`
+- `max?: number`
+- `step?: number` (default `1`)
+- `precision?: number`
+- `placeholder?: string`
+- `disabled?: boolean`
+- `readonly?: boolean`
+- `controls?: boolean` (default `true`)
+- `size?: 'small' | 'normal' | 'large'` (default `normal`)
+- `variant?: 'filled' | 'outlined'` (default `filled`)
+- `ariaLabel?: string` (default `Number input`)
+
+Events:
+
+- `update:modelValue`
+- `input`
+- `change`
+- `focus`
+- `blur`
+
+Example:
+
+```vue
+<NumberInput v-model="quantity" :min="0" :max="10" :step="1" />
 ```
 
 ## RadioGroup / RadioButton
@@ -976,7 +1011,7 @@ VueForge exposes design tokens as CSS variables generated from the theme preset.
 Typed tokens:
 
 - `ThemeTokens`/`ThemeOptions`/`ThemePreset` are exported for type-safe theming in TS.
-- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/formField/textarea/link/breadcrumbs/menu/modal/drawer/popover/select/autocomplete/multiselect/datepicker/pagination/switch/tooltip/skeleton/progress/badge/avatar/datatable/slider).
+- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/numberInput/formField/textarea/link/breadcrumbs/menu/modal/drawer/popover/select/autocomplete/multiselect/datepicker/pagination/switch/tooltip/skeleton/progress/badge/avatar/datatable/slider).
 
 Default core values (from `DefaultTheme`):
 

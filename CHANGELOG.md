@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.30.0] - 2026-02-06
+
+- Added NumberInput component with min/max/step/precision support and optional controls.
+- Added default theme tokens and typed token support for `components.numberInput`.
+- Added NumberInput export, README docs, unit tests, and example app showcase.
+
 ## [0.29.0] - 2026-02-06
 
 - Added Breadcrumbs component with slots, separator customization, and theme tokens.

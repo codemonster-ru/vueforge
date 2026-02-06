@@ -77,6 +77,40 @@ export type InputTokens = {
         fontSize?: string;
     };
 };
+export type NumberInputTokens = {
+    gap?: string;
+    fontSize?: string;
+    padding?: string;
+    borderRadius?: string;
+    borderColor?: string;
+    backgroundColor?: string;
+    textColor?: string;
+    placeholderColor?: string;
+    focusBorderColor?: string;
+    focusRingShadow?: string;
+    hoverBorderColor?: string;
+    disabledOpacity?: string;
+    controlWidth?: string;
+    controlGap?: string;
+    controlFontSize?: string;
+    controlRadius?: string;
+    controlBackgroundColor?: string;
+    controlHoverBackgroundColor?: string;
+    controlTextColor?: string;
+    controlBorderColor?: string;
+    small?: {
+        padding?: string;
+        fontSize?: string;
+        controlWidth?: string;
+        controlFontSize?: string;
+    };
+    large?: {
+        padding?: string;
+        fontSize?: string;
+        controlWidth?: string;
+        controlFontSize?: string;
+    };
+};
 export type FormFieldTokens = {
     gap?: string;
     textColor?: string;
@@ -758,6 +792,7 @@ export type ThemeComponentTokens = {
     tabs?: TabsTokens;
     accordion?: AccordionTokens;
     input?: InputTokens;
+    numberInput?: NumberInputTokens;
     formField?: FormFieldTokens;
     textarea?: TextareaTokens;
     link?: LinkTokens;

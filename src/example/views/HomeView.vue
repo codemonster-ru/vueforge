@@ -46,6 +46,13 @@
                     </div>
                 </div>
                 <div class="vf-home__card">
+                    <h3>NumberInput</h3>
+                    <div class="vf-home__stack">
+                        <NumberInput v-model="quantity" :min="0" :max="20" :step="1" />
+                        <NumberInput v-model="price" :min="0" :max="999" :step="0.5" :precision="2" variant="outlined" />
+                    </div>
+                </div>
+                <div class="vf-home__card">
                     <h3>FormField</h3>
                     <div class="vf-home__stack">
                         <FormField label="Email" hint="We never share it">
@@ -340,6 +347,7 @@ import {
     DefaultTheme,
     FormField,
     Input,
+    NumberInput,
     Textarea,
     Link,
     Menu,
@@ -392,6 +400,8 @@ const toggleDark = () => {
 
 const email = ref('');
 const search = ref('');
+const quantity = ref(2);
+const price = ref<number | null>(49.99);
 const emailField = ref('');
 const username = ref('');
 const usernameError = ref('Username is required');
