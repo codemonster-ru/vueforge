@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.39.0] - 2026-02-09
+
+- Added ConfirmDialog component for confirmation flows with built-in actions and customizable slots.
+- Added default theme tokens and typed token support for `components.confirmDialog`.
+- Added ConfirmDialog export, README docs, unit tests, and example app showcase.
+
 ## [0.38.0] - 2026-02-09
 
 - Added Tree component with nested nodes, single/multiple selection, keyboard navigation, and expand/collapse controls.

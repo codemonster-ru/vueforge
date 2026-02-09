@@ -331,6 +331,18 @@
                     </Modal>
                 </div>
                 <div class="vf-home__card">
+                    <h3>ConfirmDialog</h3>
+                    <Button label="Delete item" severity="danger" @click="confirmDialogOpen = true" />
+                    <ConfirmDialog
+                        v-model="confirmDialogOpen"
+                        title="Delete item?"
+                        message="This action cannot be undone."
+                        confirm-label="Delete"
+                        @confirm="confirmDialogAccepted = true"
+                    />
+                    <p v-if="confirmDialogAccepted" class="vf-home__muted">Last action: confirmed</p>
+                </div>
+                <div class="vf-home__card">
                     <h3>Drawer</h3>
                     <Button label="Open Drawer" @click="drawerOpen = true" />
                     <Drawer v-model="drawerOpen" title="Quick filters" position="right">
@@ -440,6 +452,7 @@ import {
     Link,
     Menu,
     Modal,
+    ConfirmDialog,
     Drawer,
     Popover,
     Dropdown,
@@ -528,6 +541,8 @@ const accordion = ref('shipping');
 const toastOpen = ref(false);
 const alertOpen = ref(true);
 const modalOpen = ref(false);
+const confirmDialogOpen = ref(false);
+const confirmDialogAccepted = ref(false);
 const drawerOpen = ref(false);
 const drawerNew = ref(true);
 const drawerPopular = ref(false);

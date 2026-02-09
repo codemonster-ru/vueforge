@@ -29,6 +29,7 @@ export { default as Alert } from '@/package/components/alert.vue';
 export { default as Switch } from '@/package/components/switch.vue';
 export { default as Popover } from '@/package/components/popover.vue';
 export { default as Modal } from '@/package/components/modal.vue';
+export { default as ConfirmDialog } from '@/package/components/confirm-dialog.vue';
 export { default as Drawer } from '@/package/components/drawer.vue';
 export { default as Dropdown } from '@/package/components/dropdown.vue';
 export { default as Tooltip } from '@/package/components/tooltip.vue';

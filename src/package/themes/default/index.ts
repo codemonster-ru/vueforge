@@ -10,6 +10,7 @@ import link from './components/link';
 import breadcrumbs from './components/breadcrumbs';
 import menu from './components/menu';
 import modal from './components/modal';
+import confirmDialog from './components/confirm-dialog';
 import drawer from './components/drawer';
 import popover from './components/popover';
 import dropdown from './components/dropdown';
@@ -54,6 +55,7 @@ export default {
         breadcrumbs,
         menu,
         modal,
+        confirmDialog,
         drawer,
         popover,
         dropdown,

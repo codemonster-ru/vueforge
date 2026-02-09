@@ -260,6 +260,13 @@ export type ModalTokens = {
     closeFontSize?: string;
     closeHoverBackgroundColor?: string;
 };
+export type ConfirmDialogTokens = {
+    maxWidth?: string;
+    messageColor?: string;
+    messageFontSize?: string;
+    messageLineHeight?: string;
+    actionsGap?: string;
+};
 export type DrawerTokens = {
     width?: string;
     widthSm?: string;
@@ -1082,6 +1089,7 @@ export type ThemeComponentTokens = {
     breadcrumbs?: BreadcrumbsTokens;
     menu?: MenuTokens;
     modal?: ModalTokens;
+    confirmDialog?: ConfirmDialogTokens;
     drawer?: DrawerTokens;
     popover?: PopoverTokens;
     dropdown?: DropdownTokens;

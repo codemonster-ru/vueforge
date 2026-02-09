@@ -54,6 +54,7 @@ import {
     Rating,
     Tree,
     Drawer,
+    ConfirmDialog,
     Dropdown,
 } from '@codemonster-ru/vueforge';
 import '@codemonster-ru/vueforge/dist/index.css';
@@ -108,6 +109,13 @@ app.use(VueForge, {
         Drawer content
     </template>
 </Drawer>
+<ConfirmDialog
+    v-model="confirmOpen"
+    title="Delete item?"
+    message="This action cannot be undone."
+    confirm-label="Delete"
+    @confirm="removeItem"
+/>
 <Dropdown :items="menuItems">
     <template #trigger>
         <Button label="Actions" />
@@ -139,6 +147,7 @@ app.use(VueForge, {
 - Breadcrumbs
 - Menu
 - Modal
+- ConfirmDialog
 - Drawer
 - Dropdown
 - Popover
@@ -907,6 +916,57 @@ Component tokens (override via `theme.overrides.components.modal`):
 - `closeSize`, `closeRadius`, `closeOffset`
 - `closeColor`, `closeFontSize`, `closeHoverBackgroundColor`
 
+## ConfirmDialog
+
+Props:
+
+- `modelValue?: boolean` (v-model)
+- `title?: string` (default `Confirm action`)
+- `message?: string`
+- `confirmLabel?: string` (default `Confirm`)
+- `cancelLabel?: string` (default `Cancel`)
+- `confirmSeverity?: 'primary' | 'secondary' | 'success' | 'info' | 'warning' | 'danger'` (default `danger`)
+- `loading?: boolean` (default `false`)
+- `closeOnConfirm?: boolean` (default `true`)
+- `size?: 'sm' | 'md' | 'lg'` (default `sm`)
+- `closeOnOverlay?: boolean` (default `true`)
+- `closeOnEsc?: boolean` (default `true`)
+- `showClose?: boolean` (default `true`)
+- `lockScroll?: boolean` (default `true`)
+
+Slots:
+
+- `default` (optional) - dialog message/body content (fallbacks to `message`)
+- `actions` (optional) - custom action buttons; slot props: `{ confirm, cancel }`
+
+Events:
+
+- `update:modelValue`
+- `confirm`
+- `cancel`
+- `open`
+- `close`
+
+Example:
+
+```vue
+<ConfirmDialog
+    v-model="open"
+    title="Delete item?"
+    message="This action cannot be undone."
+    confirm-label="Delete"
+    @confirm="removeItem"
+/>
+```
+
+### ConfirmDialog tokens
+
+Component tokens (override via `theme.overrides.components.confirmDialog`):
+
+- `maxWidth`
+- `messageColor`, `messageFontSize`, `messageLineHeight`
+- `actionsGap`
+
 ## Drawer
 
 Props:
@@ -1369,7 +1429,7 @@ VueForge exposes design tokens as CSS variables generated from the theme preset.
 Typed tokens:
 
 - `ThemeTokens`/`ThemeOptions`/`ThemePreset` are exported for type-safe theming in TS.
-- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/numberInput/formField/textarea/link/breadcrumbs/menu/modal/drawer/popover/dropdown/select/autocomplete/multiselect/datepicker/daterangepicker/timepicker/pagination/switch/tooltip/skeleton/progress/badge/chip/avatar/datatable/slider/stepper/rating/tree).
+- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/numberInput/formField/textarea/link/breadcrumbs/menu/modal/confirmDialog/drawer/popover/dropdown/select/autocomplete/multiselect/datepicker/daterangepicker/timepicker/pagination/switch/tooltip/skeleton/progress/badge/chip/avatar/datatable/slider/stepper/rating/tree).
 
 Default core values (from `DefaultTheme`):
 
