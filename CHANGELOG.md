@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.38.0] - 2026-02-09
+
+- Added Tree component with nested nodes, single/multiple selection, keyboard navigation, and expand/collapse controls.
+- Added default theme tokens and typed token support for `components.tree`.
+- Added Tree export, README docs, unit tests, and example app showcase.
+
 ## [0.37.0] - 2026-02-07
 
 - Added Rating component with half-step support, keyboard navigation, and theming tokens.

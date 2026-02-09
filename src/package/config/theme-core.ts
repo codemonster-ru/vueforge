@@ -762,6 +762,41 @@ export type RatingTokens = {
         size?: string;
     };
 };
+export type TreeTokens = {
+    gap?: string;
+    indent?: string;
+    rowGap?: string;
+    rowPadding?: string;
+    rowPaddingInline?: string;
+    rowBorderRadius?: string;
+    rowBorderColor?: string;
+    rowFontSize?: string;
+    rowTextColor?: string;
+    rowBackgroundColor?: string;
+    rowHoverBackgroundColor?: string;
+    rowSelectedBackgroundColor?: string;
+    rowSelectedTextColor?: string;
+    toggleSize?: string;
+    toggleRadius?: string;
+    toggleBorderColor?: string;
+    toggleBackgroundColor?: string;
+    toggleTextColor?: string;
+    toggleHoverBackgroundColor?: string;
+    focusRingShadow?: string;
+    disabledOpacity?: string;
+    small?: {
+        rowPadding?: string;
+        rowPaddingInline?: string;
+        rowFontSize?: string;
+        toggleSize?: string;
+    };
+    large?: {
+        rowPadding?: string;
+        rowPaddingInline?: string;
+        rowFontSize?: string;
+        toggleSize?: string;
+    };
+};
 export type StepperTokens = {
     gap?: string;
     itemGap?: string;
@@ -1070,6 +1105,7 @@ export type ThemeComponentTokens = {
     chip?: ChipTokens;
     avatar?: AvatarTokens;
     rating?: RatingTokens;
+    tree?: TreeTokens;
     [key: string]: unknown;
 };
 export type ThemeTokens = {

@@ -263,6 +263,10 @@
                     </Accordion>
                 </div>
                 <div class="vf-home__card">
+                    <h3>Tree</h3>
+                    <Tree v-model="treeSelected" v-model:expanded-keys="treeExpanded" :items="treeItems" size="small" />
+                </div>
+                <div class="vf-home__card">
                     <h3>Toast</h3>
                     <div class="vf-home__stack">
                         <Button label="Show Toast" @click="toastOpen = true" />
@@ -464,6 +468,7 @@ import {
     Slider,
     Stepper,
     Rating,
+    Tree,
     setTheme,
     updateTheme,
 } from '@/index';
@@ -533,6 +538,8 @@ const priceRange = ref<[number, number]>([200, 700]);
 const rating = ref(3);
 const ratingValue = ref(4);
 const ratingHalf = ref(3.5);
+const treeSelected = ref<string | number | undefined>('guides');
+const treeExpanded = ref<Array<string | number>>(['docs']);
 const ratingMarks = [
     { value: 1, label: '1' },
     { value: 2, label: '2' },
@@ -566,6 +573,25 @@ const tableRows = [
     { id: 3, name: 'Chen', role: 'Product', age: 31 },
 ];
 const menuItems = [{ label: 'Home', to: '/' }, { separator: true }, { label: 'Docs', href: 'https://example.com' }];
+const treeItems = [
+    {
+        key: 'docs',
+        label: 'Documentation',
+        children: [
+            { key: 'guides', label: 'Guides' },
+            { key: 'components', label: 'Components' },
+            { key: 'api', label: 'API Reference' },
+        ],
+    },
+    {
+        key: 'resources',
+        label: 'Resources',
+        children: [
+            { key: 'themes', label: 'Themes' },
+            { key: 'changelog', label: 'Changelog' },
+        ],
+    },
+];
 const breadcrumbItems = [
     { label: 'Home', to: '/' },
     { label: 'Components', href: '#components' },

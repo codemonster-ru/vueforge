@@ -37,6 +37,7 @@ import avatar from './components/avatar';
 import slider from './components/slider';
 import stepper from './components/stepper';
 import rating from './components/rating';
+import tree from './components/tree';
 
 export default {
     ...base,
@@ -80,5 +81,6 @@ export default {
         slider,
         stepper,
         rating,
+        tree,
     },
 };

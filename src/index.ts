@@ -41,8 +41,10 @@ export { default as DataTable } from '@/package/components/data-table.vue';
 export { default as Slider } from '@/package/components/slider.vue';
 export { default as Stepper } from '@/package/components/stepper.vue';
 export { default as Rating } from '@/package/components/rating.vue';
+export { default as Tree } from '@/package/components/tree.vue';
 export { default as Breadcrumbs } from '@/package/components/breadcrumbs.vue';
 export type { DataTableColumn } from '@/package/components/data-table.vue';
+export type { TreeItem, TreeValue } from '@/package/components/tree.vue';
 // config
 export { default as VueForge, setTheme, updateTheme, getTheme } from '@/package/config/index';
 export type { ThemeTokens, ThemeOptions, ThemePreset } from '@/package/config/theme-core';

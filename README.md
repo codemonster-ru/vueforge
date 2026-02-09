@@ -52,6 +52,7 @@ import {
     Slider,
     Stepper,
     Rating,
+    Tree,
     Drawer,
     Dropdown,
 } from '@codemonster-ru/vueforge';
@@ -93,6 +94,7 @@ app.use(VueForge, {
 <Slider v-model="volume" :min="0" :max="100" :step="5" show-value />
 <Stepper v-model="step" :steps="steps" clickable />
 <Rating v-model="rating" allow-half />
+<Tree v-model="selectedNode" v-model:expandedKeys="expandedKeys" :items="treeItems" />
 <Accordion v-model="faq">
     <AccordionItem value="shipping" title="Shipping">
         Shipping details
@@ -158,6 +160,7 @@ app.use(VueForge, {
 - Slider
 - Stepper
 - Rating
+- Tree
 
 Input / Textarea (quick API):
 
@@ -1309,6 +1312,49 @@ Component tokens (override via `theme.overrides.components.rating`):
 - `small.size`
 - `large.size`
 
+## Tree
+
+Props:
+
+- `items?: Array<{ key: string | number; label: string; disabled?: boolean; children?: Array<...> }>` (default `[]`)
+- `modelValue?: string | number | Array<string | number>` (v-model)
+- `expandedKeys?: Array<string | number>` (`v-model:expandedKeys`)
+- `multiple?: boolean` (default `false`)
+- `selectable?: boolean` (default `true`)
+- `expandOnClick?: boolean` (default `true`)
+- `disabled?: boolean`
+- `size?: 'small' | 'normal' | 'large'` (default `normal`)
+- `variant?: 'filled' | 'outlined'` (default `filled`)
+- `ariaLabel?: string`
+- `ariaLabelledby?: string`
+
+Events:
+
+- `update:modelValue`
+- `update:expandedKeys`
+- `change`
+- `toggle`
+- `nodeClick`
+
+Example:
+
+```vue
+<Tree v-model="selectedNode" v-model:expandedKeys="expandedKeys" :items="treeItems" />
+<Tree v-model="selectedMany" :items="treeItems" multiple variant="outlined" />
+```
+
+### Tree tokens
+
+Component tokens (override via `theme.overrides.components.tree`):
+
+- `gap`, `indent`, `rowGap`, `rowPadding`, `rowPaddingInline`
+- `rowBorderRadius`, `rowBorderColor`, `rowFontSize`, `rowTextColor`
+- `rowBackgroundColor`, `rowHoverBackgroundColor`, `rowSelectedBackgroundColor`, `rowSelectedTextColor`
+- `toggleSize`, `toggleRadius`, `toggleBorderColor`, `toggleBackgroundColor`, `toggleTextColor`, `toggleHoverBackgroundColor`
+- `focusRingShadow`, `disabledOpacity`
+- `small.rowPadding`, `small.rowPaddingInline`, `small.rowFontSize`, `small.toggleSize`
+- `large.rowPadding`, `large.rowPaddingInline`, `large.rowFontSize`, `large.toggleSize`
+
 ## Tokens
 
 VueForge exposes design tokens as CSS variables generated from the theme preset. Core groups:
@@ -1323,7 +1369,7 @@ VueForge exposes design tokens as CSS variables generated from the theme preset.
 Typed tokens:
 
 - `ThemeTokens`/`ThemeOptions`/`ThemePreset` are exported for type-safe theming in TS.
-- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/numberInput/formField/textarea/link/breadcrumbs/menu/modal/drawer/popover/dropdown/select/autocomplete/multiselect/datepicker/daterangepicker/timepicker/pagination/switch/tooltip/skeleton/progress/badge/chip/avatar/datatable/slider/stepper/rating).
+- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/numberInput/formField/textarea/link/breadcrumbs/menu/modal/drawer/popover/dropdown/select/autocomplete/multiselect/datepicker/daterangepicker/timepicker/pagination/switch/tooltip/skeleton/progress/badge/chip/avatar/datatable/slider/stepper/rating/tree).
 
 Default core values (from `DefaultTheme`):
 
