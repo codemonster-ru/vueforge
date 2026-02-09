@@ -267,6 +267,28 @@
                     <Tree v-model="treeSelected" v-model:expanded-keys="treeExpanded" :items="treeItems" size="small" />
                 </div>
                 <div class="vf-home__card">
+                    <h3>TreeSelect</h3>
+                    <div class="vf-home__stack">
+                        <TreeSelect
+                            v-model="treeSelectValue"
+                            v-model:expanded-keys="treeSelectExpanded"
+                            :items="treeItems"
+                            placeholder="Select docs section"
+                            clearable
+                            size="small"
+                        />
+                        <TreeSelect
+                            v-model="treeSelectMany"
+                            :items="treeItems"
+                            multiple
+                            placeholder="Select multiple nodes"
+                            variant="outlined"
+                            clearable
+                            size="small"
+                        />
+                    </div>
+                </div>
+                <div class="vf-home__card">
                     <h3>Toast</h3>
                     <div class="vf-home__stack">
                         <Button label="Show Toast" @click="toastOpen = true" />
@@ -482,6 +504,7 @@ import {
     Stepper,
     Rating,
     Tree,
+    TreeSelect,
     setTheme,
     updateTheme,
 } from '@/index';
@@ -555,6 +578,9 @@ const ratingValue = ref(4);
 const ratingHalf = ref(3.5);
 const treeSelected = ref<string | number | undefined>('guides');
 const treeExpanded = ref<Array<string | number>>(['docs']);
+const treeSelectValue = ref<string | number | undefined>('api');
+const treeSelectExpanded = ref<Array<string | number>>(['docs']);
+const treeSelectMany = ref<Array<string | number>>(['guides']);
 const ratingMarks = [
     { value: 1, label: '1' },
     { value: 2, label: '2' },

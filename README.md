@@ -53,6 +53,7 @@ import {
     Stepper,
     Rating,
     Tree,
+    TreeSelect,
     Drawer,
     ConfirmDialog,
     Dropdown,
@@ -96,6 +97,7 @@ app.use(VueForge, {
 <Stepper v-model="step" :steps="steps" clickable />
 <Rating v-model="rating" allow-half />
 <Tree v-model="selectedNode" v-model:expandedKeys="expandedKeys" :items="treeItems" />
+<TreeSelect v-model="selectedNode" v-model:expandedKeys="expandedKeys" :items="treeItems" placeholder="Select node" />
 <Accordion v-model="faq">
     <AccordionItem value="shipping" title="Shipping">
         Shipping details
@@ -170,13 +172,14 @@ app.use(VueForge, {
 - Stepper
 - Rating
 - Tree
+- TreeSelect
 
 Input / Textarea (quick API):
 
 - `Input`: single-line control, supports `v-model`, `size`, `variant`, `disabled`, `readonly`.
 - `NumberInput`: numeric control, supports `v-model`, `min`, `max`, `step`, `precision`, `controls`, `size`, `variant`.
 - `Textarea`: multi-line control, same as Input plus `rows`.
-- `Checkbox`, `Select`, `Autocomplete`, `MultiSelect`, `DatePicker`, `DateRangePicker`, `Pagination`, and `DataTable` also support `variant: 'filled' | 'outlined'`.
+- `Checkbox`, `Select`, `Autocomplete`, `MultiSelect`, `DatePicker`, `DateRangePicker`, `Pagination`, `DataTable`, and `TreeSelect` also support `variant: 'filled' | 'outlined'`.
 
 ## FormField
 
@@ -1415,6 +1418,73 @@ Component tokens (override via `theme.overrides.components.tree`):
 - `small.rowPadding`, `small.rowPaddingInline`, `small.rowFontSize`, `small.toggleSize`
 - `large.rowPadding`, `large.rowPaddingInline`, `large.rowFontSize`, `large.toggleSize`
 
+## TreeSelect
+
+Props:
+
+- `items?: Array<{ key: string | number; label: string; disabled?: boolean; children?: Array<...> }>` (default `[]`)
+- `modelValue?: string | number | Array<string | number>` (v-model)
+- `expandedKeys?: Array<string | number>` (`v-model:expandedKeys`)
+- `multiple?: boolean` (default `false`)
+- `selectable?: boolean` (default `true`)
+- `expandOnClick?: boolean` (default `true`)
+- `placeholder?: string`
+- `searchPlaceholder?: string` (default `Search...`)
+- `disabled?: boolean`
+- `readonly?: boolean`
+- `loading?: boolean` (default `false`)
+- `loadingText?: string` (default `Loading...`)
+- `emptyText?: string` (default `No results`)
+- `filter?: boolean` (default `true`)
+- `clearable?: boolean` (default `false`)
+- `size?: 'small' | 'normal' | 'large'` (default `normal`)
+- `variant?: 'filled' | 'outlined'` (default `filled`)
+
+Events:
+
+- `update:modelValue`
+- `change`
+- `update:expandedKeys`
+- `toggle`
+- `nodeClick`
+- `search`
+- `focus`
+- `blur`
+
+Slots:
+
+- `label` - forwarded Tree node label slot props: `{ node, level, selected, expanded, disabled }`
+
+Example:
+
+```vue
+<TreeSelect
+    v-model="selectedNode"
+    v-model:expandedKeys="expandedKeys"
+    :items="treeItems"
+    placeholder="Select docs section"
+    clearable
+/>
+<TreeSelect v-model="selectedMany" :items="treeItems" multiple variant="outlined" />
+```
+
+### TreeSelect tokens
+
+Component tokens (override via `theme.overrides.components.treeselect`):
+
+- `minWidth`, `fontSize`, `controlGap`, `chevronSize`
+- `padding`, `borderRadius`, `borderColor`
+- `backgroundColor`, `textColor`, `placeholderColor`
+- `focusBorderColor`, `focusRingShadow`, `hoverBorderColor`
+- `disabledOpacity`
+- `panelBackgroundColor`, `panelBorderColor`, `panelPadding`, `panelMaxHeight`, `panelRadiusOffset`, `panelShadow`
+- `searchPadding`, `searchBorderColor`, `searchBorderRadius`
+- `emptyPadding`, `emptyColor`
+- `loadingPadding`, `loadingColor`
+- `clearSize`, `clearRadius`, `clearHoverBackgroundColor`
+- `small.fontSize`, `small.padding`
+- `large.fontSize`, `large.padding`
+
 ## Tokens
 
 VueForge exposes design tokens as CSS variables generated from the theme preset. Core groups:
@@ -1429,7 +1499,7 @@ VueForge exposes design tokens as CSS variables generated from the theme preset.
 Typed tokens:
 
 - `ThemeTokens`/`ThemeOptions`/`ThemePreset` are exported for type-safe theming in TS.
-- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/numberInput/formField/textarea/link/breadcrumbs/menu/modal/confirmDialog/drawer/popover/dropdown/select/autocomplete/multiselect/datepicker/daterangepicker/timepicker/pagination/switch/tooltip/skeleton/progress/badge/chip/avatar/datatable/slider/stepper/rating/tree).
+- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/numberInput/formField/textarea/link/breadcrumbs/menu/modal/confirmDialog/drawer/popover/dropdown/select/autocomplete/multiselect/datepicker/daterangepicker/timepicker/pagination/switch/tooltip/skeleton/progress/badge/chip/avatar/datatable/slider/stepper/rating/tree/treeselect).
 
 Default core values (from `DefaultTheme`):
 

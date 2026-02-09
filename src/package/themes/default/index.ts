@@ -39,6 +39,7 @@ import slider from './components/slider';
 import stepper from './components/stepper';
 import rating from './components/rating';
 import tree from './components/tree';
+import treeselect from './components/treeselect';
 
 export default {
     ...base,
@@ -84,5 +85,6 @@ export default {
         stepper,
         rating,
         tree,
+        treeselect,
     },
 };

@@ -804,6 +804,46 @@ export type TreeTokens = {
         toggleSize?: string;
     };
 };
+export type TreeSelectTokens = {
+    minWidth?: string;
+    fontSize?: string;
+    controlGap?: string;
+    chevronSize?: string;
+    padding?: string;
+    borderRadius?: string;
+    borderColor?: string;
+    backgroundColor?: string;
+    textColor?: string;
+    placeholderColor?: string;
+    focusBorderColor?: string;
+    hoverBorderColor?: string;
+    disabledOpacity?: string;
+    panelBackgroundColor?: string;
+    panelBorderColor?: string;
+    panelPadding?: string;
+    panelMaxHeight?: string;
+    panelRadiusOffset?: string;
+    panelShadow?: string;
+    focusRingShadow?: string;
+    searchPadding?: string;
+    searchBorderColor?: string;
+    searchBorderRadius?: string;
+    emptyPadding?: string;
+    emptyColor?: string;
+    loadingPadding?: string;
+    loadingColor?: string;
+    clearSize?: string;
+    clearRadius?: string;
+    clearHoverBackgroundColor?: string;
+    small?: {
+        padding?: string;
+        fontSize?: string;
+    };
+    large?: {
+        padding?: string;
+        fontSize?: string;
+    };
+};
 export type StepperTokens = {
     gap?: string;
     itemGap?: string;
@@ -1114,6 +1154,7 @@ export type ThemeComponentTokens = {
     avatar?: AvatarTokens;
     rating?: RatingTokens;
     tree?: TreeTokens;
+    treeselect?: TreeSelectTokens;
     [key: string]: unknown;
 };
 export type ThemeTokens = {

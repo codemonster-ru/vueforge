@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.40.0] - 2026-02-09
+
+- Added TreeSelect component with searchable tree popup, single/multiple selection, and clear control.
+- Added default theme tokens and typed token support for `components.treeselect`.
+- Added TreeSelect export, README docs, unit tests, and example app showcase.
+
 ## [0.39.0] - 2026-02-09
 
 - Added ConfirmDialog component for confirmation flows with built-in actions and customizable slots.
