@@ -1,6 +1,6 @@
 <template>
     <Teleport to="body">
-        <div v-show="modelValue" :class="getClass" role="presentation">
+        <div v-show="modelValue" v-bind="attrs" :class="getClass" role="presentation">
             <div class="vf-modal__overlay" @click="onOverlayClick"></div>
             <div
                 ref="panel"
@@ -39,7 +39,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, ref, useSlots, watch } from 'vue';
+import { computed, nextTick, onBeforeUnmount, ref, useAttrs, useSlots, watch } from 'vue';
 import type { Slots } from 'vue';
 
 interface Props {
@@ -53,6 +53,7 @@ interface Props {
 }
 
 const emits = defineEmits(['update:modelValue', 'open', 'close']);
+defineOptions({ inheritAttrs: false });
 const props = withDefaults(defineProps<Props>(), {
     modelValue: false,
     title: '',
@@ -69,6 +70,7 @@ let previousBodyOverflow = '';
 let lastActiveElement: HTMLElement | null = null;
 
 const panel = ref<HTMLElement | null>(null);
+const attrs = useAttrs();
 const slots: Slots = useSlots();
 const labelId = `vf-modal-title-${++modalIdCounter}`;
 const bodyId = `vf-modal-body-${modalIdCounter}`;

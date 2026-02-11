@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.42.0] - 2026-02-11
+
+- Added SplitButton component for primary action + dropdown actions flows.
+- Added default theme tokens and typed token support for `components.splitbutton`.
+- Added SplitButton export, README docs, unit tests, and example app showcase.
+
 ## [0.41.0] - 2026-02-11
 
 - Added ContextMenu component for right-click actions with keyboard/open-close handling and menu item integration.

@@ -57,6 +57,7 @@ import {
     Drawer,
     ConfirmDialog,
     Dropdown,
+    SplitButton,
     ContextMenu,
 } from '@codemonster-ru/vueforge';
 import '@codemonster-ru/vueforge/dist/index.css';
@@ -124,6 +125,14 @@ app.use(VueForge, {
         <Button label="Actions" />
     </template>
 </Dropdown>
+<SplitButton
+    label="Save"
+    :items="[
+        { label: 'Save draft', command: saveDraft },
+        { label: 'Save and publish', command: publish },
+    ]"
+    @click="save"
+/>
 <ContextMenu :items="menuItems">
     <div>Right-click here</div>
 </ContextMenu>
@@ -156,6 +165,7 @@ app.use(VueForge, {
 - ConfirmDialog
 - Drawer
 - Dropdown
+- SplitButton
 - ContextMenu
 - Popover
 - Select

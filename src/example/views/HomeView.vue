@@ -394,6 +394,13 @@
                     </Dropdown>
                 </div>
                 <div class="vf-home__card">
+                    <h3>SplitButton</h3>
+                    <div class="vf-home__stack">
+                        <SplitButton label="Save" :items="splitButtonItems" @click="splitButtonAction = 'save'" />
+                        <p class="vf-home__muted">Last action: {{ splitButtonAction || 'none' }}</p>
+                    </div>
+                </div>
+                <div class="vf-home__card">
                     <h3>ContextMenu</h3>
                     <ContextMenu :items="contextMenuItems">
                         <div class="vf-home__context-target">Right-click here</div>
@@ -485,6 +492,7 @@ import {
     Drawer,
     Popover,
     Dropdown,
+    SplitButton,
     ContextMenu,
     DatePicker,
     DateRangePicker,
@@ -590,6 +598,7 @@ const treeSelectValue = ref<string | number | undefined>('api');
 const treeSelectExpanded = ref<Array<string | number>>(['docs']);
 const treeSelectMany = ref<Array<string | number>>(['guides']);
 const contextMenuAction = ref('');
+const splitButtonAction = ref('');
 const ratingMarks = [
     { value: 1, label: '1' },
     { value: 2, label: '2' },
@@ -628,6 +637,10 @@ const contextMenuItems = [
     { label: 'Rename', command: () => (contextMenuAction.value = 'rename') },
     { separator: true },
     { label: 'Delete', command: () => (contextMenuAction.value = 'delete') },
+];
+const splitButtonItems = [
+    { label: 'Save as draft', command: () => (splitButtonAction.value = 'draft') },
+    { label: 'Save and publish', command: () => (splitButtonAction.value = 'publish') },
 ];
 const treeItems = [
     {

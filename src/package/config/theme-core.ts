@@ -310,6 +310,19 @@ export type DropdownTokens = {
     disabledOpacity?: string;
     itemPadding?: string;
 };
+export type SplitButtonTokens = {
+    borderRadius?: string;
+    toggleMinWidth?: string;
+    togglePaddingX?: string;
+    toggleIconSize?: string;
+    disabledOpacity?: string;
+    small?: {
+        toggleMinWidth?: string;
+    };
+    large?: {
+        toggleMinWidth?: string;
+    };
+};
 export type ContextMenuTokens = {
     minWidth?: string;
     panelPadding?: string;
@@ -1144,6 +1157,7 @@ export type ThemeComponentTokens = {
     drawer?: DrawerTokens;
     popover?: PopoverTokens;
     dropdown?: DropdownTokens;
+    splitbutton?: SplitButtonTokens;
     contextMenu?: ContextMenuTokens;
     select?: SelectTokens;
     autocomplete?: AutocompleteTokens;

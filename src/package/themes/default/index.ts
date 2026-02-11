@@ -14,6 +14,7 @@ import confirmDialog from './components/confirm-dialog';
 import drawer from './components/drawer';
 import popover from './components/popover';
 import dropdown from './components/dropdown';
+import splitbutton from './components/splitbutton';
 import contextMenu from './components/context-menu';
 import select from './components/select';
 import autocomplete from './components/autocomplete';
@@ -61,6 +62,7 @@ export default {
         drawer,
         popover,
         dropdown,
+        splitbutton,
         contextMenu,
         select,
         autocomplete,
