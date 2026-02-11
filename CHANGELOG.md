@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.43.0] - 2026-02-11
+
+- Added CommandPalette component for global command search and quick actions with keyboard shortcut support.
+- Added default theme tokens and typed token support for `components.commandPalette`.
+- Added CommandPalette export, README docs, unit tests, and example app showcase.
+
 ## [0.42.0] - 2026-02-11
 
 - Added SplitButton component for primary action + dropdown actions flows.

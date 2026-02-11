@@ -408,6 +408,19 @@
                     <p class="vf-home__muted">Last action: {{ contextMenuAction || 'none' }}</p>
                 </div>
                 <div class="vf-home__card">
+                    <h3>CommandPalette</h3>
+                    <div class="vf-home__stack">
+                        <Button label="Open Command Palette" @click="commandPaletteOpen = true" />
+                        <p class="vf-home__muted">Shortcut: Ctrl/Cmd + K</p>
+                        <p class="vf-home__muted">Last action: {{ commandPaletteAction || 'none' }}</p>
+                    </div>
+                    <CommandPalette
+                        v-model="commandPaletteOpen"
+                        :items="commandPaletteItems"
+                        @select="onCommandPaletteSelect"
+                    />
+                </div>
+                <div class="vf-home__card">
                     <h3>Tooltip</h3>
                     <Tooltip text="Helpful hint" arrow>
                         <Button label="Hover me" />
@@ -494,6 +507,7 @@ import {
     Dropdown,
     SplitButton,
     ContextMenu,
+    CommandPalette,
     DatePicker,
     DateRangePicker,
     TimePicker,
@@ -599,6 +613,8 @@ const treeSelectExpanded = ref<Array<string | number>>(['docs']);
 const treeSelectMany = ref<Array<string | number>>(['guides']);
 const contextMenuAction = ref('');
 const splitButtonAction = ref('');
+const commandPaletteOpen = ref(false);
+const commandPaletteAction = ref('');
 const ratingMarks = [
     { value: 1, label: '1' },
     { value: 2, label: '2' },
@@ -642,6 +658,12 @@ const splitButtonItems = [
     { label: 'Save as draft', command: () => (splitButtonAction.value = 'draft') },
     { label: 'Save and publish', command: () => (splitButtonAction.value = 'publish') },
 ];
+const commandPaletteItems = [
+    { label: 'Open docs', value: 'docs', group: 'Navigation', description: 'Go to documentation section' },
+    { label: 'Open changelog', value: 'changelog', group: 'Navigation' },
+    { label: 'Save as draft', value: 'draft', group: 'Actions', shortcut: 'Ctrl+S' },
+    { label: 'Publish', value: 'publish', group: 'Actions', shortcut: 'Ctrl+Enter' },
+];
 const treeItems = [
     {
         key: 'docs',
@@ -670,6 +692,9 @@ const resetDrawer = () => {
     drawerNew.value = true;
     drawerPopular.value = false;
     drawerFree.value = false;
+};
+const onCommandPaletteSelect = (item: { value?: string | number; label?: string }) => {
+    commandPaletteAction.value = String(item.value ?? item.label ?? '');
 };
 </script>
 

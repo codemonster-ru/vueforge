@@ -59,6 +59,7 @@ import {
     Dropdown,
     SplitButton,
     ContextMenu,
+    CommandPalette,
 } from '@codemonster-ru/vueforge';
 import '@codemonster-ru/vueforge/dist/index.css';
 
@@ -136,6 +137,13 @@ app.use(VueForge, {
 <ContextMenu :items="menuItems">
     <div>Right-click here</div>
 </ContextMenu>
+<CommandPalette
+    v-model="commandPaletteOpen"
+    :items="[
+        { label: 'Open docs', value: 'docs', group: 'Navigation' },
+        { label: 'Save as draft', value: 'draft', group: 'Actions' },
+    ]"
+/>
 ```
 
 ## Components
@@ -167,6 +175,7 @@ app.use(VueForge, {
 - Dropdown
 - SplitButton
 - ContextMenu
+- CommandPalette
 - Popover
 - Select
 - Autocomplete
@@ -1131,6 +1140,63 @@ Component tokens (override via `theme.overrides.components.contextMenu`):
 - `panelBackgroundColor`, `panelShadow`, `zIndex`
 - `disabledOpacity`, `itemPadding`
 
+## CommandPalette
+
+Props:
+
+- `modelValue?: boolean` (v-model)
+- `items?: Array<{ label: string; value?: string | number; description?: string; shortcut?: string; group?: string; disabled?: boolean; keywords?: Array<string>; command?: () => void }>`
+- `placeholder?: string` (default `Type a command or search...`)
+- `emptyText?: string` (default `No commands found`)
+- `ariaLabel?: string` (default `Command palette`)
+- `closeOnOverlay?: boolean` (default `true`)
+- `closeOnEsc?: boolean` (default `true`)
+- `closeOnSelect?: boolean` (default `true`)
+- `filter?: boolean` (default `true`)
+- `enableShortcut?: boolean` (default `true`)
+- `shortcutKey?: string` (default `k`)
+
+Events:
+
+- `update:modelValue`
+- `open`
+- `close`
+- `select`
+- `search`
+
+Example:
+
+```vue
+<CommandPalette
+    v-model="open"
+    :items="[
+        { label: 'Open docs', value: 'docs', group: 'Navigation' },
+        { label: 'Save and publish', value: 'publish', group: 'Actions', shortcut: 'Ctrl+Enter' },
+    ]"
+    @select="onCommand"
+/>
+```
+
+### CommandPalette tokens
+
+Component tokens (override via `theme.overrides.components.commandPalette`):
+
+- `width`, `maxWidth`, `maxHeight`
+- `padding`, `borderRadius`, `borderColor`
+- `backgroundColor`, `textColor`, `overlayBackgroundColor`
+- `shadow`, `zIndex`, `headerGap`
+- `inputPadding`, `inputBorderRadius`, `inputBorderColor`
+- `inputBackgroundColor`, `inputTextColor`, `inputPlaceholderColor`
+- `inputFocusBorderColor`, `inputFocusRingShadow`
+- `listGap`, `groupGap`
+- `groupLabelPadding`, `groupLabelColor`, `groupLabelFontSize`
+- `itemPadding`, `itemBorderRadius`, `itemGap`
+- `itemTextColor`, `itemDescriptionColor`, `itemDescriptionFontSize`
+- `itemActiveBackgroundColor`, `itemActiveTextColor`, `itemDisabledOpacity`
+- `shortcutPadding`, `shortcutBorderRadius`, `shortcutBorderColor`
+- `shortcutBackgroundColor`, `shortcutTextColor`, `shortcutFontSize`
+- `emptyPadding`, `emptyColor`
+
 ## Tooltip
 
 Props:
@@ -1557,7 +1623,7 @@ VueForge exposes design tokens as CSS variables generated from the theme preset.
 Typed tokens:
 
 - `ThemeTokens`/`ThemeOptions`/`ThemePreset` are exported for type-safe theming in TS.
-- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/numberInput/formField/textarea/link/breadcrumbs/menu/modal/confirmDialog/drawer/popover/dropdown/contextMenu/select/autocomplete/multiselect/datepicker/daterangepicker/timepicker/pagination/switch/tooltip/skeleton/progress/badge/chip/avatar/datatable/slider/stepper/rating/tree/treeselect).
+- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/numberInput/formField/textarea/link/breadcrumbs/menu/modal/confirmDialog/drawer/popover/dropdown/contextMenu/commandPalette/select/autocomplete/multiselect/datepicker/daterangepicker/timepicker/pagination/switch/tooltip/skeleton/progress/badge/chip/avatar/datatable/slider/stepper/rating/tree/treeselect).
 
 Default core values (from `DefaultTheme`):
 

@@ -34,6 +34,7 @@ export { default as Drawer } from '@/package/components/drawer.vue';
 export { default as Dropdown } from '@/package/components/dropdown.vue';
 export { default as SplitButton } from '@/package/components/split-button.vue';
 export { default as ContextMenu } from '@/package/components/context-menu.vue';
+export { default as CommandPalette } from '@/package/components/command-palette.vue';
 export { default as Tooltip } from '@/package/components/tooltip.vue';
 export { default as Skeleton } from '@/package/components/skeleton.vue';
 export { default as Progress } from '@/package/components/progress.vue';
