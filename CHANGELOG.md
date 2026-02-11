@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.44.0] - 2026-02-11
+
+- Added VirtualScroller component for rendering large item collections with virtual windowing, overscan tuning, and end-of-list detection events.
+- Added default theme tokens and typed token support for `components.virtualScroller`.
+- Added VirtualScroller export, README docs, unit tests, and example app showcase.
+
 ## [0.43.0] - 2026-02-11
 
 - Added CommandPalette component for global command search and quick actions with keyboard shortcut support.

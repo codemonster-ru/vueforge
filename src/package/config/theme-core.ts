@@ -912,6 +912,18 @@ export type TreeSelectTokens = {
         fontSize?: string;
     };
 };
+export type VirtualScrollerTokens = {
+    fontSize?: string;
+    borderColor?: string;
+    borderRadius?: string;
+    backgroundColor?: string;
+    textColor?: string;
+    focusRingShadow?: string;
+    itemPadding?: string;
+    itemBorderColor?: string;
+    emptyPadding?: string;
+    emptyColor?: string;
+};
 export type StepperTokens = {
     gap?: string;
     itemGap?: string;
@@ -1226,6 +1238,7 @@ export type ThemeComponentTokens = {
     rating?: RatingTokens;
     tree?: TreeTokens;
     treeselect?: TreeSelectTokens;
+    virtualScroller?: VirtualScrollerTokens;
     [key: string]: unknown;
 };
 export type ThemeTokens = {

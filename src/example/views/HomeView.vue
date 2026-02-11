@@ -477,6 +477,14 @@
                         <Slider v-model="rating" :min="1" :max="5" :step="1" :marks="ratingMarks" show-value />
                     </div>
                 </div>
+                <div class="vf-home__card">
+                    <h3>VirtualScroller</h3>
+                    <VirtualScroller :items="virtualItems" :item-height="40" height="220px" :overscan="5">
+                        <template #default="{ item, index }">
+                            <span>{{ index + 1 }}. {{ String(item) }}</span>
+                        </template>
+                    </VirtualScroller>
+                </div>
             </div>
         </section>
     </div>
@@ -535,6 +543,7 @@ import {
     Rating,
     Tree,
     TreeSelect,
+    VirtualScroller,
     setTheme,
     updateTheme,
 } from '@/index';
@@ -688,6 +697,10 @@ const breadcrumbItems = [
     { label: 'Components', href: '#components' },
     { label: 'Breadcrumbs', active: true },
 ];
+const virtualItems = Array.from(
+    { length: 500 },
+    (_value, index) => `Customer #${(index + 1).toString().padStart(3, '0')}`,
+);
 const resetDrawer = () => {
     drawerNew.value = true;
     drawerPopular.value = false;

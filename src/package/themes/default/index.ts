@@ -43,6 +43,7 @@ import stepper from './components/stepper';
 import rating from './components/rating';
 import tree from './components/tree';
 import treeselect from './components/treeselect';
+import virtualScroller from './components/virtual-scroller';
 
 export default {
     ...base,
@@ -92,5 +93,6 @@ export default {
         rating,
         tree,
         treeselect,
+        virtualScroller,
     },
 };

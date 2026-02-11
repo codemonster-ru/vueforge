@@ -54,6 +54,7 @@ import {
     Rating,
     Tree,
     TreeSelect,
+    VirtualScroller,
     Drawer,
     ConfirmDialog,
     Dropdown,
@@ -101,6 +102,11 @@ app.use(VueForge, {
 <Rating v-model="rating" allow-half />
 <Tree v-model="selectedNode" v-model:expandedKeys="expandedKeys" :items="treeItems" />
 <TreeSelect v-model="selectedNode" v-model:expandedKeys="expandedKeys" :items="treeItems" placeholder="Select node" />
+<VirtualScroller :items="largeItems" :item-height="40" height="320px">
+    <template #default="{ item, index }">
+        {{ index + 1 }}. {{ item.label }}
+    </template>
+</VirtualScroller>
 <Accordion v-model="faq">
     <AccordionItem value="shipping" title="Shipping">
         Shipping details
@@ -197,6 +203,7 @@ app.use(VueForge, {
 - Rating
 - Tree
 - TreeSelect
+- VirtualScroller
 
 Input / Textarea (quick API):
 
@@ -1609,6 +1616,51 @@ Component tokens (override via `theme.overrides.components.treeselect`):
 - `small.fontSize`, `small.padding`
 - `large.fontSize`, `large.padding`
 
+## VirtualScroller
+
+Props:
+
+- `items?: Array<unknown>` (default `[]`)
+- `itemHeight?: number` (default `36`)
+- `height?: string` (default `18rem`)
+- `overscan?: number` (default `4`)
+- `keyField?: string` (default `id`)
+- `virtual?: boolean` (default `true`)
+- `ariaLabel?: string` (default `Virtual list`)
+- `emptyText?: string` (default `No items`)
+
+Events:
+
+- `scroll`
+- `rangeChange` (payload: `{ start: number; end: number }`)
+- `reachEnd`
+
+Slots:
+
+- `default` - item content with slot props `{ item, index }`
+- `empty` - empty state content
+
+Example:
+
+```vue
+<VirtualScroller :items="users" :item-height="44" height="320px" :overscan="6" key-field="id">
+    <template #default="{ item, index }">
+        <div>{{ index + 1 }}. {{ item.name }}</div>
+    </template>
+</VirtualScroller>
+```
+
+### VirtualScroller tokens
+
+Component tokens (override via `theme.overrides.components.virtualScroller`):
+
+- `fontSize`
+- `borderColor`, `borderRadius`
+- `backgroundColor`, `textColor`
+- `focusRingShadow`
+- `itemPadding`, `itemBorderColor`
+- `emptyPadding`, `emptyColor`
+
 ## Tokens
 
 VueForge exposes design tokens as CSS variables generated from the theme preset. Core groups:
@@ -1623,7 +1675,7 @@ VueForge exposes design tokens as CSS variables generated from the theme preset.
 Typed tokens:
 
 - `ThemeTokens`/`ThemeOptions`/`ThemePreset` are exported for type-safe theming in TS.
-- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/numberInput/formField/textarea/link/breadcrumbs/menu/modal/confirmDialog/drawer/popover/dropdown/contextMenu/commandPalette/select/autocomplete/multiselect/datepicker/daterangepicker/timepicker/pagination/switch/tooltip/skeleton/progress/badge/chip/avatar/datatable/slider/stepper/rating/tree/treeselect).
+- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/numberInput/formField/textarea/link/breadcrumbs/menu/modal/confirmDialog/drawer/popover/dropdown/contextMenu/commandPalette/select/autocomplete/multiselect/datepicker/daterangepicker/timepicker/pagination/switch/tooltip/skeleton/progress/badge/chip/avatar/datatable/slider/stepper/rating/tree/treeselect/virtualScroller).
 
 Default core values (from `DefaultTheme`):
 

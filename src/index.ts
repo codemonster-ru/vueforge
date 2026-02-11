@@ -48,6 +48,7 @@ export { default as Rating } from '@/package/components/rating.vue';
 export { default as Tree } from '@/package/components/tree.vue';
 export { default as TreeSelect } from '@/package/components/tree-select.vue';
 export { default as Breadcrumbs } from '@/package/components/breadcrumbs.vue';
+export { default as VirtualScroller } from '@/package/components/virtual-scroller.vue';
 export type { DataTableColumn } from '@/package/components/data-table.vue';
 export type { TreeItem, TreeValue } from '@/package/components/tree.vue';
 // config
