@@ -57,6 +57,7 @@ import {
     Drawer,
     ConfirmDialog,
     Dropdown,
+    ContextMenu,
 } from '@codemonster-ru/vueforge';
 import '@codemonster-ru/vueforge/dist/index.css';
 
@@ -123,6 +124,9 @@ app.use(VueForge, {
         <Button label="Actions" />
     </template>
 </Dropdown>
+<ContextMenu :items="menuItems">
+    <div>Right-click here</div>
+</ContextMenu>
 ```
 
 ## Components
@@ -152,6 +156,7 @@ app.use(VueForge, {
 - ConfirmDialog
 - Drawer
 - Dropdown
+- ContextMenu
 - Popover
 - Select
 - Autocomplete
@@ -1073,6 +1078,49 @@ Component tokens (override via `theme.overrides.components.dropdown`):
 - `panelBackgroundColor`, `panelShadow`, `zIndex`
 - `disabledOpacity`, `itemPadding`
 
+## ContextMenu
+
+Props:
+
+- `modelValue?: boolean` (v-model)
+- `items?: Array<{ label?: string; to?: string; href?: string; url?: string; icon?: string; disabled?: boolean; separator?: boolean; command?: () => void }>`
+- `disabled?: boolean`
+- `closeOnSelect?: boolean` (default `true`)
+- `closeOnEsc?: boolean` (default `true`)
+- `offset?: number` (default `2`)
+
+Slots:
+
+- `default` - context area/target
+- `menu` (optional) - menu content (defaults to `items` list if provided)
+
+Note: For custom menu content, add `data-context-menu-close` to clickable elements to auto-close on click.
+
+Events:
+
+- `update:modelValue`
+- `open`
+- `close`
+- `select`
+- `contextmenu`
+
+Example:
+
+```vue
+<ContextMenu :items="menuItems">
+    <div class="surface">Right-click here</div>
+</ContextMenu>
+```
+
+### ContextMenu tokens
+
+Component tokens (override via `theme.overrides.components.contextMenu`):
+
+- `minWidth`
+- `panelPadding`, `panelBorderRadius`, `panelBorderColor`
+- `panelBackgroundColor`, `panelShadow`, `zIndex`
+- `disabledOpacity`, `itemPadding`
+
 ## Tooltip
 
 Props:
@@ -1499,7 +1547,7 @@ VueForge exposes design tokens as CSS variables generated from the theme preset.
 Typed tokens:
 
 - `ThemeTokens`/`ThemeOptions`/`ThemePreset` are exported for type-safe theming in TS.
-- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/numberInput/formField/textarea/link/breadcrumbs/menu/modal/confirmDialog/drawer/popover/dropdown/select/autocomplete/multiselect/datepicker/daterangepicker/timepicker/pagination/switch/tooltip/skeleton/progress/badge/chip/avatar/datatable/slider/stepper/rating/tree/treeselect).
+- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/numberInput/formField/textarea/link/breadcrumbs/menu/modal/confirmDialog/drawer/popover/dropdown/contextMenu/select/autocomplete/multiselect/datepicker/daterangepicker/timepicker/pagination/switch/tooltip/skeleton/progress/badge/chip/avatar/datatable/slider/stepper/rating/tree/treeselect).
 
 Default core values (from `DefaultTheme`):
 

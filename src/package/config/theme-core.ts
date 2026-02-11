@@ -310,6 +310,17 @@ export type DropdownTokens = {
     disabledOpacity?: string;
     itemPadding?: string;
 };
+export type ContextMenuTokens = {
+    minWidth?: string;
+    panelPadding?: string;
+    panelBorderRadius?: string;
+    panelBorderColor?: string;
+    panelBackgroundColor?: string;
+    panelShadow?: string;
+    zIndex?: string;
+    disabledOpacity?: string;
+    itemPadding?: string;
+};
 export type SelectTokens = {
     minWidth?: string;
     fontSize?: string;
@@ -1133,6 +1144,7 @@ export type ThemeComponentTokens = {
     drawer?: DrawerTokens;
     popover?: PopoverTokens;
     dropdown?: DropdownTokens;
+    contextMenu?: ContextMenuTokens;
     select?: SelectTokens;
     autocomplete?: AutocompleteTokens;
     multiselect?: MultiSelectTokens;

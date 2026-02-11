@@ -394,6 +394,13 @@
                     </Dropdown>
                 </div>
                 <div class="vf-home__card">
+                    <h3>ContextMenu</h3>
+                    <ContextMenu :items="contextMenuItems">
+                        <div class="vf-home__context-target">Right-click here</div>
+                    </ContextMenu>
+                    <p class="vf-home__muted">Last action: {{ contextMenuAction || 'none' }}</p>
+                </div>
+                <div class="vf-home__card">
                     <h3>Tooltip</h3>
                     <Tooltip text="Helpful hint" arrow>
                         <Button label="Hover me" />
@@ -478,6 +485,7 @@ import {
     Drawer,
     Popover,
     Dropdown,
+    ContextMenu,
     DatePicker,
     DateRangePicker,
     TimePicker,
@@ -581,6 +589,7 @@ const treeExpanded = ref<Array<string | number>>(['docs']);
 const treeSelectValue = ref<string | number | undefined>('api');
 const treeSelectExpanded = ref<Array<string | number>>(['docs']);
 const treeSelectMany = ref<Array<string | number>>(['guides']);
+const contextMenuAction = ref('');
 const ratingMarks = [
     { value: 1, label: '1' },
     { value: 2, label: '2' },
@@ -614,6 +623,12 @@ const tableRows = [
     { id: 3, name: 'Chen', role: 'Product', age: 31 },
 ];
 const menuItems = [{ label: 'Home', to: '/' }, { separator: true }, { label: 'Docs', href: 'https://example.com' }];
+const contextMenuItems = [
+    { label: 'Copy', command: () => (contextMenuAction.value = 'copy') },
+    { label: 'Rename', command: () => (contextMenuAction.value = 'rename') },
+    { separator: true },
+    { label: 'Delete', command: () => (contextMenuAction.value = 'delete') },
+];
 const treeItems = [
     {
         key: 'docs',
@@ -723,6 +738,15 @@ body {
 
 .vf-home__muted {
     margin: 0;
+    color: var(--vf-secondary-text-color);
+}
+
+.vf-home__context-target {
+    border: 1px dashed var(--vf-border-color);
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+    user-select: none;
     color: var(--vf-secondary-text-color);
 }
 </style>

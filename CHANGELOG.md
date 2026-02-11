@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.41.0] - 2026-02-11
+
+- Added ContextMenu component for right-click actions with keyboard/open-close handling and menu item integration.
+- Added default theme tokens and typed token support for `components.contextMenu`.
+- Added ContextMenu export, README docs, unit tests, and example app showcase.
+
 ## [0.40.0] - 2026-02-09
 
 - Added TreeSelect component with searchable tree popup, single/multiple selection, and clear control.

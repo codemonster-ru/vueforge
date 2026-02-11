@@ -14,6 +14,7 @@ import confirmDialog from './components/confirm-dialog';
 import drawer from './components/drawer';
 import popover from './components/popover';
 import dropdown from './components/dropdown';
+import contextMenu from './components/context-menu';
 import select from './components/select';
 import autocomplete from './components/autocomplete';
 import multiselect from './components/multiselect';
@@ -60,6 +61,7 @@ export default {
         drawer,
         popover,
         dropdown,
+        contextMenu,
         select,
         autocomplete,
         multiselect,

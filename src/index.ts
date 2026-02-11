@@ -32,6 +32,7 @@ export { default as Modal } from '@/package/components/modal.vue';
 export { default as ConfirmDialog } from '@/package/components/confirm-dialog.vue';
 export { default as Drawer } from '@/package/components/drawer.vue';
 export { default as Dropdown } from '@/package/components/dropdown.vue';
+export { default as ContextMenu } from '@/package/components/context-menu.vue';
 export { default as Tooltip } from '@/package/components/tooltip.vue';
 export { default as Skeleton } from '@/package/components/skeleton.vue';
 export { default as Progress } from '@/package/components/progress.vue';
