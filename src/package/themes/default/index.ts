@@ -20,6 +20,7 @@ import commandPalette from './components/command-palette';
 import select from './components/select';
 import autocomplete from './components/autocomplete';
 import multiselect from './components/multiselect';
+import taginput from './components/taginput';
 import datepicker from './components/datepicker';
 import daterangepicker from './components/daterangepicker';
 import timepicker from './components/timepicker';
@@ -70,6 +71,7 @@ export default {
         select,
         autocomplete,
         multiselect,
+        taginput,
         datepicker,
         daterangepicker,
         timepicker,

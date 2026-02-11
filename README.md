@@ -35,6 +35,7 @@ import {
     Select,
     Autocomplete,
     MultiSelect,
+    TagInput,
     DatePicker,
     DateRangePicker,
     TimePicker,
@@ -85,6 +86,7 @@ app.use(VueForge, {
 <Select v-model="role" :options="roles" placeholder="Choose role" />
 <Autocomplete v-model="country" :options="countries" placeholder="Find country" />
 <MultiSelect v-model="countries" :options="countryOptions" placeholder="Select countries" clearable />
+<TagInput v-model="skills" :options="skillOptions" placeholder="Add skills" clearable />
 <DatePicker v-model="birthday" placeholder="Pick birthday" />
 <DateRangePicker v-model="range" placeholder="Pick range" />
 <TimePicker v-model="meetingTime" placeholder="Pick time" />
@@ -186,6 +188,7 @@ app.use(VueForge, {
 - Select
 - Autocomplete
 - MultiSelect
+- TagInput
 - DatePicker
 - DateRangePicker
 - TimePicker
@@ -210,7 +213,8 @@ Input / Textarea (quick API):
 - `Input`: single-line control, supports `v-model`, `size`, `variant`, `disabled`, `readonly`.
 - `NumberInput`: numeric control, supports `v-model`, `min`, `max`, `step`, `precision`, `controls`, `size`, `variant`.
 - `Textarea`: multi-line control, same as Input plus `rows`.
-- `Checkbox`, `Select`, `Autocomplete`, `MultiSelect`, `DatePicker`, `DateRangePicker`, `Pagination`, `DataTable`, and `TreeSelect` also support `variant: 'filled' | 'outlined'`.
+- `TagInput`: token/tag control, supports `v-model` (array), suggestions, custom tags, `maxTags`, `clearable`, `size`, `variant`.
+- `Checkbox`, `Select`, `Autocomplete`, `MultiSelect`, `TagInput`, `DatePicker`, `DateRangePicker`, `Pagination`, `DataTable`, and `TreeSelect` also support `variant: 'filled' | 'outlined'`.
 
 ## FormField
 
@@ -308,6 +312,66 @@ Example:
 ```vue
 <MultiSelect v-model="countries" :options="countryOptions" placeholder="Select countries" clearable />
 ```
+
+## TagInput
+
+Props:
+
+- `modelValue?: Array<string | number>` (v-model)
+- `options?: Array<{ label: string; value: string | number; disabled?: boolean }>`
+- `optionLabel?: string` (default `label`)
+- `optionValue?: string` (default `value`)
+- `placeholder?: string`
+- `disabled?: boolean`
+- `readonly?: boolean`
+- `loading?: boolean`
+- `loadingText?: string` (default `Loading...`)
+- `emptyText?: string` (default `No results`)
+- `filter?: boolean` (default `true`)
+- `allowCustom?: boolean` (default `true`)
+- `maxTags?: number`
+- `clearable?: boolean` (default `false`)
+- `validateTag?: (value: string) => boolean`
+- `size?: 'small' | 'normal' | 'large'` (default `normal`)
+- `variant?: 'filled' | 'outlined'` (default `filled`)
+
+Events:
+
+- `update:modelValue`
+- `change`
+- `search`
+- `add` (payload: `{ value: string | number; source: 'option' | 'custom' }`)
+- `remove`
+- `reject` (payload: `{ reason: 'duplicate' | 'maxTags' | 'invalid' | 'readonly'; value: string }`)
+- `focus`
+- `blur`
+
+Example:
+
+```vue
+<TagInput v-model="skills" :options="skillOptions" placeholder="Add skills" clearable />
+```
+
+### TagInput tokens
+
+Component tokens (override via `theme.overrides.components.taginput`):
+
+- `minWidth`, `minHeight`, `fontSize`, `controlGap`, `chevronSize`
+- `padding`, `borderRadius`, `borderColor`
+- `backgroundColor`, `textColor`, `placeholderColor`
+- `focusBorderColor`, `focusRingShadow`, `hoverBorderColor`
+- `disabledOpacity`
+- `panelBackgroundColor`, `panelBorderColor`, `panelPadding`, `panelMaxHeight`, `panelRadiusOffset`, `panelShadow`
+- `optionPadding`, `optionBorderRadius`
+- `optionHoverBackgroundColor`, `optionHighlightedBackgroundColor`
+- `emptyPadding`, `emptyColor`
+- `loadingPadding`, `loadingColor`
+- `inputMinWidth`
+- `chipGap`, `chipPadding`, `chipRadius`, `chipBackgroundColor`, `chipTextColor`, `chipFontSize`
+- `chipRemoveSize`, `chipRemoveRadius`, `chipRemoveHoverBackgroundColor`
+- `clearSize`, `clearRadius`, `clearHoverBackgroundColor`
+- `small.fontSize`, `small.padding`, `small.chipPadding`, `small.chipFontSize`
+- `large.fontSize`, `large.padding`, `large.chipPadding`, `large.chipFontSize`
 
 ### MultiSelect tokens
 
@@ -1675,7 +1739,7 @@ VueForge exposes design tokens as CSS variables generated from the theme preset.
 Typed tokens:
 
 - `ThemeTokens`/`ThemeOptions`/`ThemePreset` are exported for type-safe theming in TS.
-- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/numberInput/formField/textarea/link/breadcrumbs/menu/modal/confirmDialog/drawer/popover/dropdown/contextMenu/commandPalette/select/autocomplete/multiselect/datepicker/daterangepicker/timepicker/pagination/switch/tooltip/skeleton/progress/badge/chip/avatar/datatable/slider/stepper/rating/tree/treeselect/virtualScroller).
+- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/numberInput/formField/textarea/link/breadcrumbs/menu/modal/confirmDialog/drawer/popover/dropdown/contextMenu/commandPalette/select/autocomplete/multiselect/taginput/datepicker/daterangepicker/timepicker/pagination/switch/tooltip/skeleton/progress/badge/chip/avatar/datatable/slider/stepper/rating/tree/treeselect/virtualScroller).
 
 Default core values (from `DefaultTheme`):
 

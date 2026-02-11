@@ -137,6 +137,19 @@
                     </div>
                 </div>
                 <div class="vf-home__card">
+                    <h3>TagInput</h3>
+                    <div class="vf-home__stack">
+                        <TagInput v-model="skills" :options="skillOptions" placeholder="Add skills" clearable />
+                        <TagInput
+                            v-model="skillsOutlined"
+                            :options="skillOptions"
+                            placeholder="Add skills (outlined)"
+                            variant="outlined"
+                            :max-tags="5"
+                        />
+                    </div>
+                </div>
+                <div class="vf-home__card">
                     <h3>DatePicker</h3>
                     <div class="vf-home__stack">
                         <DatePicker v-model="dueDate" placeholder="Pick a date" />
@@ -522,6 +535,7 @@ import {
     Pagination,
     DataTable,
     MultiSelect,
+    TagInput,
     RadioButton,
     RadioGroup,
     Tab,
@@ -585,6 +599,8 @@ const roleAlt = ref('');
 const country = ref('');
 const countryAlt = ref('');
 const countriesMulti = ref<Array<string | number>>([]);
+const skills = ref<Array<string | number>>(['vue', 'ts']);
+const skillsOutlined = ref<Array<string | number>>([]);
 const dueDate = ref('');
 const dueDateAlt = ref('');
 const dateRange = ref<[string | null, string | null] | null>([null, null]);
@@ -645,6 +661,13 @@ const countries = [
     { label: 'United States', value: 'us' },
     { label: 'Germany', value: 'de' },
     { label: 'Japan', value: 'jp' },
+];
+const skillOptions = [
+    { label: 'Vue', value: 'vue' },
+    { label: 'TypeScript', value: 'ts' },
+    { label: 'Vite', value: 'vite' },
+    { label: 'Vitest', value: 'vitest' },
+    { label: 'ESLint', value: 'eslint' },
 ];
 const tableColumns: DataTableColumn[] = [
     { field: 'name', header: 'Name', sortable: true },

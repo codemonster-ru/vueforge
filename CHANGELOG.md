@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.45.0] - 2026-02-11
+
+- Added TagInput component for token/tag entry with suggestions, custom tags, keyboard interactions, and validation hooks.
+- Added default theme tokens and typed token support for `components.taginput`.
+- Added TagInput export, README docs, unit tests, and example app showcase.
+
 ## [0.44.0] - 2026-02-11
 
 - Added VirtualScroller component for rendering large item collections with virtual windowing, overscan tuning, and end-of-list detection events.

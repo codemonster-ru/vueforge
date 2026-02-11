@@ -11,6 +11,7 @@ export { default as FileUpload } from '@/package/components/file-upload.vue';
 export { default as Select } from '@/package/components/select.vue';
 export { default as Autocomplete } from '@/package/components/autocomplete.vue';
 export { default as MultiSelect } from '@/package/components/multi-select.vue';
+export { default as TagInput } from '@/package/components/tag-input.vue';
 export { default as DatePicker } from '@/package/components/datepicker.vue';
 export { default as DateRangePicker } from '@/package/components/date-range-picker.vue';
 export { default as TimePicker } from '@/package/components/timepicker.vue';
