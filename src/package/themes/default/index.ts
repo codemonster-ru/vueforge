@@ -30,6 +30,7 @@ import datepicker from './components/datepicker';
 import daterangepicker from './components/daterangepicker';
 import timepicker from './components/timepicker';
 import datetimepicker from './components/datetimepicker';
+import calendar from './components/calendar';
 import pagination from './components/pagination';
 import checkbox from './components/checkbox';
 import radio from './components/radio';
@@ -87,6 +88,7 @@ export default {
         daterangepicker,
         timepicker,
         datetimepicker,
+        calendar,
         pagination,
         checkbox,
         radio,

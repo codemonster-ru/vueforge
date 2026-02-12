@@ -241,6 +241,21 @@
                     </div>
                 </div>
                 <div class="vf-home__card">
+                    <h3>Calendar</h3>
+                    <div class="vf-home__stack">
+                        <Calendar v-model="calendarDate" min="2026-01-10" max="2026-12-31" />
+                        <Calendar
+                            v-model="calendarDateAlt"
+                            variant="outlined"
+                            size="small"
+                            :first-day-of-week="1"
+                            min="2026-01-10"
+                            max="2026-12-31"
+                        />
+                        <p class="vf-home__muted">Selected: {{ calendarDate || 'none' }}</p>
+                    </div>
+                </div>
+                <div class="vf-home__card">
                     <h3>DateRangePicker</h3>
                     <div class="vf-home__stack">
                         <DateRangePicker v-model="dateRange" placeholder="Pick a range" />
@@ -628,6 +643,7 @@ import {
     ContextMenu,
     CommandPalette,
     DatePicker,
+    Calendar,
     DateRangePicker,
     TimePicker,
     DateTimePicker,
@@ -715,6 +731,8 @@ const skills = ref<Array<string | number>>(['vue', 'ts']);
 const skillsOutlined = ref<Array<string | number>>([]);
 const dueDate = ref('');
 const dueDateAlt = ref('');
+const calendarDate = ref('2026-02-12');
+const calendarDateAlt = ref('2026-02-20');
 const dateRange = ref<[string | null, string | null] | null>([null, null]);
 const dateRangeAlt = ref<[string | null, string | null] | null>([null, null]);
 const meetingTime = ref('');
@@ -793,6 +811,7 @@ const searchCatalog = [
     'ColorPicker',
     'MaskedInput',
     'DatePicker',
+    'Calendar',
     'DateRangePicker',
     'DateTimePicker',
     'TimePicker',

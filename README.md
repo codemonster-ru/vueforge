@@ -42,6 +42,7 @@ import {
     MultiSelect,
     TagInput,
     DatePicker,
+    Calendar,
     DateRangePicker,
     TimePicker,
     DateTimePicker,
@@ -99,6 +100,7 @@ app.use(VueForge, {
 <MultiSelect v-model="countries" :options="countryOptions" placeholder="Select countries" clearable />
 <TagInput v-model="skills" :options="skillOptions" placeholder="Add skills" clearable />
 <DatePicker v-model="birthday" placeholder="Pick birthday" />
+<Calendar v-model="selectedDate" />
 <DateRangePicker v-model="range" placeholder="Pick range" />
 <TimePicker v-model="meetingTime" placeholder="Pick time" />
 <DateTimePicker v-model="meetingAt" placeholder="Pick date and time" />
@@ -207,6 +209,7 @@ app.use(VueForge, {
 - MultiSelect
 - TagInput
 - DatePicker
+- Calendar
 - DateRangePicker
 - TimePicker
 - DateTimePicker
@@ -237,7 +240,7 @@ Input / Search / Password / Textarea (quick API):
 - `NumberInput`: numeric control, supports `v-model`, `min`, `max`, `step`, `precision`, `controls`, `size`, `variant`.
 - `Textarea`: multi-line control, same as Input plus `rows`.
 - `TagInput`: token/tag control, supports `v-model` (array), suggestions, custom tags, `maxTags`, `clearable`, `size`, `variant`.
-- `SearchInput`, `OtpInput`, `ColorPicker`, `MaskedInput`, `Checkbox`, `Select`, `Autocomplete`, `MultiSelect`, `TagInput`, `DatePicker`, `DateRangePicker`, `DateTimePicker`, `Pagination`, `DataTable`, and `TreeSelect` also support `variant: 'filled' | 'outlined'`.
+- `SearchInput`, `OtpInput`, `ColorPicker`, `MaskedInput`, `Checkbox`, `Select`, `Autocomplete`, `MultiSelect`, `TagInput`, `DatePicker`, `Calendar`, `DateRangePicker`, `DateTimePicker`, `Pagination`, `DataTable`, and `TreeSelect` also support `variant: 'filled' | 'outlined'`.
 
 ## FormField
 
@@ -442,6 +445,48 @@ Example:
 ```vue
 <DatePicker v-model="startDate" placeholder="Pick date" min="2026-01-01" max="2026-12-31" />
 ```
+
+## Calendar
+
+Props:
+
+- `modelValue?: string` (v-model, ISO date `YYYY-MM-DD`)
+- `disabled?: boolean`
+- `readonly?: boolean`
+- `min?: string` (ISO date `YYYY-MM-DD`)
+- `max?: string` (ISO date `YYYY-MM-DD`)
+- `locale?: string` (default `en-US`)
+- `firstDayOfWeek?: number` (default `0`, Sunday)
+- `size?: 'small' | 'normal' | 'large'` (default `normal`)
+- `variant?: 'filled' | 'outlined'` (default `filled`)
+
+Events:
+
+- `update:modelValue`
+- `change`
+
+Example:
+
+```vue
+<Calendar v-model="selectedDate" min="2026-01-01" max="2026-12-31" />
+<Calendar v-model="selectedDateAlt" variant="outlined" :first-day-of-week="1" />
+```
+
+### Calendar tokens
+
+Component tokens (override via `theme.overrides.components.calendar`):
+
+- `width`, `fontSize`, `padding`
+- `borderRadius`, `borderColor`
+- `backgroundColor`, `textColor`
+- `disabledOpacity`
+- `headerGap`, `headerPadding`, `monthLabelFontSize`, `monthLabelFontWeight`
+- `navButtonSize`, `navButtonRadius`, `navButtonFontSize`
+- `weekdayColor`, `weekdayFontSize`, `weekdaysMarginBottom`
+- `daysGap`, `daySize`, `dayFontSize`, `dayBorderRadius`
+- `dayHoverBackgroundColor`, `daySelectedBackgroundColor`, `daySelectedTextColor`, `dayMutedColor`, `dayTodayBorderColor`
+- `small.fontSize`, `small.padding`, `small.daySize`
+- `large.fontSize`, `large.padding`, `large.daySize`
 
 ## DateRangePicker
 
@@ -2055,7 +2100,7 @@ VueForge exposes design tokens as CSS variables generated from the theme preset.
 Typed tokens:
 
 - `ThemeTokens`/`ThemeOptions`/`ThemePreset` are exported for type-safe theming in TS.
-- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/searchInput/passwordInput/otpInput/colorPicker/maskedInput/numberInput/formField/textarea/link/breadcrumbs/menu/modal/confirmDialog/drawer/popover/dropdown/contextMenu/commandPalette/select/autocomplete/multiselect/taginput/datepicker/daterangepicker/timepicker/datetimepicker/pagination/switch/tooltip/skeleton/progress/badge/chip/avatar/datatable/slider/stepper/rating/tree/treeselect/virtualScroller).
+- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/searchInput/passwordInput/otpInput/colorPicker/maskedInput/numberInput/formField/textarea/link/breadcrumbs/menu/modal/confirmDialog/drawer/popover/dropdown/contextMenu/commandPalette/select/autocomplete/multiselect/taginput/datepicker/calendar/daterangepicker/timepicker/datetimepicker/pagination/switch/tooltip/skeleton/progress/badge/chip/avatar/datatable/slider/stepper/rating/tree/treeselect/virtualScroller).
 
 Default core values (from `DefaultTheme`):
 

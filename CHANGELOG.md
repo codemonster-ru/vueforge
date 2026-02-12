@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.52.0] - 2026-02-12
+
+- Added Calendar component as an inline monthly date selector with locale and min/max support.
+- Added default theme tokens and typed token support for `components.calendar`.
+- Added Calendar export, README docs, unit tests, and example app showcase.
+
 ## [0.51.0] - 2026-02-12
 
 - Added SearchInput component with debounced `search` event, loading state, and optional clear control.

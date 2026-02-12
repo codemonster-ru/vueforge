@@ -760,6 +760,45 @@ export type DatePickerTokens = {
         daySize?: string;
     };
 };
+export type CalendarTokens = {
+    width?: string;
+    fontSize?: string;
+    padding?: string;
+    borderRadius?: string;
+    borderColor?: string;
+    backgroundColor?: string;
+    textColor?: string;
+    disabledOpacity?: string;
+    headerGap?: string;
+    headerPadding?: string;
+    monthLabelFontSize?: string;
+    monthLabelFontWeight?: string;
+    navButtonSize?: string;
+    navButtonRadius?: string;
+    navButtonFontSize?: string;
+    weekdayColor?: string;
+    weekdayFontSize?: string;
+    weekdaysMarginBottom?: string;
+    daysGap?: string;
+    daySize?: string;
+    dayFontSize?: string;
+    dayBorderRadius?: string;
+    dayHoverBackgroundColor?: string;
+    daySelectedBackgroundColor?: string;
+    daySelectedTextColor?: string;
+    dayMutedColor?: string;
+    dayTodayBorderColor?: string;
+    small?: {
+        padding?: string;
+        fontSize?: string;
+        daySize?: string;
+    };
+    large?: {
+        padding?: string;
+        fontSize?: string;
+        daySize?: string;
+    };
+};
 export type DateRangePickerTokens = {
     minWidth?: string;
     fontSize?: string;
@@ -1499,6 +1538,7 @@ export type ThemeComponentTokens = {
     multiselect?: MultiSelectTokens;
     taginput?: TagInputTokens;
     datepicker?: DatePickerTokens;
+    calendar?: CalendarTokens;
     daterangepicker?: DateRangePickerTokens;
     timepicker?: TimePickerTokens;
     datetimepicker?: DateTimePickerTokens;
