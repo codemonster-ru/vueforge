@@ -4,6 +4,7 @@ import card from './components/card';
 import input from './components/input';
 import inlineEdit from './components/inline-edit';
 import searchInput from './components/search-input';
+import mentionInput from './components/mention-input';
 import passwordInput from './components/password-input';
 import otpInput from './components/otp-input';
 import colorPicker from './components/color-picker';
@@ -65,6 +66,7 @@ export default {
         input,
         inlineEdit,
         searchInput,
+        mentionInput,
         passwordInput,
         otpInput,
         colorPicker,

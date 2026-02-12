@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.56.0] - 2026-02-12
+
+- Added MentionInput component with `@`/`#` trigger suggestions, keyboard selection, and mention insertion support.
+- Added default theme tokens and typed token support for `components.mentionInput`.
+- Added MentionInput export, README docs, unit tests, and example app showcase.
+
 ## [0.55.0] - 2026-02-12
 
 - Added InlineEdit component with inline view/edit mode, save/cancel actions, and text/number support.

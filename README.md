@@ -29,6 +29,7 @@ import {
     Input,
     InlineEdit,
     SearchInput,
+    MentionInput,
     PasswordInput,
     OtpInput,
     ColorPicker,
@@ -91,6 +92,7 @@ app.use(VueForge, {
 </FormField>
 <InlineEdit v-model="name" placeholder="No name" />
 <SearchInput v-model="query" placeholder="Search components" clearable />
+<MentionInput v-model="message" :suggestions="mentionSuggestions" placeholder="Type @name" />
 <PasswordInput v-model="password" placeholder="Enter password" show-strength />
 <OtpInput v-model="otp" :length="6" />
 <ColorPicker v-model="brandColor" :presets="['#2b6cb0', '#0cbc87', '#d6293e']" />
@@ -206,6 +208,7 @@ app.use(VueForge, {
 - Input
 - InlineEdit
 - SearchInput
+- MentionInput
 - PasswordInput
 - OtpInput
 - ColorPicker
@@ -256,6 +259,7 @@ Input / Search / Password / Textarea (quick API):
 - `Input`: single-line control, supports `v-model`, `size`, `variant`, `disabled`, `readonly`.
 - `InlineEdit`: inline value editing with view/edit states, save/cancel actions, and text/number modes.
 - `SearchInput`: search-focused control with `debounce`, `clearable`, `loading`, `size`, and `variant`.
+- `MentionInput`: text input with `@`/`#` triggers, suggestions panel, keyboard selection, and mention insertion events.
 - `PasswordInput`: password control, supports visibility toggle, strength meter, CapsLock hint, `size`, and `variant`.
 - `OtpInput`: one-time code control, supports fixed length, paste handling, numeric/alphanumeric modes, `size`, and `variant`.
 - `ColorPicker`: color control with presets, optional alpha channel, and output formats (`hex`/`rgb`/`hsl`).
@@ -264,7 +268,7 @@ Input / Search / Password / Textarea (quick API):
 - `Textarea`: multi-line control, same as Input plus `rows`.
 - `TagInput`: token/tag control, supports `v-model` (array), suggestions, custom tags, `maxTags`, `clearable`, `size`, `variant`.
 - `FilterChips`: compact chip-based filter toggles with single/multiple selection modes and optional clear action.
-- `SearchInput`, `InlineEdit`, `OtpInput`, `ColorPicker`, `MaskedInput`, `Checkbox`, `Select`, `Autocomplete`, `MultiSelect`, `TagInput`, `DatePicker`, `Calendar`, `DateRangePicker`, `DateTimePicker`, `Pagination`, `DataTable`, `SegmentedControl`, and `TreeSelect` also support `variant: 'filled' | 'outlined'`.
+- `SearchInput`, `MentionInput`, `InlineEdit`, `OtpInput`, `ColorPicker`, `MaskedInput`, `Checkbox`, `Select`, `Autocomplete`, `MultiSelect`, `TagInput`, `DatePicker`, `Calendar`, `DateRangePicker`, `DateTimePicker`, `Pagination`, `DataTable`, `SegmentedControl`, and `TreeSelect` also support `variant: 'filled' | 'outlined'`.
 
 ## FormField
 
@@ -341,6 +345,65 @@ Component tokens (override via `theme.overrides.components.inlineEdit`):
 - `cancelButtonBackgroundColor`, `cancelButtonTextColor`, `cancelButtonBorderColor`
 - `small.fontSize`, `small.padding`, `small.buttonPadding`
 - `large.fontSize`, `large.padding`, `large.buttonPadding`
+
+## MentionInput
+
+Props:
+
+- `modelValue?: string` (v-model)
+- `suggestions?: Array<{ label: string; value?: string | number; trigger?: string; disabled?: boolean }>` (default `[]`)
+- `triggers?: Array<string>` (default `['@', '#']`)
+- `placeholder?: string`
+- `disabled?: boolean`
+- `readonly?: boolean`
+- `loading?: boolean` (default `false`)
+- `loadingText?: string` (default `Loading...`)
+- `emptyText?: string` (default `No matches`)
+- `minQueryLength?: number` (default `1`)
+- `maxSuggestions?: number` (default `8`)
+- `appendSpace?: boolean` (default `true`)
+- `size?: 'small' | 'normal' | 'large'` (default `normal`)
+- `variant?: 'filled' | 'outlined'` (default `filled`)
+- `ariaLabel?: string`
+
+Events:
+
+- `update:modelValue`
+- `input`
+- `change`
+- `search` (payload: `{ trigger: string; query: string }`)
+- `select`
+- `insert` (payload: `{ trigger, query, option, text, range }`)
+- `focus`
+- `blur`
+
+Example:
+
+```vue
+<MentionInput
+    v-model="message"
+    :suggestions="[
+        { label: 'alice', value: 'alice', trigger: '@' },
+        { label: 'frontend', value: 'frontend', trigger: '#' },
+    ]"
+    placeholder="Type @name or #topic"
+/>
+```
+
+### MentionInput tokens
+
+Component tokens (override via `theme.overrides.components.mentionInput`):
+
+- `minWidth`, `fontSize`, `padding`
+- `borderRadius`, `borderColor`
+- `backgroundColor`, `textColor`, `placeholderColor`
+- `focusBorderColor`, `focusRingShadow`, `hoverBorderColor`, `disabledOpacity`
+- `panelBackgroundColor`, `panelBorderColor`, `panelPadding`, `panelMaxHeight`, `panelRadiusOffset`, `panelShadow`
+- `optionPadding`, `optionGap`, `optionBorderRadius`, `optionFontSize`
+- `optionHoverBackgroundColor`, `optionTriggerColor`
+- `emptyPadding`, `emptyColor`
+- `small.fontSize`, `small.padding`
+- `large.fontSize`, `large.padding`
 
 Note: default filled backgrounds for Input/Select/Textarea use `controls.backgroundColor` (defaults to `bgSoftColor`). Set it to `bgColor` to disable soft backgrounds.
 
@@ -2271,7 +2334,7 @@ VueForge exposes design tokens as CSS variables generated from the theme preset.
 Typed tokens:
 
 - `ThemeTokens`/`ThemeOptions`/`ThemePreset` are exported for type-safe theming in TS.
-- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/inlineEdit/searchInput/passwordInput/otpInput/colorPicker/maskedInput/numberInput/formField/textarea/link/breadcrumbs/menu/modal/confirmDialog/drawer/popover/dropdown/contextMenu/commandPalette/select/autocomplete/multiselect/taginput/datepicker/calendar/daterangepicker/timepicker/datetimepicker/pagination/switch/segmentedControl/tooltip/skeleton/progress/badge/chip/filterChips/avatar/datatable/slider/stepper/rating/tree/treeselect/virtualScroller).
+- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/inlineEdit/searchInput/mentionInput/passwordInput/otpInput/colorPicker/maskedInput/numberInput/formField/textarea/link/breadcrumbs/menu/modal/confirmDialog/drawer/popover/dropdown/contextMenu/commandPalette/select/autocomplete/multiselect/taginput/datepicker/calendar/daterangepicker/timepicker/datetimepicker/pagination/switch/segmentedControl/tooltip/skeleton/progress/badge/chip/filterChips/avatar/datatable/slider/stepper/rating/tree/treeselect/virtualScroller).
 
 Default core values (from `DefaultTheme`):
 

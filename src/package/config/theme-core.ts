@@ -145,6 +145,42 @@ export type SearchInputTokens = {
         clearSize?: string;
     };
 };
+export type MentionInputTokens = {
+    minWidth?: string;
+    fontSize?: string;
+    padding?: string;
+    borderRadius?: string;
+    borderColor?: string;
+    backgroundColor?: string;
+    textColor?: string;
+    placeholderColor?: string;
+    focusBorderColor?: string;
+    focusRingShadow?: string;
+    hoverBorderColor?: string;
+    disabledOpacity?: string;
+    panelBackgroundColor?: string;
+    panelBorderColor?: string;
+    panelPadding?: string;
+    panelMaxHeight?: string;
+    panelRadiusOffset?: string;
+    panelShadow?: string;
+    optionPadding?: string;
+    optionGap?: string;
+    optionBorderRadius?: string;
+    optionFontSize?: string;
+    optionHoverBackgroundColor?: string;
+    optionTriggerColor?: string;
+    emptyPadding?: string;
+    emptyColor?: string;
+    small?: {
+        padding?: string;
+        fontSize?: string;
+    };
+    large?: {
+        padding?: string;
+        fontSize?: string;
+    };
+};
 export type PasswordInputTokens = {
     gap?: string;
     fontSize?: string;
@@ -1609,6 +1645,7 @@ export type ThemeComponentTokens = {
     input?: InputTokens;
     inlineEdit?: InlineEditTokens;
     searchInput?: SearchInputTokens;
+    mentionInput?: MentionInputTokens;
     passwordInput?: PasswordInputTokens;
     otpInput?: OtpInputTokens;
     colorPicker?: ColorPickerTokens;

@@ -94,6 +94,34 @@
                     </div>
                 </div>
                 <div class="vf-home__card">
+                    <h3>MentionInput</h3>
+                    <div class="vf-home__stack">
+                        <p class="vf-home__muted">Use in comments: mention teammates with @ and topics with #.</p>
+                        <p class="vf-home__muted">Try typing: @al, @ki, #fr, #re</p>
+                        <MentionInput
+                            v-model="mentionText"
+                            placeholder="Write a comment..."
+                            :suggestions="mentionSuggestions"
+                            :loading="mentionLoading"
+                            @search="onMentionSearch"
+                            @insert="onMentionInsert"
+                        />
+                        <MentionInput
+                            v-model="mentionTextAlt"
+                            placeholder="Second field (outlined)"
+                            variant="outlined"
+                            size="small"
+                            :suggestions="mentionSuggestions"
+                            :loading="mentionLoading"
+                            @search="onMentionSearch"
+                        />
+                        <p class="vf-home__muted">Text: {{ mentionText || 'empty' }}</p>
+                        <p class="vf-home__muted">Mentions: {{ extractedMentions.join(', ') || 'none' }}</p>
+                        <p class="vf-home__muted">Tags: {{ extractedTags.join(', ') || 'none' }}</p>
+                        <p class="vf-home__muted">Last insert: {{ lastMentionInsert || 'none' }}</p>
+                    </div>
+                </div>
+                <div class="vf-home__card">
                     <h3>PasswordInput</h3>
                     <div class="vf-home__stack">
                         <PasswordInput v-model="password" placeholder="Password" show-strength />
@@ -665,6 +693,7 @@ import {
     Input,
     InlineEdit,
     SearchInput,
+    MentionInput,
     PasswordInput,
     OtpInput,
     ColorPicker,
@@ -744,6 +773,10 @@ const inlineBudget = ref<number | null>(2500);
 const searchText = ref('');
 const searchQuery = ref('');
 const searchQueryAlt = ref('');
+const mentionText = ref('Please ask @alice to sync this with #frontend team.');
+const mentionTextAlt = ref('');
+const lastMentionInsert = ref('');
+const mentionLoading = ref(false);
 const localSearchQuery = ref('');
 const serverSearchLoading = ref(false);
 const serverResults = ref<Array<string>>([]);
@@ -841,6 +874,16 @@ const segmentOptions = [
     { label: 'Grid', value: 'grid' },
     { label: 'Board', value: 'board' },
 ];
+const mentionSuggestions = ref([
+    { label: 'alice', value: 'alice', trigger: '@' },
+    { label: 'alex', value: 'alex', trigger: '@' },
+    { label: 'kirill', value: 'kirill', trigger: '@' },
+    { label: 'backend', value: 'backend', trigger: '#' },
+    { label: 'frontend', value: 'frontend', trigger: '#' },
+    { label: 'release', value: 'release', trigger: '#' },
+]);
+const mentionUsersDirectory = ['alice', 'alex', 'kirill', 'marina', 'nikita'];
+const mentionTopicsDirectory = ['frontend', 'backend', 'release', 'hotfix', 'qa'];
 const filterOptions = [
     { label: 'Open', value: 'open', count: 12 },
     { label: 'In progress', value: 'progress', count: 7 },
@@ -870,6 +913,7 @@ const searchCatalog = [
     'Input',
     'InlineEdit',
     'SearchInput',
+    'MentionInput',
     'PasswordInput',
     'OtpInput',
     'ColorPicker',
@@ -904,6 +948,16 @@ const localFilteredComponents = computed(() => {
     }
 
     return searchCatalog.filter(item => item.toLowerCase().includes(query));
+});
+const extractedMentions = computed(() => {
+    const matches = mentionText.value.match(/@([\w-]+)/g) ?? [];
+
+    return Array.from(new Set(matches.map(item => item.slice(1))));
+});
+const extractedTags = computed(() => {
+    const matches = mentionText.value.match(/#([\w-]+)/g) ?? [];
+
+    return Array.from(new Set(matches.map(item => item.slice(1))));
 });
 const tableColumns: DataTableColumn[] = [
     { field: 'name', header: 'Name', sortable: true },
@@ -961,6 +1015,7 @@ const virtualItems = Array.from(
     (_value, index) => `Customer #${(index + 1).toString().padStart(3, '0')}`,
 );
 let searchAltTimer: ReturnType<typeof setTimeout> | null = null;
+let mentionSearchTimer: ReturnType<typeof setTimeout> | null = null;
 
 const onSearchInputSearch = (query: string) => {
     localSearchQuery.value = query;
@@ -990,6 +1045,34 @@ const onSearchInputAltClear = () => {
     serverSearchLoading.value = false;
     serverResults.value = [];
 };
+const onMentionSearch = (payload: { trigger?: string; query?: string }) => {
+    if (mentionSearchTimer) {
+        clearTimeout(mentionSearchTimer);
+    }
+
+    const trigger = payload.trigger ?? '@';
+    const query = (payload.query ?? '').trim().toLowerCase();
+
+    mentionLoading.value = true;
+    mentionSearchTimer = setTimeout(() => {
+        const source = trigger === '#' ? mentionTopicsDirectory : mentionUsersDirectory;
+        const result = source
+            .filter(item => item.toLowerCase().includes(query))
+            .slice(0, 6)
+            .map(item => ({
+                label: item,
+                value: item,
+                trigger,
+            }));
+
+        mentionSuggestions.value = result;
+        mentionLoading.value = false;
+        mentionSearchTimer = null;
+    }, 250);
+};
+const onMentionInsert = (payload: { text?: string }) => {
+    lastMentionInsert.value = payload.text ?? '';
+};
 
 const resetDrawer = () => {
     drawerNew.value = true;
@@ -1003,6 +1086,10 @@ const onCommandPaletteSelect = (item: { value?: string | number; label?: string 
 onBeforeUnmount(() => {
     if (searchAltTimer) {
         clearTimeout(searchAltTimer);
+    }
+
+    if (mentionSearchTimer) {
+        clearTimeout(mentionSearchTimer);
     }
 });
 </script>
