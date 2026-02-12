@@ -1505,6 +1505,39 @@ export type ChipTokens = {
         paddingY?: string;
     };
 };
+export type FilterChipsTokens = {
+    fontSize?: string;
+    gap?: string;
+    chipGap?: string;
+    chipPadding?: string;
+    chipBorderRadius?: string;
+    chipBorderColor?: string;
+    chipBackgroundColor?: string;
+    chipTextColor?: string;
+    chipHoverBackgroundColor?: string;
+    chipHoverBorderColor?: string;
+    chipActiveBackgroundColor?: string;
+    chipActiveBorderColor?: string;
+    chipActiveTextColor?: string;
+    chipSolidActiveBackgroundColor?: string;
+    chipSolidActiveBorderColor?: string;
+    chipSolidActiveTextColor?: string;
+    countPadding?: string;
+    countFontSize?: string;
+    countBackgroundColor?: string;
+    countTextColor?: string;
+    countActiveBackgroundColor?: string;
+    countActiveTextColor?: string;
+    disabledOpacity?: string;
+    small?: {
+        fontSize?: string;
+        chipPadding?: string;
+    };
+    large?: {
+        fontSize?: string;
+        chipPadding?: string;
+    };
+};
 export type AvatarTokens = {
     size?: string;
     fontSize?: string;
@@ -1582,6 +1615,7 @@ export type ThemeComponentTokens = {
     alert?: AlertTokens;
     badge?: BadgeTokens;
     chip?: ChipTokens;
+    filterChips?: FilterChipsTokens;
     avatar?: AvatarTokens;
     rating?: RatingTokens;
     tree?: TreeTokens;

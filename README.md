@@ -56,6 +56,7 @@ import {
     Progress,
     Badge,
     Chip,
+    FilterChips,
     Accordion,
     AccordionItem,
     Slider,
@@ -121,6 +122,14 @@ app.use(VueForge, {
 <Progress :value="64" />
 <Badge label="Beta" />
 <Chip label="New" />
+<FilterChips
+    v-model="filters"
+    :options="[
+        { label: 'Open', value: 'open' },
+        { label: 'Done', value: 'done' },
+    ]"
+    clearable
+/>
 <Slider v-model="volume" :min="0" :max="100" :step="5" show-value />
 <Stepper v-model="step" :steps="steps" clickable />
 <Rating v-model="rating" allow-half />
@@ -230,6 +239,7 @@ app.use(VueForge, {
 - Progress
 - Badge
 - Chip
+- FilterChips
 - Avatar
 - Slider
 - Stepper
@@ -249,6 +259,7 @@ Input / Search / Password / Textarea (quick API):
 - `NumberInput`: numeric control, supports `v-model`, `min`, `max`, `step`, `precision`, `controls`, `size`, `variant`.
 - `Textarea`: multi-line control, same as Input plus `rows`.
 - `TagInput`: token/tag control, supports `v-model` (array), suggestions, custom tags, `maxTags`, `clearable`, `size`, `variant`.
+- `FilterChips`: compact chip-based filter toggles with single/multiple selection modes and optional clear action.
 - `SearchInput`, `OtpInput`, `ColorPicker`, `MaskedInput`, `Checkbox`, `Select`, `Autocomplete`, `MultiSelect`, `TagInput`, `DatePicker`, `Calendar`, `DateRangePicker`, `DateTimePicker`, `Pagination`, `DataTable`, `SegmentedControl`, and `TreeSelect` also support `variant: 'filled' | 'outlined'`.
 
 ## FormField
@@ -1799,6 +1810,61 @@ Component tokens (override via `theme.overrides.components.chip`):
 - `small.fontSize`, `small.paddingX`, `small.paddingY`
 - `large.fontSize`, `large.paddingX`, `large.paddingY`
 
+## FilterChips
+
+Props:
+
+- `modelValue?: string | number | Array<string | number> | null` (v-model)
+- `options?: Array<{ label: string; value: string | number; disabled?: boolean; count?: number }>` (default `[]`)
+- `multiple?: boolean` (default `true`)
+- `allowEmpty?: boolean` (default `true`, used in single mode)
+- `clearable?: boolean` (default `false`)
+- `clearText?: string` (default `Clear`)
+- `clearLabel?: string` (default `Clear filters`)
+- `disabled?: boolean`
+- `wrap?: boolean` (default `true`)
+- `size?: 'small' | 'normal' | 'large'` (default `normal`)
+- `variant?: 'soft' | 'outline' | 'solid'` (default `soft`)
+- `ariaLabel?: string`
+- `ariaLabelledby?: string`
+
+Events:
+
+- `update:modelValue`
+- `change`
+- `clear`
+
+Example:
+
+```vue
+<FilterChips
+    v-model="activeFilters"
+    :options="[
+        { label: 'Open', value: 'open', count: 12 },
+        { label: 'In progress', value: 'progress', count: 7 },
+        { label: 'Done', value: 'done', count: 18 },
+    ]"
+    clearable
+/>
+<FilterChips v-model="activeStatus" :options="statusOptions" :multiple="false" variant="outline" />
+```
+
+### FilterChips tokens
+
+Component tokens (override via `theme.overrides.components.filterChips`):
+
+- `fontSize`, `gap`
+- `chipGap`, `chipPadding`, `chipBorderRadius`
+- `chipBorderColor`, `chipBackgroundColor`, `chipTextColor`
+- `chipHoverBackgroundColor`, `chipHoverBorderColor`
+- `chipActiveBackgroundColor`, `chipActiveBorderColor`, `chipActiveTextColor`
+- `chipSolidActiveBackgroundColor`, `chipSolidActiveBorderColor`, `chipSolidActiveTextColor`
+- `countPadding`, `countFontSize`, `countBackgroundColor`, `countTextColor`
+- `countActiveBackgroundColor`, `countActiveTextColor`
+- `disabledOpacity`
+- `small.fontSize`, `small.chipPadding`
+- `large.fontSize`, `large.chipPadding`
+
 ## Avatar
 
 Props:
@@ -2154,7 +2220,7 @@ VueForge exposes design tokens as CSS variables generated from the theme preset.
 Typed tokens:
 
 - `ThemeTokens`/`ThemeOptions`/`ThemePreset` are exported for type-safe theming in TS.
-- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/searchInput/passwordInput/otpInput/colorPicker/maskedInput/numberInput/formField/textarea/link/breadcrumbs/menu/modal/confirmDialog/drawer/popover/dropdown/contextMenu/commandPalette/select/autocomplete/multiselect/taginput/datepicker/calendar/daterangepicker/timepicker/datetimepicker/pagination/switch/segmentedControl/tooltip/skeleton/progress/badge/chip/avatar/datatable/slider/stepper/rating/tree/treeselect/virtualScroller).
+- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/searchInput/passwordInput/otpInput/colorPicker/maskedInput/numberInput/formField/textarea/link/breadcrumbs/menu/modal/confirmDialog/drawer/popover/dropdown/contextMenu/commandPalette/select/autocomplete/multiselect/taginput/datepicker/calendar/daterangepicker/timepicker/datetimepicker/pagination/switch/segmentedControl/tooltip/skeleton/progress/badge/chip/filterChips/avatar/datatable/slider/stepper/rating/tree/treeselect/virtualScroller).
 
 Default core values (from `DefaultTheme`):
 

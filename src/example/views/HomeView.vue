@@ -587,6 +587,22 @@
                     </div>
                 </div>
                 <div class="vf-home__card">
+                    <h3>FilterChips</h3>
+                    <div class="vf-home__stack">
+                        <FilterChips v-model="activeFilters" :options="filterOptions" clearable />
+                        <FilterChips
+                            v-model="activeStatus"
+                            :options="statusOptions"
+                            :multiple="false"
+                            variant="outline"
+                            size="small"
+                            clearable
+                        />
+                        <p class="vf-home__muted">Multi: {{ activeFilters.join(', ') || 'none' }}</p>
+                        <p class="vf-home__muted">Single: {{ activeStatus || 'none' }}</p>
+                    </div>
+                </div>
+                <div class="vf-home__card">
                     <h3>Avatar</h3>
                     <div class="vf-home__stack-inline">
                         <Avatar name="Ada Lovelace" />
@@ -679,6 +695,7 @@ import {
     Skeleton,
     Badge,
     Chip,
+    FilterChips,
     Avatar,
     Progress,
     Slider,
@@ -759,6 +776,8 @@ const agreedAlt = ref(false);
 const notifications = ref(true);
 const segmentView = ref<'list' | 'grid' | 'board'>('list');
 const segmentViewAlt = ref<'list' | 'grid' | 'board'>('grid');
+const activeFilters = ref<Array<string | number>>(['open']);
+const activeStatus = ref<string | number | null>('all');
 const plan = ref('basic');
 const layout = ref('grid');
 const tab = ref('overview');
@@ -810,6 +829,17 @@ const segmentOptions = [
     { label: 'Grid', value: 'grid' },
     { label: 'Board', value: 'board' },
 ];
+const filterOptions = [
+    { label: 'Open', value: 'open', count: 12 },
+    { label: 'In progress', value: 'progress', count: 7 },
+    { label: 'Blocked', value: 'blocked', count: 2 },
+    { label: 'Done', value: 'done', count: 18 },
+];
+const statusOptions = [
+    { label: 'All', value: 'all' },
+    { label: 'Unread', value: 'unread', count: 5 },
+    { label: 'Archived', value: 'archived' },
+];
 const countries = [
     { label: 'United States', value: 'us' },
     { label: 'Germany', value: 'de' },
@@ -837,6 +867,7 @@ const searchCatalog = [
     'DateTimePicker',
     'TimePicker',
     'SegmentedControl',
+    'FilterChips',
     'DataTable',
     'TreeSelect',
     'CommandPalette',

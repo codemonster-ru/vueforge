@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.54.0] - 2026-02-12
+
+- Added FilterChips component for compact filter toggles with single/multiple selection and optional clear action.
+- Added default theme tokens and typed token support for `components.filterChips`.
+- Added FilterChips export, README docs, unit tests, and example app showcase.
+
 ## [0.53.0] - 2026-02-12
 
 - Added SegmentedControl component for compact single-choice mode switching with keyboard navigation.

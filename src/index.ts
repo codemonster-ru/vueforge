@@ -49,6 +49,7 @@ export { default as Skeleton } from '@/package/components/skeleton.vue';
 export { default as Progress } from '@/package/components/progress.vue';
 export { default as Badge } from '@/package/components/badge.vue';
 export { default as Chip } from '@/package/components/chip.vue';
+export { default as FilterChips } from '@/package/components/filter-chips.vue';
 export { default as Avatar } from '@/package/components/avatar.vue';
 export { default as DataTable } from '@/package/components/data-table.vue';
 export { default as Slider } from '@/package/components/slider.vue';

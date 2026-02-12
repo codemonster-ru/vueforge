@@ -46,6 +46,7 @@ import alert from './components/alert';
 import progress from './components/progress';
 import badge from './components/badge';
 import chip from './components/chip';
+import filterChips from './components/filter-chips';
 import avatar from './components/avatar';
 import slider from './components/slider';
 import stepper from './components/stepper';
@@ -105,6 +106,7 @@ export default {
         progress,
         badge,
         chip,
+        filterChips,
         avatar,
         slider,
         stepper,
