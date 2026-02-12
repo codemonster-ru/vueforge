@@ -112,6 +112,31 @@ export type PasswordInputTokens = {
         fontSize?: string;
     };
 };
+export type OtpInputTokens = {
+    gap?: string;
+    fontSize?: string;
+    cellSize?: string;
+    padding?: string;
+    borderRadius?: string;
+    borderColor?: string;
+    backgroundColor?: string;
+    textColor?: string;
+    placeholderColor?: string;
+    focusBorderColor?: string;
+    focusRingShadow?: string;
+    hoverBorderColor?: string;
+    disabledOpacity?: string;
+    small?: {
+        cellSize?: string;
+        padding?: string;
+        fontSize?: string;
+    };
+    large?: {
+        cellSize?: string;
+        padding?: string;
+        fontSize?: string;
+    };
+};
 export type NumberInputTokens = {
     gap?: string;
     fontSize?: string;
@@ -1293,6 +1318,7 @@ export type ThemeComponentTokens = {
     accordion?: AccordionTokens;
     input?: InputTokens;
     passwordInput?: PasswordInputTokens;
+    otpInput?: OtpInputTokens;
     numberInput?: NumberInputTokens;
     formField?: FormFieldTokens;
     textarea?: TextareaTokens;

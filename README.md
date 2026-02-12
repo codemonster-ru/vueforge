@@ -28,6 +28,7 @@ import {
     Button,
     Input,
     PasswordInput,
+    OtpInput,
     NumberInput,
     FormField,
     Textarea,
@@ -81,6 +82,7 @@ app.use(VueForge, {
     <Input v-model="name" placeholder="Your name" />
 </FormField>
 <PasswordInput v-model="password" placeholder="Enter password" show-strength />
+<OtpInput v-model="otp" :length="6" />
 <NumberInput v-model="age" :min="0" :max="120" :step="1" />
 <Textarea v-model="bio" placeholder="Tell us about yourself" />
 <FileUpload v-model="resume" accept=".pdf,.doc,.docx" />
@@ -173,6 +175,7 @@ app.use(VueForge, {
 - Alert
 - Input
 - PasswordInput
+- OtpInput
 - NumberInput
 - FormField
 - Textarea
@@ -215,10 +218,11 @@ Input / Password / Textarea (quick API):
 
 - `Input`: single-line control, supports `v-model`, `size`, `variant`, `disabled`, `readonly`.
 - `PasswordInput`: password control, supports visibility toggle, strength meter, CapsLock hint, `size`, and `variant`.
+- `OtpInput`: one-time code control, supports fixed length, paste handling, numeric/alphanumeric modes, `size`, and `variant`.
 - `NumberInput`: numeric control, supports `v-model`, `min`, `max`, `step`, `precision`, `controls`, `size`, `variant`.
 - `Textarea`: multi-line control, same as Input plus `rows`.
 - `TagInput`: token/tag control, supports `v-model` (array), suggestions, custom tags, `maxTags`, `clearable`, `size`, `variant`.
-- `Checkbox`, `Select`, `Autocomplete`, `MultiSelect`, `TagInput`, `DatePicker`, `DateRangePicker`, `Pagination`, `DataTable`, and `TreeSelect` also support `variant: 'filled' | 'outlined'`.
+- `OtpInput`, `Checkbox`, `Select`, `Autocomplete`, `MultiSelect`, `TagInput`, `DatePicker`, `DateRangePicker`, `Pagination`, `DataTable`, and `TreeSelect` also support `variant: 'filled' | 'outlined'`.
 
 ## FormField
 
@@ -769,6 +773,51 @@ Component tokens (override via `theme.overrides.components.passwordInput`):
 - `metaFontSize`, `hintColor`
 - `small.fontSize`, `small.padding`
 - `large.fontSize`, `large.padding`
+
+## OtpInput
+
+Props:
+
+- `modelValue?: string` (v-model)
+- `length?: number` (default `6`)
+- `placeholder?: string`
+- `disabled?: boolean`
+- `readonly?: boolean`
+- `mask?: boolean` (default `false`)
+- `alphanumeric?: boolean` (default `false`)
+- `autocomplete?: string` (default `one-time-code`)
+- `autoFocus?: boolean` (default `false`)
+- `size?: 'small' | 'normal' | 'large'` (default `normal`)
+- `variant?: 'filled' | 'outlined'` (default `filled`)
+- `ariaLabel?: string` (default `OTP input`)
+
+Events:
+
+- `update:modelValue`
+- `change`
+- `complete` (payload: `string`)
+- `focus`
+- `blur`
+- `paste` (payload: `string`)
+
+Example:
+
+```vue
+<OtpInput v-model="otp" :length="6" />
+<OtpInput v-model="backupCode" :length="8" alphanumeric variant="outlined" />
+```
+
+### OtpInput tokens
+
+Component tokens (override via `theme.overrides.components.otpInput`):
+
+- `gap`, `fontSize`, `cellSize`, `padding`
+- `borderRadius`, `borderColor`
+- `backgroundColor`, `textColor`, `placeholderColor`
+- `focusBorderColor`, `focusRingShadow`, `hoverBorderColor`
+- `disabledOpacity`
+- `small.cellSize`, `small.fontSize`, `small.padding`
+- `large.cellSize`, `large.fontSize`, `large.padding`
 
 ## RadioGroup / RadioButton
 
@@ -1798,7 +1847,7 @@ VueForge exposes design tokens as CSS variables generated from the theme preset.
 Typed tokens:
 
 - `ThemeTokens`/`ThemeOptions`/`ThemePreset` are exported for type-safe theming in TS.
-- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/passwordInput/numberInput/formField/textarea/link/breadcrumbs/menu/modal/confirmDialog/drawer/popover/dropdown/contextMenu/commandPalette/select/autocomplete/multiselect/taginput/datepicker/daterangepicker/timepicker/pagination/switch/tooltip/skeleton/progress/badge/chip/avatar/datatable/slider/stepper/rating/tree/treeselect/virtualScroller).
+- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/passwordInput/otpInput/numberInput/formField/textarea/link/breadcrumbs/menu/modal/confirmDialog/drawer/popover/dropdown/contextMenu/commandPalette/select/autocomplete/multiselect/taginput/datepicker/daterangepicker/timepicker/pagination/switch/tooltip/skeleton/progress/badge/chip/avatar/datatable/slider/stepper/rating/tree/treeselect/virtualScroller).
 
 Default core values (from `DefaultTheme`):
 

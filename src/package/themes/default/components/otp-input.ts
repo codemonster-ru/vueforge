@@ -1,0 +1,25 @@
+export default {
+    gap: '0.5rem',
+    fontSize: 'var(--vf-typography-font-size)',
+    cellSize: '2.25rem',
+    padding: '0.25rem',
+    borderRadius: 'var(--vf-radii-md)',
+    borderColor: 'var(--vf-border-color)',
+    backgroundColor: 'var(--vf-controls-background-color)',
+    textColor: 'var(--vf-text-color)',
+    placeholderColor: 'var(--vf-secondary-text-color)',
+    focusBorderColor: 'var(--vf-blue-600)',
+    focusRingShadow: 'var(--vf-states-focus-ring-shadow)',
+    hoverBorderColor: 'var(--vf-blue-500)',
+    disabledOpacity: 'var(--vf-states-disabled-opacity)',
+    small: {
+        cellSize: '2rem',
+        padding: '0.2rem',
+        fontSize: 'var(--vf-sizes-sm-font-size)',
+    },
+    large: {
+        cellSize: '2.75rem',
+        padding: '0.35rem',
+        fontSize: 'var(--vf-sizes-lg-font-size)',
+    },
+};

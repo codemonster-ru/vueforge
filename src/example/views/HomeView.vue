@@ -58,6 +58,13 @@
                     </div>
                 </div>
                 <div class="vf-home__card">
+                    <h3>OtpInput</h3>
+                    <div class="vf-home__stack">
+                        <OtpInput v-model="otpCode" :length="6" />
+                        <OtpInput v-model="otpAlphanumeric" :length="6" alphanumeric variant="outlined" />
+                    </div>
+                </div>
+                <div class="vf-home__card">
                     <h3>NumberInput</h3>
                     <div class="vf-home__stack">
                         <NumberInput v-model="quantity" :min="0" :max="20" :step="1" />
@@ -529,6 +536,7 @@ import {
     FormField,
     Input,
     PasswordInput,
+    OtpInput,
     NumberInput,
     Textarea,
     FileUpload,
@@ -599,6 +607,8 @@ const email = ref('');
 const search = ref('');
 const password = ref('Secret123!');
 const passwordOutlined = ref('');
+const otpCode = ref('');
+const otpAlphanumeric = ref('');
 const quantity = ref(2);
 const price = ref<number | null>(49.99);
 const emailField = ref('');

@@ -3,6 +3,7 @@ import button from './components/button';
 import card from './components/card';
 import input from './components/input';
 import passwordInput from './components/password-input';
+import otpInput from './components/otp-input';
 import numberInput from './components/number-input';
 import formField from './components/form-field';
 import textarea from './components/textarea';
@@ -55,6 +56,7 @@ export default {
         card,
         input,
         passwordInput,
+        otpInput,
         numberInput,
         formField,
         textarea,

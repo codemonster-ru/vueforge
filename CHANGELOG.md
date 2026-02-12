@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.47.0] - 2026-02-12
+
+- Added OtpInput component for fixed-length one-time code entry with keyboard navigation and paste handling.
+- Added default theme tokens and typed token support for `components.otpInput`.
+- Added OtpInput export, README docs, unit tests, and example app showcase.
+
 ## [0.46.0] - 2026-02-12
 
 - Added PasswordInput component with show/hide toggle, password strength indicator, and CapsLock hint.
