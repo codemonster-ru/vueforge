@@ -5,6 +5,7 @@ import input from './components/input';
 import passwordInput from './components/password-input';
 import otpInput from './components/otp-input';
 import colorPicker from './components/color-picker';
+import maskedInput from './components/masked-input';
 import numberInput from './components/number-input';
 import formField from './components/form-field';
 import textarea from './components/textarea';
@@ -59,6 +60,7 @@ export default {
         passwordInput,
         otpInput,
         colorPicker,
+        maskedInput,
         numberInput,
         formField,
         textarea,

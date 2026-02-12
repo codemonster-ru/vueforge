@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.49.0] - 2026-02-12
+
+- Added MaskedInput component with string/function mask support, token-based formatting, and raw value (`unmask`) mode.
+- Added default theme tokens and typed token support for `components.maskedInput`.
+- Added MaskedInput export, README docs, unit tests, and example app showcase.
+
 ## [0.48.0] - 2026-02-12
 
 - Added ColorPicker component with preset swatches, optional alpha channel, and `hex`/`rgb`/`hsl` output formats.

@@ -30,6 +30,7 @@ import {
     PasswordInput,
     OtpInput,
     ColorPicker,
+    MaskedInput,
     NumberInput,
     FormField,
     Textarea,
@@ -85,6 +86,7 @@ app.use(VueForge, {
 <PasswordInput v-model="password" placeholder="Enter password" show-strength />
 <OtpInput v-model="otp" :length="6" />
 <ColorPicker v-model="brandColor" :presets="['#2b6cb0', '#0cbc87', '#d6293e']" />
+<MaskedInput v-model="phone" mask="+7 (###) ###-##-##" />
 <NumberInput v-model="age" :min="0" :max="120" :step="1" />
 <Textarea v-model="bio" placeholder="Tell us about yourself" />
 <FileUpload v-model="resume" accept=".pdf,.doc,.docx" />
@@ -179,6 +181,7 @@ app.use(VueForge, {
 - PasswordInput
 - OtpInput
 - ColorPicker
+- MaskedInput
 - NumberInput
 - FormField
 - Textarea
@@ -223,10 +226,11 @@ Input / Password / Textarea (quick API):
 - `PasswordInput`: password control, supports visibility toggle, strength meter, CapsLock hint, `size`, and `variant`.
 - `OtpInput`: one-time code control, supports fixed length, paste handling, numeric/alphanumeric modes, `size`, and `variant`.
 - `ColorPicker`: color control with presets, optional alpha channel, and output formats (`hex`/`rgb`/`hsl`).
+- `MaskedInput`: formatted input control with string/function masks and optional raw output (`unmask`).
 - `NumberInput`: numeric control, supports `v-model`, `min`, `max`, `step`, `precision`, `controls`, `size`, `variant`.
 - `Textarea`: multi-line control, same as Input plus `rows`.
 - `TagInput`: token/tag control, supports `v-model` (array), suggestions, custom tags, `maxTags`, `clearable`, `size`, `variant`.
-- `OtpInput`, `ColorPicker`, `Checkbox`, `Select`, `Autocomplete`, `MultiSelect`, `TagInput`, `DatePicker`, `DateRangePicker`, `Pagination`, `DataTable`, and `TreeSelect` also support `variant: 'filled' | 'outlined'`.
+- `OtpInput`, `ColorPicker`, `MaskedInput`, `Checkbox`, `Select`, `Autocomplete`, `MultiSelect`, `TagInput`, `DatePicker`, `DateRangePicker`, `Pagination`, `DataTable`, and `TreeSelect` also support `variant: 'filled' | 'outlined'`.
 
 ## FormField
 
@@ -867,6 +871,48 @@ Component tokens (override via `theme.overrides.components.colorPicker`):
 - `presetSize`, `presetRadius`, `presetBorderColor`, `presetHoverBorderColor`
 - `small.padding`, `small.fontSize`, `small.swatchSize`, `small.presetSize`
 - `large.padding`, `large.fontSize`, `large.swatchSize`, `large.presetSize`
+
+## MaskedInput
+
+Props:
+
+- `modelValue?: string` (v-model)
+- `mask?: string | ((value: string) => string)` (default `''`)
+- `placeholder?: string`
+- `placeholderChar?: string` (default `_`)
+- `disabled?: boolean`
+- `readonly?: boolean`
+- `unmask?: boolean` (default `false`)
+- `size?: 'small' | 'normal' | 'large'` (default `normal`)
+- `variant?: 'filled' | 'outlined'` (default `filled`)
+
+Events:
+
+- `update:modelValue`
+- `input`
+- `change`
+- `focus`
+- `blur`
+- `complete`
+
+Example:
+
+```vue
+<MaskedInput v-model="phone" mask="+7 (###) ###-##-##" />
+<MaskedInput v-model="licenseRaw" mask="AA-####" unmask variant="outlined" />
+```
+
+### MaskedInput tokens
+
+Component tokens (override via `theme.overrides.components.maskedInput`):
+
+- `gap`, `fontSize`, `padding`
+- `borderRadius`, `borderColor`
+- `backgroundColor`, `textColor`, `placeholderColor`
+- `focusBorderColor`, `focusRingShadow`, `hoverBorderColor`
+- `disabledOpacity`
+- `small.fontSize`, `small.padding`
+- `large.fontSize`, `large.padding`
 
 ## RadioGroup / RadioButton
 
@@ -1896,7 +1942,7 @@ VueForge exposes design tokens as CSS variables generated from the theme preset.
 Typed tokens:
 
 - `ThemeTokens`/`ThemeOptions`/`ThemePreset` are exported for type-safe theming in TS.
-- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/passwordInput/otpInput/colorPicker/numberInput/formField/textarea/link/breadcrumbs/menu/modal/confirmDialog/drawer/popover/dropdown/contextMenu/commandPalette/select/autocomplete/multiselect/taginput/datepicker/daterangepicker/timepicker/pagination/switch/tooltip/skeleton/progress/badge/chip/avatar/datatable/slider/stepper/rating/tree/treeselect/virtualScroller).
+- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/passwordInput/otpInput/colorPicker/maskedInput/numberInput/formField/textarea/link/breadcrumbs/menu/modal/confirmDialog/drawer/popover/dropdown/contextMenu/commandPalette/select/autocomplete/multiselect/taginput/datepicker/daterangepicker/timepicker/pagination/switch/tooltip/skeleton/progress/badge/chip/avatar/datatable/slider/stepper/rating/tree/treeselect/virtualScroller).
 
 Default core values (from `DefaultTheme`):
 

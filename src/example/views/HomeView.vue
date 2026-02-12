@@ -72,6 +72,19 @@
                     </div>
                 </div>
                 <div class="vf-home__card">
+                    <h3>MaskedInput</h3>
+                    <div class="vf-home__stack">
+                        <MaskedInput v-model="phoneMasked" mask="+7 (###) ###-##-##" placeholder="+7 (___) ___-__-__" />
+                        <MaskedInput
+                            v-model="licenseRaw"
+                            mask="AA-####"
+                            unmask
+                            placeholder="AA-0000"
+                            variant="outlined"
+                        />
+                    </div>
+                </div>
+                <div class="vf-home__card">
                     <h3>NumberInput</h3>
                     <div class="vf-home__stack">
                         <NumberInput v-model="quantity" :min="0" :max="20" :step="1" />
@@ -545,6 +558,7 @@ import {
     PasswordInput,
     OtpInput,
     ColorPicker,
+    MaskedInput,
     NumberInput,
     Textarea,
     FileUpload,
@@ -619,6 +633,8 @@ const otpCode = ref('');
 const otpAlphanumeric = ref('');
 const brandColor = ref('#2b6cb0');
 const brandColorAlpha = ref('rgba(43, 108, 176, 0.85)');
+const phoneMasked = ref('');
+const licenseRaw = ref('');
 const quantity = ref(2);
 const price = ref<number | null>(49.99);
 const emailField = ref('');

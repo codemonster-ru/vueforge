@@ -7,6 +7,7 @@ export { default as Input } from '@/package/components/input.vue';
 export { default as PasswordInput } from '@/package/components/password-input.vue';
 export { default as OtpInput } from '@/package/components/otp-input.vue';
 export { default as ColorPicker } from '@/package/components/color-picker.vue';
+export { default as MaskedInput } from '@/package/components/masked-input.vue';
 export { default as NumberInput } from '@/package/components/number-input.vue';
 export { default as FormField } from '@/package/components/form-field.vue';
 export { default as Textarea } from '@/package/components/textarea.vue';
