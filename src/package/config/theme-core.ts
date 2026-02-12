@@ -137,6 +137,45 @@ export type OtpInputTokens = {
         fontSize?: string;
     };
 };
+export type ColorPickerTokens = {
+    minWidth?: string;
+    gap?: string;
+    fontSize?: string;
+    padding?: string;
+    borderRadius?: string;
+    borderColor?: string;
+    backgroundColor?: string;
+    textColor?: string;
+    placeholderColor?: string;
+    focusBorderColor?: string;
+    focusRingShadow?: string;
+    hoverBorderColor?: string;
+    disabledOpacity?: string;
+    swatchSize?: string;
+    swatchRadius?: string;
+    panelPadding?: string;
+    panelBorderColor?: string;
+    panelBackgroundColor?: string;
+    panelShadow?: string;
+    panelGap?: string;
+    rangeAccentColor?: string;
+    presetSize?: string;
+    presetRadius?: string;
+    presetBorderColor?: string;
+    presetHoverBorderColor?: string;
+    small?: {
+        padding?: string;
+        fontSize?: string;
+        swatchSize?: string;
+        presetSize?: string;
+    };
+    large?: {
+        padding?: string;
+        fontSize?: string;
+        swatchSize?: string;
+        presetSize?: string;
+    };
+};
 export type NumberInputTokens = {
     gap?: string;
     fontSize?: string;
@@ -1319,6 +1358,7 @@ export type ThemeComponentTokens = {
     input?: InputTokens;
     passwordInput?: PasswordInputTokens;
     otpInput?: OtpInputTokens;
+    colorPicker?: ColorPickerTokens;
     numberInput?: NumberInputTokens;
     formField?: FormFieldTokens;
     textarea?: TextareaTokens;

@@ -65,6 +65,13 @@
                     </div>
                 </div>
                 <div class="vf-home__card">
+                    <h3>ColorPicker</h3>
+                    <div class="vf-home__stack">
+                        <ColorPicker v-model="brandColor" :presets="brandPresets" />
+                        <ColorPicker v-model="brandColorAlpha" alpha format="rgb" variant="outlined" />
+                    </div>
+                </div>
+                <div class="vf-home__card">
                     <h3>NumberInput</h3>
                     <div class="vf-home__stack">
                         <NumberInput v-model="quantity" :min="0" :max="20" :step="1" />
@@ -537,6 +544,7 @@ import {
     Input,
     PasswordInput,
     OtpInput,
+    ColorPicker,
     NumberInput,
     Textarea,
     FileUpload,
@@ -609,6 +617,8 @@ const password = ref('Secret123!');
 const passwordOutlined = ref('');
 const otpCode = ref('');
 const otpAlphanumeric = ref('');
+const brandColor = ref('#2b6cb0');
+const brandColorAlpha = ref('rgba(43, 108, 176, 0.85)');
 const quantity = ref(2);
 const price = ref<number | null>(49.99);
 const emailField = ref('');
@@ -694,6 +704,7 @@ const skillOptions = [
     { label: 'Vitest', value: 'vitest' },
     { label: 'ESLint', value: 'eslint' },
 ];
+const brandPresets = ['#2b6cb0', '#0cbc87', '#d6293e', '#f7c32e', '#6f42c1'];
 const tableColumns: DataTableColumn[] = [
     { field: 'name', header: 'Name', sortable: true },
     { field: 'role', header: 'Role' },

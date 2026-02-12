@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.48.0] - 2026-02-12
+
+- Added ColorPicker component with preset swatches, optional alpha channel, and `hex`/`rgb`/`hsl` output formats.
+- Added default theme tokens and typed token support for `components.colorPicker`.
+- Added ColorPicker export, README docs, unit tests, and example app showcase.
+
 ## [0.47.0] - 2026-02-12
 
 - Added OtpInput component for fixed-length one-time code entry with keyboard navigation and paste handling.
