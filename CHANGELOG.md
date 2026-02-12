@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.50.0] - 2026-02-12
+
+- Added DateTimePicker component with combined calendar/time selection, min/max datetime bounds, and 12h/24h formatting.
+- Added default theme tokens and typed token support for `components.datetimepicker`.
+- Added DateTimePicker export, README docs, unit tests, and example app showcase.
+
 ## [0.49.0] - 2026-02-12
 
 - Added MaskedInput component with string/function mask support, token-based formatting, and raw value (`unmask`) mode.
