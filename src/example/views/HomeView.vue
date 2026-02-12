@@ -40,9 +40,48 @@
                     <h3>Input</h3>
                     <div class="vf-home__stack">
                         <Input v-model="email" placeholder="Email" />
-                        <Input v-model="search" placeholder="Search" variant="outlined">
+                        <Input v-model="searchText" placeholder="Search" variant="outlined">
                             <template #prefix>🔎</template>
                         </Input>
+                    </div>
+                </div>
+                <div class="vf-home__card">
+                    <h3>SearchInput</h3>
+                    <div class="vf-home__stack">
+                        <SearchInput
+                            v-model="searchQuery"
+                            placeholder="Search components"
+                            clearable
+                            :debounce="250"
+                            @search="onSearchInputSearch"
+                            @clear="onSearchInputClear"
+                        />
+                        <p class="vf-home__muted">Local filter query: {{ localSearchQuery || 'empty' }}</p>
+                        <ul v-if="localFilteredComponents.length" class="vf-home__search-list">
+                            <li v-for="item in localFilteredComponents" :key="item">{{ item }}</li>
+                        </ul>
+                        <p v-else class="vf-home__muted">No local matches</p>
+                        <SearchInput
+                            v-model="searchQueryAlt"
+                            placeholder="Server search (outlined)"
+                            variant="outlined"
+                            clearable
+                            :debounce="250"
+                            :loading="serverSearchLoading"
+                            @search="onSearchInputAltSearch"
+                            @clear="onSearchInputAltClear"
+                        />
+                        <p class="vf-home__muted">
+                            {{
+                                serverSearchLoading
+                                    ? 'Searching on server...'
+                                    : `Server returned ${serverResults.length} items`
+                            }}
+                        </p>
+                        <ul v-if="serverResults.length" class="vf-home__search-list">
+                            <li v-for="item in serverResults" :key="item">{{ item }}</li>
+                        </ul>
+                        <p v-else class="vf-home__muted">No server matches</p>
                     </div>
                 </div>
                 <div class="vf-home__card">
@@ -558,7 +597,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, onBeforeUnmount, ref } from 'vue';
 import {
     Alert,
     Accordion,
@@ -570,6 +609,7 @@ import {
     DefaultTheme,
     FormField,
     Input,
+    SearchInput,
     PasswordInput,
     OtpInput,
     ColorPicker,
@@ -642,7 +682,12 @@ const toggleDark = () => {
 };
 
 const email = ref('');
-const search = ref('');
+const searchText = ref('');
+const searchQuery = ref('');
+const searchQueryAlt = ref('');
+const localSearchQuery = ref('');
+const serverSearchLoading = ref(false);
+const serverResults = ref<Array<string>>([]);
 const password = ref('Secret123!');
 const passwordOutlined = ref('');
 const otpCode = ref('');
@@ -739,6 +784,42 @@ const skillOptions = [
     { label: 'ESLint', value: 'eslint' },
 ];
 const brandPresets = ['#2b6cb0', '#0cbc87', '#d6293e', '#f7c32e', '#6f42c1'];
+const searchCatalog = [
+    'Button',
+    'Input',
+    'SearchInput',
+    'PasswordInput',
+    'OtpInput',
+    'ColorPicker',
+    'MaskedInput',
+    'DatePicker',
+    'DateRangePicker',
+    'DateTimePicker',
+    'TimePicker',
+    'DataTable',
+    'TreeSelect',
+    'CommandPalette',
+];
+const serverCatalog = [
+    'Documentation',
+    'Getting Started',
+    'Theming Guide',
+    'Components API',
+    'Date & Time',
+    'Forms',
+    'Overlays',
+    'Changelog',
+    'Roadmap',
+];
+const localFilteredComponents = computed(() => {
+    const query = localSearchQuery.value.trim().toLowerCase();
+
+    if (!query) {
+        return searchCatalog.slice(0, 6);
+    }
+
+    return searchCatalog.filter(item => item.toLowerCase().includes(query));
+});
 const tableColumns: DataTableColumn[] = [
     { field: 'name', header: 'Name', sortable: true },
     { field: 'role', header: 'Role' },
@@ -794,6 +875,37 @@ const virtualItems = Array.from(
     { length: 500 },
     (_value, index) => `Customer #${(index + 1).toString().padStart(3, '0')}`,
 );
+let searchAltTimer: ReturnType<typeof setTimeout> | null = null;
+
+const onSearchInputSearch = (query: string) => {
+    localSearchQuery.value = query;
+};
+const onSearchInputAltSearch = (query: string) => {
+    if (searchAltTimer) {
+        clearTimeout(searchAltTimer);
+    }
+
+    serverSearchLoading.value = true;
+    searchAltTimer = setTimeout(() => {
+        const normalized = query.trim().toLowerCase();
+
+        serverResults.value = !normalized ? [] : serverCatalog.filter(item => item.toLowerCase().includes(normalized));
+        serverSearchLoading.value = false;
+        searchAltTimer = null;
+    }, 450);
+};
+const onSearchInputClear = () => {
+    localSearchQuery.value = '';
+};
+const onSearchInputAltClear = () => {
+    if (searchAltTimer) {
+        clearTimeout(searchAltTimer);
+        searchAltTimer = null;
+    }
+    serverSearchLoading.value = false;
+    serverResults.value = [];
+};
+
 const resetDrawer = () => {
     drawerNew.value = true;
     drawerPopular.value = false;
@@ -802,6 +914,12 @@ const resetDrawer = () => {
 const onCommandPaletteSelect = (item: { value?: string | number; label?: string }) => {
     commandPaletteAction.value = String(item.value ?? item.label ?? '');
 };
+
+onBeforeUnmount(() => {
+    if (searchAltTimer) {
+        clearTimeout(searchAltTimer);
+    }
+});
 </script>
 
 <style>
@@ -883,6 +1001,13 @@ body {
 .vf-home__muted {
     margin: 0;
     color: var(--vf-secondary-text-color);
+}
+
+.vf-home__search-list {
+    margin: 0;
+    padding-left: 1rem;
+    display: grid;
+    gap: 0.2rem;
 }
 
 .vf-home__context-target {

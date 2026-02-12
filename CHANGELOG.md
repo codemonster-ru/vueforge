@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.51.0] - 2026-02-12
+
+- Added SearchInput component with debounced `search` event, loading state, and optional clear control.
+- Added default theme tokens and typed token support for `components.searchInput`.
+- Added SearchInput export, README docs, unit tests, and example app showcase.
+
 ## [0.50.0] - 2026-02-12
 
 - Added DateTimePicker component with combined calendar/time selection, min/max datetime bounds, and 12h/24h formatting.

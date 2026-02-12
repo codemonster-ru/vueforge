@@ -27,6 +27,7 @@ import {
     DefaultTheme,
     Button,
     Input,
+    SearchInput,
     PasswordInput,
     OtpInput,
     ColorPicker,
@@ -84,6 +85,7 @@ app.use(VueForge, {
 <FormField label="Name" hint="Required field">
     <Input v-model="name" placeholder="Your name" />
 </FormField>
+<SearchInput v-model="query" placeholder="Search components" clearable />
 <PasswordInput v-model="password" placeholder="Enter password" show-strength />
 <OtpInput v-model="otp" :length="6" />
 <ColorPicker v-model="brandColor" :presets="['#2b6cb0', '#0cbc87', '#d6293e']" />
@@ -180,6 +182,7 @@ app.use(VueForge, {
 - ToastContainer
 - Alert
 - Input
+- SearchInput
 - PasswordInput
 - OtpInput
 - ColorPicker
@@ -223,9 +226,10 @@ app.use(VueForge, {
 - TreeSelect
 - VirtualScroller
 
-Input / Password / Textarea (quick API):
+Input / Search / Password / Textarea (quick API):
 
 - `Input`: single-line control, supports `v-model`, `size`, `variant`, `disabled`, `readonly`.
+- `SearchInput`: search-focused control with `debounce`, `clearable`, `loading`, `size`, and `variant`.
 - `PasswordInput`: password control, supports visibility toggle, strength meter, CapsLock hint, `size`, and `variant`.
 - `OtpInput`: one-time code control, supports fixed length, paste handling, numeric/alphanumeric modes, `size`, and `variant`.
 - `ColorPicker`: color control with presets, optional alpha channel, and output formats (`hex`/`rgb`/`hsl`).
@@ -233,7 +237,7 @@ Input / Password / Textarea (quick API):
 - `NumberInput`: numeric control, supports `v-model`, `min`, `max`, `step`, `precision`, `controls`, `size`, `variant`.
 - `Textarea`: multi-line control, same as Input plus `rows`.
 - `TagInput`: token/tag control, supports `v-model` (array), suggestions, custom tags, `maxTags`, `clearable`, `size`, `variant`.
-- `OtpInput`, `ColorPicker`, `MaskedInput`, `Checkbox`, `Select`, `Autocomplete`, `MultiSelect`, `TagInput`, `DatePicker`, `DateRangePicker`, `DateTimePicker`, `Pagination`, `DataTable`, and `TreeSelect` also support `variant: 'filled' | 'outlined'`.
+- `SearchInput`, `OtpInput`, `ColorPicker`, `MaskedInput`, `Checkbox`, `Select`, `Autocomplete`, `MultiSelect`, `TagInput`, `DatePicker`, `DateRangePicker`, `DateTimePicker`, `Pagination`, `DataTable`, and `TreeSelect` also support `variant: 'filled' | 'outlined'`.
 
 ## FormField
 
@@ -757,6 +761,53 @@ Component tokens (override via `theme.overrides.components.fileUpload`):
 - `removeSize`, `removeRadius`, `removeHoverBackgroundColor`
 - `small.fontSize`, `small.padding`, `small.buttonPadding`
 - `large.fontSize`, `large.padding`, `large.buttonPadding`
+
+## SearchInput
+
+Props:
+
+- `modelValue?: string` (v-model)
+- `placeholder?: string`
+- `disabled?: boolean`
+- `readonly?: boolean`
+- `debounce?: number` (default `300`)
+- `loading?: boolean` (default `false`)
+- `clearable?: boolean` (default `false`)
+- `size?: 'small' | 'normal' | 'large'` (default `normal`)
+- `variant?: 'filled' | 'outlined'` (default `filled`)
+- `ariaLabel?: string` (default `Search input`)
+
+Events:
+
+- `update:modelValue`
+- `input`
+- `change`
+- `search`
+- `clear`
+- `focus`
+- `blur`
+
+Example:
+
+```vue
+<SearchInput v-model="query" placeholder="Search..." clearable />
+<SearchInput v-model="query" placeholder="Search..." :debounce="500" loading variant="outlined" />
+```
+
+### SearchInput tokens
+
+Component tokens (override via `theme.overrides.components.searchInput`):
+
+- `gap`, `fontSize`, `padding`
+- `borderRadius`, `borderColor`
+- `backgroundColor`, `textColor`, `placeholderColor`
+- `focusBorderColor`, `focusRingShadow`, `hoverBorderColor`
+- `disabledOpacity`
+- `iconSize`, `iconColor`
+- `clearSize`, `clearRadius`, `clearHoverBackgroundColor`
+- `loadingSize`, `loadingBorderColor`, `loadingTopBorderColor`
+- `small.fontSize`, `small.padding`, `small.iconSize`, `small.clearSize`
+- `large.fontSize`, `large.padding`, `large.iconSize`, `large.clearSize`
 
 ## NumberInput
 
@@ -2004,7 +2055,7 @@ VueForge exposes design tokens as CSS variables generated from the theme preset.
 Typed tokens:
 
 - `ThemeTokens`/`ThemeOptions`/`ThemePreset` are exported for type-safe theming in TS.
-- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/passwordInput/otpInput/colorPicker/maskedInput/numberInput/formField/textarea/link/breadcrumbs/menu/modal/confirmDialog/drawer/popover/dropdown/contextMenu/commandPalette/select/autocomplete/multiselect/taginput/datepicker/daterangepicker/timepicker/datetimepicker/pagination/switch/tooltip/skeleton/progress/badge/chip/avatar/datatable/slider/stepper/rating/tree/treeselect/virtualScroller).
+- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/searchInput/passwordInput/otpInput/colorPicker/maskedInput/numberInput/formField/textarea/link/breadcrumbs/menu/modal/confirmDialog/drawer/popover/dropdown/contextMenu/commandPalette/select/autocomplete/multiselect/taginput/datepicker/daterangepicker/timepicker/datetimepicker/pagination/switch/tooltip/skeleton/progress/badge/chip/avatar/datatable/slider/stepper/rating/tree/treeselect/virtualScroller).
 
 Default core values (from `DefaultTheme`):
 

@@ -77,6 +77,40 @@ export type InputTokens = {
         fontSize?: string;
     };
 };
+export type SearchInputTokens = {
+    gap?: string;
+    fontSize?: string;
+    padding?: string;
+    borderRadius?: string;
+    borderColor?: string;
+    backgroundColor?: string;
+    textColor?: string;
+    placeholderColor?: string;
+    focusBorderColor?: string;
+    focusRingShadow?: string;
+    hoverBorderColor?: string;
+    disabledOpacity?: string;
+    iconSize?: string;
+    iconColor?: string;
+    clearSize?: string;
+    clearRadius?: string;
+    clearHoverBackgroundColor?: string;
+    loadingSize?: string;
+    loadingBorderColor?: string;
+    loadingTopBorderColor?: string;
+    small?: {
+        padding?: string;
+        fontSize?: string;
+        iconSize?: string;
+        clearSize?: string;
+    };
+    large?: {
+        padding?: string;
+        fontSize?: string;
+        iconSize?: string;
+        clearSize?: string;
+    };
+};
 export type PasswordInputTokens = {
     gap?: string;
     fontSize?: string;
@@ -1440,6 +1474,7 @@ export type ThemeComponentTokens = {
     tabs?: TabsTokens;
     accordion?: AccordionTokens;
     input?: InputTokens;
+    searchInput?: SearchInputTokens;
     passwordInput?: PasswordInputTokens;
     otpInput?: OtpInputTokens;
     colorPicker?: ColorPickerTokens;
