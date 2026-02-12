@@ -77,6 +77,41 @@ export type InputTokens = {
         fontSize?: string;
     };
 };
+export type PasswordInputTokens = {
+    gap?: string;
+    fontSize?: string;
+    padding?: string;
+    borderRadius?: string;
+    borderColor?: string;
+    backgroundColor?: string;
+    textColor?: string;
+    placeholderColor?: string;
+    focusBorderColor?: string;
+    focusRingShadow?: string;
+    hoverBorderColor?: string;
+    disabledOpacity?: string;
+    toggleSize?: string;
+    toggleRadius?: string;
+    toggleColor?: string;
+    toggleHoverBackgroundColor?: string;
+    strengthGap?: string;
+    strengthTrackHeight?: string;
+    strengthTrackRadius?: string;
+    strengthTrackBackgroundColor?: string;
+    strengthWeakColor?: string;
+    strengthMediumColor?: string;
+    strengthStrongColor?: string;
+    metaFontSize?: string;
+    hintColor?: string;
+    small?: {
+        padding?: string;
+        fontSize?: string;
+    };
+    large?: {
+        padding?: string;
+        fontSize?: string;
+    };
+};
 export type NumberInputTokens = {
     gap?: string;
     fontSize?: string;
@@ -1257,6 +1292,7 @@ export type ThemeComponentTokens = {
     tabs?: TabsTokens;
     accordion?: AccordionTokens;
     input?: InputTokens;
+    passwordInput?: PasswordInputTokens;
     numberInput?: NumberInputTokens;
     formField?: FormFieldTokens;
     textarea?: TextareaTokens;

@@ -27,6 +27,7 @@ import {
     DefaultTheme,
     Button,
     Input,
+    PasswordInput,
     NumberInput,
     FormField,
     Textarea,
@@ -79,6 +80,7 @@ app.use(VueForge, {
 <FormField label="Name" hint="Required field">
     <Input v-model="name" placeholder="Your name" />
 </FormField>
+<PasswordInput v-model="password" placeholder="Enter password" show-strength />
 <NumberInput v-model="age" :min="0" :max="120" :step="1" />
 <Textarea v-model="bio" placeholder="Tell us about yourself" />
 <FileUpload v-model="resume" accept=".pdf,.doc,.docx" />
@@ -170,6 +172,7 @@ app.use(VueForge, {
 - ToastContainer
 - Alert
 - Input
+- PasswordInput
 - NumberInput
 - FormField
 - Textarea
@@ -208,9 +211,10 @@ app.use(VueForge, {
 - TreeSelect
 - VirtualScroller
 
-Input / Textarea (quick API):
+Input / Password / Textarea (quick API):
 
 - `Input`: single-line control, supports `v-model`, `size`, `variant`, `disabled`, `readonly`.
+- `PasswordInput`: password control, supports visibility toggle, strength meter, CapsLock hint, `size`, and `variant`.
 - `NumberInput`: numeric control, supports `v-model`, `min`, `max`, `step`, `precision`, `controls`, `size`, `variant`.
 - `Textarea`: multi-line control, same as Input plus `rows`.
 - `TagInput`: token/tag control, supports `v-model` (array), suggestions, custom tags, `maxTags`, `clearable`, `size`, `variant`.
@@ -710,6 +714,61 @@ Example:
 ```vue
 <NumberInput v-model="quantity" :min="0" :max="10" :step="1" />
 ```
+
+## PasswordInput
+
+Props:
+
+- `modelValue?: string` (v-model)
+- `placeholder?: string`
+- `disabled?: boolean`
+- `readonly?: boolean`
+- `autocomplete?: string` (default `current-password`)
+- `showToggle?: boolean` (default `true`)
+- `showStrength?: boolean` (default `false`)
+- `showCapsLockHint?: boolean` (default `true`)
+- `revealLabel?: string` (default `Show password`)
+- `hideLabel?: string` (default `Hide password`)
+- `revealText?: string` (default `Show`)
+- `hideText?: string` (default `Hide`)
+- `capsLockHint?: string` (default `Caps Lock is on`)
+- `weakLabel?: string` (default `Weak password`)
+- `mediumLabel?: string` (default `Medium password`)
+- `strongLabel?: string` (default `Strong password`)
+- `size?: 'small' | 'normal' | 'large'` (default `normal`)
+- `variant?: 'filled' | 'outlined'` (default `filled`)
+- `ariaLabel?: string` (default `Password input`)
+
+Events:
+
+- `update:modelValue`
+- `input`
+- `change`
+- `focus`
+- `blur`
+- `toggleVisibility` (payload: `boolean`)
+
+Example:
+
+```vue
+<PasswordInput v-model="password" show-strength />
+```
+
+### PasswordInput tokens
+
+Component tokens (override via `theme.overrides.components.passwordInput`):
+
+- `gap`, `fontSize`, `padding`
+- `borderRadius`, `borderColor`
+- `backgroundColor`, `textColor`, `placeholderColor`
+- `focusBorderColor`, `focusRingShadow`, `hoverBorderColor`
+- `disabledOpacity`
+- `toggleSize`, `toggleRadius`, `toggleColor`, `toggleHoverBackgroundColor`
+- `strengthGap`, `strengthTrackHeight`, `strengthTrackRadius`, `strengthTrackBackgroundColor`
+- `strengthWeakColor`, `strengthMediumColor`, `strengthStrongColor`
+- `metaFontSize`, `hintColor`
+- `small.fontSize`, `small.padding`
+- `large.fontSize`, `large.padding`
 
 ## RadioGroup / RadioButton
 
@@ -1739,7 +1798,7 @@ VueForge exposes design tokens as CSS variables generated from the theme preset.
 Typed tokens:
 
 - `ThemeTokens`/`ThemeOptions`/`ThemePreset` are exported for type-safe theming in TS.
-- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/numberInput/formField/textarea/link/breadcrumbs/menu/modal/confirmDialog/drawer/popover/dropdown/contextMenu/commandPalette/select/autocomplete/multiselect/taginput/datepicker/daterangepicker/timepicker/pagination/switch/tooltip/skeleton/progress/badge/chip/avatar/datatable/slider/stepper/rating/tree/treeselect/virtualScroller).
+- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/passwordInput/numberInput/formField/textarea/link/breadcrumbs/menu/modal/confirmDialog/drawer/popover/dropdown/contextMenu/commandPalette/select/autocomplete/multiselect/taginput/datepicker/daterangepicker/timepicker/pagination/switch/tooltip/skeleton/progress/badge/chip/avatar/datatable/slider/stepper/rating/tree/treeselect/virtualScroller).
 
 Default core values (from `DefaultTheme`):
 

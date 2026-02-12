@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.46.0] - 2026-02-12
+
+- Added PasswordInput component with show/hide toggle, password strength indicator, and CapsLock hint.
+- Added default theme tokens and typed token support for `components.passwordInput`.
+- Added PasswordInput export, README docs, unit tests, and example app showcase.
+
 ## [0.45.0] - 2026-02-11
 
 - Added TagInput component for token/tag entry with suggestions, custom tags, keyboard interactions, and validation hooks.

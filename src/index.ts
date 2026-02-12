@@ -4,6 +4,7 @@ export { default as Card } from '@/package/components/card.vue';
 export { default as Menu } from '@/package/components/menu.vue';
 export { default as Button } from '@/package/components/button.vue';
 export { default as Input } from '@/package/components/input.vue';
+export { default as PasswordInput } from '@/package/components/password-input.vue';
 export { default as NumberInput } from '@/package/components/number-input.vue';
 export { default as FormField } from '@/package/components/form-field.vue';
 export { default as Textarea } from '@/package/components/textarea.vue';

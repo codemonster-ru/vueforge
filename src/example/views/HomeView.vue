@@ -46,6 +46,18 @@
                     </div>
                 </div>
                 <div class="vf-home__card">
+                    <h3>PasswordInput</h3>
+                    <div class="vf-home__stack">
+                        <PasswordInput v-model="password" placeholder="Password" show-strength />
+                        <PasswordInput
+                            v-model="passwordOutlined"
+                            placeholder="Password (outlined)"
+                            variant="outlined"
+                            show-caps-lock-hint
+                        />
+                    </div>
+                </div>
+                <div class="vf-home__card">
                     <h3>NumberInput</h3>
                     <div class="vf-home__stack">
                         <NumberInput v-model="quantity" :min="0" :max="20" :step="1" />
@@ -516,6 +528,7 @@ import {
     DefaultTheme,
     FormField,
     Input,
+    PasswordInput,
     NumberInput,
     Textarea,
     FileUpload,
@@ -584,6 +597,8 @@ const toggleDark = () => {
 
 const email = ref('');
 const search = ref('');
+const password = ref('Secret123!');
+const passwordOutlined = ref('');
 const quantity = ref(2);
 const price = ref<number | null>(49.99);
 const emailField = ref('');
