@@ -46,6 +46,15 @@
                     </div>
                 </div>
                 <div class="vf-home__card">
+                    <h3>InlineEdit</h3>
+                    <div class="vf-home__stack">
+                        <InlineEdit v-model="inlineName" placeholder="No name" />
+                        <InlineEdit v-model="inlineBudget" type="number" variant="outlined" />
+                        <p class="vf-home__muted">Name: {{ inlineName || 'empty' }}</p>
+                        <p class="vf-home__muted">Budget: {{ inlineBudget ?? 'empty' }}</p>
+                    </div>
+                </div>
+                <div class="vf-home__card">
                     <h3>SearchInput</h3>
                     <div class="vf-home__stack">
                         <SearchInput
@@ -654,6 +663,7 @@ import {
     DefaultTheme,
     FormField,
     Input,
+    InlineEdit,
     SearchInput,
     PasswordInput,
     OtpInput,
@@ -729,6 +739,8 @@ const toggleDark = () => {
 };
 
 const email = ref('');
+const inlineName = ref('Project Apollo');
+const inlineBudget = ref<number | null>(2500);
 const searchText = ref('');
 const searchQuery = ref('');
 const searchQueryAlt = ref('');
@@ -856,6 +868,7 @@ const brandPresets = ['#2b6cb0', '#0cbc87', '#d6293e', '#f7c32e', '#6f42c1'];
 const searchCatalog = [
     'Button',
     'Input',
+    'InlineEdit',
     'SearchInput',
     'PasswordInput',
     'OtpInput',

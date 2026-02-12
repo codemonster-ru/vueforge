@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.55.0] - 2026-02-12
+
+- Added InlineEdit component with inline view/edit mode, save/cancel actions, and text/number support.
+- Added default theme tokens and typed token support for `components.inlineEdit`.
+- Added InlineEdit export, README docs, unit tests, and example app showcase.
+
 ## [0.54.0] - 2026-02-12
 
 - Added FilterChips component for compact filter toggles with single/multiple selection and optional clear action.

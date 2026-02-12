@@ -4,6 +4,7 @@ export { default as Card } from '@/package/components/card.vue';
 export { default as Menu } from '@/package/components/menu.vue';
 export { default as Button } from '@/package/components/button.vue';
 export { default as Input } from '@/package/components/input.vue';
+export { default as InlineEdit } from '@/package/components/inline-edit.vue';
 export { default as SearchInput } from '@/package/components/search-input.vue';
 export { default as PasswordInput } from '@/package/components/password-input.vue';
 export { default as OtpInput } from '@/package/components/otp-input.vue';

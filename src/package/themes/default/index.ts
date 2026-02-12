@@ -2,6 +2,7 @@ import base from './base';
 import button from './components/button';
 import card from './components/card';
 import input from './components/input';
+import inlineEdit from './components/inline-edit';
 import searchInput from './components/search-input';
 import passwordInput from './components/password-input';
 import otpInput from './components/otp-input';
@@ -62,6 +63,7 @@ export default {
         button,
         card,
         input,
+        inlineEdit,
         searchInput,
         passwordInput,
         otpInput,

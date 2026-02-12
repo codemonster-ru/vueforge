@@ -77,6 +77,40 @@ export type InputTokens = {
         fontSize?: string;
     };
 };
+export type InlineEditTokens = {
+    gap?: string;
+    fontSize?: string;
+    padding?: string;
+    borderRadius?: string;
+    borderColor?: string;
+    backgroundColor?: string;
+    textColor?: string;
+    placeholderColor?: string;
+    focusBorderColor?: string;
+    focusRingShadow?: string;
+    hoverBorderColor?: string;
+    disabledOpacity?: string;
+    actionsGap?: string;
+    buttonPadding?: string;
+    buttonRadius?: string;
+    buttonBorderColor?: string;
+    buttonBackgroundColor?: string;
+    buttonTextColor?: string;
+    buttonHoverBackgroundColor?: string;
+    cancelButtonBackgroundColor?: string;
+    cancelButtonTextColor?: string;
+    cancelButtonBorderColor?: string;
+    small?: {
+        padding?: string;
+        fontSize?: string;
+        buttonPadding?: string;
+    };
+    large?: {
+        padding?: string;
+        fontSize?: string;
+        buttonPadding?: string;
+    };
+};
 export type SearchInputTokens = {
     gap?: string;
     fontSize?: string;
@@ -1573,6 +1607,7 @@ export type ThemeComponentTokens = {
     tabs?: TabsTokens;
     accordion?: AccordionTokens;
     input?: InputTokens;
+    inlineEdit?: InlineEditTokens;
     searchInput?: SearchInputTokens;
     passwordInput?: PasswordInputTokens;
     otpInput?: OtpInputTokens;
