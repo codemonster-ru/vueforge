@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.53.0] - 2026-02-12
+
+- Added SegmentedControl component for compact single-choice mode switching with keyboard navigation.
+- Added default theme tokens and typed token support for `components.segmentedControl`.
+- Added SegmentedControl export, README docs, unit tests, and example app showcase.
+- Refined SegmentedControl default sizing and example layout to a more compact appearance.
+
 ## [0.52.0] - 2026-02-12
 
 - Added Calendar component as an inline monthly date selector with locale and min/max support.

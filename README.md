@@ -50,6 +50,7 @@ import {
     DataTable,
     Checkbox,
     Switch,
+    SegmentedControl,
     Alert,
     Skeleton,
     Progress,
@@ -108,6 +109,13 @@ app.use(VueForge, {
 <DataTable :columns="columns" :rows="rows" sortable striped />
 <Checkbox v-model="agreed" label="I agree" />
 <Switch v-model="darkMode" label="Dark mode" />
+<SegmentedControl
+    v-model="view"
+    :options="[
+        { label: 'List', value: 'list' },
+        { label: 'Grid', value: 'grid' },
+    ]"
+/>
 <Alert severity="info" title="Heads up" message="Project settings were updated." />
 <Skeleton height="12px" width="140px" />
 <Progress :value="64" />
@@ -175,6 +183,7 @@ app.use(VueForge, {
 - Checkbox
 - RadioGroup
 - RadioButton
+- SegmentedControl
 - Tabs
 - Tab
 - TabPanel
@@ -240,7 +249,7 @@ Input / Search / Password / Textarea (quick API):
 - `NumberInput`: numeric control, supports `v-model`, `min`, `max`, `step`, `precision`, `controls`, `size`, `variant`.
 - `Textarea`: multi-line control, same as Input plus `rows`.
 - `TagInput`: token/tag control, supports `v-model` (array), suggestions, custom tags, `maxTags`, `clearable`, `size`, `variant`.
-- `SearchInput`, `OtpInput`, `ColorPicker`, `MaskedInput`, `Checkbox`, `Select`, `Autocomplete`, `MultiSelect`, `TagInput`, `DatePicker`, `Calendar`, `DateRangePicker`, `DateTimePicker`, `Pagination`, `DataTable`, and `TreeSelect` also support `variant: 'filled' | 'outlined'`.
+- `SearchInput`, `OtpInput`, `ColorPicker`, `MaskedInput`, `Checkbox`, `Select`, `Autocomplete`, `MultiSelect`, `TagInput`, `DatePicker`, `Calendar`, `DateRangePicker`, `DateTimePicker`, `Pagination`, `DataTable`, `SegmentedControl`, and `TreeSelect` also support `variant: 'filled' | 'outlined'`.
 
 ## FormField
 
@@ -1130,6 +1139,51 @@ Component tokens (override via `theme.overrides.components.breadcrumbs`):
 
 - `gap`, `fontSize`, `textColor`, `hoverColor`, `activeColor`
 - `separatorColor`, `disabledOpacity`
+
+## SegmentedControl
+
+Props:
+
+- `modelValue?: string | number` (v-model)
+- `options?: Array<{ label: string; value: string | number; disabled?: boolean }>` (default `[]`)
+- `disabled?: boolean`
+- `fullWidth?: boolean` (default `false`)
+- `size?: 'small' | 'normal' | 'large'` (default `normal`)
+- `variant?: 'filled' | 'outlined'` (default `filled`)
+- `ariaLabel?: string`
+- `ariaLabelledby?: string`
+
+Events:
+
+- `update:modelValue`
+- `change`
+- `focus`
+- `blur`
+
+Example:
+
+```vue
+<SegmentedControl
+    v-model="view"
+    :options="[
+        { label: 'List', value: 'list' },
+        { label: 'Grid', value: 'grid' },
+        { label: 'Board', value: 'board' },
+    ]"
+/>
+```
+
+### SegmentedControl tokens
+
+Component tokens (override via `theme.overrides.components.segmentedControl`):
+
+- `fontSize`, `padding`, `gap`
+- `borderRadius`, `borderColor`, `backgroundColor`, `textColor`
+- `hoverBackgroundColor`, `activeBackgroundColor`, `activeTextColor`
+- `focusRingShadow`, `disabledOpacity`
+- `segmentPadding`, `segmentRadius`, `segmentFontWeight`
+- `small.fontSize`, `small.padding`, `small.segmentPadding`
+- `large.fontSize`, `large.padding`, `large.segmentPadding`
 
 ## Tabs / Tab / TabPanel
 
@@ -2100,7 +2154,7 @@ VueForge exposes design tokens as CSS variables generated from the theme preset.
 Typed tokens:
 
 - `ThemeTokens`/`ThemeOptions`/`ThemePreset` are exported for type-safe theming in TS.
-- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/searchInput/passwordInput/otpInput/colorPicker/maskedInput/numberInput/formField/textarea/link/breadcrumbs/menu/modal/confirmDialog/drawer/popover/dropdown/contextMenu/commandPalette/select/autocomplete/multiselect/taginput/datepicker/calendar/daterangepicker/timepicker/datetimepicker/pagination/switch/tooltip/skeleton/progress/badge/chip/avatar/datatable/slider/stepper/rating/tree/treeselect/virtualScroller).
+- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/searchInput/passwordInput/otpInput/colorPicker/maskedInput/numberInput/formField/textarea/link/breadcrumbs/menu/modal/confirmDialog/drawer/popover/dropdown/contextMenu/commandPalette/select/autocomplete/multiselect/taginput/datepicker/calendar/daterangepicker/timepicker/datetimepicker/pagination/switch/segmentedControl/tooltip/skeleton/progress/badge/chip/avatar/datatable/slider/stepper/rating/tree/treeselect/virtualScroller).
 
 Default core values (from `DefaultTheme`):
 

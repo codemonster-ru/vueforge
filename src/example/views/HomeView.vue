@@ -338,6 +338,19 @@
                     </div>
                 </div>
                 <div class="vf-home__card">
+                    <h3>SegmentedControl</h3>
+                    <div class="vf-home__stack">
+                        <SegmentedControl v-model="segmentView" :options="segmentOptions" />
+                        <SegmentedControl
+                            v-model="segmentViewAlt"
+                            :options="segmentOptions"
+                            variant="outlined"
+                            size="small"
+                        />
+                        <p class="vf-home__muted">Selected: {{ segmentView }}</p>
+                    </div>
+                </div>
+                <div class="vf-home__card">
                     <h3>Tabs</h3>
                     <Tabs v-model="tab">
                         <template #tabs>
@@ -620,6 +633,7 @@ import {
     Button,
     Card,
     Checkbox,
+    SegmentedControl,
     Breadcrumbs,
     DefaultTheme,
     FormField,
@@ -743,6 +757,8 @@ const page = ref(6);
 const agreed = ref(false);
 const agreedAlt = ref(false);
 const notifications = ref(true);
+const segmentView = ref<'list' | 'grid' | 'board'>('list');
+const segmentViewAlt = ref<'list' | 'grid' | 'board'>('grid');
 const plan = ref('basic');
 const layout = ref('grid');
 const tab = ref('overview');
@@ -789,6 +805,11 @@ const roles = [
     { label: 'Designer', value: 'design' },
     { label: 'Product', value: 'product' },
 ];
+const segmentOptions = [
+    { label: 'List', value: 'list' },
+    { label: 'Grid', value: 'grid' },
+    { label: 'Board', value: 'board' },
+];
 const countries = [
     { label: 'United States', value: 'us' },
     { label: 'Germany', value: 'de' },
@@ -815,6 +836,7 @@ const searchCatalog = [
     'DateRangePicker',
     'DateTimePicker',
     'TimePicker',
+    'SegmentedControl',
     'DataTable',
     'TreeSelect',
     'CommandPalette',

@@ -26,6 +26,7 @@ export { default as Pagination } from '@/package/components/pagination.vue';
 export { default as Checkbox } from '@/package/components/checkbox.vue';
 export { default as RadioGroup } from '@/package/components/radio-group.vue';
 export { default as RadioButton } from '@/package/components/radio-button.vue';
+export { default as SegmentedControl } from '@/package/components/segmented-control.vue';
 export { default as Tabs } from '@/package/components/tabs.vue';
 export { default as Tab } from '@/package/components/tab.vue';
 export { default as TabPanel } from '@/package/components/tab-panel.vue';

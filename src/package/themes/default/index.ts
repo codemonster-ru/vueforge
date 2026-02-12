@@ -35,6 +35,7 @@ import pagination from './components/pagination';
 import checkbox from './components/checkbox';
 import radio from './components/radio';
 import switchComponent from './components/switch';
+import segmentedControl from './components/segmented-control';
 import tabs from './components/tabs';
 import accordion from './components/accordion';
 import tooltip from './components/tooltip';
@@ -93,6 +94,7 @@ export default {
         checkbox,
         radio,
         switch: switchComponent,
+        segmentedControl,
         tabs,
         accordion,
         tooltip,

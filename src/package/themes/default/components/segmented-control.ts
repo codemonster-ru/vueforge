@@ -1,0 +1,27 @@
+export default {
+    fontSize: '0.95rem',
+    padding: '0.16rem',
+    gap: '0.16rem',
+    borderRadius: 'var(--vf-radii-md)',
+    borderColor: 'var(--vf-border-color)',
+    backgroundColor: 'var(--vf-controls-background-color)',
+    textColor: 'var(--vf-text-color)',
+    hoverBackgroundColor: 'rgba(var(--vf-blue-600-rgb), 0.08)',
+    activeBackgroundColor: 'rgba(var(--vf-blue-600-rgb), 0.14)',
+    activeTextColor: 'var(--vf-text-color)',
+    focusRingShadow: 'var(--vf-states-focus-ring-shadow)',
+    disabledOpacity: 'var(--vf-states-disabled-opacity)',
+    segmentPadding: '0.32rem 0.58rem',
+    segmentRadius: 'var(--vf-radii-sm)',
+    segmentFontWeight: '500',
+    small: {
+        fontSize: 'var(--vf-sizes-sm-font-size)',
+        padding: '0.14rem',
+        segmentPadding: '0.24rem 0.44rem',
+    },
+    large: {
+        fontSize: 'var(--vf-sizes-lg-font-size)',
+        padding: '0.2rem',
+        segmentPadding: '0.42rem 0.78rem',
+    },
+};

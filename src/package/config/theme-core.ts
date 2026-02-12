@@ -988,6 +988,33 @@ export type SwitchTokens = {
     textColor?: string;
     disabledOpacity?: string;
 };
+export type SegmentedControlTokens = {
+    fontSize?: string;
+    padding?: string;
+    gap?: string;
+    borderRadius?: string;
+    borderColor?: string;
+    backgroundColor?: string;
+    textColor?: string;
+    hoverBackgroundColor?: string;
+    activeBackgroundColor?: string;
+    activeTextColor?: string;
+    focusRingShadow?: string;
+    disabledOpacity?: string;
+    segmentPadding?: string;
+    segmentRadius?: string;
+    segmentFontWeight?: string;
+    small?: {
+        fontSize?: string;
+        padding?: string;
+        segmentPadding?: string;
+    };
+    large?: {
+        fontSize?: string;
+        padding?: string;
+        segmentPadding?: string;
+    };
+};
 export type TabsTokens = {
     gap?: string;
     listGap?: string;
@@ -1544,6 +1571,7 @@ export type ThemeComponentTokens = {
     datetimepicker?: DateTimePickerTokens;
     pagination?: PaginationTokens;
     switch?: SwitchTokens;
+    segmentedControl?: SegmentedControlTokens;
     tooltip?: TooltipTokens;
     skeleton?: SkeletonTokens;
     progress?: ProgressTokens;
