@@ -26,6 +26,7 @@ import contextMenu from './components/context-menu';
 import commandPalette from './components/command-palette';
 import select from './components/select';
 import autocomplete from './components/autocomplete';
+import combobox from './components/combobox';
 import multiselect from './components/multiselect';
 import taginput from './components/taginput';
 import datepicker from './components/datepicker';
@@ -88,6 +89,7 @@ export default {
         commandPalette,
         select,
         autocomplete,
+        combobox,
         multiselect,
         taginput,
         datepicker,

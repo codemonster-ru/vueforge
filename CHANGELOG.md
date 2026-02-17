@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.57.0] - 2026-02-17
+
+- Added Combobox component with searchable single selection, strict/free-input modes, and optional custom value creation.
+- Added default theme tokens and typed token support for `components.combobox`.
+- Added Combobox export, README docs, and unit tests.
+
 ## [0.56.0] - 2026-02-12
 
 - Added MentionInput component with `@`/`#` trigger suggestions, keyboard selection, and mention insertion support.

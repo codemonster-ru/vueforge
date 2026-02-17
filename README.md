@@ -41,6 +41,7 @@ import {
     Breadcrumbs,
     Select,
     Autocomplete,
+    Combobox,
     MultiSelect,
     TagInput,
     DatePicker,
@@ -103,6 +104,7 @@ app.use(VueForge, {
 <Breadcrumbs :items="breadcrumbItems" />
 <Select v-model="role" :options="roles" placeholder="Choose role" />
 <Autocomplete v-model="country" :options="countries" placeholder="Find country" />
+<Combobox v-model="countryId" :options="countries" placeholder="Pick country" clearable />
 <MultiSelect v-model="countries" :options="countryOptions" placeholder="Select countries" clearable />
 <TagInput v-model="skills" :options="skillOptions" placeholder="Add skills" clearable />
 <DatePicker v-model="birthday" placeholder="Pick birthday" />
@@ -230,6 +232,7 @@ app.use(VueForge, {
 - Popover
 - Select
 - Autocomplete
+- Combobox
 - MultiSelect
 - TagInput
 - DatePicker
@@ -438,6 +441,62 @@ Example:
 ```vue
 <Autocomplete v-model="country" :options="countries" placeholder="Find country" />
 ```
+
+## Combobox
+
+Props:
+
+- `modelValue?: string | number` (v-model selected value)
+- `inputValue?: string` (v-model:inputValue typed query)
+- `options?: Array<{ label: string; value: string | number; disabled?: boolean }>`
+- `optionLabel?: string` (default `label`)
+- `optionValue?: string` (default `value`)
+- `placeholder?: string`
+- `disabled?: boolean`
+- `readonly?: boolean`
+- `loading?: boolean`
+- `loadingText?: string` (default `Loading...`)
+- `emptyText?: string` (default `No results`)
+- `filter?: boolean` (default `true`)
+- `strict?: boolean` (default `true`)
+- `allowCreate?: boolean` (default `false`)
+- `clearable?: boolean` (default `false`)
+- `size?: 'small' | 'normal' | 'large'` (default `normal`)
+- `variant?: 'filled' | 'outlined'` (default `filled`)
+
+Events:
+
+- `update:modelValue`
+- `update:inputValue`
+- `change`
+- `search`
+- `create`
+- `focus`
+- `blur`
+
+Example:
+
+```vue
+<Combobox v-model="countryId" v-model:inputValue="countryQuery" :options="countries" placeholder="Pick country" />
+```
+
+### Combobox tokens
+
+Component tokens (override via `theme.overrides.components.combobox`):
+
+- `minWidth`, `fontSize`, `controlGap`, `chevronSize`
+- `padding`, `borderRadius`, `borderColor`
+- `backgroundColor`, `textColor`, `placeholderColor`
+- `focusBorderColor`, `focusRingShadow`, `hoverBorderColor`
+- `disabledOpacity`
+- `panelBackgroundColor`, `panelBorderColor`, `panelPadding`, `panelMaxHeight`, `panelRadiusOffset`, `panelShadow`
+- `optionPadding`, `optionBorderRadius`
+- `optionHoverBackgroundColor`, `optionActiveBackgroundColor`, `optionActiveTextColor`, `optionHighlightedBackgroundColor`
+- `emptyPadding`, `emptyColor`
+- `loadingPadding`, `loadingColor`
+- `clearSize`, `clearRadius`, `clearHoverBackgroundColor`
+- `small.fontSize`, `small.padding`
+- `large.fontSize`, `large.padding`
 
 ## MultiSelect
 
@@ -2334,7 +2393,7 @@ VueForge exposes design tokens as CSS variables generated from the theme preset.
 Typed tokens:
 
 - `ThemeTokens`/`ThemeOptions`/`ThemePreset` are exported for type-safe theming in TS.
-- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/inlineEdit/searchInput/mentionInput/passwordInput/otpInput/colorPicker/maskedInput/numberInput/formField/textarea/link/breadcrumbs/menu/modal/confirmDialog/drawer/popover/dropdown/contextMenu/commandPalette/select/autocomplete/multiselect/taginput/datepicker/calendar/daterangepicker/timepicker/datetimepicker/pagination/switch/segmentedControl/tooltip/skeleton/progress/badge/chip/filterChips/avatar/datatable/slider/stepper/rating/tree/treeselect/virtualScroller).
+- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/inlineEdit/searchInput/mentionInput/passwordInput/otpInput/colorPicker/maskedInput/numberInput/formField/textarea/link/breadcrumbs/menu/modal/confirmDialog/drawer/popover/dropdown/contextMenu/commandPalette/select/autocomplete/combobox/multiselect/taginput/datepicker/calendar/daterangepicker/timepicker/datetimepicker/pagination/switch/segmentedControl/tooltip/skeleton/progress/badge/chip/filterChips/avatar/datatable/slider/stepper/rating/tree/treeselect/virtualScroller).
 
 Default core values (from `DefaultTheme`):
 

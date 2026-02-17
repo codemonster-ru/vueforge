@@ -224,13 +224,54 @@
                 <div class="vf-home__card">
                     <h3>Autocomplete</h3>
                     <div class="vf-home__stack">
-                        <Autocomplete v-model="country" :options="countries" placeholder="Find country" />
+                        <p class="vf-home__muted">Free text is allowed: input can differ from selected value.</p>
+                        <Autocomplete
+                            v-model="country"
+                            :options="countries"
+                            placeholder="Find country"
+                            @search="onAutocompleteSearch"
+                        />
                         <Autocomplete
                             v-model="countryAlt"
                             :options="countries"
                             placeholder="Find country (outlined)"
                             variant="outlined"
+                            @search="onAutocompleteAltSearch"
                         />
+                        <p class="vf-home__muted">Selected #1: {{ country || 'none' }}</p>
+                        <p class="vf-home__muted">Typed #1: {{ autocompleteQuery || 'empty' }}</p>
+                        <p class="vf-home__muted">Selected #2: {{ countryAlt || 'none' }}</p>
+                        <p class="vf-home__muted">Typed #2: {{ autocompleteAltQuery || 'empty' }}</p>
+                    </div>
+                </div>
+                <div class="vf-home__card">
+                    <h3>Combobox</h3>
+                    <div class="vf-home__stack">
+                        <p class="vf-home__muted">
+                            Strict mode: type random text and blur, query resets to selected option label.
+                        </p>
+                        <Combobox
+                            v-model="countryCombo"
+                            v-model:input-value="countryComboQuery"
+                            :options="countries"
+                            placeholder="Pick country"
+                            clearable
+                        />
+                        <Combobox
+                            v-model="countryComboCustom"
+                            v-model:input-value="countryComboCustomQuery"
+                            :options="countries"
+                            placeholder="Allow custom value"
+                            variant="outlined"
+                            :strict="false"
+                            allow-create
+                            @create="onComboboxCreate"
+                        />
+                        <p class="vf-home__muted">Selected: {{ countryCombo || 'none' }}</p>
+                        <p class="vf-home__muted">Query: {{ countryComboQuery || 'empty' }}</p>
+                        <p class="vf-home__muted">Custom selected: {{ countryComboCustom || 'none' }}</p>
+                        <p class="vf-home__muted">Custom query: {{ countryComboCustomQuery || 'empty' }}</p>
+                        <p class="vf-home__muted">Last created: {{ comboLastCreated || 'none' }}</p>
                     </div>
                 </div>
                 <div class="vf-home__card">
@@ -729,6 +770,7 @@ import {
     ToastContainer,
     Select,
     Autocomplete,
+    Combobox,
     Switch,
     Tooltip,
     Skeleton,
@@ -802,6 +844,13 @@ const role = ref('');
 const roleAlt = ref('');
 const country = ref('');
 const countryAlt = ref('');
+const autocompleteQuery = ref('');
+const autocompleteAltQuery = ref('');
+const countryCombo = ref<string | number | undefined>('de');
+const countryComboQuery = ref('Germany');
+const countryComboCustom = ref<string | number | undefined>(undefined);
+const countryComboCustomQuery = ref('');
+const comboLastCreated = ref('');
 const countriesMulti = ref<Array<string | number>>([]);
 const skills = ref<Array<string | number>>(['vue', 'ts']);
 const skillsOutlined = ref<Array<string | number>>([]);
@@ -1044,6 +1093,15 @@ const onSearchInputAltClear = () => {
     }
     serverSearchLoading.value = false;
     serverResults.value = [];
+};
+const onAutocompleteSearch = (query: string) => {
+    autocompleteQuery.value = query;
+};
+const onAutocompleteAltSearch = (query: string) => {
+    autocompleteAltQuery.value = query;
+};
+const onComboboxCreate = (value: string) => {
+    comboLastCreated.value = value;
 };
 const onMentionSearch = (payload: { trigger?: string; query?: string }) => {
     if (mentionSearchTimer) {
