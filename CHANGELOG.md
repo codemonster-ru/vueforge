@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.59.0] - 2026-02-17
+
+- Added Form component with `v-model` values, sync/async validation handlers, submit/reset lifecycle, and slot-based form helpers (`values`, `errors`, `touched`, setters, and actions).
+- Added default theme tokens and typed token support for `components.form`.
+- Added Form export, README docs, example app showcase, and unit tests.
+- FormField invalid state now highlights borders of nested form controls using `errorBorderColor` and `errorFocusBorderColor` tokens.
+
 ## [0.58.0] - 2026-02-17
 
 - Added Timeline component for rendering chronological event flows with vertical/horizontal layouts, status markers, and slot-based marker/item customization.

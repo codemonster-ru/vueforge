@@ -10,6 +10,7 @@ import otpInput from './components/otp-input';
 import colorPicker from './components/color-picker';
 import maskedInput from './components/masked-input';
 import numberInput from './components/number-input';
+import form from './components/form';
 import formField from './components/form-field';
 import textarea from './components/textarea';
 import fileUpload from './components/file-upload';
@@ -74,6 +75,7 @@ export default {
         colorPicker,
         maskedInput,
         numberInput,
+        form,
         formField,
         textarea,
         fileUpload,

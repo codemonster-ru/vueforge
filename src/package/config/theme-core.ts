@@ -336,6 +336,11 @@ export type NumberInputTokens = {
         controlFontSize?: string;
     };
 };
+export type FormTokens = {
+    gap?: string;
+    textColor?: string;
+    disabledOpacity?: string;
+};
 export type FormFieldTokens = {
     gap?: string;
     textColor?: string;
@@ -345,6 +350,8 @@ export type FormFieldTokens = {
     hintFontSize?: string;
     hintColor?: string;
     errorColor?: string;
+    errorBorderColor?: string;
+    errorFocusBorderColor?: string;
     disabledOpacity?: string;
     small?: {
         gap?: string;
@@ -1759,6 +1766,7 @@ export type ThemeComponentTokens = {
     colorPicker?: ColorPickerTokens;
     maskedInput?: MaskedInputTokens;
     numberInput?: NumberInputTokens;
+    form?: FormTokens;
     formField?: FormFieldTokens;
     textarea?: TextareaTokens;
     fileUpload?: FileUploadTokens;

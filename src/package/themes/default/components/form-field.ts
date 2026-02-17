@@ -7,6 +7,8 @@ export default {
     hintFontSize: '0.8125rem',
     hintColor: 'var(--vf-secondary-text-color)',
     errorColor: 'var(--vf-red-700)',
+    errorBorderColor: 'var(--vf-red-600)',
+    errorFocusBorderColor: 'var(--vf-red-700)',
     disabledOpacity: 'var(--vf-states-disabled-opacity)',
     small: {
         gap: '0.25rem',

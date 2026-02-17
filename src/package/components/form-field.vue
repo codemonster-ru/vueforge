@@ -117,6 +117,67 @@ const getClass = computed(() => {
     color: var(--vf-form-field-error-color);
 }
 
+.vf-form-field_invalid :is(
+        .vf-input,
+        .vf-textarea,
+        .vf-number-input,
+        .vf-search-input,
+        .vf-masked-input,
+        .vf-select,
+        .vf-autocomplete,
+        .vf-combobox,
+        .vf-multiselect,
+        .vf-taginput,
+        .vf-datepicker,
+        .vf-daterangepicker,
+        .vf-datetimepicker,
+        .vf-timepicker,
+        .vf-mention-input,
+        .vf-treeselect
+    ),
+.vf-form-field_invalid .vf-password-input__field,
+.vf-form-field_invalid .vf-color-picker__control,
+.vf-form-field_invalid .vf-otp-input__cell {
+    border-color: var(--vf-form-field-error-border-color);
+}
+
+.vf-form-field_invalid :is(
+        .vf-input,
+        .vf-textarea,
+        .vf-number-input,
+        .vf-search-input,
+        .vf-masked-input,
+        .vf-select,
+        .vf-autocomplete,
+        .vf-combobox,
+        .vf-multiselect,
+        .vf-taginput,
+        .vf-datepicker,
+        .vf-daterangepicker,
+        .vf-datetimepicker,
+        .vf-timepicker,
+        .vf-mention-input,
+        .vf-treeselect
+    ):focus-within,
+.vf-form-field_invalid :is(
+        .vf-select_open,
+        .vf-autocomplete_open,
+        .vf-combobox_open,
+        .vf-multiselect_open,
+        .vf-taginput_open,
+        .vf-datepicker_open,
+        .vf-daterangepicker_open,
+        .vf-datetimepicker_open,
+        .vf-timepicker_open,
+        .vf-mention-input_open,
+        .vf-treeselect_open
+    ),
+.vf-form-field_invalid .vf-password-input:focus-within .vf-password-input__field,
+.vf-form-field_invalid .vf-color-picker__control:focus-visible,
+.vf-form-field_invalid .vf-otp-input__cell:focus {
+    border-color: var(--vf-form-field-error-focus-border-color);
+}
+
 .vf-form-field_small {
     gap: var(--vf-form-field-small-gap);
 }

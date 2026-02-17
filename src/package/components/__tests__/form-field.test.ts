@@ -26,10 +26,11 @@ describe('FormField', () => {
                 error: 'Email is required',
             },
             slots: {
-                default: ({ id, describedBy }: { id: string; describedBy?: string }) =>
+                default: ({ id, describedBy, invalid }: { id: string; describedBy?: string; invalid?: boolean }) =>
                     h('input', {
                         id,
                         'aria-describedby': describedBy,
+                        'data-invalid': invalid ? 'true' : 'false',
                     }),
             },
         });
@@ -38,5 +39,6 @@ describe('FormField', () => {
         expect(control.attributes('id')).toBeTruthy();
         expect(control.attributes('aria-describedby')).toContain('-hint');
         expect(control.attributes('aria-describedby')).toContain('-error');
+        expect(control.attributes('data-invalid')).toBe('true');
     });
 });

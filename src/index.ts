@@ -12,6 +12,7 @@ export { default as OtpInput } from '@/package/components/otp-input.vue';
 export { default as ColorPicker } from '@/package/components/color-picker.vue';
 export { default as MaskedInput } from '@/package/components/masked-input.vue';
 export { default as NumberInput } from '@/package/components/number-input.vue';
+export { default as Form } from '@/package/components/form.vue';
 export { default as FormField } from '@/package/components/form-field.vue';
 export { default as Textarea } from '@/package/components/textarea.vue';
 export { default as FileUpload } from '@/package/components/file-upload.vue';
@@ -64,6 +65,7 @@ export { default as TreeSelect } from '@/package/components/tree-select.vue';
 export { default as Breadcrumbs } from '@/package/components/breadcrumbs.vue';
 export { default as VirtualScroller } from '@/package/components/virtual-scroller.vue';
 export type { DataTableColumn } from '@/package/components/data-table.vue';
+export type { FormErrors, FormTouched, FormValidateHandler, FormValidateResult, FormValues } from '@/package/components/form.vue';
 export type { TreeItem, TreeValue } from '@/package/components/tree.vue';
 export type { TimelineItem } from '@/package/components/timeline.vue';
 // config

@@ -35,6 +35,7 @@ import {
     ColorPicker,
     MaskedInput,
     NumberInput,
+    Form,
     FormField,
     Textarea,
     FileUpload,
@@ -89,6 +90,20 @@ app.use(VueForge, {
 
 ```vue
 <Button label="Hello" severity="primary" />
+<Form v-model="formValues" :validate="validateForm" @submit="onSubmit">
+    <template #default="{ values, errors, touched, setFieldValue, setFieldTouched }">
+        <FormField label="Email" :error="touched.email ? errors.email : ''">
+            <template #default>
+                <Input
+                    :model-value="String(values.email ?? '')"
+                    @update:model-value="value => setFieldValue('email', value)"
+                    @blur="() => setFieldTouched('email', true)"
+                />
+            </template>
+        </FormField>
+        <Button type="submit" label="Submit" />
+    </template>
+</Form>
 <FormField label="Name" hint="Required field">
     <Input v-model="name" placeholder="Your name" />
 </FormField>
@@ -218,6 +233,7 @@ app.use(VueForge, {
 - ColorPicker
 - MaskedInput
 - NumberInput
+- Form
 - FormField
 - Textarea
 - FileUpload
@@ -276,6 +292,60 @@ Input / Search / Password / Textarea (quick API):
 - `FilterChips`: compact chip-based filter toggles with single/multiple selection modes and optional clear action.
 - `SearchInput`, `MentionInput`, `InlineEdit`, `OtpInput`, `ColorPicker`, `MaskedInput`, `Checkbox`, `Select`, `Autocomplete`, `MultiSelect`, `TagInput`, `DatePicker`, `Calendar`, `DateRangePicker`, `DateTimePicker`, `Pagination`, `DataTable`, `SegmentedControl`, and `TreeSelect` also support `variant: 'filled' | 'outlined'`.
 
+## Form
+
+Props:
+
+- `modelValue?: Record<string, unknown>` (v-model)
+- `initialValues?: Record<string, unknown>`
+- `validate?: (values) => Record<string, string> | string | boolean | null | Promise<...>`
+- `validateOn?: 'submit' | 'input' | 'change' | 'blur' | Array<'submit' | 'input' | 'change' | 'blur'>` (default `submit`)
+- `disabled?: boolean`
+- `novalidate?: boolean` (default `true`)
+- `id?: string`
+- `ariaLabel?: string`
+- `ariaLabelledby?: string`
+
+Events:
+
+- `update:modelValue`
+- `change`
+- `blur`
+- `validate`
+- `submit`
+- `invalidSubmit`
+- `reset`
+
+Slots:
+
+- `default` - form helpers:
+  `{ values, errors, touched, isValid, isDirty, isSubmitting, setFieldValue, setFieldTouched, setFieldError, validate, submit, reset }`
+
+Example:
+
+```vue
+<Form v-model="values" :validate="validateForm" validate-on="blur" @submit="send">
+    <template #default="{ values, errors, touched, setFieldValue, setFieldTouched }">
+        <FormField label="Email" :error="touched.email ? errors.email : ''">
+            <template #default>
+                <Input
+                    :model-value="String(values.email ?? '')"
+                    @update:model-value="value => setFieldValue('email', value)"
+                    @blur="() => setFieldTouched('email', true)"
+                />
+            </template>
+        </FormField>
+        <Button type="submit" label="Send" />
+    </template>
+</Form>
+```
+
+### Form tokens
+
+Component tokens (override via `theme.overrides.components.form`):
+
+- `gap`, `textColor`, `disabledOpacity`
+
 ## FormField
 
 Props:
@@ -304,6 +374,9 @@ Example:
     </template>
 </FormField>
 ```
+
+When `error` is set, `FormField` applies invalid-state border highlighting to nested form controls.
+Customize these colors via `theme.overrides.components.formField.errorBorderColor` and `errorFocusBorderColor`.
 
 ## InlineEdit
 
@@ -2439,7 +2512,7 @@ VueForge exposes design tokens as CSS variables generated from the theme preset.
 Typed tokens:
 
 - `ThemeTokens`/`ThemeOptions`/`ThemePreset` are exported for type-safe theming in TS.
-- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/inlineEdit/searchInput/mentionInput/passwordInput/otpInput/colorPicker/maskedInput/numberInput/formField/textarea/link/breadcrumbs/menu/modal/confirmDialog/drawer/popover/dropdown/contextMenu/commandPalette/select/autocomplete/combobox/multiselect/taginput/datepicker/calendar/daterangepicker/timepicker/datetimepicker/pagination/switch/segmentedControl/tooltip/skeleton/progress/badge/chip/filterChips/avatar/datatable/slider/stepper/rating/tree/treeselect/virtualScroller).
+- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/inlineEdit/searchInput/mentionInput/passwordInput/otpInput/colorPicker/maskedInput/numberInput/form/formField/textarea/link/breadcrumbs/menu/modal/confirmDialog/drawer/popover/dropdown/contextMenu/commandPalette/select/autocomplete/combobox/multiselect/taginput/datepicker/calendar/daterangepicker/timepicker/datetimepicker/pagination/switch/segmentedControl/tooltip/skeleton/progress/badge/chip/filterChips/avatar/datatable/slider/stepper/rating/tree/treeselect/virtualScroller).
 
 Default core values (from `DefaultTheme`):
 

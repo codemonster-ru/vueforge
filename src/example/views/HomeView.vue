@@ -175,6 +175,66 @@
                     </div>
                 </div>
                 <div class="vf-home__card">
+                    <h3>Form</h3>
+                    <Form
+                        v-model="demoFormValues"
+                        :validate="validateDemoForm"
+                        validate-on="blur"
+                        @submit="onDemoFormSubmit"
+                    >
+                        <template #default="{ values, errors, touched, isSubmitting, setFieldValue, setFieldTouched }">
+                            <div class="vf-home__stack">
+                                <FormField
+                                    label="Email"
+                                    :error="touched.email ? errors.email : ''"
+                                    hint="Required. Example: name@example.com"
+                                >
+                                    <template #default>
+                                        <Input
+                                            :model-value="String(values.email ?? '')"
+                                            placeholder="name@example.com"
+                                            @update:model-value="
+                                                value => {
+                                                    setFieldValue('email', value, { emitChange: false });
+                                                }
+                                            "
+                                            @blur="
+                                                () => {
+                                                    setFieldTouched('email', true);
+                                                }
+                                            "
+                                        />
+                                    </template>
+                                </FormField>
+                                <FormField
+                                    label="Password"
+                                    :error="touched.password ? errors.password : ''"
+                                    hint="At least 8 characters"
+                                >
+                                    <template #default>
+                                        <PasswordInput
+                                            :model-value="String(values.password ?? '')"
+                                            show-strength
+                                            @update:model-value="
+                                                value => {
+                                                    setFieldValue('password', value, { emitChange: false });
+                                                }
+                                            "
+                                            @blur="
+                                                () => {
+                                                    setFieldTouched('password', true);
+                                                }
+                                            "
+                                        />
+                                    </template>
+                                </FormField>
+                                <Button type="submit" label="Submit form" :loading="isSubmitting" />
+                                <p class="vf-home__muted">Last submit: {{ demoFormSubmitState }}</p>
+                            </div>
+                        </template>
+                    </Form>
+                </div>
+                <div class="vf-home__card">
                     <h3>FormField</h3>
                     <div class="vf-home__stack">
                         <FormField label="Email" hint="We never share it">
@@ -737,6 +797,7 @@ import {
     SegmentedControl,
     Breadcrumbs,
     DefaultTheme,
+    Form,
     FormField,
     Input,
     InlineEdit,
@@ -840,6 +901,11 @@ const phoneMasked = ref('');
 const licenseRaw = ref('');
 const quantity = ref(2);
 const price = ref<number | null>(49.99);
+const demoFormValues = ref<{ email: string; password: string }>({
+    email: '',
+    password: '',
+});
+const demoFormSubmitState = ref('none');
 const emailField = ref('');
 const username = ref('');
 const usernameError = ref('Username is required');
@@ -1115,6 +1181,28 @@ const onAutocompleteAltSearch = (query: string) => {
 };
 const onComboboxCreate = (value: string) => {
     comboLastCreated.value = value;
+};
+const validateDemoForm = (values: { email?: string; password?: string }) => {
+    const nextErrors: Record<string, string> = {};
+    const email = String(values.email ?? '').trim();
+    const password = String(values.password ?? '');
+
+    if (!email) {
+        nextErrors.email = 'Email is required';
+    } else if (!/.+@.+\..+/.test(email)) {
+        nextErrors.email = 'Invalid email format';
+    }
+
+    if (!password) {
+        nextErrors.password = 'Password is required';
+    } else if (password.length < 8) {
+        nextErrors.password = 'Password must be at least 8 characters';
+    }
+
+    return nextErrors;
+};
+const onDemoFormSubmit = (values: { email?: string; password?: string }) => {
+    demoFormSubmitState.value = JSON.stringify(values);
 };
 const onMentionSearch = (payload: { trigger?: string; query?: string }) => {
     if (mentionSearchTimer) {
