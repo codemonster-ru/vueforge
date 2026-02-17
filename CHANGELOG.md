@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.58.0] - 2026-02-17
+
+- Added Timeline component for rendering chronological event flows with vertical/horizontal layouts, status markers, and slot-based marker/item customization.
+- Added default theme tokens and typed token support for `components.timeline`.
+- Added Timeline export, README docs, and unit tests.
+
 ## [0.57.0] - 2026-02-17
 
 - Added Combobox component with searchable single selection, strict/free-input modes, and optional custom value creation.

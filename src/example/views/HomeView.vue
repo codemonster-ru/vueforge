@@ -457,6 +457,13 @@
                     </div>
                 </div>
                 <div class="vf-home__card">
+                    <h3>Timeline</h3>
+                    <div class="vf-home__stack">
+                        <Timeline :items="timelineEvents" />
+                        <Timeline :items="timelineEvents" orientation="horizontal" size="small" />
+                    </div>
+                </div>
+                <div class="vf-home__card">
                     <h3>Rating</h3>
                     <div class="vf-home__stack">
                         <Rating v-model="ratingValue" />
@@ -781,6 +788,7 @@ import {
     Progress,
     Slider,
     Stepper,
+    Timeline,
     Rating,
     Tree,
     TreeSelect,
@@ -912,6 +920,11 @@ const stepperSteps = [
     { label: 'Account', description: 'Create a profile' },
     { label: 'Plan', description: 'Select a plan' },
     { label: 'Confirm', description: 'Review details' },
+];
+const timelineEvents = [
+    { title: 'Created', description: 'Issue was created', date: '2026-02-17', status: 'info' as const },
+    { title: 'In progress', description: 'Developer started work', date: '2026-02-18', status: 'warn' as const },
+    { title: 'Done', description: 'Issue closed', date: '2026-02-19', status: 'success' as const },
 ];
 const roles = [
     { label: 'Developer', value: 'dev' },

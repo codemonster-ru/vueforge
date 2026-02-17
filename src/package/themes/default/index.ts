@@ -53,6 +53,7 @@ import filterChips from './components/filter-chips';
 import avatar from './components/avatar';
 import slider from './components/slider';
 import stepper from './components/stepper';
+import timeline from './components/timeline';
 import rating from './components/rating';
 import tree from './components/tree';
 import treeselect from './components/treeselect';
@@ -116,6 +117,7 @@ export default {
         avatar,
         slider,
         stepper,
+        timeline,
         rating,
         tree,
         treeselect,

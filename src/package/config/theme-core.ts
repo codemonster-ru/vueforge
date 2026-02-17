@@ -1420,6 +1420,71 @@ export type StepperTokens = {
         itemGap?: string;
     };
 };
+export type TimelineTokens = {
+    gap?: string;
+    itemGap?: string;
+    markerSize?: string;
+    markerBorderRadius?: string;
+    markerBorderWidth?: string;
+    markerBackgroundColor?: string;
+    markerBorderColor?: string;
+    markerTextColor?: string;
+    markerIconSize?: string;
+    dotSize?: string;
+    lineThickness?: string;
+    lineLength?: string;
+    lineColor?: string;
+    titleFontSize?: string;
+    titleColor?: string;
+    descriptionFontSize?: string;
+    descriptionColor?: string;
+    dateFontSize?: string;
+    dateColor?: string;
+    info?: {
+        markerBackgroundColor?: string;
+        markerBorderColor?: string;
+        markerTextColor?: string;
+        lineColor?: string;
+    };
+    success?: {
+        markerBackgroundColor?: string;
+        markerBorderColor?: string;
+        markerTextColor?: string;
+        lineColor?: string;
+    };
+    warn?: {
+        markerBackgroundColor?: string;
+        markerBorderColor?: string;
+        markerTextColor?: string;
+        lineColor?: string;
+    };
+    danger?: {
+        markerBackgroundColor?: string;
+        markerBorderColor?: string;
+        markerTextColor?: string;
+        lineColor?: string;
+    };
+    small?: {
+        itemGap?: string;
+        markerSize?: string;
+        markerIconSize?: string;
+        dotSize?: string;
+        lineLength?: string;
+        dateFontSize?: string;
+        titleFontSize?: string;
+        descriptionFontSize?: string;
+    };
+    large?: {
+        itemGap?: string;
+        markerSize?: string;
+        markerIconSize?: string;
+        dotSize?: string;
+        lineLength?: string;
+        dateFontSize?: string;
+        titleFontSize?: string;
+        descriptionFontSize?: string;
+    };
+};
 export type DataTableTokens = {
     borderColor?: string;
     borderRadius?: string;
@@ -1726,6 +1791,7 @@ export type ThemeComponentTokens = {
     progress?: ProgressTokens;
     slider?: SliderTokens;
     stepper?: StepperTokens;
+    timeline?: TimelineTokens;
     datatable?: DataTableTokens;
     toast?: ToastTokens;
     alert?: AlertTokens;

@@ -64,6 +64,7 @@ import {
     AccordionItem,
     Slider,
     Stepper,
+    Timeline,
     Rating,
     Tree,
     TreeSelect,
@@ -138,6 +139,7 @@ app.use(VueForge, {
 />
 <Slider v-model="volume" :min="0" :max="100" :step="5" show-value />
 <Stepper v-model="step" :steps="steps" clickable />
+<Timeline :items="timelineItems" />
 <Rating v-model="rating" allow-half />
 <Tree v-model="selectedNode" v-model:expandedKeys="expandedKeys" :items="treeItems" />
 <TreeSelect v-model="selectedNode" v-model:expandedKeys="expandedKeys" :items="treeItems" placeholder="Select node" />
@@ -252,6 +254,7 @@ app.use(VueForge, {
 - Avatar
 - Slider
 - Stepper
+- Timeline
 - Rating
 - Tree
 - TreeSelect
@@ -2188,6 +2191,49 @@ Component tokens (override via `theme.overrides.components.stepper`):
 - `disabledOpacity`
 - `small.indicatorSize`, `small.indicatorFontSize`, `small.labelFontSize`, `small.descriptionFontSize`, `small.lineLength`, `small.itemGap`
 - `large.indicatorSize`, `large.indicatorFontSize`, `large.labelFontSize`, `large.descriptionFontSize`, `large.lineLength`, `large.itemGap`
+
+## Timeline
+
+Props:
+
+- `items?: Array<{ id?: string | number; title?: string; description?: string; date?: string; icon?: string; status?: 'neutral' | 'info' | 'success' | 'warn' | 'danger' }>` (default `[]`)
+- `orientation?: 'vertical' | 'horizontal'` (default `vertical`)
+- `size?: 'small' | 'normal' | 'large'` (default `normal`)
+- `ariaLabel?: string`
+- `ariaLabelledby?: string`
+
+Slots:
+
+- `marker` (props: `item`, `index`)
+- `item` (props: `item`, `index`)
+
+Example:
+
+```vue
+<Timeline
+    :items="[
+        { title: 'Created', description: 'Issue created', date: '2026-02-17', status: 'info' },
+        { title: 'In progress', description: 'Developer started work', date: '2026-02-18', status: 'warn' },
+        { title: 'Done', description: 'Issue closed', date: '2026-02-19', status: 'success' },
+    ]"
+/>
+<Timeline :items="events" orientation="horizontal" size="small" />
+```
+
+### Timeline tokens
+
+Component tokens (override via `theme.overrides.components.timeline`):
+
+- `gap`, `itemGap`
+- `markerSize`, `markerBorderRadius`, `markerBorderWidth`, `markerBackgroundColor`, `markerBorderColor`, `markerTextColor`, `markerIconSize`, `dotSize`
+- `lineThickness`, `lineLength`, `lineColor`
+- `titleFontSize`, `titleColor`, `descriptionFontSize`, `descriptionColor`, `dateFontSize`, `dateColor`
+- `info.markerBackgroundColor`, `info.markerBorderColor`, `info.markerTextColor`, `info.lineColor`
+- `success.markerBackgroundColor`, `success.markerBorderColor`, `success.markerTextColor`, `success.lineColor`
+- `warn.markerBackgroundColor`, `warn.markerBorderColor`, `warn.markerTextColor`, `warn.lineColor`
+- `danger.markerBackgroundColor`, `danger.markerBorderColor`, `danger.markerTextColor`, `danger.lineColor`
+- `small.itemGap`, `small.markerSize`, `small.markerIconSize`, `small.dotSize`, `small.lineLength`, `small.dateFontSize`, `small.titleFontSize`, `small.descriptionFontSize`
+- `large.itemGap`, `large.markerSize`, `large.markerIconSize`, `large.dotSize`, `large.lineLength`, `large.dateFontSize`, `large.titleFontSize`, `large.descriptionFontSize`
 
 ## Rating
 
