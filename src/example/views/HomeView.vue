@@ -532,6 +532,27 @@
                     </div>
                 </div>
                 <div class="vf-home__card">
+                    <h3>Wizard</h3>
+                    <Wizard v-model="wizardStep" :steps="wizardSteps">
+                        <WizardStep value="account">
+                            <div class="vf-home__stack">
+                                <Input v-model="wizardEmail" placeholder="Email" />
+                            </div>
+                        </WizardStep>
+                        <WizardStep value="plan">
+                            <div class="vf-home__stack">
+                                <Select v-model="wizardPlan" :options="wizardPlanOptions" placeholder="Choose plan" />
+                            </div>
+                        </WizardStep>
+                        <WizardStep value="confirm">
+                            <div class="vf-home__stack">
+                                <p class="vf-home__muted">Email: {{ wizardEmail || 'empty' }}</p>
+                                <p class="vf-home__muted">Plan: {{ wizardPlan || 'none' }}</p>
+                            </div>
+                        </WizardStep>
+                    </Wizard>
+                </div>
+                <div class="vf-home__card">
                     <h3>Timeline</h3>
                     <div class="vf-home__stack">
                         <Timeline :items="timelineEvents" />
@@ -932,6 +953,8 @@ import {
     Splitter,
     SplitterPanel,
     Stepper,
+    Wizard,
+    WizardStep,
     Timeline,
     Rating,
     Tree,
@@ -1035,6 +1058,9 @@ const plan = ref('basic');
 const layout = ref('grid');
 const tab = ref('overview');
 const step = ref(1);
+const wizardStep = ref<string | number>('account');
+const wizardEmail = ref('');
+const wizardPlan = ref('');
 const accordion = ref('shipping');
 const toastOpen = ref(false);
 const alertOpen = ref(true);
@@ -1096,6 +1122,16 @@ const stepperSteps = [
     { label: 'Plan', description: 'Select a plan' },
     { label: 'Confirm', description: 'Review details' },
 ];
+const wizardSteps = [
+    { value: 'account', title: 'Account', description: 'Enter basic info' },
+    { value: 'plan', title: 'Plan', description: 'Pick a subscription' },
+    { value: 'confirm', title: 'Confirm', description: 'Review and finish' },
+];
+const wizardPlanOptions = [
+    { label: 'Starter', value: 'starter' },
+    { label: 'Pro', value: 'pro' },
+    { label: 'Enterprise', value: 'enterprise' },
+];
 const timelineEvents = [
     { title: 'Created', description: 'Issue was created', date: '2026-02-17', status: 'info' as const },
     { title: 'In progress', description: 'Developer started work', date: '2026-02-18', status: 'warn' as const },
@@ -1152,6 +1188,7 @@ const searchCatalog = [
     'EmptyState',
     'Splitter',
     'Tour',
+    'Wizard',
     'InlineEdit',
     'SearchInput',
     'MentionInput',

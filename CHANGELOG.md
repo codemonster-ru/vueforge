@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.64.0] - 2026-02-18
+
+- Added Wizard and WizardStep components for multi-step workflows with linear navigation, per-step validation hooks, and completion events.
+- Added default theme tokens and typed token support for `components.wizard`.
+- Added Wizard/WizardStep exports, README docs, example app showcase, and unit tests.
+
 ## [0.63.0] - 2026-02-18
 
 - Added Tour component for guided onboarding flows with target-based step anchoring, spotlight mask, and keyboard/overlay close behavior.

@@ -70,6 +70,8 @@ import {
     Splitter,
     SplitterPanel,
     Stepper,
+    Wizard,
+    WizardStep,
     Timeline,
     Rating,
     Tree,
@@ -170,6 +172,10 @@ app.use(VueForge, {
     <SplitterPanel :min-size="20">Right panel</SplitterPanel>
 </Splitter>
 <Stepper v-model="step" :steps="steps" clickable />
+<Wizard v-model="wizardStep" :steps="wizardSteps">
+    <WizardStep value="account">Account step</WizardStep>
+    <WizardStep value="confirm">Confirm step</WizardStep>
+</Wizard>
 <Timeline :items="timelineItems" />
 <Rating v-model="rating" allow-half />
 <Tree v-model="selectedNode" v-model:expandedKeys="expandedKeys" :items="treeItems" />
@@ -293,6 +299,8 @@ app.use(VueForge, {
 - Splitter
 - SplitterPanel
 - Stepper
+- Wizard
+- WizardStep
 - Timeline
 - Rating
 - Tree
@@ -314,6 +322,7 @@ Input / InputGroup / Search / Password / Textarea (quick API):
 - `NumberInput`: numeric control, supports `v-model`, `min`, `max`, `step`, `precision`, `controls`, `size`, `variant`.
 - `Splitter`: resizable multi-panel container with draggable separators and `v-model` percentage sizes.
 - `Tour`: guided step-by-step onboarding overlay anchored to target elements.
+- `Wizard`: multi-step flow container with linear navigation, per-step validation, and completion events.
 - `Textarea`: multi-line control, same as Input plus `rows`.
 - `TagInput`: token/tag control, supports `v-model` (array), suggestions, custom tags, `maxTags`, `clearable`, `size`, `variant`.
 - `FilterChips`: compact chip-based filter toggles with single/multiple selection modes and optional clear action.
@@ -2477,6 +2486,74 @@ Component tokens (override via `theme.overrides.components.stepper`):
 - `small.indicatorSize`, `small.indicatorFontSize`, `small.labelFontSize`, `small.descriptionFontSize`, `small.lineLength`, `small.itemGap`
 - `large.indicatorSize`, `large.indicatorFontSize`, `large.labelFontSize`, `large.descriptionFontSize`, `large.lineLength`, `large.itemGap`
 
+## Wizard / WizardStep
+
+Props (`Wizard`):
+
+- `modelValue?: string | number` (v-model active step value)
+- `steps?: Array<{ value: string | number; title?: string; description?: string; optional?: boolean; disabled?: boolean; validate?: (value, index) => boolean | string | Promise<...> }>`
+- `linear?: boolean` (default `true`)
+- `disabled?: boolean` (default `false`)
+- `nextLabel?: string` (default `Next`)
+- `prevLabel?: string` (default `Back`)
+- `finishLabel?: string` (default `Finish`)
+- `validateStep?: (step, index, value) => boolean | string | Promise<...>`
+- `ariaLabel?: string`
+- `ariaLabelledby?: string`
+
+Props (`WizardStep`):
+
+- `value: string | number` (must match one of `Wizard.steps[].value`)
+
+Slots (`Wizard`):
+
+- `default` - place `WizardStep` components
+- `indicator` (optional) - slot props `{ step, index }`
+- `actions` (optional) - slot props `{ step, index, isFirst, isLast, next, prev, complete }`
+
+Events (`Wizard`):
+
+- `update:modelValue`
+- `change`
+- `next`
+- `prev`
+- `complete`
+- `invalidStep`
+
+Example:
+
+```vue
+<Wizard v-model="wizardStep" :steps="wizardSteps">
+    <WizardStep value="account">
+        <Input v-model="email" placeholder="Email" />
+    </WizardStep>
+    <WizardStep value="plan">
+        <Select v-model="plan" :options="plans" />
+    </WizardStep>
+    <WizardStep value="confirm">
+        Review and finish
+    </WizardStep>
+</Wizard>
+```
+
+### Wizard tokens
+
+Component tokens (override via `theme.overrides.components.wizard`):
+
+- `gap`, `borderColor`, `headerPaddingBottom`
+- `itemGap`, `stepGap`
+- `indicatorSize`, `indicatorBorderRadius`, `indicatorFontSize`
+- `indicatorBorderColor`, `indicatorBackgroundColor`, `indicatorTextColor`
+- `activeIndicatorBorderColor`, `activeIndicatorBackgroundColor`, `activeIndicatorTextColor`
+- `completedIndicatorBorderColor`, `completedIndicatorBackgroundColor`, `completedIndicatorTextColor`
+- `errorIndicatorBorderColor`, `errorIndicatorBackgroundColor`, `errorIndicatorTextColor`
+- `titleFontSize`, `titleColor`, `descriptionFontSize`, `descriptionColor`
+- `actionsGap`
+- `buttonMinWidth`, `buttonPadding`, `buttonBorderRadius`
+- `buttonBorderColor`, `buttonBackgroundColor`, `buttonTextColor`, `buttonHoverBackgroundColor`
+- `secondaryButtonBorderColor`, `secondaryButtonBackgroundColor`, `secondaryButtonTextColor`, `secondaryButtonHoverBackgroundColor`
+- `disabledOpacity`
+
 ## Timeline
 
 Props:
@@ -2724,7 +2801,7 @@ VueForge exposes design tokens as CSS variables generated from the theme preset.
 Typed tokens:
 
 - `ThemeTokens`/`ThemeOptions`/`ThemePreset` are exported for type-safe theming in TS.
-- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/emptyState/input/inputGroup/inlineEdit/searchInput/mentionInput/passwordInput/otpInput/colorPicker/maskedInput/numberInput/form/formField/textarea/link/breadcrumbs/menu/modal/confirmDialog/drawer/popover/dropdown/contextMenu/commandPalette/tour/select/autocomplete/combobox/multiselect/taginput/datepicker/calendar/daterangepicker/timepicker/datetimepicker/pagination/switch/segmentedControl/tooltip/skeleton/progress/badge/chip/filterChips/avatar/datatable/slider/splitter/stepper/rating/tree/treeselect/virtualScroller).
+- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/emptyState/input/inputGroup/inlineEdit/searchInput/mentionInput/passwordInput/otpInput/colorPicker/maskedInput/numberInput/form/formField/textarea/link/breadcrumbs/menu/modal/confirmDialog/drawer/popover/dropdown/contextMenu/commandPalette/tour/select/autocomplete/combobox/multiselect/taginput/datepicker/calendar/daterangepicker/timepicker/datetimepicker/pagination/switch/segmentedControl/tooltip/skeleton/progress/badge/chip/filterChips/avatar/datatable/slider/splitter/stepper/wizard/rating/tree/treeselect/virtualScroller).
 
 Default core values (from `DefaultTheme`):
 

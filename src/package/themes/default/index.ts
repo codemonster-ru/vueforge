@@ -58,6 +58,7 @@ import avatar from './components/avatar';
 import slider from './components/slider';
 import splitter from './components/splitter';
 import stepper from './components/stepper';
+import wizard from './components/wizard';
 import timeline from './components/timeline';
 import rating from './components/rating';
 import tree from './components/tree';
@@ -127,6 +128,7 @@ export default {
         slider,
         splitter,
         stepper,
+        wizard,
         timeline,
         rating,
         tree,

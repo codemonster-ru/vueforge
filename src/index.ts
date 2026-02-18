@@ -64,6 +64,8 @@ export { default as Slider } from '@/package/components/slider.vue';
 export { default as Splitter } from '@/package/components/splitter.vue';
 export { default as SplitterPanel } from '@/package/components/splitter-panel.vue';
 export { default as Stepper } from '@/package/components/stepper.vue';
+export { default as Wizard } from '@/package/components/wizard.vue';
+export { default as WizardStep } from '@/package/components/wizard-step.vue';
 export { default as Timeline } from '@/package/components/timeline.vue';
 export { default as Rating } from '@/package/components/rating.vue';
 export { default as Tree } from '@/package/components/tree.vue';
@@ -75,6 +77,7 @@ export type { FormErrors, FormTouched, FormValidateHandler, FormValidateResult, 
 export type { TreeItem, TreeValue } from '@/package/components/tree.vue';
 export type { TimelineItem } from '@/package/components/timeline.vue';
 export type { TourStep } from '@/package/components/tour.vue';
+export type { WizardStepItem } from '@/package/components/wizard.vue';
 // config
 export { default as VueForge, setTheme, updateTheme, getTheme } from '@/package/config/index';
 export type { ThemeTokens, ThemeOptions, ThemePreset } from '@/package/config/theme-core';
