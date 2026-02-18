@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.66.0] - 2026-02-18
+
+- Added AppShell layout component with sidebar/header/main/footer slots, desktop collapse state, and mobile drawer behavior.
+- Added default theme tokens and typed token support for `components.appShell`.
+- Added AppShell export, README docs, example app showcase, and unit tests.
+- Updated HomeView examples: grouped components by category and introduced compact/large cards for better layout of complex demos.
+
 ## [0.65.0] - 2026-02-18
 
 - Added NotificationCenter component for persistent in-app notifications with read/unread state, bulk actions, and item slots.

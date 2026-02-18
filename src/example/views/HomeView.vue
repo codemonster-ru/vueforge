@@ -13,882 +13,969 @@
         </section>
         <section class="vf-home__section">
             <h2>Components</h2>
-            <div class="vf-home__grid">
-                <div class="vf-home__card">
-                    <h3>Button</h3>
-                    <div class="vf-home__actions">
-                        <Button label="Primary" />
-                        <Button label="Outlined" variant="outlined" />
-                        <Button label="Text" variant="text" />
-                        <Button label="Icon" icon="check" />
-                        <Button label="Loading" loading />
-                    </div>
-                </div>
-                <div class="vf-home__card">
-                    <h3>Link</h3>
-                    <div class="vf-home__stack">
-                        <Link href="https://example.com" target="_blank">External link</Link>
-                        <Link to="/">Router link</Link>
-                        <Link href="https://example.com" disabled>Disabled link</Link>
-                    </div>
-                </div>
-                <div class="vf-home__card">
-                    <h3>Breadcrumbs</h3>
-                    <Breadcrumbs :items="breadcrumbItems" />
-                </div>
-                <div class="vf-home__card">
-                    <h3>Input</h3>
-                    <div class="vf-home__stack">
-                        <Input v-model="email" placeholder="Email" />
-                        <Input v-model="searchText" placeholder="Search" variant="outlined">
-                            <template #prefix>🔎</template>
-                        </Input>
-                    </div>
-                </div>
-                <div class="vf-home__card">
-                    <h3>InputGroup</h3>
-                    <div class="vf-home__stack">
-                        <InputGroup>
-                            <InputAddon>$</InputAddon>
-                            <NumberInput v-model="priceGroup" :min="0" :step="0.5" />
-                            <InputAddon>.00</InputAddon>
-                        </InputGroup>
-                        <InputGroup variant="outlined">
-                            <InputAddon>https://</InputAddon>
-                            <Input v-model="website" placeholder="your-domain" variant="outlined" />
-                            <InputAddon>.com</InputAddon>
-                        </InputGroup>
-                    </div>
-                </div>
-                <div class="vf-home__card">
-                    <h3>InlineEdit</h3>
-                    <div class="vf-home__stack">
-                        <InlineEdit v-model="inlineName" placeholder="No name" />
-                        <InlineEdit v-model="inlineBudget" type="number" variant="outlined" />
-                        <p class="vf-home__muted">Name: {{ inlineName || 'empty' }}</p>
-                        <p class="vf-home__muted">Budget: {{ inlineBudget ?? 'empty' }}</p>
-                    </div>
-                </div>
-                <div class="vf-home__card">
-                    <h3>SearchInput</h3>
-                    <div class="vf-home__stack">
-                        <SearchInput
-                            v-model="searchQuery"
-                            placeholder="Search components"
-                            clearable
-                            :debounce="250"
-                            @search="onSearchInputSearch"
-                            @clear="onSearchInputClear"
-                        />
-                        <p class="vf-home__muted">Local filter query: {{ localSearchQuery || 'empty' }}</p>
-                        <ul v-if="localFilteredComponents.length" class="vf-home__search-list">
-                            <li v-for="item in localFilteredComponents" :key="item">{{ item }}</li>
-                        </ul>
-                        <p v-else class="vf-home__muted">No local matches</p>
-                        <SearchInput
-                            v-model="searchQueryAlt"
-                            placeholder="Server search (outlined)"
-                            variant="outlined"
-                            clearable
-                            :debounce="250"
-                            :loading="serverSearchLoading"
-                            @search="onSearchInputAltSearch"
-                            @clear="onSearchInputAltClear"
-                        />
-                        <p class="vf-home__muted">
-                            {{
-                                serverSearchLoading
-                                    ? 'Searching on server...'
-                                    : `Server returned ${serverResults.length} items`
-                            }}
-                        </p>
-                        <ul v-if="serverResults.length" class="vf-home__search-list">
-                            <li v-for="item in serverResults" :key="item">{{ item }}</li>
-                        </ul>
-                        <p v-else class="vf-home__muted">No server matches</p>
-                    </div>
-                </div>
-                <div class="vf-home__card">
-                    <h3>MentionInput</h3>
-                    <div class="vf-home__stack">
-                        <p class="vf-home__muted">Use in comments: mention teammates with @ and topics with #.</p>
-                        <p class="vf-home__muted">Try typing: @al, @ki, #fr, #re</p>
-                        <MentionInput
-                            v-model="mentionText"
-                            placeholder="Write a comment..."
-                            :suggestions="mentionSuggestions"
-                            :loading="mentionLoading"
-                            @search="onMentionSearch"
-                            @insert="onMentionInsert"
-                        />
-                        <MentionInput
-                            v-model="mentionTextAlt"
-                            placeholder="Second field (outlined)"
-                            variant="outlined"
-                            size="small"
-                            :suggestions="mentionSuggestions"
-                            :loading="mentionLoading"
-                            @search="onMentionSearch"
-                        />
-                        <p class="vf-home__muted">Text: {{ mentionText || 'empty' }}</p>
-                        <p class="vf-home__muted">Mentions: {{ extractedMentions.join(', ') || 'none' }}</p>
-                        <p class="vf-home__muted">Tags: {{ extractedTags.join(', ') || 'none' }}</p>
-                        <p class="vf-home__muted">Last insert: {{ lastMentionInsert || 'none' }}</p>
-                    </div>
-                </div>
-                <div class="vf-home__card">
-                    <h3>PasswordInput</h3>
-                    <div class="vf-home__stack">
-                        <PasswordInput v-model="password" placeholder="Password" show-strength />
-                        <PasswordInput
-                            v-model="passwordOutlined"
-                            placeholder="Password (outlined)"
-                            variant="outlined"
-                            show-caps-lock-hint
-                        />
-                    </div>
-                </div>
-                <div class="vf-home__card">
-                    <h3>OtpInput</h3>
-                    <div class="vf-home__stack">
-                        <OtpInput v-model="otpCode" :length="6" />
-                        <OtpInput v-model="otpAlphanumeric" :length="6" alphanumeric variant="outlined" />
-                    </div>
-                </div>
-                <div class="vf-home__card">
-                    <h3>ColorPicker</h3>
-                    <div class="vf-home__stack">
-                        <ColorPicker v-model="brandColor" :presets="brandPresets" />
-                        <ColorPicker v-model="brandColorAlpha" alpha format="rgb" variant="outlined" />
-                    </div>
-                </div>
-                <div class="vf-home__card">
-                    <h3>MaskedInput</h3>
-                    <div class="vf-home__stack">
-                        <MaskedInput v-model="phoneMasked" mask="+7 (###) ###-##-##" placeholder="+7 (___) ___-__-__" />
-                        <MaskedInput
-                            v-model="licenseRaw"
-                            mask="AA-####"
-                            unmask
-                            placeholder="AA-0000"
-                            variant="outlined"
-                        />
-                    </div>
-                </div>
-                <div class="vf-home__card">
-                    <h3>NumberInput</h3>
-                    <div class="vf-home__stack">
-                        <NumberInput v-model="quantity" :min="0" :max="20" :step="1" />
-                        <NumberInput
-                            v-model="price"
-                            :min="0"
-                            :max="999"
-                            :step="0.5"
-                            :precision="2"
-                            variant="outlined"
-                        />
-                    </div>
-                </div>
-                <div class="vf-home__card">
-                    <h3>Form</h3>
-                    <Form
-                        v-model="demoFormValues"
-                        :validate="validateDemoForm"
-                        validate-on="blur"
-                        @submit="onDemoFormSubmit"
-                    >
-                        <template #default="{ values, errors, touched, isSubmitting, setFieldValue, setFieldTouched }">
+            <div class="vf-home__groups">
+                <div class="vf-home__group">
+                    <h3 class="vf-home__group-title">Inputs and Forms</h3>
+                    <div class="vf-home__grid vf-home__grid_compact">
+                        <div class="vf-home__card">
+                            <h3>Button</h3>
+                            <div class="vf-home__actions">
+                                <Button label="Primary" />
+                                <Button label="Outlined" variant="outlined" />
+                                <Button label="Text" variant="text" />
+                                <Button label="Icon" icon="check" />
+                                <Button label="Loading" loading />
+                            </div>
+                        </div>
+                        <div class="vf-home__card">
+                            <h3>Link</h3>
                             <div class="vf-home__stack">
-                                <FormField
-                                    label="Email"
-                                    :error="touched.email ? errors.email : ''"
-                                    hint="Required. Example: name@example.com"
+                                <Link href="https://example.com" target="_blank">External link</Link>
+                                <Link to="/">Router link</Link>
+                                <Link href="https://example.com" disabled>Disabled link</Link>
+                            </div>
+                        </div>
+                        <div class="vf-home__card">
+                            <h3>Breadcrumbs</h3>
+                            <Breadcrumbs :items="breadcrumbItems" />
+                        </div>
+                        <div class="vf-home__card">
+                            <h3>Input</h3>
+                            <div class="vf-home__stack">
+                                <Input v-model="email" placeholder="Email" />
+                                <Input v-model="searchText" placeholder="Search" variant="outlined">
+                                    <template #prefix>🔎</template>
+                                </Input>
+                            </div>
+                        </div>
+                        <div class="vf-home__card">
+                            <h3>InputGroup</h3>
+                            <div class="vf-home__stack">
+                                <InputGroup>
+                                    <InputAddon>$</InputAddon>
+                                    <NumberInput v-model="priceGroup" :min="0" :step="0.5" />
+                                    <InputAddon>.00</InputAddon>
+                                </InputGroup>
+                                <InputGroup variant="outlined">
+                                    <InputAddon>https://</InputAddon>
+                                    <Input v-model="website" placeholder="your-domain" variant="outlined" />
+                                    <InputAddon>.com</InputAddon>
+                                </InputGroup>
+                            </div>
+                        </div>
+                        <div class="vf-home__card">
+                            <h3>InlineEdit</h3>
+                            <div class="vf-home__stack">
+                                <InlineEdit v-model="inlineName" placeholder="No name" />
+                                <InlineEdit v-model="inlineBudget" type="number" variant="outlined" />
+                                <p class="vf-home__muted">Name: {{ inlineName || 'empty' }}</p>
+                                <p class="vf-home__muted">Budget: {{ inlineBudget ?? 'empty' }}</p>
+                            </div>
+                        </div>
+                        <div class="vf-home__card vf-home__card_large">
+                            <h3>SearchInput</h3>
+                            <div class="vf-home__stack">
+                                <SearchInput
+                                    v-model="searchQuery"
+                                    placeholder="Search components"
+                                    clearable
+                                    :debounce="250"
+                                    @search="onSearchInputSearch"
+                                    @clear="onSearchInputClear"
+                                />
+                                <p class="vf-home__muted">Local filter query: {{ localSearchQuery || 'empty' }}</p>
+                                <ul v-if="localFilteredComponents.length" class="vf-home__search-list">
+                                    <li v-for="item in localFilteredComponents" :key="item">{{ item }}</li>
+                                </ul>
+                                <p v-else class="vf-home__muted">No local matches</p>
+                                <SearchInput
+                                    v-model="searchQueryAlt"
+                                    placeholder="Server search (outlined)"
+                                    variant="outlined"
+                                    clearable
+                                    :debounce="250"
+                                    :loading="serverSearchLoading"
+                                    @search="onSearchInputAltSearch"
+                                    @clear="onSearchInputAltClear"
+                                />
+                                <p class="vf-home__muted">
+                                    {{
+                                        serverSearchLoading
+                                            ? 'Searching on server...'
+                                            : `Server returned ${serverResults.length} items`
+                                    }}
+                                </p>
+                                <ul v-if="serverResults.length" class="vf-home__search-list">
+                                    <li v-for="item in serverResults" :key="item">{{ item }}</li>
+                                </ul>
+                                <p v-else class="vf-home__muted">No server matches</p>
+                            </div>
+                        </div>
+                        <div class="vf-home__card vf-home__card_large">
+                            <h3>MentionInput</h3>
+                            <div class="vf-home__stack">
+                                <p class="vf-home__muted">
+                                    Use in comments: mention teammates with @ and topics with #.
+                                </p>
+                                <p class="vf-home__muted">Try typing: @al, @ki, #fr, #re</p>
+                                <MentionInput
+                                    v-model="mentionText"
+                                    placeholder="Write a comment..."
+                                    :suggestions="mentionSuggestions"
+                                    :loading="mentionLoading"
+                                    @search="onMentionSearch"
+                                    @insert="onMentionInsert"
+                                />
+                                <MentionInput
+                                    v-model="mentionTextAlt"
+                                    placeholder="Second field (outlined)"
+                                    variant="outlined"
+                                    size="small"
+                                    :suggestions="mentionSuggestions"
+                                    :loading="mentionLoading"
+                                    @search="onMentionSearch"
+                                />
+                                <p class="vf-home__muted">Text: {{ mentionText || 'empty' }}</p>
+                                <p class="vf-home__muted">Mentions: {{ extractedMentions.join(', ') || 'none' }}</p>
+                                <p class="vf-home__muted">Tags: {{ extractedTags.join(', ') || 'none' }}</p>
+                                <p class="vf-home__muted">Last insert: {{ lastMentionInsert || 'none' }}</p>
+                            </div>
+                        </div>
+                        <div class="vf-home__card">
+                            <h3>PasswordInput</h3>
+                            <div class="vf-home__stack">
+                                <PasswordInput v-model="password" placeholder="Password" show-strength />
+                                <PasswordInput
+                                    v-model="passwordOutlined"
+                                    placeholder="Password (outlined)"
+                                    variant="outlined"
+                                    show-caps-lock-hint
+                                />
+                            </div>
+                        </div>
+                        <div class="vf-home__card">
+                            <h3>OtpInput</h3>
+                            <div class="vf-home__stack">
+                                <OtpInput v-model="otpCode" :length="6" />
+                                <OtpInput v-model="otpAlphanumeric" :length="6" alphanumeric variant="outlined" />
+                            </div>
+                        </div>
+                        <div class="vf-home__card">
+                            <h3>ColorPicker</h3>
+                            <div class="vf-home__stack">
+                                <ColorPicker v-model="brandColor" :presets="brandPresets" />
+                                <ColorPicker v-model="brandColorAlpha" alpha format="rgb" variant="outlined" />
+                            </div>
+                        </div>
+                        <div class="vf-home__card">
+                            <h3>MaskedInput</h3>
+                            <div class="vf-home__stack">
+                                <MaskedInput
+                                    v-model="phoneMasked"
+                                    mask="+7 (###) ###-##-##"
+                                    placeholder="+7 (___) ___-__-__"
+                                />
+                                <MaskedInput
+                                    v-model="licenseRaw"
+                                    mask="AA-####"
+                                    unmask
+                                    placeholder="AA-0000"
+                                    variant="outlined"
+                                />
+                            </div>
+                        </div>
+                        <div class="vf-home__card">
+                            <h3>NumberInput</h3>
+                            <div class="vf-home__stack">
+                                <NumberInput v-model="quantity" :min="0" :max="20" :step="1" />
+                                <NumberInput
+                                    v-model="price"
+                                    :min="0"
+                                    :max="999"
+                                    :step="0.5"
+                                    :precision="2"
+                                    variant="outlined"
+                                />
+                            </div>
+                        </div>
+                        <div class="vf-home__card vf-home__card_large">
+                            <h3>Form</h3>
+                            <Form
+                                v-model="demoFormValues"
+                                :validate="validateDemoForm"
+                                validate-on="blur"
+                                @submit="onDemoFormSubmit"
+                            >
+                                <template
+                                    #default="{ values, errors, touched, isSubmitting, setFieldValue, setFieldTouched }"
                                 >
-                                    <template #default>
+                                    <div class="vf-home__stack">
+                                        <FormField
+                                            label="Email"
+                                            :error="touched.email ? errors.email : ''"
+                                            hint="Required. Example: name@example.com"
+                                        >
+                                            <template #default>
+                                                <Input
+                                                    :model-value="String(values.email ?? '')"
+                                                    placeholder="name@example.com"
+                                                    @update:model-value="
+                                                        value => {
+                                                            setFieldValue('email', value, { emitChange: false });
+                                                        }
+                                                    "
+                                                    @blur="
+                                                        () => {
+                                                            setFieldTouched('email', true);
+                                                        }
+                                                    "
+                                                />
+                                            </template>
+                                        </FormField>
+                                        <FormField
+                                            label="Password"
+                                            :error="touched.password ? errors.password : ''"
+                                            hint="At least 8 characters"
+                                        >
+                                            <template #default>
+                                                <PasswordInput
+                                                    :model-value="String(values.password ?? '')"
+                                                    show-strength
+                                                    @update:model-value="
+                                                        value => {
+                                                            setFieldValue('password', value, { emitChange: false });
+                                                        }
+                                                    "
+                                                    @blur="
+                                                        () => {
+                                                            setFieldTouched('password', true);
+                                                        }
+                                                    "
+                                                />
+                                            </template>
+                                        </FormField>
+                                        <Button type="submit" label="Submit form" :loading="isSubmitting" />
+                                        <p class="vf-home__muted">Last submit: {{ demoFormSubmitState }}</p>
+                                    </div>
+                                </template>
+                            </Form>
+                        </div>
+                        <div class="vf-home__card">
+                            <h3>FormField</h3>
+                            <div class="vf-home__stack">
+                                <FormField label="Email" hint="We never share it">
+                                    <template #default="{ id, describedBy }">
                                         <Input
-                                            :model-value="String(values.email ?? '')"
+                                            :id="id"
+                                            v-model="emailField"
                                             placeholder="name@example.com"
-                                            @update:model-value="
-                                                value => {
-                                                    setFieldValue('email', value, { emitChange: false });
-                                                }
-                                            "
-                                            @blur="
-                                                () => {
-                                                    setFieldTouched('email', true);
-                                                }
-                                            "
+                                            :aria-describedby="describedBy"
                                         />
                                     </template>
                                 </FormField>
-                                <FormField
-                                    label="Password"
-                                    :error="touched.password ? errors.password : ''"
-                                    hint="At least 8 characters"
+                                <FormField label="Username" :error="usernameError" required>
+                                    <template #default="{ id, describedBy }">
+                                        <Input
+                                            :id="id"
+                                            v-model="username"
+                                            placeholder="Username"
+                                            :aria-describedby="describedBy"
+                                        />
+                                    </template>
+                                </FormField>
+                            </div>
+                        </div>
+                        <div class="vf-home__card">
+                            <h3>Textarea</h3>
+                            <div class="vf-home__stack">
+                                <Textarea v-model="bio" placeholder="Tell us about yourself" />
+                                <Textarea v-model="notes" placeholder="Outlined note" variant="outlined" :rows="4" />
+                                <Textarea v-model="feedback" placeholder="Small feedback" size="small" />
+                            </div>
+                        </div>
+                        <div class="vf-home__card">
+                            <h3>FileUpload</h3>
+                            <div class="vf-home__stack">
+                                <FileUpload v-model="resume" accept=".pdf,.doc,.docx" />
+                                <FileUpload v-model="attachments" multiple :max-files="3" :max-size="5_000_000" />
+                            </div>
+                        </div>
+                        <div class="vf-home__card">
+                            <h3>Select</h3>
+                            <div class="vf-home__stack">
+                                <Select v-model="role" :options="roles" placeholder="Role" />
+                                <Select
+                                    v-model="roleAlt"
+                                    :options="roles"
+                                    placeholder="Role (outlined)"
+                                    variant="outlined"
+                                />
+                            </div>
+                        </div>
+                        <div class="vf-home__card">
+                            <h3>Autocomplete</h3>
+                            <div class="vf-home__stack">
+                                <p class="vf-home__muted">
+                                    Free text is allowed: input can differ from selected value.
+                                </p>
+                                <Autocomplete
+                                    v-model="country"
+                                    :options="countries"
+                                    placeholder="Find country"
+                                    @search="onAutocompleteSearch"
+                                />
+                                <Autocomplete
+                                    v-model="countryAlt"
+                                    :options="countries"
+                                    placeholder="Find country (outlined)"
+                                    variant="outlined"
+                                    @search="onAutocompleteAltSearch"
+                                />
+                                <p class="vf-home__muted">Selected #1: {{ country || 'none' }}</p>
+                                <p class="vf-home__muted">Typed #1: {{ autocompleteQuery || 'empty' }}</p>
+                                <p class="vf-home__muted">Selected #2: {{ countryAlt || 'none' }}</p>
+                                <p class="vf-home__muted">Typed #2: {{ autocompleteAltQuery || 'empty' }}</p>
+                            </div>
+                        </div>
+                        <div class="vf-home__card">
+                            <h3>Combobox</h3>
+                            <div class="vf-home__stack">
+                                <p class="vf-home__muted">
+                                    Strict mode: type random text and blur, query resets to selected option label.
+                                </p>
+                                <Combobox
+                                    v-model="countryCombo"
+                                    v-model:input-value="countryComboQuery"
+                                    :options="countries"
+                                    placeholder="Pick country"
+                                    clearable
+                                />
+                                <Combobox
+                                    v-model="countryComboCustom"
+                                    v-model:input-value="countryComboCustomQuery"
+                                    :options="countries"
+                                    placeholder="Allow custom value"
+                                    variant="outlined"
+                                    :strict="false"
+                                    allow-create
+                                    @create="onComboboxCreate"
+                                />
+                                <p class="vf-home__muted">Selected: {{ countryCombo || 'none' }}</p>
+                                <p class="vf-home__muted">Query: {{ countryComboQuery || 'empty' }}</p>
+                                <p class="vf-home__muted">Custom selected: {{ countryComboCustom || 'none' }}</p>
+                                <p class="vf-home__muted">Custom query: {{ countryComboCustomQuery || 'empty' }}</p>
+                                <p class="vf-home__muted">Last created: {{ comboLastCreated || 'none' }}</p>
+                            </div>
+                        </div>
+                        <div class="vf-home__card">
+                            <h3>MultiSelect</h3>
+                            <div class="vf-home__stack">
+                                <MultiSelect
+                                    v-model="countriesMulti"
+                                    :options="countries"
+                                    placeholder="Select countries"
+                                    clearable
+                                />
+                                <MultiSelect
+                                    v-model="countriesMulti"
+                                    :options="countries"
+                                    placeholder="Select countries (outlined)"
+                                    variant="outlined"
+                                    filter
+                                />
+                            </div>
+                        </div>
+                        <div class="vf-home__card">
+                            <h3>TagInput</h3>
+                            <div class="vf-home__stack">
+                                <TagInput v-model="skills" :options="skillOptions" placeholder="Add skills" clearable />
+                                <TagInput
+                                    v-model="skillsOutlined"
+                                    :options="skillOptions"
+                                    placeholder="Add skills (outlined)"
+                                    variant="outlined"
+                                    :max-tags="5"
+                                />
+                            </div>
+                        </div>
+                        <div class="vf-home__card">
+                            <h3>DatePicker</h3>
+                            <div class="vf-home__stack">
+                                <DatePicker v-model="dueDate" placeholder="Pick a date" />
+                                <DatePicker
+                                    v-model="dueDateAlt"
+                                    placeholder="Pick a date (outlined)"
+                                    variant="outlined"
+                                    min="2026-01-10"
+                                    max="2026-12-31"
+                                />
+                            </div>
+                        </div>
+                        <div class="vf-home__card">
+                            <h3>Calendar</h3>
+                            <div class="vf-home__stack">
+                                <Calendar v-model="calendarDate" min="2026-01-10" max="2026-12-31" />
+                                <Calendar
+                                    v-model="calendarDateAlt"
+                                    variant="outlined"
+                                    size="small"
+                                    :first-day-of-week="1"
+                                    min="2026-01-10"
+                                    max="2026-12-31"
+                                />
+                                <p class="vf-home__muted">Selected: {{ calendarDate || 'none' }}</p>
+                            </div>
+                        </div>
+                        <div class="vf-home__card">
+                            <h3>DateRangePicker</h3>
+                            <div class="vf-home__stack">
+                                <DateRangePicker v-model="dateRange" placeholder="Pick a range" />
+                                <DateRangePicker
+                                    v-model="dateRangeAlt"
+                                    placeholder="Pick a range (outlined)"
+                                    variant="outlined"
+                                    min="2026-01-10"
+                                    max="2026-12-31"
+                                />
+                            </div>
+                        </div>
+                        <div class="vf-home__card">
+                            <h3>TimePicker</h3>
+                            <div class="vf-home__stack">
+                                <TimePicker v-model="meetingTime" placeholder="Pick time" />
+                                <TimePicker
+                                    v-model="meetingTimeAlt"
+                                    placeholder="Pick time (outlined)"
+                                    variant="outlined"
+                                    min="09:00"
+                                    max="18:00"
+                                    :step="15"
+                                    format="12h"
+                                />
+                            </div>
+                        </div>
+                        <div class="vf-home__card">
+                            <h3>DateTimePicker</h3>
+                            <div class="vf-home__stack">
+                                <DateTimePicker v-model="meetingDateTime" placeholder="Pick date and time" />
+                                <DateTimePicker
+                                    v-model="meetingDateTimeAlt"
+                                    placeholder="Pick date and time (outlined)"
+                                    variant="outlined"
+                                    min="2026-01-10T09:00"
+                                    max="2026-12-31T18:00"
+                                    :minute-step="15"
+                                    format="12h"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="vf-home__group">
+                    <h3 class="vf-home__group-title">Navigation and Data</h3>
+                    <div class="vf-home__grid vf-home__grid_compact">
+                        <div class="vf-home__card">
+                            <h3>Pagination</h3>
+                            <div class="vf-home__stack">
+                                <Pagination
+                                    v-model="page"
+                                    :total-items="240"
+                                    :page-size="20"
+                                    :sibling-count="0"
+                                    size="small"
+                                />
+                                <Pagination
+                                    v-model="page"
+                                    :total-pages="24"
+                                    :sibling-count="0"
+                                    variant="outlined"
+                                    size="small"
+                                />
+                            </div>
+                        </div>
+                        <div class="vf-home__card vf-home__card_large">
+                            <h3>DataTable</h3>
+                            <DataTable
+                                :columns="tableColumns"
+                                :rows="tableRows"
+                                row-key="id"
+                                sortable
+                                striped
+                                size="small"
+                            />
+                        </div>
+                        <div class="vf-home__card">
+                            <h3>Checkbox & Switch</h3>
+                            <div class="vf-home__stack">
+                                <Checkbox v-model="agreed">Agree to terms</Checkbox>
+                                <Checkbox v-model="agreedAlt" variant="outlined">Agree (outlined)</Checkbox>
+                                <Switch v-model="notifications">Notifications</Switch>
+                            </div>
+                        </div>
+                        <div class="vf-home__card">
+                            <h3>Radio</h3>
+                            <div class="vf-home__stack">
+                                <RadioGroup v-model="plan">
+                                    <RadioButton value="basic">Basic</RadioButton>
+                                    <RadioButton value="pro">Pro</RadioButton>
+                                    <RadioButton value="team" disabled>Team (disabled)</RadioButton>
+                                </RadioGroup>
+                                <RadioGroup v-model="layout" direction="horizontal" variant="outlined">
+                                    <RadioButton value="grid">Grid</RadioButton>
+                                    <RadioButton value="list">List</RadioButton>
+                                </RadioGroup>
+                            </div>
+                        </div>
+                        <div class="vf-home__card">
+                            <h3>SegmentedControl</h3>
+                            <div class="vf-home__stack">
+                                <SegmentedControl v-model="segmentView" :options="segmentOptions" />
+                                <SegmentedControl
+                                    v-model="segmentViewAlt"
+                                    :options="segmentOptions"
+                                    variant="outlined"
+                                    size="small"
+                                />
+                                <p class="vf-home__muted">Selected: {{ segmentView }}</p>
+                            </div>
+                        </div>
+                        <div class="vf-home__card vf-home__card_large">
+                            <h3>Tabs</h3>
+                            <Tabs v-model="tab">
+                                <template #tabs>
+                                    <Tab value="overview">Overview</Tab>
+                                    <Tab value="team">Team</Tab>
+                                    <Tab value="billing" disabled>Billing</Tab>
+                                </template>
+                                <template #panels>
+                                    <TabPanel value="overview">
+                                        <div class="vf-home__panel">Overview content</div>
+                                    </TabPanel>
+                                    <TabPanel value="team">
+                                        <div class="vf-home__panel">Team content</div>
+                                    </TabPanel>
+                                    <TabPanel value="billing">
+                                        <div class="vf-home__panel">Billing content</div>
+                                    </TabPanel>
+                                </template>
+                            </Tabs>
+                        </div>
+                        <div class="vf-home__card">
+                            <h3>Stepper</h3>
+                            <div class="vf-home__stack">
+                                <Stepper v-model="step" :steps="stepperSteps" clickable />
+                                <Stepper
+                                    v-model="step"
+                                    :steps="stepperSteps"
+                                    orientation="vertical"
+                                    size="small"
+                                    clickable
+                                />
+                            </div>
+                        </div>
+                        <div class="vf-home__card vf-home__card_large">
+                            <h3>Wizard</h3>
+                            <Wizard v-model="wizardStep" :steps="wizardSteps">
+                                <WizardStep value="account">
+                                    <div class="vf-home__stack">
+                                        <Input v-model="wizardEmail" placeholder="Email" />
+                                    </div>
+                                </WizardStep>
+                                <WizardStep value="plan">
+                                    <div class="vf-home__stack">
+                                        <Select
+                                            v-model="wizardPlan"
+                                            :options="wizardPlanOptions"
+                                            placeholder="Choose plan"
+                                        />
+                                    </div>
+                                </WizardStep>
+                                <WizardStep value="confirm">
+                                    <div class="vf-home__stack">
+                                        <p class="vf-home__muted">Email: {{ wizardEmail || 'empty' }}</p>
+                                        <p class="vf-home__muted">Plan: {{ wizardPlan || 'none' }}</p>
+                                    </div>
+                                </WizardStep>
+                            </Wizard>
+                        </div>
+                        <div class="vf-home__card">
+                            <h3>Timeline</h3>
+                            <div class="vf-home__stack">
+                                <Timeline :items="timelineEvents" />
+                                <Timeline :items="timelineEvents" orientation="horizontal" size="small" />
+                            </div>
+                        </div>
+                        <div class="vf-home__card">
+                            <h3>Rating</h3>
+                            <div class="vf-home__stack">
+                                <Rating v-model="ratingValue" />
+                                <Rating v-model="ratingHalf" allow-half size="large" />
+                            </div>
+                        </div>
+                        <div class="vf-home__card">
+                            <h3>Accordion</h3>
+                            <Accordion v-model="accordion">
+                                <AccordionItem value="shipping" title="Shipping">
+                                    Free delivery within 3-5 business days.
+                                </AccordionItem>
+                                <AccordionItem value="returns" title="Returns">
+                                    Return items within 30 days of purchase.
+                                </AccordionItem>
+                            </Accordion>
+                        </div>
+                        <div class="vf-home__card">
+                            <h3>Tree</h3>
+                            <Tree
+                                v-model="treeSelected"
+                                v-model:expanded-keys="treeExpanded"
+                                :items="treeItems"
+                                size="small"
+                            />
+                        </div>
+                        <div class="vf-home__card vf-home__card_large">
+                            <h3>TreeSelect</h3>
+                            <div class="vf-home__stack">
+                                <TreeSelect
+                                    v-model="treeSelectValue"
+                                    v-model:expanded-keys="treeSelectExpanded"
+                                    :items="treeItems"
+                                    placeholder="Select docs section"
+                                    clearable
+                                    size="small"
+                                />
+                                <TreeSelect
+                                    v-model="treeSelectMany"
+                                    :items="treeItems"
+                                    multiple
+                                    placeholder="Select multiple nodes"
+                                    variant="outlined"
+                                    clearable
+                                    size="small"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="vf-home__group">
+                    <h3 class="vf-home__group-title">Feedback and Overlays</h3>
+                    <div class="vf-home__grid vf-home__grid_compact">
+                        <div class="vf-home__card">
+                            <h3>Toast</h3>
+                            <div class="vf-home__stack">
+                                <Button label="Show Toast" @click="toastOpen = true" />
+                            </div>
+                            <ToastContainer position="top-right">
+                                <Toast
+                                    v-model="toastOpen"
+                                    title="Saved"
+                                    message="Changes are saved."
+                                    severity="success"
+                                    :duration="2500"
+                                />
+                            </ToastContainer>
+                        </div>
+                        <div class="vf-home__card">
+                            <h3>Alert</h3>
+                            <div class="vf-home__stack">
+                                <Button label="Show Alert" size="small" @click="alertOpen = true" />
+                                <Alert
+                                    v-model="alertOpen"
+                                    title="Unsaved changes"
+                                    severity="warn"
+                                    closable
+                                    message="You have unsaved form changes."
                                 >
-                                    <template #default>
-                                        <PasswordInput
-                                            :model-value="String(values.password ?? '')"
-                                            show-strength
-                                            @update:model-value="
-                                                value => {
-                                                    setFieldValue('password', value, { emitChange: false });
-                                                }
-                                            "
-                                            @blur="
-                                                () => {
-                                                    setFieldTouched('password', true);
-                                                }
-                                            "
-                                        />
+                                    <template #actions>
+                                        <Button label="Save" size="small" />
                                     </template>
-                                </FormField>
-                                <Button type="submit" label="Submit form" :loading="isSubmitting" />
-                                <p class="vf-home__muted">Last submit: {{ demoFormSubmitState }}</p>
+                                </Alert>
                             </div>
-                        </template>
-                    </Form>
-                </div>
-                <div class="vf-home__card">
-                    <h3>FormField</h3>
-                    <div class="vf-home__stack">
-                        <FormField label="Email" hint="We never share it">
-                            <template #default="{ id, describedBy }">
-                                <Input
-                                    :id="id"
-                                    v-model="emailField"
-                                    placeholder="name@example.com"
-                                    :aria-describedby="describedBy"
+                        </div>
+                        <div class="vf-home__card">
+                            <h3>EmptyState</h3>
+                            <div class="vf-home__stack">
+                                <EmptyState
+                                    title="No projects yet"
+                                    description="Create your first project or import existing data."
+                                    icon="📂"
+                                >
+                                    <template #actions>
+                                        <Button label="Create project" size="small" />
+                                        <Button label="Import" size="small" severity="secondary" />
+                                    </template>
+                                </EmptyState>
+                                <EmptyState
+                                    variant="outlined"
+                                    size="small"
+                                    title="No search results"
+                                    description="Try another query."
+                                    icon="🔎"
                                 />
-                            </template>
-                        </FormField>
-                        <FormField label="Username" :error="usernameError" required>
-                            <template #default="{ id, describedBy }">
-                                <Input
-                                    :id="id"
-                                    v-model="username"
-                                    placeholder="Username"
-                                    :aria-describedby="describedBy"
+                            </div>
+                        </div>
+                        <div class="vf-home__card">
+                            <h3>Card</h3>
+                            <Card>
+                                <template #header>Card header</template>
+                                <template #body>Card body text</template>
+                                <template #footer>Card footer</template>
+                            </Card>
+                        </div>
+                        <div class="vf-home__card">
+                            <h3>Popover</h3>
+                            <Popover>
+                                <template #button>
+                                    <Button label="Toggle Popover" />
+                                </template>
+                                <template #default>
+                                    <div class="vf-home__popover-content">Popover content</div>
+                                </template>
+                            </Popover>
+                        </div>
+                        <div class="vf-home__card">
+                            <h3>Modal</h3>
+                            <Button label="Open Modal" @click="modalOpen = true" />
+                            <Modal v-model="modalOpen" title="Modal title">
+                                <template #body>
+                                    <p class="vf-home__modal-text">Modal content with any layout.</p>
+                                </template>
+                                <template #footer>
+                                    <Button label="Cancel" severity="secondary" @click="modalOpen = false" />
+                                    <Button label="Confirm" @click="modalOpen = false" />
+                                </template>
+                            </Modal>
+                        </div>
+                        <div class="vf-home__card">
+                            <h3>ConfirmDialog</h3>
+                            <Button label="Delete item" severity="danger" @click="confirmDialogOpen = true" />
+                            <ConfirmDialog
+                                v-model="confirmDialogOpen"
+                                title="Delete item?"
+                                message="This action cannot be undone."
+                                confirm-label="Delete"
+                                @confirm="confirmDialogAccepted = true"
+                            />
+                            <p v-if="confirmDialogAccepted" class="vf-home__muted">Last action: confirmed</p>
+                        </div>
+                        <div class="vf-home__card vf-home__card_large">
+                            <h3>Drawer</h3>
+                            <Button label="Open Drawer" @click="drawerOpen = true" />
+                            <Drawer v-model="drawerOpen" title="Quick filters" position="right">
+                                <template #body>
+                                    <div class="vf-home__stack">
+                                        <Checkbox v-model="drawerNew">New only</Checkbox>
+                                        <Checkbox v-model="drawerPopular">Popular</Checkbox>
+                                        <Checkbox v-model="drawerFree">Free tier</Checkbox>
+                                    </div>
+                                </template>
+                                <template #footer>
+                                    <Button label="Reset" severity="secondary" size="small" @click="resetDrawer" />
+                                    <Button label="Apply" size="small" @click="drawerOpen = false" />
+                                </template>
+                            </Drawer>
+                        </div>
+                        <div class="vf-home__card">
+                            <h3>Menu</h3>
+                            <Menu :items="menuItems" />
+                        </div>
+                        <div class="vf-home__card">
+                            <h3>Dropdown</h3>
+                            <Dropdown :items="menuItems">
+                                <template #trigger>
+                                    <Button label="Actions" />
+                                </template>
+                            </Dropdown>
+                        </div>
+                        <div class="vf-home__card">
+                            <h3>SplitButton</h3>
+                            <div class="vf-home__stack">
+                                <SplitButton
+                                    label="Save"
+                                    :items="splitButtonItems"
+                                    @click="splitButtonAction = 'save'"
                                 />
-                            </template>
-                        </FormField>
-                    </div>
-                </div>
-                <div class="vf-home__card">
-                    <h3>Textarea</h3>
-                    <div class="vf-home__stack">
-                        <Textarea v-model="bio" placeholder="Tell us about yourself" />
-                        <Textarea v-model="notes" placeholder="Outlined note" variant="outlined" :rows="4" />
-                        <Textarea v-model="feedback" placeholder="Small feedback" size="small" />
-                    </div>
-                </div>
-                <div class="vf-home__card">
-                    <h3>FileUpload</h3>
-                    <div class="vf-home__stack">
-                        <FileUpload v-model="resume" accept=".pdf,.doc,.docx" />
-                        <FileUpload v-model="attachments" multiple :max-files="3" :max-size="5_000_000" />
-                    </div>
-                </div>
-                <div class="vf-home__card">
-                    <h3>Select</h3>
-                    <div class="vf-home__stack">
-                        <Select v-model="role" :options="roles" placeholder="Role" />
-                        <Select v-model="roleAlt" :options="roles" placeholder="Role (outlined)" variant="outlined" />
-                    </div>
-                </div>
-                <div class="vf-home__card">
-                    <h3>Autocomplete</h3>
-                    <div class="vf-home__stack">
-                        <p class="vf-home__muted">Free text is allowed: input can differ from selected value.</p>
-                        <Autocomplete
-                            v-model="country"
-                            :options="countries"
-                            placeholder="Find country"
-                            @search="onAutocompleteSearch"
-                        />
-                        <Autocomplete
-                            v-model="countryAlt"
-                            :options="countries"
-                            placeholder="Find country (outlined)"
-                            variant="outlined"
-                            @search="onAutocompleteAltSearch"
-                        />
-                        <p class="vf-home__muted">Selected #1: {{ country || 'none' }}</p>
-                        <p class="vf-home__muted">Typed #1: {{ autocompleteQuery || 'empty' }}</p>
-                        <p class="vf-home__muted">Selected #2: {{ countryAlt || 'none' }}</p>
-                        <p class="vf-home__muted">Typed #2: {{ autocompleteAltQuery || 'empty' }}</p>
-                    </div>
-                </div>
-                <div class="vf-home__card">
-                    <h3>Combobox</h3>
-                    <div class="vf-home__stack">
-                        <p class="vf-home__muted">
-                            Strict mode: type random text and blur, query resets to selected option label.
-                        </p>
-                        <Combobox
-                            v-model="countryCombo"
-                            v-model:input-value="countryComboQuery"
-                            :options="countries"
-                            placeholder="Pick country"
-                            clearable
-                        />
-                        <Combobox
-                            v-model="countryComboCustom"
-                            v-model:input-value="countryComboCustomQuery"
-                            :options="countries"
-                            placeholder="Allow custom value"
-                            variant="outlined"
-                            :strict="false"
-                            allow-create
-                            @create="onComboboxCreate"
-                        />
-                        <p class="vf-home__muted">Selected: {{ countryCombo || 'none' }}</p>
-                        <p class="vf-home__muted">Query: {{ countryComboQuery || 'empty' }}</p>
-                        <p class="vf-home__muted">Custom selected: {{ countryComboCustom || 'none' }}</p>
-                        <p class="vf-home__muted">Custom query: {{ countryComboCustomQuery || 'empty' }}</p>
-                        <p class="vf-home__muted">Last created: {{ comboLastCreated || 'none' }}</p>
-                    </div>
-                </div>
-                <div class="vf-home__card">
-                    <h3>MultiSelect</h3>
-                    <div class="vf-home__stack">
-                        <MultiSelect
-                            v-model="countriesMulti"
-                            :options="countries"
-                            placeholder="Select countries"
-                            clearable
-                        />
-                        <MultiSelect
-                            v-model="countriesMulti"
-                            :options="countries"
-                            placeholder="Select countries (outlined)"
-                            variant="outlined"
-                            filter
-                        />
-                    </div>
-                </div>
-                <div class="vf-home__card">
-                    <h3>TagInput</h3>
-                    <div class="vf-home__stack">
-                        <TagInput v-model="skills" :options="skillOptions" placeholder="Add skills" clearable />
-                        <TagInput
-                            v-model="skillsOutlined"
-                            :options="skillOptions"
-                            placeholder="Add skills (outlined)"
-                            variant="outlined"
-                            :max-tags="5"
-                        />
-                    </div>
-                </div>
-                <div class="vf-home__card">
-                    <h3>DatePicker</h3>
-                    <div class="vf-home__stack">
-                        <DatePicker v-model="dueDate" placeholder="Pick a date" />
-                        <DatePicker
-                            v-model="dueDateAlt"
-                            placeholder="Pick a date (outlined)"
-                            variant="outlined"
-                            min="2026-01-10"
-                            max="2026-12-31"
-                        />
-                    </div>
-                </div>
-                <div class="vf-home__card">
-                    <h3>Calendar</h3>
-                    <div class="vf-home__stack">
-                        <Calendar v-model="calendarDate" min="2026-01-10" max="2026-12-31" />
-                        <Calendar
-                            v-model="calendarDateAlt"
-                            variant="outlined"
-                            size="small"
-                            :first-day-of-week="1"
-                            min="2026-01-10"
-                            max="2026-12-31"
-                        />
-                        <p class="vf-home__muted">Selected: {{ calendarDate || 'none' }}</p>
-                    </div>
-                </div>
-                <div class="vf-home__card">
-                    <h3>DateRangePicker</h3>
-                    <div class="vf-home__stack">
-                        <DateRangePicker v-model="dateRange" placeholder="Pick a range" />
-                        <DateRangePicker
-                            v-model="dateRangeAlt"
-                            placeholder="Pick a range (outlined)"
-                            variant="outlined"
-                            min="2026-01-10"
-                            max="2026-12-31"
-                        />
-                    </div>
-                </div>
-                <div class="vf-home__card">
-                    <h3>TimePicker</h3>
-                    <div class="vf-home__stack">
-                        <TimePicker v-model="meetingTime" placeholder="Pick time" />
-                        <TimePicker
-                            v-model="meetingTimeAlt"
-                            placeholder="Pick time (outlined)"
-                            variant="outlined"
-                            min="09:00"
-                            max="18:00"
-                            :step="15"
-                            format="12h"
-                        />
-                    </div>
-                </div>
-                <div class="vf-home__card">
-                    <h3>DateTimePicker</h3>
-                    <div class="vf-home__stack">
-                        <DateTimePicker v-model="meetingDateTime" placeholder="Pick date and time" />
-                        <DateTimePicker
-                            v-model="meetingDateTimeAlt"
-                            placeholder="Pick date and time (outlined)"
-                            variant="outlined"
-                            min="2026-01-10T09:00"
-                            max="2026-12-31T18:00"
-                            :minute-step="15"
-                            format="12h"
-                        />
-                    </div>
-                </div>
-                <div class="vf-home__card">
-                    <h3>Pagination</h3>
-                    <div class="vf-home__stack">
-                        <Pagination v-model="page" :total-items="240" :page-size="20" :sibling-count="0" size="small" />
-                        <Pagination
-                            v-model="page"
-                            :total-pages="24"
-                            :sibling-count="0"
-                            variant="outlined"
-                            size="small"
-                        />
-                    </div>
-                </div>
-                <div class="vf-home__card">
-                    <h3>DataTable</h3>
-                    <DataTable :columns="tableColumns" :rows="tableRows" row-key="id" sortable striped size="small" />
-                </div>
-                <div class="vf-home__card">
-                    <h3>Checkbox & Switch</h3>
-                    <div class="vf-home__stack">
-                        <Checkbox v-model="agreed">Agree to terms</Checkbox>
-                        <Checkbox v-model="agreedAlt" variant="outlined">Agree (outlined)</Checkbox>
-                        <Switch v-model="notifications">Notifications</Switch>
-                    </div>
-                </div>
-                <div class="vf-home__card">
-                    <h3>Radio</h3>
-                    <div class="vf-home__stack">
-                        <RadioGroup v-model="plan">
-                            <RadioButton value="basic">Basic</RadioButton>
-                            <RadioButton value="pro">Pro</RadioButton>
-                            <RadioButton value="team" disabled>Team (disabled)</RadioButton>
-                        </RadioGroup>
-                        <RadioGroup v-model="layout" direction="horizontal" variant="outlined">
-                            <RadioButton value="grid">Grid</RadioButton>
-                            <RadioButton value="list">List</RadioButton>
-                        </RadioGroup>
-                    </div>
-                </div>
-                <div class="vf-home__card">
-                    <h3>SegmentedControl</h3>
-                    <div class="vf-home__stack">
-                        <SegmentedControl v-model="segmentView" :options="segmentOptions" />
-                        <SegmentedControl
-                            v-model="segmentViewAlt"
-                            :options="segmentOptions"
-                            variant="outlined"
-                            size="small"
-                        />
-                        <p class="vf-home__muted">Selected: {{ segmentView }}</p>
-                    </div>
-                </div>
-                <div class="vf-home__card">
-                    <h3>Tabs</h3>
-                    <Tabs v-model="tab">
-                        <template #tabs>
-                            <Tab value="overview">Overview</Tab>
-                            <Tab value="team">Team</Tab>
-                            <Tab value="billing" disabled>Billing</Tab>
-                        </template>
-                        <template #panels>
-                            <TabPanel value="overview">
-                                <div class="vf-home__panel">Overview content</div>
-                            </TabPanel>
-                            <TabPanel value="team">
-                                <div class="vf-home__panel">Team content</div>
-                            </TabPanel>
-                            <TabPanel value="billing">
-                                <div class="vf-home__panel">Billing content</div>
-                            </TabPanel>
-                        </template>
-                    </Tabs>
-                </div>
-                <div class="vf-home__card">
-                    <h3>Stepper</h3>
-                    <div class="vf-home__stack">
-                        <Stepper v-model="step" :steps="stepperSteps" clickable />
-                        <Stepper v-model="step" :steps="stepperSteps" orientation="vertical" size="small" clickable />
-                    </div>
-                </div>
-                <div class="vf-home__card">
-                    <h3>Wizard</h3>
-                    <Wizard v-model="wizardStep" :steps="wizardSteps">
-                        <WizardStep value="account">
-                            <div class="vf-home__stack">
-                                <Input v-model="wizardEmail" placeholder="Email" />
+                                <p class="vf-home__muted">Last action: {{ splitButtonAction || 'none' }}</p>
                             </div>
-                        </WizardStep>
-                        <WizardStep value="plan">
+                        </div>
+                        <div class="vf-home__card">
+                            <h3>ContextMenu</h3>
+                            <ContextMenu :items="contextMenuItems">
+                                <div class="vf-home__context-target">Right-click here</div>
+                            </ContextMenu>
+                            <p class="vf-home__muted">Last action: {{ contextMenuAction || 'none' }}</p>
+                        </div>
+                        <div class="vf-home__card vf-home__card_large">
+                            <h3>CommandPalette</h3>
                             <div class="vf-home__stack">
-                                <Select v-model="wizardPlan" :options="wizardPlanOptions" placeholder="Choose plan" />
+                                <Button label="Open Command Palette" @click="commandPaletteOpen = true" />
+                                <p class="vf-home__muted">Shortcut: Ctrl/Cmd + K</p>
+                                <p class="vf-home__muted">Last action: {{ commandPaletteAction || 'none' }}</p>
                             </div>
-                        </WizardStep>
-                        <WizardStep value="confirm">
+                            <CommandPalette
+                                v-model="commandPaletteOpen"
+                                :items="commandPaletteItems"
+                                @select="onCommandPaletteSelect"
+                            />
+                        </div>
+                        <div class="vf-home__card vf-home__card_large">
+                            <h3>NotificationCenter</h3>
                             <div class="vf-home__stack">
-                                <p class="vf-home__muted">Email: {{ wizardEmail || 'empty' }}</p>
-                                <p class="vf-home__muted">Plan: {{ wizardPlan || 'none' }}</p>
+                                <Button label="Open Notifications" @click="notificationsOpen = true" />
+                                <p class="vf-home__muted">Unread: {{ notificationsUnreadCount }}</p>
                             </div>
-                        </WizardStep>
-                    </Wizard>
-                </div>
-                <div class="vf-home__card">
-                    <h3>Timeline</h3>
-                    <div class="vf-home__stack">
-                        <Timeline :items="timelineEvents" />
-                        <Timeline :items="timelineEvents" orientation="horizontal" size="small" />
-                    </div>
-                </div>
-                <div class="vf-home__card">
-                    <h3>Rating</h3>
-                    <div class="vf-home__stack">
-                        <Rating v-model="ratingValue" />
-                        <Rating v-model="ratingHalf" allow-half size="large" />
-                    </div>
-                </div>
-                <div class="vf-home__card">
-                    <h3>Accordion</h3>
-                    <Accordion v-model="accordion">
-                        <AccordionItem value="shipping" title="Shipping">
-                            Free delivery within 3-5 business days.
-                        </AccordionItem>
-                        <AccordionItem value="returns" title="Returns">
-                            Return items within 30 days of purchase.
-                        </AccordionItem>
-                    </Accordion>
-                </div>
-                <div class="vf-home__card">
-                    <h3>Tree</h3>
-                    <Tree v-model="treeSelected" v-model:expanded-keys="treeExpanded" :items="treeItems" size="small" />
-                </div>
-                <div class="vf-home__card">
-                    <h3>TreeSelect</h3>
-                    <div class="vf-home__stack">
-                        <TreeSelect
-                            v-model="treeSelectValue"
-                            v-model:expanded-keys="treeSelectExpanded"
-                            :items="treeItems"
-                            placeholder="Select docs section"
-                            clearable
-                            size="small"
-                        />
-                        <TreeSelect
-                            v-model="treeSelectMany"
-                            :items="treeItems"
-                            multiple
-                            placeholder="Select multiple nodes"
-                            variant="outlined"
-                            clearable
-                            size="small"
-                        />
-                    </div>
-                </div>
-                <div class="vf-home__card">
-                    <h3>Toast</h3>
-                    <div class="vf-home__stack">
-                        <Button label="Show Toast" @click="toastOpen = true" />
-                    </div>
-                    <ToastContainer position="top-right">
-                        <Toast
-                            v-model="toastOpen"
-                            title="Saved"
-                            message="Changes are saved."
-                            severity="success"
-                            :duration="2500"
-                        />
-                    </ToastContainer>
-                </div>
-                <div class="vf-home__card">
-                    <h3>Alert</h3>
-                    <div class="vf-home__stack">
-                        <Button label="Show Alert" size="small" @click="alertOpen = true" />
-                        <Alert
-                            v-model="alertOpen"
-                            title="Unsaved changes"
-                            severity="warn"
-                            closable
-                            message="You have unsaved form changes."
-                        >
-                            <template #actions>
-                                <Button label="Save" size="small" />
-                            </template>
-                        </Alert>
-                    </div>
-                </div>
-                <div class="vf-home__card">
-                    <h3>EmptyState</h3>
-                    <div class="vf-home__stack">
-                        <EmptyState
-                            title="No projects yet"
-                            description="Create your first project or import existing data."
-                            icon="📂"
-                        >
-                            <template #actions>
-                                <Button label="Create project" size="small" />
-                                <Button label="Import" size="small" severity="secondary" />
-                            </template>
-                        </EmptyState>
-                        <EmptyState
-                            variant="outlined"
-                            size="small"
-                            title="No search results"
-                            description="Try another query."
-                            icon="🔎"
-                        />
-                    </div>
-                </div>
-                <div class="vf-home__card">
-                    <h3>Card</h3>
-                    <Card>
-                        <template #header>Card header</template>
-                        <template #body>Card body text</template>
-                        <template #footer>Card footer</template>
-                    </Card>
-                </div>
-                <div class="vf-home__card">
-                    <h3>Popover</h3>
-                    <Popover>
-                        <template #button>
-                            <Button label="Toggle Popover" />
-                        </template>
-                        <template #default>
-                            <div class="vf-home__popover-content">Popover content</div>
-                        </template>
-                    </Popover>
-                </div>
-                <div class="vf-home__card">
-                    <h3>Modal</h3>
-                    <Button label="Open Modal" @click="modalOpen = true" />
-                    <Modal v-model="modalOpen" title="Modal title">
-                        <template #body>
-                            <p class="vf-home__modal-text">Modal content with any layout.</p>
-                        </template>
-                        <template #footer>
-                            <Button label="Cancel" severity="secondary" @click="modalOpen = false" />
-                            <Button label="Confirm" @click="modalOpen = false" />
-                        </template>
-                    </Modal>
-                </div>
-                <div class="vf-home__card">
-                    <h3>ConfirmDialog</h3>
-                    <Button label="Delete item" severity="danger" @click="confirmDialogOpen = true" />
-                    <ConfirmDialog
-                        v-model="confirmDialogOpen"
-                        title="Delete item?"
-                        message="This action cannot be undone."
-                        confirm-label="Delete"
-                        @confirm="confirmDialogAccepted = true"
-                    />
-                    <p v-if="confirmDialogAccepted" class="vf-home__muted">Last action: confirmed</p>
-                </div>
-                <div class="vf-home__card">
-                    <h3>Drawer</h3>
-                    <Button label="Open Drawer" @click="drawerOpen = true" />
-                    <Drawer v-model="drawerOpen" title="Quick filters" position="right">
-                        <template #body>
+                            <NotificationCenter
+                                v-model="notificationsOpen"
+                                v-model:items="notificationsItems"
+                                @click="onNotificationClick"
+                            />
+                        </div>
+                        <div class="vf-home__card vf-home__card_large">
+                            <h3>AppShell</h3>
+                            <AppShell v-model="appShellCollapsed" :full-height="false" class="vf-home__appshell-demo">
+                                <template #sidebar>
+                                    <div class="vf-home__appshell-sidebar">
+                                        <strong>Navigation</strong>
+                                        <span>Dashboard</span>
+                                        <span>Projects</span>
+                                        <span>Settings</span>
+                                    </div>
+                                </template>
+                                <template #header>
+                                    <strong>Workspace</strong>
+                                </template>
+                                <p class="vf-home__muted">Main area</p>
+                                <template #footer>
+                                    <p class="vf-home__muted">Footer actions</p>
+                                </template>
+                            </AppShell>
+                        </div>
+                        <div class="vf-home__card vf-home__card_large">
+                            <h3>Tour</h3>
                             <div class="vf-home__stack">
-                                <Checkbox v-model="drawerNew">New only</Checkbox>
-                                <Checkbox v-model="drawerPopular">Popular</Checkbox>
-                                <Checkbox v-model="drawerFree">Free tier</Checkbox>
+                                <Button id="tour-target-start" label="Start Tour" @click="tourOpen = true" />
+                                <Input
+                                    id="tour-target-search"
+                                    v-model="tourQuery"
+                                    placeholder="Search projects"
+                                    variant="outlined"
+                                />
+                                <Button id="tour-target-action" label="Primary Action" severity="secondary" />
                             </div>
-                        </template>
-                        <template #footer>
-                            <Button label="Reset" severity="secondary" size="small" @click="resetDrawer" />
-                            <Button label="Apply" size="small" @click="drawerOpen = false" />
-                        </template>
-                    </Drawer>
-                </div>
-                <div class="vf-home__card">
-                    <h3>Menu</h3>
-                    <Menu :items="menuItems" />
-                </div>
-                <div class="vf-home__card">
-                    <h3>Dropdown</h3>
-                    <Dropdown :items="menuItems">
-                        <template #trigger>
-                            <Button label="Actions" />
-                        </template>
-                    </Dropdown>
-                </div>
-                <div class="vf-home__card">
-                    <h3>SplitButton</h3>
-                    <div class="vf-home__stack">
-                        <SplitButton label="Save" :items="splitButtonItems" @click="splitButtonAction = 'save'" />
-                        <p class="vf-home__muted">Last action: {{ splitButtonAction || 'none' }}</p>
+                            <Tour v-model="tourOpen" :steps="tourSteps" />
+                        </div>
                     </div>
                 </div>
-                <div class="vf-home__card">
-                    <h3>ContextMenu</h3>
-                    <ContextMenu :items="contextMenuItems">
-                        <div class="vf-home__context-target">Right-click here</div>
-                    </ContextMenu>
-                    <p class="vf-home__muted">Last action: {{ contextMenuAction || 'none' }}</p>
-                </div>
-                <div class="vf-home__card">
-                    <h3>CommandPalette</h3>
-                    <div class="vf-home__stack">
-                        <Button label="Open Command Palette" @click="commandPaletteOpen = true" />
-                        <p class="vf-home__muted">Shortcut: Ctrl/Cmd + K</p>
-                        <p class="vf-home__muted">Last action: {{ commandPaletteAction || 'none' }}</p>
+                <div class="vf-home__group">
+                    <h3 class="vf-home__group-title">Indicators, Layout and Utilities</h3>
+                    <div class="vf-home__grid vf-home__grid_compact">
+                        <div class="vf-home__card">
+                            <h3>Tooltip</h3>
+                            <Tooltip text="Helpful hint" arrow>
+                                <Button label="Hover me" />
+                            </Tooltip>
+                        </div>
+                        <div class="vf-home__card">
+                            <h3>Skeleton</h3>
+                            <div class="vf-home__stack">
+                                <Skeleton width="180px" height="12px" />
+                                <Skeleton width="140px" height="12px" />
+                                <Skeleton variant="circle" width="40px" />
+                            </div>
+                        </div>
+                        <div class="vf-home__card">
+                            <h3>Badge</h3>
+                            <div class="vf-home__stack-inline">
+                                <Badge label="Beta" />
+                                <Badge severity="info" variant="soft">Info</Badge>
+                                <Badge severity="success" variant="outline">Active</Badge>
+                                <Badge severity="danger" variant="solid">Blocked</Badge>
+                            </div>
+                        </div>
+                        <div class="vf-home__card">
+                            <h3>Chip</h3>
+                            <div class="vf-home__stack-inline">
+                                <Chip label="New" />
+                                <Chip severity="info" variant="soft" closable>Info</Chip>
+                                <Chip severity="success" variant="outline" closable>Active</Chip>
+                                <Chip severity="danger" variant="solid" closable>Blocked</Chip>
+                            </div>
+                        </div>
+                        <div class="vf-home__card">
+                            <h3>FilterChips</h3>
+                            <div class="vf-home__stack">
+                                <FilterChips v-model="activeFilters" :options="filterOptions" clearable />
+                                <FilterChips
+                                    v-model="activeStatus"
+                                    :options="statusOptions"
+                                    :multiple="false"
+                                    variant="outline"
+                                    size="small"
+                                    clearable
+                                />
+                                <p class="vf-home__muted">Multi: {{ activeFilters.join(', ') || 'none' }}</p>
+                                <p class="vf-home__muted">Single: {{ activeStatus || 'none' }}</p>
+                            </div>
+                        </div>
+                        <div class="vf-home__card">
+                            <h3>Avatar</h3>
+                            <div class="vf-home__stack-inline">
+                                <Avatar name="Ada Lovelace" />
+                                <Avatar name="Grace Hopper" status="online" />
+                                <Avatar name="Alan Turing" size="large" status="away" />
+                            </div>
+                        </div>
+                        <div class="vf-home__card">
+                            <h3>Progress</h3>
+                            <div class="vf-home__stack">
+                                <Progress :value="42" />
+                                <Progress :value="72" severity="success" show-value />
+                                <Progress variant="circular" :value="64" size="small" />
+                                <Progress variant="linear" />
+                            </div>
+                        </div>
+                        <div class="vf-home__card">
+                            <h3>Slider</h3>
+                            <div class="vf-home__stack">
+                                <Slider v-model="volume" :min="0" :max="100" :step="5" show-value />
+                                <Slider v-model="priceRange" :min="0" :max="1000" :step="25" range />
+                                <Slider v-model="rating" :min="1" :max="5" :step="1" :marks="ratingMarks" show-value />
+                            </div>
+                        </div>
+                        <div class="vf-home__card vf-home__card_large">
+                            <h3>Splitter</h3>
+                            <div class="vf-home__stack">
+                                <Splitter v-model="splitSizes" :min-sizes="[20, 20]" style="height: 180px">
+                                    <SplitterPanel>
+                                        <div class="vf-home__panel vf-home__panel_center">Navigation panel</div>
+                                    </SplitterPanel>
+                                    <SplitterPanel>
+                                        <div class="vf-home__panel vf-home__panel_center">Content panel</div>
+                                    </SplitterPanel>
+                                </Splitter>
+                                <Splitter
+                                    v-model="splitSizesVertical"
+                                    direction="vertical"
+                                    :min-sizes="[30, 30]"
+                                    style="height: 180px"
+                                >
+                                    <SplitterPanel>
+                                        <div class="vf-home__panel vf-home__panel_center">Top panel</div>
+                                    </SplitterPanel>
+                                    <SplitterPanel>
+                                        <div class="vf-home__panel vf-home__panel_center">Bottom panel</div>
+                                    </SplitterPanel>
+                                </Splitter>
+                            </div>
+                        </div>
+                        <div class="vf-home__card vf-home__card_large">
+                            <h3>VirtualScroller</h3>
+                            <VirtualScroller :items="virtualItems" :item-height="40" height="220px" :overscan="5">
+                                <template #default="{ item, index }">
+                                    <span>{{ index + 1 }}. {{ String(item) }}</span>
+                                </template>
+                            </VirtualScroller>
+                        </div>
                     </div>
-                    <CommandPalette
-                        v-model="commandPaletteOpen"
-                        :items="commandPaletteItems"
-                        @select="onCommandPaletteSelect"
-                    />
-                </div>
-                <div class="vf-home__card">
-                    <h3>NotificationCenter</h3>
-                    <div class="vf-home__stack">
-                        <Button label="Open Notifications" @click="notificationsOpen = true" />
-                        <p class="vf-home__muted">Unread: {{ notificationsUnreadCount }}</p>
-                    </div>
-                    <NotificationCenter
-                        v-model="notificationsOpen"
-                        v-model:items="notificationsItems"
-                        @click="onNotificationClick"
-                    />
-                </div>
-                <div class="vf-home__card">
-                    <h3>Tour</h3>
-                    <div class="vf-home__stack">
-                        <Button id="tour-target-start" label="Start Tour" @click="tourOpen = true" />
-                        <Input
-                            id="tour-target-search"
-                            v-model="tourQuery"
-                            placeholder="Search projects"
-                            variant="outlined"
-                        />
-                        <Button id="tour-target-action" label="Primary Action" severity="secondary" />
-                    </div>
-                    <Tour v-model="tourOpen" :steps="tourSteps" />
-                </div>
-                <div class="vf-home__card">
-                    <h3>Tooltip</h3>
-                    <Tooltip text="Helpful hint" arrow>
-                        <Button label="Hover me" />
-                    </Tooltip>
-                </div>
-                <div class="vf-home__card">
-                    <h3>Skeleton</h3>
-                    <div class="vf-home__stack">
-                        <Skeleton width="180px" height="12px" />
-                        <Skeleton width="140px" height="12px" />
-                        <Skeleton variant="circle" width="40px" />
-                    </div>
-                </div>
-                <div class="vf-home__card">
-                    <h3>Badge</h3>
-                    <div class="vf-home__stack-inline">
-                        <Badge label="Beta" />
-                        <Badge severity="info" variant="soft">Info</Badge>
-                        <Badge severity="success" variant="outline">Active</Badge>
-                        <Badge severity="danger" variant="solid">Blocked</Badge>
-                    </div>
-                </div>
-                <div class="vf-home__card">
-                    <h3>Chip</h3>
-                    <div class="vf-home__stack-inline">
-                        <Chip label="New" />
-                        <Chip severity="info" variant="soft" closable>Info</Chip>
-                        <Chip severity="success" variant="outline" closable>Active</Chip>
-                        <Chip severity="danger" variant="solid" closable>Blocked</Chip>
-                    </div>
-                </div>
-                <div class="vf-home__card">
-                    <h3>FilterChips</h3>
-                    <div class="vf-home__stack">
-                        <FilterChips v-model="activeFilters" :options="filterOptions" clearable />
-                        <FilterChips
-                            v-model="activeStatus"
-                            :options="statusOptions"
-                            :multiple="false"
-                            variant="outline"
-                            size="small"
-                            clearable
-                        />
-                        <p class="vf-home__muted">Multi: {{ activeFilters.join(', ') || 'none' }}</p>
-                        <p class="vf-home__muted">Single: {{ activeStatus || 'none' }}</p>
-                    </div>
-                </div>
-                <div class="vf-home__card">
-                    <h3>Avatar</h3>
-                    <div class="vf-home__stack-inline">
-                        <Avatar name="Ada Lovelace" />
-                        <Avatar name="Grace Hopper" status="online" />
-                        <Avatar name="Alan Turing" size="large" status="away" />
-                    </div>
-                </div>
-                <div class="vf-home__card">
-                    <h3>Progress</h3>
-                    <div class="vf-home__stack">
-                        <Progress :value="42" />
-                        <Progress :value="72" severity="success" show-value />
-                        <Progress variant="circular" :value="64" size="small" />
-                        <Progress variant="linear" />
-                    </div>
-                </div>
-                <div class="vf-home__card">
-                    <h3>Slider</h3>
-                    <div class="vf-home__stack">
-                        <Slider v-model="volume" :min="0" :max="100" :step="5" show-value />
-                        <Slider v-model="priceRange" :min="0" :max="1000" :step="25" range />
-                        <Slider v-model="rating" :min="1" :max="5" :step="1" :marks="ratingMarks" show-value />
-                    </div>
-                </div>
-                <div class="vf-home__card">
-                    <h3>Splitter</h3>
-                    <div class="vf-home__stack">
-                        <Splitter v-model="splitSizes" :min-sizes="[20, 20]" style="height: 180px">
-                            <SplitterPanel>
-                                <div class="vf-home__panel vf-home__panel_center">Navigation panel</div>
-                            </SplitterPanel>
-                            <SplitterPanel>
-                                <div class="vf-home__panel vf-home__panel_center">Content panel</div>
-                            </SplitterPanel>
-                        </Splitter>
-                        <Splitter
-                            v-model="splitSizesVertical"
-                            direction="vertical"
-                            :min-sizes="[30, 30]"
-                            style="height: 180px"
-                        >
-                            <SplitterPanel>
-                                <div class="vf-home__panel vf-home__panel_center">Top panel</div>
-                            </SplitterPanel>
-                            <SplitterPanel>
-                                <div class="vf-home__panel vf-home__panel_center">Bottom panel</div>
-                            </SplitterPanel>
-                        </Splitter>
-                    </div>
-                </div>
-                <div class="vf-home__card">
-                    <h3>VirtualScroller</h3>
-                    <VirtualScroller :items="virtualItems" :item-height="40" height="220px" :overscan="5">
-                        <template #default="{ item, index }">
-                            <span>{{ index + 1 }}. {{ String(item) }}</span>
-                        </template>
-                    </VirtualScroller>
                 </div>
             </div>
         </section>
@@ -933,6 +1020,7 @@ import {
     ContextMenu,
     CommandPalette,
     NotificationCenter,
+    AppShell,
     DatePicker,
     Calendar,
     DateRangePicker,
@@ -1102,6 +1190,7 @@ const splitButtonAction = ref('');
 const commandPaletteOpen = ref(false);
 const commandPaletteAction = ref('');
 const notificationsOpen = ref(false);
+const appShellCollapsed = ref(false);
 const notificationsItems = ref([
     {
         id: 1,
@@ -1247,6 +1336,7 @@ const searchCatalog = [
     'TreeSelect',
     'CommandPalette',
     'NotificationCenter',
+    'AppShell',
 ];
 const serverCatalog = [
     'Documentation',
@@ -1475,10 +1565,25 @@ body {
     margin-bottom: 0.75rem;
 }
 
+.vf-home__groups {
+    display: grid;
+    gap: 1.25rem;
+}
+
+.vf-home__group {
+    display: grid;
+    gap: 0.75rem;
+}
+
+.vf-home__group-title {
+    margin: 0;
+    font-size: 1.05rem;
+}
+
 .vf-home__grid {
     display: grid;
     gap: 1rem;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-template-columns: repeat(12, minmax(0, 1fr));
 }
 
 .vf-home__grid > * {
@@ -1486,11 +1591,16 @@ body {
 }
 
 .vf-home__card {
+    grid-column: span 3;
     padding: 1rem;
     border: 1px solid var(--vf-border-color);
     border-radius: 10px;
     background-color: var(--vf-bg-color);
     min-width: 0;
+}
+
+.vf-home__card_large {
+    grid-column: span 6;
 }
 
 .vf-home__stack {
@@ -1553,5 +1663,35 @@ body {
     text-align: center;
     user-select: none;
     color: var(--vf-secondary-text-color);
+}
+
+.vf-home__appshell-demo {
+    min-height: 15rem;
+    border: 1px solid var(--vf-border-color);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.vf-home__appshell-sidebar {
+    padding: 1rem;
+    display: grid;
+    gap: 0.5rem;
+}
+
+@media (max-width: 1200px) {
+    .vf-home__card {
+        grid-column: span 4;
+    }
+
+    .vf-home__card_large {
+        grid-column: span 8;
+    }
+}
+
+@media (max-width: 900px) {
+    .vf-home__card,
+    .vf-home__card_large {
+        grid-column: span 12;
+    }
 }
 </style>

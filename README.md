@@ -84,6 +84,7 @@ import {
     ContextMenu,
     CommandPalette,
     NotificationCenter,
+    AppShell,
     Tour,
 } from '@codemonster-ru/vueforge';
 import '@codemonster-ru/vueforge/dist/index.css';
@@ -230,6 +231,11 @@ app.use(VueForge, {
     ]"
 />
 <NotificationCenter v-model="notificationsOpen" v-model:items="notificationsItems" />
+<AppShell v-model="sidebarCollapsed">
+    <template #sidebar>Sidebar content</template>
+    <template #header>Header content</template>
+    <div>Main content</div>
+</AppShell>
 <Tour v-model="tourOpen" :steps="tourSteps" />
 ```
 
@@ -276,6 +282,7 @@ app.use(VueForge, {
 - ContextMenu
 - CommandPalette
 - NotificationCenter
+- AppShell
 - Tour
 - Popover
 - Select
@@ -326,6 +333,7 @@ Input / InputGroup / Search / Password / Textarea (quick API):
 - `Splitter`: resizable multi-panel container with draggable separators and `v-model` percentage sizes.
 - `Tour`: guided step-by-step onboarding overlay anchored to target elements.
 - `NotificationCenter`: persistent notifications inbox with read/unread state and bulk actions.
+- `AppShell`: application layout shell with sidebar/header/main/footer regions, collapse toggle, and mobile drawer behavior.
 - `Wizard`: multi-step flow container with linear navigation, per-step validation, and completion events.
 - `Textarea`: multi-line control, same as Input plus `rows`.
 - `TagInput`: token/tag control, supports `v-model` (array), suggestions, custom tags, `maxTags`, `clearable`, `size`, `variant`.
@@ -2115,6 +2123,59 @@ Component tokens (override via `theme.overrides.components.notificationCenter`):
 - `itemTitleFontSize`, `itemTitleFontWeight`, `itemMetaFontSize`, `itemMetaColor`
 - `emptyPadding`, `emptyColor`
 
+## AppShell
+
+Props:
+
+- `modelValue?: boolean` (v-model collapsed state on desktop)
+- `sidebarWidth?: string` (default `16rem`)
+- `sidebarCollapsedWidth?: string` (default `4.25rem`)
+- `mobileBreakpoint?: number` (default `1024`)
+- `stickyHeader?: boolean` (default `true`)
+- `fullHeight?: boolean` (default `true`)
+- `showToggle?: boolean` (default `true`)
+- `closeOnEsc?: boolean` (default `true`)
+- `toggleLabel?: string` (default `Toggle sidebar`)
+- `closeSidebarLabel?: string` (default `Close sidebar`)
+- `toggleIcon?: string` (default `☰`)
+- `mainAriaLabel?: string` (default `Main content`)
+
+Slots:
+
+- `sidebar` (optional) - slot props `{ mobile, collapsed }`
+- `header` (optional) - slot props `{ mobile, collapsed, mobileSidebarOpen, toggleSidebar }`
+- `default` - main content
+- `footer` (optional) - slot props `{ mobile, collapsed }`
+
+Events:
+
+- `update:modelValue`
+- `sidebar-toggle`
+- `breakpoint-change`
+
+Example:
+
+```vue
+<AppShell v-model="collapsed">
+    <template #sidebar>Sidebar</template>
+    <template #header>Header</template>
+    <div>Main</div>
+    <template #footer>Footer</template>
+</AppShell>
+```
+
+### AppShell tokens
+
+Component tokens (override via `theme.overrides.components.appShell`):
+
+- `gap`, `backgroundColor`, `textColor`
+- `sidebarBackgroundColor`, `sidebarBorderColor`
+- `headerHeight`, `headerPadding`, `headerGap`, `headerBackgroundColor`, `headerBorderColor`
+- `contentPadding`, `mainBackgroundColor`
+- `footerPadding`, `footerBorderColor`, `footerBackgroundColor`
+- `toggleSize`, `toggleBorderRadius`, `toggleBackgroundColor`, `toggleTextColor`, `toggleHoverBackgroundColor`
+- `overlayBackgroundColor`, `zIndex`
+
 ## Tour
 
 Props:
@@ -2859,7 +2920,7 @@ VueForge exposes design tokens as CSS variables generated from the theme preset.
 Typed tokens:
 
 - `ThemeTokens`/`ThemeOptions`/`ThemePreset` are exported for type-safe theming in TS.
-- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/emptyState/input/inputGroup/inlineEdit/searchInput/mentionInput/passwordInput/otpInput/colorPicker/maskedInput/numberInput/form/formField/textarea/link/breadcrumbs/menu/modal/confirmDialog/drawer/popover/dropdown/contextMenu/commandPalette/notificationCenter/tour/select/autocomplete/combobox/multiselect/taginput/datepicker/calendar/daterangepicker/timepicker/datetimepicker/pagination/switch/segmentedControl/tooltip/skeleton/progress/badge/chip/filterChips/avatar/datatable/slider/splitter/stepper/wizard/rating/tree/treeselect/virtualScroller).
+- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/emptyState/input/inputGroup/inlineEdit/searchInput/mentionInput/passwordInput/otpInput/colorPicker/maskedInput/numberInput/form/formField/textarea/link/breadcrumbs/menu/modal/confirmDialog/drawer/popover/dropdown/contextMenu/commandPalette/notificationCenter/appShell/tour/select/autocomplete/combobox/multiselect/taginput/datepicker/calendar/daterangepicker/timepicker/datetimepicker/pagination/switch/segmentedControl/tooltip/skeleton/progress/badge/chip/filterChips/avatar/datatable/slider/splitter/stepper/wizard/rating/tree/treeselect/virtualScroller).
 
 Default core values (from `DefaultTheme`):
 

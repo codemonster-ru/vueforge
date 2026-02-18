@@ -52,6 +52,7 @@ export { default as SplitButton } from '@/package/components/split-button.vue';
 export { default as ContextMenu } from '@/package/components/context-menu.vue';
 export { default as CommandPalette } from '@/package/components/command-palette.vue';
 export { default as NotificationCenter } from '@/package/components/notification-center.vue';
+export { default as AppShell } from '@/package/components/app-shell.vue';
 export { default as Tooltip } from '@/package/components/tooltip.vue';
 export { default as Tour } from '@/package/components/tour.vue';
 export { default as Skeleton } from '@/package/components/skeleton.vue';

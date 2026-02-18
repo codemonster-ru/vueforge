@@ -671,6 +671,30 @@ export type NotificationCenterTokens = {
     emptyPadding?: string;
     emptyColor?: string;
 };
+export type AppShellTokens = {
+    gap?: string;
+    backgroundColor?: string;
+    textColor?: string;
+    sidebarBackgroundColor?: string;
+    sidebarBorderColor?: string;
+    headerHeight?: string;
+    headerPadding?: string;
+    headerGap?: string;
+    headerBackgroundColor?: string;
+    headerBorderColor?: string;
+    contentPadding?: string;
+    mainBackgroundColor?: string;
+    footerPadding?: string;
+    footerBorderColor?: string;
+    footerBackgroundColor?: string;
+    toggleSize?: string;
+    toggleBorderRadius?: string;
+    toggleBackgroundColor?: string;
+    toggleTextColor?: string;
+    toggleHoverBackgroundColor?: string;
+    overlayBackgroundColor?: string;
+    zIndex?: string;
+};
 export type SelectTokens = {
     minWidth?: string;
     fontSize?: string;
@@ -1965,6 +1989,7 @@ export type ThemeComponentTokens = {
     contextMenu?: ContextMenuTokens;
     commandPalette?: CommandPaletteTokens;
     notificationCenter?: NotificationCenterTokens;
+    appShell?: AppShellTokens;
     select?: SelectTokens;
     autocomplete?: AutocompleteTokens;
     combobox?: ComboboxTokens;
