@@ -85,6 +85,7 @@ import {
     CommandPalette,
     NotificationCenter,
     AppShell,
+    KanbanBoard,
     Tour,
 } from '@codemonster-ru/vueforge';
 import '@codemonster-ru/vueforge/dist/index.css';
@@ -236,6 +237,7 @@ app.use(VueForge, {
     <template #header>Header content</template>
     <div>Main content</div>
 </AppShell>
+<KanbanBoard v-model:items="kanbanItems" :columns="kanbanColumns" />
 <Tour v-model="tourOpen" :steps="tourSteps" />
 ```
 
@@ -283,6 +285,7 @@ app.use(VueForge, {
 - CommandPalette
 - NotificationCenter
 - AppShell
+- KanbanBoard
 - Tour
 - Popover
 - Select
@@ -334,6 +337,7 @@ Input / InputGroup / Search / Password / Textarea (quick API):
 - `Tour`: guided step-by-step onboarding overlay anchored to target elements.
 - `NotificationCenter`: persistent notifications inbox with read/unread state and bulk actions.
 - `AppShell`: application layout shell with sidebar/header/main/footer regions, collapse toggle, and mobile drawer behavior.
+- `KanbanBoard`: task board with draggable cards, customizable column/card slots, and move events.
 - `Wizard`: multi-step flow container with linear navigation, per-step validation, and completion events.
 - `Textarea`: multi-line control, same as Input plus `rows`.
 - `TagInput`: token/tag control, supports `v-model` (array), suggestions, custom tags, `maxTags`, `clearable`, `size`, `variant`.
@@ -2176,6 +2180,52 @@ Component tokens (override via `theme.overrides.components.appShell`):
 - `toggleSize`, `toggleBorderRadius`, `toggleBackgroundColor`, `toggleTextColor`, `toggleHoverBackgroundColor`
 - `overlayBackgroundColor`, `zIndex`
 
+## KanbanBoard
+
+Props:
+
+- `columns?: Array<{ id: string | number; title: string }>`
+- `items?: Array<{ id: string | number; columnId: string | number; title: string; description?: string; assignee?: string; priority?: 'low' | 'medium' | 'high'; tags?: string[] }>`
+- `ariaLabel?: string` (default `Kanban board`)
+- `emptyColumnText?: string` (default `Drop cards here`)
+
+Slots:
+
+- `column-header` (optional) - slot props `{ column, items }`
+- `card` (optional) - slot props `{ item, column, index }`
+- `column-footer` (optional) - slot props `{ column, items }`
+- `empty-column` (optional) - slot props `{ column }`
+
+Events:
+
+- `update:items`
+- `move`
+- `click`
+
+Example:
+
+```vue
+<KanbanBoard v-model:items="items" :columns="columns" @move="onMove" />
+```
+
+### KanbanBoard tokens
+
+Component tokens (override via `theme.overrides.components.kanbanBoard`):
+
+- `gap`, `columnMinWidth`, `columnGap`
+- `columnBorderColor`, `columnBorderRadius`, `columnBackgroundColor`
+- `columnHeaderPadding`, `columnHeaderBorderColor`
+- `columnTitleFontSize`, `columnTitleFontWeight`, `columnCountFontSize`, `columnCountColor`
+- `bodyPadding`
+- `cardGap`, `cardPadding`, `cardBorderRadius`, `cardBorderColor`, `cardBackgroundColor`, `cardHoverBorderColor`
+- `cardTitleFontSize`, `cardTitleFontWeight`, `cardDescriptionFontSize`, `cardDescriptionColor`
+- `priorityLowColor`, `priorityMediumColor`, `priorityHighColor`
+- `tagGap`, `tagPadding`, `tagBorderRadius`, `tagBackgroundColor`, `tagTextColor`
+- `assigneeFontSize`, `assigneeColor`
+- `emptyPadding`, `emptyColor`
+- `columnFooterPadding`, `columnFooterBorderColor`
+- `dragOpacity`
+
 ## Tour
 
 Props:
@@ -2920,7 +2970,7 @@ VueForge exposes design tokens as CSS variables generated from the theme preset.
 Typed tokens:
 
 - `ThemeTokens`/`ThemeOptions`/`ThemePreset` are exported for type-safe theming in TS.
-- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/emptyState/input/inputGroup/inlineEdit/searchInput/mentionInput/passwordInput/otpInput/colorPicker/maskedInput/numberInput/form/formField/textarea/link/breadcrumbs/menu/modal/confirmDialog/drawer/popover/dropdown/contextMenu/commandPalette/notificationCenter/appShell/tour/select/autocomplete/combobox/multiselect/taginput/datepicker/calendar/daterangepicker/timepicker/datetimepicker/pagination/switch/segmentedControl/tooltip/skeleton/progress/badge/chip/filterChips/avatar/datatable/slider/splitter/stepper/wizard/rating/tree/treeselect/virtualScroller).
+- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/emptyState/input/inputGroup/inlineEdit/searchInput/mentionInput/passwordInput/otpInput/colorPicker/maskedInput/numberInput/form/formField/textarea/link/breadcrumbs/menu/modal/confirmDialog/drawer/popover/dropdown/contextMenu/commandPalette/notificationCenter/appShell/kanbanBoard/tour/select/autocomplete/combobox/multiselect/taginput/datepicker/calendar/daterangepicker/timepicker/datetimepicker/pagination/switch/segmentedControl/tooltip/skeleton/progress/badge/chip/filterChips/avatar/datatable/slider/splitter/stepper/wizard/rating/tree/treeselect/virtualScroller).
 
 Default core values (from `DefaultTheme`):
 

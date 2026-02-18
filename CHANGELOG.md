@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.67.0] - 2026-02-18
+
+- Added KanbanBoard component with draggable cards, column/card slots, and move events.
+- Added default theme tokens and typed token support for `components.kanbanBoard`.
+- Added KanbanBoard export, README docs, example app showcase, and unit tests.
+
 ## [0.66.0] - 2026-02-18
 
 - Added AppShell layout component with sidebar/header/main/footer slots, desktop collapse state, and mobile drawer behavior.

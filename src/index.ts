@@ -53,6 +53,7 @@ export { default as ContextMenu } from '@/package/components/context-menu.vue';
 export { default as CommandPalette } from '@/package/components/command-palette.vue';
 export { default as NotificationCenter } from '@/package/components/notification-center.vue';
 export { default as AppShell } from '@/package/components/app-shell.vue';
+export { default as KanbanBoard } from '@/package/components/kanban-board.vue';
 export { default as Tooltip } from '@/package/components/tooltip.vue';
 export { default as Tour } from '@/package/components/tour.vue';
 export { default as Skeleton } from '@/package/components/skeleton.vue';
@@ -81,6 +82,7 @@ export type { TimelineItem } from '@/package/components/timeline.vue';
 export type { TourStep } from '@/package/components/tour.vue';
 export type { WizardStepItem } from '@/package/components/wizard.vue';
 export type { NotificationCenterItem } from '@/package/components/notification-center.vue';
+export type { KanbanBoardItem, KanbanColumn } from '@/package/components/kanban-board.vue';
 // config
 export { default as VueForge, setTheme, updateTheme, getTheme } from '@/package/config/index';
 export type { ThemeTokens, ThemeOptions, ThemePreset } from '@/package/config/theme-core';

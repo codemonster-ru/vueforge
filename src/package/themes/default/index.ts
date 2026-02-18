@@ -28,6 +28,7 @@ import contextMenu from './components/context-menu';
 import commandPalette from './components/command-palette';
 import notificationCenter from './components/notification-center';
 import appShell from './components/app-shell';
+import kanbanBoard from './components/kanban-board';
 import select from './components/select';
 import autocomplete from './components/autocomplete';
 import combobox from './components/combobox';
@@ -100,6 +101,7 @@ export default {
         commandPalette,
         notificationCenter,
         appShell,
+        kanbanBoard,
         select,
         autocomplete,
         combobox,

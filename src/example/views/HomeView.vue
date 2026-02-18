@@ -504,6 +504,16 @@
                                 size="small"
                             />
                         </div>
+                        <div class="vf-home__card vf-home__card_large">
+                            <h3>KanbanBoard</h3>
+                            <KanbanBoard
+                                v-model:items="kanbanItems"
+                                class="vf-home__kanban-demo"
+                                :columns="kanbanColumns"
+                                @move="onKanbanMove"
+                            />
+                            <p class="vf-home__muted">Last move: {{ kanbanLastMove || 'none' }}</p>
+                        </div>
                         <div class="vf-home__card">
                             <h3>Checkbox & Switch</h3>
                             <div class="vf-home__stack">
@@ -1021,6 +1031,7 @@ import {
     CommandPalette,
     NotificationCenter,
     AppShell,
+    KanbanBoard,
     DatePicker,
     Calendar,
     DateRangePicker,
@@ -1191,6 +1202,41 @@ const commandPaletteOpen = ref(false);
 const commandPaletteAction = ref('');
 const notificationsOpen = ref(false);
 const appShellCollapsed = ref(false);
+const kanbanLastMove = ref('');
+const kanbanColumns = [
+    { id: 'todo', title: 'To do' },
+    { id: 'doing', title: 'In progress' },
+    { id: 'done', title: 'Done' },
+];
+const kanbanItems = ref([
+    {
+        id: 1,
+        columnId: 'todo',
+        title: 'Create onboarding copy',
+        description: 'Draft first-time user hints for dashboard.',
+        tags: ['ux', 'copy'],
+        assignee: 'Alice',
+        priority: 'medium' as const,
+    },
+    {
+        id: 2,
+        columnId: 'doing',
+        title: 'Implement keyboard shortcuts',
+        description: 'Support Ctrl/Cmd + K and quick actions.',
+        tags: ['frontend'],
+        assignee: 'Kirill',
+        priority: 'high' as const,
+    },
+    {
+        id: 3,
+        columnId: 'done',
+        title: 'Refine spacing tokens',
+        description: 'Align gaps between cards in demo.',
+        tags: ['design-system'],
+        assignee: 'Nikita',
+        priority: 'low' as const,
+    },
+]);
 const notificationsItems = ref([
     {
         id: 1,
@@ -1333,6 +1379,7 @@ const searchCatalog = [
     'SegmentedControl',
     'FilterChips',
     'DataTable',
+    'KanbanBoard',
     'TreeSelect',
     'CommandPalette',
     'NotificationCenter',
@@ -1525,6 +1572,9 @@ const resetDrawer = () => {
 const onCommandPaletteSelect = (item: { value?: string | number; label?: string }) => {
     commandPaletteAction.value = String(item.value ?? item.label ?? '');
 };
+const onKanbanMove = (item: { title?: string }, fromColumnId: string | number, toColumnId: string | number) => {
+    kanbanLastMove.value = `${item.title ?? 'Card'}: ${String(fromColumnId)} -> ${String(toColumnId)}`;
+};
 const onNotificationClick = (item: { id: string | number }) => {
     contextMenuAction.value = `notification:${String(item.id)}`;
 };
@@ -1670,6 +1720,10 @@ body {
     border: 1px solid var(--vf-border-color);
     border-radius: 10px;
     overflow: hidden;
+}
+
+.vf-home__kanban-demo {
+    min-height: 20rem;
 }
 
 .vf-home__appshell-sidebar {
