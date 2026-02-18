@@ -55,6 +55,7 @@ import chip from './components/chip';
 import filterChips from './components/filter-chips';
 import avatar from './components/avatar';
 import slider from './components/slider';
+import splitter from './components/splitter';
 import stepper from './components/stepper';
 import timeline from './components/timeline';
 import rating from './components/rating';
@@ -122,6 +123,7 @@ export default {
         filterChips,
         avatar,
         slider,
+        splitter,
         stepper,
         timeline,
         rating,

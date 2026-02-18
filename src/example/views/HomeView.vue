@@ -810,6 +810,32 @@
                     </div>
                 </div>
                 <div class="vf-home__card">
+                    <h3>Splitter</h3>
+                    <div class="vf-home__stack">
+                        <Splitter v-model="splitSizes" :min-sizes="[20, 20]" style="height: 180px">
+                            <SplitterPanel>
+                                <div class="vf-home__panel vf-home__panel_center">Navigation panel</div>
+                            </SplitterPanel>
+                            <SplitterPanel>
+                                <div class="vf-home__panel vf-home__panel_center">Content panel</div>
+                            </SplitterPanel>
+                        </Splitter>
+                        <Splitter
+                            v-model="splitSizesVertical"
+                            direction="vertical"
+                            :min-sizes="[30, 30]"
+                            style="height: 180px"
+                        >
+                            <SplitterPanel>
+                                <div class="vf-home__panel vf-home__panel_center">Top panel</div>
+                            </SplitterPanel>
+                            <SplitterPanel>
+                                <div class="vf-home__panel vf-home__panel_center">Bottom panel</div>
+                            </SplitterPanel>
+                        </Splitter>
+                    </div>
+                </div>
+                <div class="vf-home__card">
                     <h3>VirtualScroller</h3>
                     <VirtualScroller :items="virtualItems" :item-height="40" height="220px" :overscan="5">
                         <template #default="{ item, index }">
@@ -888,6 +914,8 @@ import {
     Avatar,
     Progress,
     Slider,
+    Splitter,
+    SplitterPanel,
     Stepper,
     Timeline,
     Rating,
@@ -1005,6 +1033,8 @@ const drawerFree = ref(false);
 const isDark = ref(document.documentElement.getAttribute('data-theme') === 'dark');
 const volume = ref(40);
 const priceRange = ref<[number, number]>([200, 700]);
+const splitSizes = ref<Array<number>>([32, 68]);
+const splitSizesVertical = ref<Array<number>>([45, 55]);
 const rating = ref(3);
 const ratingValue = ref(4);
 const ratingHalf = ref(3.5);
@@ -1083,6 +1113,7 @@ const searchCatalog = [
     'Input',
     'InputGroup',
     'EmptyState',
+    'Splitter',
     'InlineEdit',
     'SearchInput',
     'MentionInput',
@@ -1367,6 +1398,14 @@ body {
 
 .vf-home__panel {
     padding: 0.5rem 0;
+}
+
+.vf-home__panel_center {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
 .vf-home__text {

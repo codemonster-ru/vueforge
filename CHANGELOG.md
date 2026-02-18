@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.62.0] - 2026-02-18
+
+- Added Splitter and SplitterPanel components for resizable multi-panel layouts with drag and keyboard separator controls.
+- Added default theme tokens and typed token support for `components.splitter`.
+- Added Splitter/SplitterPanel exports, README docs, example app showcase, and unit tests.
+
 ## [0.61.0] - 2026-02-18
 
 - Added EmptyState component for reusable empty-data views with icon/title/description/actions slots and filled/outlined variants.

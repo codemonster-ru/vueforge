@@ -67,6 +67,8 @@ import {
     Accordion,
     AccordionItem,
     Slider,
+    Splitter,
+    SplitterPanel,
     Stepper,
     Timeline,
     Rating,
@@ -162,6 +164,10 @@ app.use(VueForge, {
     clearable
 />
 <Slider v-model="volume" :min="0" :max="100" :step="5" show-value />
+<Splitter v-model="splitSizes" style="height: 280px">
+    <SplitterPanel :min-size="20">Left panel</SplitterPanel>
+    <SplitterPanel :min-size="20">Right panel</SplitterPanel>
+</Splitter>
 <Stepper v-model="step" :steps="steps" clickable />
 <Timeline :items="timelineItems" />
 <Rating v-model="rating" allow-half />
@@ -281,6 +287,8 @@ app.use(VueForge, {
 - FilterChips
 - Avatar
 - Slider
+- Splitter
+- SplitterPanel
 - Stepper
 - Timeline
 - Rating
@@ -301,6 +309,7 @@ Input / InputGroup / Search / Password / Textarea (quick API):
 - `ColorPicker`: color control with presets, optional alpha channel, and output formats (`hex`/`rgb`/`hsl`).
 - `MaskedInput`: formatted input control with string/function masks and optional raw output (`unmask`).
 - `NumberInput`: numeric control, supports `v-model`, `min`, `max`, `step`, `precision`, `controls`, `size`, `variant`.
+- `Splitter`: resizable multi-panel container with draggable separators and `v-model` percentage sizes.
 - `Textarea`: multi-line control, same as Input plus `rows`.
 - `TagInput`: token/tag control, supports `v-model` (array), suggestions, custom tags, `maxTags`, `clearable`, `size`, `variant`.
 - `FilterChips`: compact chip-based filter toggles with single/multiple selection modes and optional clear action.
@@ -2318,6 +2327,45 @@ Component tokens (override via `theme.overrides.components.slider`):
 - `small.trackHeight`, `small.thumbSize`, `small.valueFontSize`
 - `large.trackHeight`, `large.thumbSize`, `large.valueFontSize`
 
+## Splitter / SplitterPanel
+
+Props (`Splitter`):
+
+- `modelValue?: number[]` (v-model panel sizes in %)
+- `minSizes?: number[]` (panel minimum sizes in %)
+- `direction?: 'horizontal' | 'vertical'` (default `horizontal`)
+- `gutterSize?: number | string` (default `8`)
+- `disabled?: boolean` (default `false`)
+
+Props (`SplitterPanel`):
+
+- `size?: number` (initial panel size in % when `v-model` is not provided)
+- `minSize?: number` (minimum panel size in %)
+
+Events (`Splitter`):
+
+- `update:modelValue`
+- `change`
+
+Example:
+
+```vue
+<Splitter v-model="splitSizes" :min-sizes="[20, 20]" style="height: 280px">
+    <SplitterPanel>Navigation</SplitterPanel>
+    <SplitterPanel>Content</SplitterPanel>
+</Splitter>
+```
+
+### Splitter tokens
+
+Component tokens (override via `theme.overrides.components.splitter`):
+
+- `borderColor`, `borderRadius`
+- `panelBackgroundColor`
+- `handleWidth`, `handleHeight`, `handleRadius`, `handleColor`
+- `gutterActiveBackgroundColor`
+- `disabledOpacity`
+
 ## Stepper
 
 Props:
@@ -2604,7 +2652,7 @@ VueForge exposes design tokens as CSS variables generated from the theme preset.
 Typed tokens:
 
 - `ThemeTokens`/`ThemeOptions`/`ThemePreset` are exported for type-safe theming in TS.
-- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/emptyState/input/inputGroup/inlineEdit/searchInput/mentionInput/passwordInput/otpInput/colorPicker/maskedInput/numberInput/form/formField/textarea/link/breadcrumbs/menu/modal/confirmDialog/drawer/popover/dropdown/contextMenu/commandPalette/select/autocomplete/combobox/multiselect/taginput/datepicker/calendar/daterangepicker/timepicker/datetimepicker/pagination/switch/segmentedControl/tooltip/skeleton/progress/badge/chip/filterChips/avatar/datatable/slider/stepper/rating/tree/treeselect/virtualScroller).
+- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/emptyState/input/inputGroup/inlineEdit/searchInput/mentionInput/passwordInput/otpInput/colorPicker/maskedInput/numberInput/form/formField/textarea/link/breadcrumbs/menu/modal/confirmDialog/drawer/popover/dropdown/contextMenu/commandPalette/select/autocomplete/combobox/multiselect/taginput/datepicker/calendar/daterangepicker/timepicker/datetimepicker/pagination/switch/segmentedControl/tooltip/skeleton/progress/badge/chip/filterChips/avatar/datatable/slider/splitter/stepper/rating/tree/treeselect/virtualScroller).
 
 Default core values (from `DefaultTheme`):
 

@@ -60,6 +60,8 @@ export { default as FilterChips } from '@/package/components/filter-chips.vue';
 export { default as Avatar } from '@/package/components/avatar.vue';
 export { default as DataTable } from '@/package/components/data-table.vue';
 export { default as Slider } from '@/package/components/slider.vue';
+export { default as Splitter } from '@/package/components/splitter.vue';
+export { default as SplitterPanel } from '@/package/components/splitter-panel.vue';
 export { default as Stepper } from '@/package/components/stepper.vue';
 export { default as Timeline } from '@/package/components/timeline.vue';
 export { default as Rating } from '@/package/components/rating.vue';

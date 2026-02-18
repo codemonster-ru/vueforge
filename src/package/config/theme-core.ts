@@ -1402,6 +1402,17 @@ export type VirtualScrollerTokens = {
     emptyPadding?: string;
     emptyColor?: string;
 };
+export type SplitterTokens = {
+    borderColor?: string;
+    borderRadius?: string;
+    panelBackgroundColor?: string;
+    handleWidth?: string;
+    handleHeight?: string;
+    handleRadius?: string;
+    handleColor?: string;
+    gutterActiveBackgroundColor?: string;
+    disabledOpacity?: string;
+};
 export type StepperTokens = {
     gap?: string;
     itemGap?: string;
@@ -1850,6 +1861,7 @@ export type ThemeComponentTokens = {
     skeleton?: SkeletonTokens;
     progress?: ProgressTokens;
     slider?: SliderTokens;
+    splitter?: SplitterTokens;
     stepper?: StepperTokens;
     timeline?: TimelineTokens;
     datatable?: DataTableTokens;
