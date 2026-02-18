@@ -46,6 +46,21 @@
                     </div>
                 </div>
                 <div class="vf-home__card">
+                    <h3>InputGroup</h3>
+                    <div class="vf-home__stack">
+                        <InputGroup>
+                            <InputAddon>$</InputAddon>
+                            <NumberInput v-model="priceGroup" :min="0" :step="0.5" />
+                            <InputAddon>.00</InputAddon>
+                        </InputGroup>
+                        <InputGroup variant="outlined">
+                            <InputAddon>https://</InputAddon>
+                            <Input v-model="website" placeholder="your-domain" variant="outlined" />
+                            <InputAddon>.com</InputAddon>
+                        </InputGroup>
+                    </div>
+                </div>
+                <div class="vf-home__card">
                     <h3>InlineEdit</h3>
                     <div class="vf-home__stack">
                         <InlineEdit v-model="inlineName" placeholder="No name" />
@@ -800,6 +815,8 @@ import {
     Form,
     FormField,
     Input,
+    InputAddon,
+    InputGroup,
     InlineEdit,
     SearchInput,
     MentionInput,
@@ -879,6 +896,8 @@ const toggleDark = () => {
 };
 
 const email = ref('');
+const website = ref('vueforge');
+const priceGroup = ref<number | null>(49.9);
 const inlineName = ref('Project Apollo');
 const inlineBudget = ref<number | null>(2500);
 const searchText = ref('');
@@ -1039,6 +1058,7 @@ const brandPresets = ['#2b6cb0', '#0cbc87', '#d6293e', '#f7c32e', '#6f42c1'];
 const searchCatalog = [
     'Button',
     'Input',
+    'InputGroup',
     'InlineEdit',
     'SearchInput',
     'MentionInput',

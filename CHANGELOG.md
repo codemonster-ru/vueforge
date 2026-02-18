@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.60.0] - 2026-02-18
+
+- Added InputGroup component for composing adjacent input controls, add-ons, and action buttons with unified borders and corner radii.
+- Added InputAddon helper component for prefix/suffix content inside InputGroup.
+- Added default theme tokens and typed token support for `components.inputGroup`.
+- Added InputGroup/InputAddon exports, README docs, example app showcase, and unit tests.
+
 ## [0.59.0] - 2026-02-17
 
 - Added Form component with `v-model` values, sync/async validation handlers, submit/reset lifecycle, and slot-based form helpers (`values`, `errors`, `touched`, setters, and actions).

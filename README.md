@@ -27,6 +27,8 @@ import {
     DefaultTheme,
     Button,
     Input,
+    InputGroup,
+    InputAddon,
     InlineEdit,
     SearchInput,
     MentionInput,
@@ -107,6 +109,11 @@ app.use(VueForge, {
 <FormField label="Name" hint="Required field">
     <Input v-model="name" placeholder="Your name" />
 </FormField>
+<InputGroup>
+    <InputAddon>$</InputAddon>
+    <NumberInput v-model="price" :min="0" :step="0.5" />
+    <InputAddon>.00</InputAddon>
+</InputGroup>
 <InlineEdit v-model="name" placeholder="No name" />
 <SearchInput v-model="query" placeholder="Search components" clearable />
 <MentionInput v-model="message" :suggestions="mentionSuggestions" placeholder="Type @name" />
@@ -225,6 +232,8 @@ app.use(VueForge, {
 - ToastContainer
 - Alert
 - Input
+- InputGroup
+- InputAddon
 - InlineEdit
 - SearchInput
 - MentionInput
@@ -276,9 +285,10 @@ app.use(VueForge, {
 - TreeSelect
 - VirtualScroller
 
-Input / Search / Password / Textarea (quick API):
+Input / InputGroup / Search / Password / Textarea (quick API):
 
 - `Input`: single-line control, supports `v-model`, `size`, `variant`, `disabled`, `readonly`.
+- `InputGroup`: horizontal control combiner for field/addon/button layouts with unified corners and borders.
 - `InlineEdit`: inline value editing with view/edit states, save/cancel actions, and text/number modes.
 - `SearchInput`: search-focused control with `debounce`, `clearable`, `loading`, `size`, and `variant`.
 - `MentionInput`: text input with `@`/`#` triggers, suggestions panel, keyboard selection, and mention insertion events.
@@ -377,6 +387,43 @@ Example:
 
 When `error` is set, `FormField` applies invalid-state border highlighting to nested form controls.
 Customize these colors via `theme.overrides.components.formField.errorBorderColor` and `errorFocusBorderColor`.
+
+## InputGroup / InputAddon
+
+Props (`InputGroup`):
+
+- `size?: 'small' | 'normal' | 'large'` (default `normal`)
+- `variant?: 'filled' | 'outlined'` (default `filled`)
+- `disabled?: boolean` (default `false`)
+
+Props (`InputAddon`):
+
+- `as?: string` (default `span`)
+
+Slots:
+
+- `default` - group controls/addons content
+
+Example:
+
+```vue
+<InputGroup>
+    <InputAddon>$</InputAddon>
+    <NumberInput v-model="price" :min="0" :step="0.5" />
+    <Button label="Apply" />
+</InputGroup>
+```
+
+### InputGroup tokens
+
+Component tokens (override via `theme.overrides.components.inputGroup`):
+
+- `gap`, `borderRadius`
+- `addonPadding`, `addonFontSize`
+- `addonBackgroundColor`, `addonOutlinedBackgroundColor`
+- `addonTextColor`, `addonBorderColor`, `disabledOpacity`
+- `small.addonPadding`, `small.addonFontSize`
+- `large.addonPadding`, `large.addonFontSize`
 
 ## InlineEdit
 
@@ -2512,7 +2559,7 @@ VueForge exposes design tokens as CSS variables generated from the theme preset.
 Typed tokens:
 
 - `ThemeTokens`/`ThemeOptions`/`ThemePreset` are exported for type-safe theming in TS.
-- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/inlineEdit/searchInput/mentionInput/passwordInput/otpInput/colorPicker/maskedInput/numberInput/form/formField/textarea/link/breadcrumbs/menu/modal/confirmDialog/drawer/popover/dropdown/contextMenu/commandPalette/select/autocomplete/combobox/multiselect/taginput/datepicker/calendar/daterangepicker/timepicker/datetimepicker/pagination/switch/segmentedControl/tooltip/skeleton/progress/badge/chip/filterChips/avatar/datatable/slider/stepper/rating/tree/treeselect/virtualScroller).
+- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/inputGroup/inlineEdit/searchInput/mentionInput/passwordInput/otpInput/colorPicker/maskedInput/numberInput/form/formField/textarea/link/breadcrumbs/menu/modal/confirmDialog/drawer/popover/dropdown/contextMenu/commandPalette/select/autocomplete/combobox/multiselect/taginput/datepicker/calendar/daterangepicker/timepicker/datetimepicker/pagination/switch/segmentedControl/tooltip/skeleton/progress/badge/chip/filterChips/avatar/datatable/slider/stepper/rating/tree/treeselect/virtualScroller).
 
 Default core values (from `DefaultTheme`):
 

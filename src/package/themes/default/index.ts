@@ -2,6 +2,7 @@ import base from './base';
 import button from './components/button';
 import card from './components/card';
 import input from './components/input';
+import inputGroup from './components/input-group';
 import inlineEdit from './components/inline-edit';
 import searchInput from './components/search-input';
 import mentionInput from './components/mention-input';
@@ -67,6 +68,7 @@ export default {
         button,
         card,
         input,
+        inputGroup,
         inlineEdit,
         searchInput,
         mentionInput,

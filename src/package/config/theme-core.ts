@@ -77,6 +77,25 @@ export type InputTokens = {
         fontSize?: string;
     };
 };
+export type InputGroupTokens = {
+    gap?: string;
+    borderRadius?: string;
+    addonPadding?: string;
+    addonFontSize?: string;
+    addonBackgroundColor?: string;
+    addonOutlinedBackgroundColor?: string;
+    addonTextColor?: string;
+    addonBorderColor?: string;
+    disabledOpacity?: string;
+    small?: {
+        addonPadding?: string;
+        addonFontSize?: string;
+    };
+    large?: {
+        addonPadding?: string;
+        addonFontSize?: string;
+    };
+};
 export type InlineEditTokens = {
     gap?: string;
     fontSize?: string;
@@ -1758,6 +1777,7 @@ export type ThemeComponentTokens = {
     tabs?: TabsTokens;
     accordion?: AccordionTokens;
     input?: InputTokens;
+    inputGroup?: InputGroupTokens;
     inlineEdit?: InlineEditTokens;
     searchInput?: SearchInputTokens;
     mentionInput?: MentionInputTokens;

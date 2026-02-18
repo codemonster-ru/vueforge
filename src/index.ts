@@ -4,6 +4,8 @@ export { default as Card } from '@/package/components/card.vue';
 export { default as Menu } from '@/package/components/menu.vue';
 export { default as Button } from '@/package/components/button.vue';
 export { default as Input } from '@/package/components/input.vue';
+export { default as InputGroup } from '@/package/components/input-group.vue';
+export { default as InputAddon } from '@/package/components/input-addon.vue';
 export { default as InlineEdit } from '@/package/components/inline-edit.vue';
 export { default as SearchInput } from '@/package/components/search-input.vue';
 export { default as MentionInput } from '@/package/components/mention-input.vue';
