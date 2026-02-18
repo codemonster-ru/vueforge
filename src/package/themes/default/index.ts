@@ -44,6 +44,7 @@ import segmentedControl from './components/segmented-control';
 import tabs from './components/tabs';
 import accordion from './components/accordion';
 import tooltip from './components/tooltip';
+import tour from './components/tour';
 import skeleton from './components/skeleton';
 import datatable from './components/datatable';
 import toast from './components/toast';
@@ -112,6 +113,7 @@ export default {
         tabs,
         accordion,
         tooltip,
+        tour,
         skeleton,
         datatable,
         toast,

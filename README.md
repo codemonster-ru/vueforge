@@ -81,6 +81,7 @@ import {
     SplitButton,
     ContextMenu,
     CommandPalette,
+    Tour,
 } from '@codemonster-ru/vueforge';
 import '@codemonster-ru/vueforge/dist/index.css';
 
@@ -221,6 +222,7 @@ app.use(VueForge, {
         { label: 'Save as draft', value: 'draft', group: 'Actions' },
     ]"
 />
+<Tour v-model="tourOpen" :steps="tourSteps" />
 ```
 
 ## Components
@@ -265,6 +267,7 @@ app.use(VueForge, {
 - SplitButton
 - ContextMenu
 - CommandPalette
+- Tour
 - Popover
 - Select
 - Autocomplete
@@ -310,6 +313,7 @@ Input / InputGroup / Search / Password / Textarea (quick API):
 - `MaskedInput`: formatted input control with string/function masks and optional raw output (`unmask`).
 - `NumberInput`: numeric control, supports `v-model`, `min`, `max`, `step`, `precision`, `controls`, `size`, `variant`.
 - `Splitter`: resizable multi-panel container with draggable separators and `v-model` percentage sizes.
+- `Tour`: guided step-by-step onboarding overlay anchored to target elements.
 - `Textarea`: multi-line control, same as Input plus `rows`.
 - `TagInput`: token/tag control, supports `v-model` (array), suggestions, custom tags, `maxTags`, `clearable`, `size`, `variant`.
 - `FilterChips`: compact chip-based filter toggles with single/multiple selection modes and optional clear action.
@@ -2044,6 +2048,74 @@ Component tokens (override via `theme.overrides.components.commandPalette`):
 - `shortcutBackgroundColor`, `shortcutTextColor`, `shortcutFontSize`
 - `emptyPadding`, `emptyColor`
 
+## Tour
+
+Props:
+
+- `modelValue?: boolean` (v-model)
+- `steps?: Array<{ target?: string | HTMLElement; title?: string; content?: string; placement?: 'top' | 'bottom' | 'left' | 'right'; offset?: number }>`
+- `startIndex?: number` (default `0`)
+- `placement?: 'top' | 'bottom' | 'left' | 'right'` (default `bottom`)
+- `offset?: number` (default `10`)
+- `mask?: boolean` (default `true`)
+- `closeOnOverlay?: boolean` (default `true`)
+- `closeOnEsc?: boolean` (default `true`)
+- `showSkip?: boolean` (default `true`)
+- `showProgress?: boolean` (default `true`)
+- `spotlightPadding?: number` (default `6`)
+- `nextLabel?: string` (default `Next`)
+- `prevLabel?: string` (default `Back`)
+- `finishLabel?: string` (default `Finish`)
+- `skipLabel?: string` (default `Skip`)
+- `ariaLabel?: string` (default `Tour`)
+
+Slots:
+
+- `default` - step content with slot props `{ step, index }`
+- `title` (optional) - step title with slot props `{ step, index }`
+- `actions` (optional) - custom actions with slot props `{ step, index, isFirst, isLast, prev, next, skip }`
+
+Events:
+
+- `update:modelValue`
+- `open`
+- `close` (payload reason: `overlay | esc | complete | skip`)
+- `stepChange`
+- `next`
+- `prev`
+- `complete`
+- `skip`
+
+Example:
+
+```vue
+<Tour
+    v-model="tourOpen"
+    :steps="[
+        { target: '#tour-start', title: 'Start', content: 'Launch onboarding here.' },
+        { target: '#tour-search', title: 'Search', content: 'Find projects quickly.', placement: 'bottom' },
+    ]"
+/>
+```
+
+### Tour tokens
+
+Component tokens (override via `theme.overrides.components.tour`):
+
+- `zIndex`, `overlayBackgroundColor`
+- `width`, `maxWidth`, `padding`
+- `borderRadius`, `borderColor`
+- `backgroundColor`, `textColor`, `shadow`
+- `titleGap`, `titleFontSize`, `titleLineHeight`, `titleFontWeight`
+- `contentGap`, `contentFontSize`, `contentLineHeight`, `contentColor`
+- `progressGap`, `progressFontSize`, `progressColor`
+- `actionsGap`
+- `buttonMinWidth`, `buttonPadding`, `buttonRadius`
+- `buttonBorderColor`, `buttonBackgroundColor`, `buttonTextColor`, `buttonHoverBackgroundColor`
+- `secondaryButtonBorderColor`, `secondaryButtonBackgroundColor`, `secondaryButtonTextColor`, `secondaryButtonHoverBackgroundColor`
+- `spotlightRadius`, `spotlightBorderWidth`, `spotlightBorderColor`
+- `disabledOpacity`
+
 ## Tooltip
 
 Props:
@@ -2652,7 +2724,7 @@ VueForge exposes design tokens as CSS variables generated from the theme preset.
 Typed tokens:
 
 - `ThemeTokens`/`ThemeOptions`/`ThemePreset` are exported for type-safe theming in TS.
-- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/emptyState/input/inputGroup/inlineEdit/searchInput/mentionInput/passwordInput/otpInput/colorPicker/maskedInput/numberInput/form/formField/textarea/link/breadcrumbs/menu/modal/confirmDialog/drawer/popover/dropdown/contextMenu/commandPalette/select/autocomplete/combobox/multiselect/taginput/datepicker/calendar/daterangepicker/timepicker/datetimepicker/pagination/switch/segmentedControl/tooltip/skeleton/progress/badge/chip/filterChips/avatar/datatable/slider/splitter/stepper/rating/tree/treeselect/virtualScroller).
+- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/emptyState/input/inputGroup/inlineEdit/searchInput/mentionInput/passwordInput/otpInput/colorPicker/maskedInput/numberInput/form/formField/textarea/link/breadcrumbs/menu/modal/confirmDialog/drawer/popover/dropdown/contextMenu/commandPalette/tour/select/autocomplete/combobox/multiselect/taginput/datepicker/calendar/daterangepicker/timepicker/datetimepicker/pagination/switch/segmentedControl/tooltip/skeleton/progress/badge/chip/filterChips/avatar/datatable/slider/splitter/stepper/rating/tree/treeselect/virtualScroller).
 
 Default core values (from `DefaultTheme`):
 

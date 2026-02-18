@@ -737,6 +737,20 @@
                     />
                 </div>
                 <div class="vf-home__card">
+                    <h3>Tour</h3>
+                    <div class="vf-home__stack">
+                        <Button id="tour-target-start" label="Start Tour" @click="tourOpen = true" />
+                        <Input
+                            id="tour-target-search"
+                            v-model="tourQuery"
+                            placeholder="Search projects"
+                            variant="outlined"
+                        />
+                        <Button id="tour-target-action" label="Primary Action" severity="secondary" />
+                    </div>
+                    <Tour v-model="tourOpen" :steps="tourSteps" />
+                </div>
+                <div class="vf-home__card">
                     <h3>Tooltip</h3>
                     <Tooltip text="Helpful hint" arrow>
                         <Button label="Hover me" />
@@ -907,6 +921,7 @@ import {
     Combobox,
     Switch,
     Tooltip,
+    Tour,
     Skeleton,
     Badge,
     Chip,
@@ -1047,6 +1062,28 @@ const contextMenuAction = ref('');
 const splitButtonAction = ref('');
 const commandPaletteOpen = ref(false);
 const commandPaletteAction = ref('');
+const tourOpen = ref(false);
+const tourQuery = ref('');
+const tourSteps = [
+    {
+        target: '#tour-target-start',
+        title: 'Start guided tour',
+        content: 'Use this button to launch onboarding hints.',
+        placement: 'bottom' as const,
+    },
+    {
+        target: '#tour-target-search',
+        title: 'Search input',
+        content: 'Filter projects by name or keyword here.',
+        placement: 'bottom' as const,
+    },
+    {
+        target: '#tour-target-action',
+        title: 'Primary action',
+        content: 'This area hosts your main call-to-action.',
+        placement: 'top' as const,
+    },
+];
 const ratingMarks = [
     { value: 1, label: '1' },
     { value: 2, label: '2' },
@@ -1114,6 +1151,7 @@ const searchCatalog = [
     'InputGroup',
     'EmptyState',
     'Splitter',
+    'Tour',
     'InlineEdit',
     'SearchInput',
     'MentionInput',

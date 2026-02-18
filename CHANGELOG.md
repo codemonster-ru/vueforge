@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.63.0] - 2026-02-18
+
+- Added Tour component for guided onboarding flows with target-based step anchoring, spotlight mask, and keyboard/overlay close behavior.
+- Added default theme tokens and typed token support for `components.tour`.
+- Added Tour export, README docs, example app showcase, and unit tests.
+
 ## [0.62.0] - 2026-02-18
 
 - Added Splitter and SplitterPanel components for resizable multi-panel layouts with drag and keyboard separator controls.
