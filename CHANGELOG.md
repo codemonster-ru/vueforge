@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.61.0] - 2026-02-18
+
+- Added EmptyState component for reusable empty-data views with icon/title/description/actions slots and filled/outlined variants.
+- Added default theme tokens and typed token support for `components.emptyState`.
+- Added EmptyState export, README docs, example app showcase, and unit tests.
+
 ## [0.60.0] - 2026-02-18
 
 - Added InputGroup component for composing adjacent input controls, add-ons, and action buttons with unified borders and corner radii.

@@ -1622,6 +1622,38 @@ export type AlertTokens = {
         textColor?: string;
     };
 };
+export type EmptyStateTokens = {
+    gap?: string;
+    bodyGap?: string;
+    padding?: string;
+    borderRadius?: string;
+    borderColor?: string;
+    backgroundColor?: string;
+    textColor?: string;
+    maxWidth?: string;
+    iconSize?: string;
+    iconColor?: string;
+    titleFontSize?: string;
+    titleLineHeight?: string;
+    titleFontWeight?: string;
+    titleColor?: string;
+    descriptionFontSize?: string;
+    descriptionLineHeight?: string;
+    descriptionColor?: string;
+    actionsGap?: string;
+    small?: {
+        padding?: string;
+        iconSize?: string;
+        titleFontSize?: string;
+        descriptionFontSize?: string;
+    };
+    large?: {
+        padding?: string;
+        iconSize?: string;
+        titleFontSize?: string;
+        descriptionFontSize?: string;
+    };
+};
 export type BadgeSeverityTokens = {
     backgroundColor?: string;
     textColor?: string;
@@ -1823,6 +1855,7 @@ export type ThemeComponentTokens = {
     datatable?: DataTableTokens;
     toast?: ToastTokens;
     alert?: AlertTokens;
+    emptyState?: EmptyStateTokens;
     badge?: BadgeTokens;
     chip?: ChipTokens;
     filterChips?: FilterChipsTokens;

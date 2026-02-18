@@ -58,6 +58,7 @@ import {
     Switch,
     SegmentedControl,
     Alert,
+    EmptyState,
     Skeleton,
     Progress,
     Badge,
@@ -147,6 +148,7 @@ app.use(VueForge, {
     ]"
 />
 <Alert severity="info" title="Heads up" message="Project settings were updated." />
+<EmptyState title="No projects yet" description="Create your first project to get started." icon="📂" />
 <Skeleton height="12px" width="140px" />
 <Progress :value="64" />
 <Badge label="Beta" />
@@ -231,6 +233,7 @@ app.use(VueForge, {
 - Toast
 - ToastContainer
 - Alert
+- EmptyState
 - Input
 - InputGroup
 - InputAddon
@@ -289,6 +292,7 @@ Input / InputGroup / Search / Password / Textarea (quick API):
 
 - `Input`: single-line control, supports `v-model`, `size`, `variant`, `disabled`, `readonly`.
 - `InputGroup`: horizontal control combiner for field/addon/button layouts with unified corners and borders.
+- `EmptyState`: reusable empty-data block with icon/title/description/actions for table/list/search blank states.
 - `InlineEdit`: inline value editing with view/edit states, save/cancel actions, and text/number modes.
 - `SearchInput`: search-focused control with `debounce`, `clearable`, `loading`, `size`, and `variant`.
 - `MentionInput`: text input with `@`/`#` triggers, suggestions panel, keyboard selection, and mention insertion events.
@@ -1666,6 +1670,47 @@ Component tokens (override via `theme.overrides.components.alert`):
 - `actionsGap`, `closeSize`, `closeRadius`, `closeFontSize`, `closeHoverBackgroundColor`
 - `info.*`, `success.*`, `warn.*`, `danger.*` (backgroundColor/borderColor/textColor)
 
+## EmptyState
+
+Props:
+
+- `title?: string`
+- `description?: string`
+- `icon?: string`
+- `size?: 'small' | 'normal' | 'large'` (default `normal`)
+- `variant?: 'filled' | 'outlined'` (default `filled`)
+
+Slots:
+
+- `default` - description content (fallbacks to `description`)
+- `title` (optional)
+- `icon` (optional)
+- `actions` (optional)
+
+Example:
+
+```vue
+<EmptyState title="No projects yet" description="Create your first project to get started." icon="📂">
+    <template #actions>
+        <Button label="Create project" size="small" />
+        <Button label="Import" size="small" severity="secondary" />
+    </template>
+</EmptyState>
+```
+
+### EmptyState tokens
+
+Component tokens (override via `theme.overrides.components.emptyState`):
+
+- `gap`, `bodyGap`, `padding`, `borderRadius`
+- `borderColor`, `backgroundColor`, `textColor`, `maxWidth`
+- `iconSize`, `iconColor`
+- `titleFontSize`, `titleLineHeight`, `titleFontWeight`, `titleColor`
+- `descriptionFontSize`, `descriptionLineHeight`, `descriptionColor`
+- `actionsGap`
+- `small.padding`, `small.iconSize`, `small.titleFontSize`, `small.descriptionFontSize`
+- `large.padding`, `large.iconSize`, `large.titleFontSize`, `large.descriptionFontSize`
+
 ### Textarea tokens
 
 Component tokens (override via `theme.overrides.components.textarea`):
@@ -2559,7 +2604,7 @@ VueForge exposes design tokens as CSS variables generated from the theme preset.
 Typed tokens:
 
 - `ThemeTokens`/`ThemeOptions`/`ThemePreset` are exported for type-safe theming in TS.
-- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/input/inputGroup/inlineEdit/searchInput/mentionInput/passwordInput/otpInput/colorPicker/maskedInput/numberInput/form/formField/textarea/link/breadcrumbs/menu/modal/confirmDialog/drawer/popover/dropdown/contextMenu/commandPalette/select/autocomplete/combobox/multiselect/taginput/datepicker/calendar/daterangepicker/timepicker/datetimepicker/pagination/switch/segmentedControl/tooltip/skeleton/progress/badge/chip/filterChips/avatar/datatable/slider/stepper/rating/tree/treeselect/virtualScroller).
+- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/emptyState/input/inputGroup/inlineEdit/searchInput/mentionInput/passwordInput/otpInput/colorPicker/maskedInput/numberInput/form/formField/textarea/link/breadcrumbs/menu/modal/confirmDialog/drawer/popover/dropdown/contextMenu/commandPalette/select/autocomplete/combobox/multiselect/taginput/datepicker/calendar/daterangepicker/timepicker/datetimepicker/pagination/switch/segmentedControl/tooltip/skeleton/progress/badge/chip/filterChips/avatar/datatable/slider/stepper/rating/tree/treeselect/virtualScroller).
 
 Default core values (from `DefaultTheme`):
 

@@ -41,6 +41,7 @@ export { default as AccordionItem } from '@/package/components/accordion-item.vu
 export { default as Toast } from '@/package/components/toast.vue';
 export { default as ToastContainer } from '@/package/components/toast-container.vue';
 export { default as Alert } from '@/package/components/alert.vue';
+export { default as EmptyState } from '@/package/components/empty-state.vue';
 export { default as Switch } from '@/package/components/switch.vue';
 export { default as Popover } from '@/package/components/popover.vue';
 export { default as Modal } from '@/package/components/modal.vue';

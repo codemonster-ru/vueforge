@@ -48,6 +48,7 @@ import skeleton from './components/skeleton';
 import datatable from './components/datatable';
 import toast from './components/toast';
 import alert from './components/alert';
+import emptyState from './components/empty-state';
 import progress from './components/progress';
 import badge from './components/badge';
 import chip from './components/chip';
@@ -114,6 +115,7 @@ export default {
         datatable,
         toast,
         alert,
+        emptyState,
         progress,
         badge,
         chip,

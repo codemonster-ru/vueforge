@@ -615,6 +615,28 @@
                     </div>
                 </div>
                 <div class="vf-home__card">
+                    <h3>EmptyState</h3>
+                    <div class="vf-home__stack">
+                        <EmptyState
+                            title="No projects yet"
+                            description="Create your first project or import existing data."
+                            icon="📂"
+                        >
+                            <template #actions>
+                                <Button label="Create project" size="small" />
+                                <Button label="Import" size="small" severity="secondary" />
+                            </template>
+                        </EmptyState>
+                        <EmptyState
+                            variant="outlined"
+                            size="small"
+                            title="No search results"
+                            description="Try another query."
+                            icon="🔎"
+                        />
+                    </div>
+                </div>
+                <div class="vf-home__card">
                     <h3>Card</h3>
                     <Card>
                         <template #header>Card header</template>
@@ -844,6 +866,7 @@ import {
     DateTimePicker,
     Pagination,
     DataTable,
+    EmptyState,
     MultiSelect,
     TagInput,
     RadioButton,
@@ -1059,6 +1082,7 @@ const searchCatalog = [
     'Button',
     'Input',
     'InputGroup',
+    'EmptyState',
     'InlineEdit',
     'SearchInput',
     'MentionInput',
