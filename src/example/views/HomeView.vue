@@ -758,6 +758,18 @@
                     />
                 </div>
                 <div class="vf-home__card">
+                    <h3>NotificationCenter</h3>
+                    <div class="vf-home__stack">
+                        <Button label="Open Notifications" @click="notificationsOpen = true" />
+                        <p class="vf-home__muted">Unread: {{ notificationsUnreadCount }}</p>
+                    </div>
+                    <NotificationCenter
+                        v-model="notificationsOpen"
+                        v-model:items="notificationsItems"
+                        @click="onNotificationClick"
+                    />
+                </div>
+                <div class="vf-home__card">
                     <h3>Tour</h3>
                     <div class="vf-home__stack">
                         <Button id="tour-target-start" label="Start Tour" @click="tourOpen = true" />
@@ -920,6 +932,7 @@ import {
     SplitButton,
     ContextMenu,
     CommandPalette,
+    NotificationCenter,
     DatePicker,
     Calendar,
     DateRangePicker,
@@ -1088,6 +1101,33 @@ const contextMenuAction = ref('');
 const splitButtonAction = ref('');
 const commandPaletteOpen = ref(false);
 const commandPaletteAction = ref('');
+const notificationsOpen = ref(false);
+const notificationsItems = ref([
+    {
+        id: 1,
+        title: 'Deploy finished',
+        message: 'Production build completed successfully.',
+        date: '2m ago',
+        read: false,
+        severity: 'success' as const,
+    },
+    {
+        id: 2,
+        title: 'New comment',
+        message: 'Kirill commented on issue #42.',
+        date: '12m ago',
+        read: false,
+        severity: 'info' as const,
+    },
+    {
+        id: 3,
+        title: 'Payment reminder',
+        message: 'Your Pro plan renews tomorrow.',
+        date: '1h ago',
+        read: true,
+        severity: 'warn' as const,
+    },
+]);
 const tourOpen = ref(false);
 const tourQuery = ref('');
 const tourSteps = [
@@ -1206,6 +1246,7 @@ const searchCatalog = [
     'DataTable',
     'TreeSelect',
     'CommandPalette',
+    'NotificationCenter',
 ];
 const serverCatalog = [
     'Documentation',
@@ -1226,6 +1267,9 @@ const localFilteredComponents = computed(() => {
     }
 
     return searchCatalog.filter(item => item.toLowerCase().includes(query));
+});
+const notificationsUnreadCount = computed(() => {
+    return notificationsItems.value.filter(item => !item.read).length;
 });
 const extractedMentions = computed(() => {
     const matches = mentionText.value.match(/@([\w-]+)/g) ?? [];
@@ -1390,6 +1434,9 @@ const resetDrawer = () => {
 };
 const onCommandPaletteSelect = (item: { value?: string | number; label?: string }) => {
     commandPaletteAction.value = String(item.value ?? item.label ?? '');
+};
+const onNotificationClick = (item: { id: string | number }) => {
+    contextMenuAction.value = `notification:${String(item.id)}`;
 };
 
 onBeforeUnmount(() => {

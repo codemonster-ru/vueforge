@@ -83,6 +83,7 @@ import {
     SplitButton,
     ContextMenu,
     CommandPalette,
+    NotificationCenter,
     Tour,
 } from '@codemonster-ru/vueforge';
 import '@codemonster-ru/vueforge/dist/index.css';
@@ -228,6 +229,7 @@ app.use(VueForge, {
         { label: 'Save as draft', value: 'draft', group: 'Actions' },
     ]"
 />
+<NotificationCenter v-model="notificationsOpen" v-model:items="notificationsItems" />
 <Tour v-model="tourOpen" :steps="tourSteps" />
 ```
 
@@ -273,6 +275,7 @@ app.use(VueForge, {
 - SplitButton
 - ContextMenu
 - CommandPalette
+- NotificationCenter
 - Tour
 - Popover
 - Select
@@ -322,6 +325,7 @@ Input / InputGroup / Search / Password / Textarea (quick API):
 - `NumberInput`: numeric control, supports `v-model`, `min`, `max`, `step`, `precision`, `controls`, `size`, `variant`.
 - `Splitter`: resizable multi-panel container with draggable separators and `v-model` percentage sizes.
 - `Tour`: guided step-by-step onboarding overlay anchored to target elements.
+- `NotificationCenter`: persistent notifications inbox with read/unread state and bulk actions.
 - `Wizard`: multi-step flow container with linear navigation, per-step validation, and completion events.
 - `Textarea`: multi-line control, same as Input plus `rows`.
 - `TagInput`: token/tag control, supports `v-model` (array), suggestions, custom tags, `maxTags`, `clearable`, `size`, `variant`.
@@ -2057,6 +2061,60 @@ Component tokens (override via `theme.overrides.components.commandPalette`):
 - `shortcutBackgroundColor`, `shortcutTextColor`, `shortcutFontSize`
 - `emptyPadding`, `emptyColor`
 
+## NotificationCenter
+
+Props:
+
+- `modelValue?: boolean` (v-model)
+- `items?: Array<{ id: string | number; title: string; message?: string; date?: string; read?: boolean; severity?: 'neutral' | 'info' | 'success' | 'warn' | 'danger'; avatar?: string }>`
+- `title?: string` (default `Notifications`)
+- `emptyText?: string` (default `No notifications`)
+- `closeOnOverlay?: boolean` (default `true`)
+- `closeOnEsc?: boolean` (default `true`)
+- `markAllLabel?: string` (default `Mark all as read`)
+- `clearLabel?: string` (default `Clear`)
+- `closeLabel?: string` (default `Close notifications`)
+- `readLabel?: string` (default `Mark as read`)
+- `unreadLabel?: string` (default `Mark as unread`)
+
+Slots:
+
+- `item` (optional) - slot props `{ item, index, toggleRead }`
+- `empty` (optional)
+
+Events:
+
+- `update:modelValue`
+- `update:items`
+- `open`
+- `close`
+- `click`
+- `read`
+- `readAll`
+- `clear`
+
+Example:
+
+```vue
+<NotificationCenter v-model="open" v-model:items="notifications" />
+```
+
+### NotificationCenter tokens
+
+Component tokens (override via `theme.overrides.components.notificationCenter`):
+
+- `zIndex`, `overlayBackgroundColor`
+- `top`, `right`, `width`, `maxWidth`, `maxHeight`
+- `borderColor`, `borderRadius`, `backgroundColor`, `textColor`, `shadow`
+- `dividerColor`, `headerGap`, `headerPadding`
+- `titleGap`, `titleFontSize`, `titleLineHeight`, `titleFontWeight`
+- `badgeSize`, `badgeBackgroundColor`, `badgeTextColor`, `badgeFontSize`
+- `actionsGap`, `closeSize`, `closeHoverBackgroundColor`, `disabledOpacity`
+- `itemGap`, `itemPadding`, `unreadBackgroundColor`
+- `avatarSize`, `avatarBackgroundColor`, `avatarTextColor`, `avatarFontSize`
+- `itemTitleFontSize`, `itemTitleFontWeight`, `itemMetaFontSize`, `itemMetaColor`
+- `emptyPadding`, `emptyColor`
+
 ## Tour
 
 Props:
@@ -2801,7 +2859,7 @@ VueForge exposes design tokens as CSS variables generated from the theme preset.
 Typed tokens:
 
 - `ThemeTokens`/`ThemeOptions`/`ThemePreset` are exported for type-safe theming in TS.
-- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/emptyState/input/inputGroup/inlineEdit/searchInput/mentionInput/passwordInput/otpInput/colorPicker/maskedInput/numberInput/form/formField/textarea/link/breadcrumbs/menu/modal/confirmDialog/drawer/popover/dropdown/contextMenu/commandPalette/tour/select/autocomplete/combobox/multiselect/taginput/datepicker/calendar/daterangepicker/timepicker/datetimepicker/pagination/switch/segmentedControl/tooltip/skeleton/progress/badge/chip/filterChips/avatar/datatable/slider/splitter/stepper/wizard/rating/tree/treeselect/virtualScroller).
+- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/emptyState/input/inputGroup/inlineEdit/searchInput/mentionInput/passwordInput/otpInput/colorPicker/maskedInput/numberInput/form/formField/textarea/link/breadcrumbs/menu/modal/confirmDialog/drawer/popover/dropdown/contextMenu/commandPalette/notificationCenter/tour/select/autocomplete/combobox/multiselect/taginput/datepicker/calendar/daterangepicker/timepicker/datetimepicker/pagination/switch/segmentedControl/tooltip/skeleton/progress/badge/chip/filterChips/avatar/datatable/slider/splitter/stepper/wizard/rating/tree/treeselect/virtualScroller).
 
 Default core values (from `DefaultTheme`):
 

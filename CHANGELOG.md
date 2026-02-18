@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.65.0] - 2026-02-18
+
+- Added NotificationCenter component for persistent in-app notifications with read/unread state, bulk actions, and item slots.
+- Added default theme tokens and typed token support for `components.notificationCenter`.
+- Added NotificationCenter export, README docs, example app showcase, and unit tests.
+
 ## [0.64.0] - 2026-02-18
 
 - Added Wizard and WizardStep components for multi-step workflows with linear navigation, per-step validation hooks, and completion events.

@@ -26,6 +26,7 @@ import dropdown from './components/dropdown';
 import splitbutton from './components/splitbutton';
 import contextMenu from './components/context-menu';
 import commandPalette from './components/command-palette';
+import notificationCenter from './components/notification-center';
 import select from './components/select';
 import autocomplete from './components/autocomplete';
 import combobox from './components/combobox';
@@ -96,6 +97,7 @@ export default {
         splitbutton,
         contextMenu,
         commandPalette,
+        notificationCenter,
         select,
         autocomplete,
         combobox,

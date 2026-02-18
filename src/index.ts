@@ -51,6 +51,7 @@ export { default as Dropdown } from '@/package/components/dropdown.vue';
 export { default as SplitButton } from '@/package/components/split-button.vue';
 export { default as ContextMenu } from '@/package/components/context-menu.vue';
 export { default as CommandPalette } from '@/package/components/command-palette.vue';
+export { default as NotificationCenter } from '@/package/components/notification-center.vue';
 export { default as Tooltip } from '@/package/components/tooltip.vue';
 export { default as Tour } from '@/package/components/tour.vue';
 export { default as Skeleton } from '@/package/components/skeleton.vue';
@@ -78,6 +79,7 @@ export type { TreeItem, TreeValue } from '@/package/components/tree.vue';
 export type { TimelineItem } from '@/package/components/timeline.vue';
 export type { TourStep } from '@/package/components/tour.vue';
 export type { WizardStepItem } from '@/package/components/wizard.vue';
+export type { NotificationCenterItem } from '@/package/components/notification-center.vue';
 // config
 export { default as VueForge, setTheme, updateTheme, getTheme } from '@/package/config/index';
 export type { ThemeTokens, ThemeOptions, ThemePreset } from '@/package/config/theme-core';

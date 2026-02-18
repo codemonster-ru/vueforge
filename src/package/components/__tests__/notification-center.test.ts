@@ -1,0 +1,57 @@
+import { mount } from '@vue/test-utils';
+import { nextTick } from 'vue';
+import NotificationCenter from '../notification-center.vue';
+
+const items = [
+    { id: 1, title: 'Build completed', message: 'CI passed', read: false },
+    { id: 2, title: 'New comment', message: 'Check PR #42', read: true },
+];
+
+const mountCenter = (options: Parameters<typeof mount>[1] = {}) =>
+    mount(NotificationCenter, {
+        props: {
+            modelValue: true,
+            items,
+        },
+        global: {
+            stubs: {
+                teleport: true,
+            },
+        },
+        ...options,
+    });
+
+describe('NotificationCenter', () => {
+    it('renders notifications list', async () => {
+        const wrapper = mountCenter();
+
+        await nextTick();
+
+        expect(wrapper.findAll('.vf-notification-center__item')).toHaveLength(2);
+        expect(wrapper.find('.vf-notification-center__title').text()).toContain('Notifications');
+    });
+
+    it('toggles read state and emits updates', async () => {
+        const wrapper = mountCenter();
+
+        await nextTick();
+        await wrapper.find('.vf-notification-center__toggle').trigger('click');
+
+        expect(wrapper.emitted('update:items')).toBeTruthy();
+        expect(wrapper.emitted('read')).toBeTruthy();
+    });
+
+    it('marks all as read and clears all', async () => {
+        const wrapper = mountCenter();
+
+        await nextTick();
+        await wrapper.findAll('.vf-notification-center__action')[0].trigger('click');
+
+        expect(wrapper.emitted('readAll')).toBeTruthy();
+
+        await wrapper.findAll('.vf-notification-center__action')[1].trigger('click');
+
+        expect(wrapper.emitted('clear')).toBeTruthy();
+        expect(wrapper.find('.vf-notification-center__empty').exists()).toBe(true);
+    });
+});
