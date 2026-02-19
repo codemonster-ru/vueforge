@@ -293,6 +293,25 @@
                                 <Textarea v-model="feedback" placeholder="Small feedback" size="small" />
                             </div>
                         </div>
+                        <div class="vf-home__card vf-home__card_large">
+                            <h3>RichTextEditor</h3>
+                            <div class="vf-home__stack">
+                                <RichTextEditor
+                                    v-model="article"
+                                    placeholder="Write release notes..."
+                                    :rows="6"
+                                    :max-length="300"
+                                />
+                                <RichTextEditor
+                                    v-model="articleHtml"
+                                    format="html"
+                                    variant="outlined"
+                                    :rows="5"
+                                    :toolbar="['bold', 'italic', 'link', 'orderedList', 'code']"
+                                />
+                                <p class="vf-home__muted">Markdown value: {{ article || 'empty' }}</p>
+                            </div>
+                        </div>
                         <div class="vf-home__card">
                             <h3>FileUpload</h3>
                             <div class="vf-home__stack">
@@ -1018,6 +1037,7 @@ import {
     MaskedInput,
     NumberInput,
     Textarea,
+    RichTextEditor,
     FileUpload,
     Link,
     Menu,
@@ -1132,6 +1152,8 @@ const usernameError = ref('Username is required');
 const bio = ref('');
 const notes = ref('');
 const feedback = ref('');
+const article = ref('## Weekly update\\n- Added new API endpoint\\n- Fixed sorting issue');
+const articleHtml = ref('<p><strong>Welcome</strong> to VueForge docs.</p>');
 const resume = ref<File | null>(null);
 const attachments = ref<File[]>([]);
 const role = ref('');

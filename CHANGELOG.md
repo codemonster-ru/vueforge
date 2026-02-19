@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.68.0] - 2026-02-19
+
+- Added RichTextEditor component with Markdown/HTML formatting modes, toolbar actions, and optional character counter.
+- Added default theme tokens and typed token support for `components.richTextEditor`.
+- Added RichTextEditor export, README docs, example app showcase, and unit tests.
+
 ## [0.67.0] - 2026-02-18
 
 - Added KanbanBoard component with draggable cards, column/card slots, and move events.

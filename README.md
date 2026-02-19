@@ -40,6 +40,7 @@ import {
     Form,
     FormField,
     Textarea,
+    RichTextEditor,
     FileUpload,
     Breadcrumbs,
     Select,
@@ -132,6 +133,7 @@ app.use(VueForge, {
 <MaskedInput v-model="phone" mask="+7 (###) ###-##-##" />
 <NumberInput v-model="age" :min="0" :max="120" :step="1" />
 <Textarea v-model="bio" placeholder="Tell us about yourself" />
+<RichTextEditor v-model="article" />
 <FileUpload v-model="resume" accept=".pdf,.doc,.docx" />
 <Breadcrumbs :items="breadcrumbItems" />
 <Select v-model="role" :options="roles" placeholder="Choose role" />
@@ -272,6 +274,7 @@ app.use(VueForge, {
 - Form
 - FormField
 - Textarea
+- RichTextEditor
 - FileUpload
 - Link
 - Breadcrumbs
@@ -338,11 +341,12 @@ Input / InputGroup / Search / Password / Textarea (quick API):
 - `NotificationCenter`: persistent notifications inbox with read/unread state and bulk actions.
 - `AppShell`: application layout shell with sidebar/header/main/footer regions, collapse toggle, and mobile drawer behavior.
 - `KanbanBoard`: task board with draggable cards, customizable column/card slots, and move events.
+- `RichTextEditor`: formatting editor with toolbar actions and Markdown/HTML output.
 - `Wizard`: multi-step flow container with linear navigation, per-step validation, and completion events.
 - `Textarea`: multi-line control, same as Input plus `rows`.
 - `TagInput`: token/tag control, supports `v-model` (array), suggestions, custom tags, `maxTags`, `clearable`, `size`, `variant`.
 - `FilterChips`: compact chip-based filter toggles with single/multiple selection modes and optional clear action.
-- `SearchInput`, `MentionInput`, `InlineEdit`, `OtpInput`, `ColorPicker`, `MaskedInput`, `Checkbox`, `Select`, `Autocomplete`, `MultiSelect`, `TagInput`, `DatePicker`, `Calendar`, `DateRangePicker`, `DateTimePicker`, `Pagination`, `DataTable`, `SegmentedControl`, and `TreeSelect` also support `variant: 'filled' | 'outlined'`.
+- `SearchInput`, `MentionInput`, `InlineEdit`, `OtpInput`, `ColorPicker`, `MaskedInput`, `RichTextEditor`, `Checkbox`, `Select`, `Autocomplete`, `MultiSelect`, `TagInput`, `DatePicker`, `Calendar`, `DateRangePicker`, `DateTimePicker`, `Pagination`, `DataTable`, `SegmentedControl`, and `TreeSelect` also support `variant: 'filled' | 'outlined'`.
 
 ## Form
 
@@ -1120,6 +1124,45 @@ Example:
 <Textarea v-model="bio" placeholder="Tell us about yourself" rows="4" />
 ```
 
+## RichTextEditor
+
+Props:
+
+- `modelValue?: string` (v-model)
+- `placeholder?: string`
+- `disabled?: boolean`
+- `readonly?: boolean`
+- `size?: 'small' | 'normal' | 'large'` (default `normal`)
+- `variant?: 'filled' | 'outlined'` (default `filled`)
+- `format?: 'markdown' | 'html'` (default `markdown`)
+- `rows?: number` (default `6`)
+- `maxLength?: number` (default `0`, disabled when `0`)
+- `showToolbar?: boolean` (default `true`)
+- `toolbar?: Array<'bold' | 'italic' | 'underline' | 'link' | 'bulletList' | 'orderedList' | 'code'>`
+- `toolbarLabel?: string` (default `Text formatting toolbar`)
+- `ariaLabel?: string` (default `Rich text editor`)
+
+Events:
+
+- `update:modelValue`
+- `input`
+- `change`
+- `focus`
+- `blur`
+- `action` (payload: `action`, `nextValue`)
+
+Example:
+
+```vue
+<RichTextEditor
+    v-model="article"
+    format="markdown"
+    :rows="8"
+    :max-length="2000"
+    :toolbar="['bold', 'italic', 'link', 'bulletList', 'code']"
+/>
+```
+
 ## FileUpload
 
 Props:
@@ -1761,6 +1804,24 @@ Component tokens (override via `theme.overrides.components.textarea`):
 - `minHeight`, `resize`
 - `small.fontSize`, `small.padding`
 - `large.fontSize`, `large.padding`
+
+### RichTextEditor tokens
+
+Component tokens (override via `theme.overrides.components.richTextEditor`):
+
+- `gap`, `fontSize`, `padding`
+- `borderRadius`, `borderColor`
+- `backgroundColor`, `textColor`, `placeholderColor`
+- `focusBorderColor`, `focusRingShadow`, `hoverBorderColor`
+- `disabledOpacity`
+- `minHeight`, `resize`
+- `toolbarGap`, `toolbarPadding`, `toolbarBorderColor`, `toolbarBackgroundColor`
+- `toolbarButtonMinWidth`, `toolbarButtonPadding`, `toolbarButtonRadius`
+- `toolbarButtonBorderColor`, `toolbarButtonBackgroundColor`, `toolbarButtonTextColor`
+- `toolbarButtonHoverBackgroundColor`, `toolbarButtonActiveBackgroundColor`
+- `counterFontSize`, `counterColor`, `counterDangerColor`
+- `small.fontSize`, `small.padding`, `small.toolbarButtonPadding`
+- `large.fontSize`, `large.padding`, `large.toolbarButtonPadding`
 
 ## Modal
 
@@ -2970,7 +3031,7 @@ VueForge exposes design tokens as CSS variables generated from the theme preset.
 Typed tokens:
 
 - `ThemeTokens`/`ThemeOptions`/`ThemePreset` are exported for type-safe theming in TS.
-- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/emptyState/input/inputGroup/inlineEdit/searchInput/mentionInput/passwordInput/otpInput/colorPicker/maskedInput/numberInput/form/formField/textarea/link/breadcrumbs/menu/modal/confirmDialog/drawer/popover/dropdown/contextMenu/commandPalette/notificationCenter/appShell/kanbanBoard/tour/select/autocomplete/combobox/multiselect/taginput/datepicker/calendar/daterangepicker/timepicker/datetimepicker/pagination/switch/segmentedControl/tooltip/skeleton/progress/badge/chip/filterChips/avatar/datatable/slider/splitter/stepper/wizard/rating/tree/treeselect/virtualScroller).
+- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/emptyState/input/inputGroup/inlineEdit/searchInput/mentionInput/passwordInput/otpInput/colorPicker/maskedInput/numberInput/form/formField/textarea/richTextEditor/link/breadcrumbs/menu/modal/confirmDialog/drawer/popover/dropdown/contextMenu/commandPalette/notificationCenter/appShell/kanbanBoard/tour/select/autocomplete/combobox/multiselect/taginput/datepicker/calendar/daterangepicker/timepicker/datetimepicker/pagination/switch/segmentedControl/tooltip/skeleton/progress/badge/chip/filterChips/avatar/datatable/slider/splitter/stepper/wizard/rating/tree/treeselect/virtualScroller).
 
 Default core values (from `DefaultTheme`):
 

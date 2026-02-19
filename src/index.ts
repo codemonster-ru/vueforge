@@ -17,6 +17,7 @@ export { default as NumberInput } from '@/package/components/number-input.vue';
 export { default as Form } from '@/package/components/form.vue';
 export { default as FormField } from '@/package/components/form-field.vue';
 export { default as Textarea } from '@/package/components/textarea.vue';
+export { default as RichTextEditor } from '@/package/components/rich-text-editor.vue';
 export { default as FileUpload } from '@/package/components/file-upload.vue';
 export { default as Select } from '@/package/components/select.vue';
 export { default as Autocomplete } from '@/package/components/autocomplete.vue';

@@ -14,6 +14,7 @@ import numberInput from './components/number-input';
 import form from './components/form';
 import formField from './components/form-field';
 import textarea from './components/textarea';
+import richTextEditor from './components/rich-text-editor';
 import fileUpload from './components/file-upload';
 import link from './components/link';
 import breadcrumbs from './components/breadcrumbs';
@@ -87,6 +88,7 @@ export default {
         form,
         formField,
         textarea,
+        richTextEditor,
         fileUpload,
         link,
         breadcrumbs,

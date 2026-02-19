@@ -407,6 +407,47 @@ export type TextareaTokens = {
         fontSize?: string;
     };
 };
+export type RichTextEditorTokens = {
+    gap?: string;
+    fontSize?: string;
+    padding?: string;
+    borderRadius?: string;
+    borderColor?: string;
+    backgroundColor?: string;
+    textColor?: string;
+    placeholderColor?: string;
+    focusBorderColor?: string;
+    focusRingShadow?: string;
+    hoverBorderColor?: string;
+    disabledOpacity?: string;
+    minHeight?: string;
+    resize?: string;
+    toolbarGap?: string;
+    toolbarPadding?: string;
+    toolbarBorderColor?: string;
+    toolbarBackgroundColor?: string;
+    toolbarButtonMinWidth?: string;
+    toolbarButtonPadding?: string;
+    toolbarButtonRadius?: string;
+    toolbarButtonBorderColor?: string;
+    toolbarButtonBackgroundColor?: string;
+    toolbarButtonTextColor?: string;
+    toolbarButtonHoverBackgroundColor?: string;
+    toolbarButtonActiveBackgroundColor?: string;
+    counterFontSize?: string;
+    counterColor?: string;
+    counterDangerColor?: string;
+    small?: {
+        padding?: string;
+        fontSize?: string;
+        toolbarButtonPadding?: string;
+    };
+    large?: {
+        padding?: string;
+        fontSize?: string;
+        toolbarButtonPadding?: string;
+    };
+};
 export type FileUploadTokens = {
     minHeight?: string;
     fontSize?: string;
@@ -2016,6 +2057,7 @@ export type ThemeComponentTokens = {
     form?: FormTokens;
     formField?: FormFieldTokens;
     textarea?: TextareaTokens;
+    richTextEditor?: RichTextEditorTokens;
     fileUpload?: FileUploadTokens;
     link?: LinkTokens;
     breadcrumbs?: BreadcrumbsTokens;
