@@ -503,6 +503,16 @@ export type BreadcrumbsTokens = {
     separatorColor?: string;
     disabledOpacity?: string;
 };
+export type DividerTokens = {
+    color?: string;
+    textColor?: string;
+    thickness?: string;
+    minLength?: string;
+    gap?: string;
+    inset?: string;
+    labelPadding?: string;
+    labelFontSize?: string;
+};
 export type MenuTokens = {
     iconGap?: string;
     submenuOffset?: string;
@@ -2061,6 +2071,7 @@ export type ThemeComponentTokens = {
     fileUpload?: FileUploadTokens;
     link?: LinkTokens;
     breadcrumbs?: BreadcrumbsTokens;
+    divider?: DividerTokens;
     menu?: MenuTokens;
     modal?: ModalTokens;
     confirmDialog?: ConfirmDialogTokens;

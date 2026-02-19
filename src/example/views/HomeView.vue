@@ -40,6 +40,18 @@
                             <Breadcrumbs :items="breadcrumbItems" />
                         </div>
                         <div class="vf-home__card">
+                            <h3>Divider</h3>
+                            <div class="vf-home__stack">
+                                <Divider />
+                                <Divider label="OR" />
+                                <div class="vf-home__stack-inline" style="height: 3rem">
+                                    <span>Left</span>
+                                    <Divider orientation="vertical" />
+                                    <span>Right</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="vf-home__card">
                             <h3>Input</h3>
                             <div class="vf-home__stack">
                                 <Input v-model="email" placeholder="Email" />
@@ -1022,6 +1034,7 @@ import {
     Checkbox,
     SegmentedControl,
     Breadcrumbs,
+    Divider,
     DefaultTheme,
     Form,
     FormField,
@@ -1382,6 +1395,7 @@ const searchCatalog = [
     'Button',
     'Input',
     'InputGroup',
+    'Divider',
     'EmptyState',
     'Splitter',
     'Tour',

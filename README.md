@@ -43,6 +43,7 @@ import {
     RichTextEditor,
     FileUpload,
     Breadcrumbs,
+    Divider,
     Select,
     Autocomplete,
     Combobox,
@@ -136,6 +137,7 @@ app.use(VueForge, {
 <RichTextEditor v-model="article" />
 <FileUpload v-model="resume" accept=".pdf,.doc,.docx" />
 <Breadcrumbs :items="breadcrumbItems" />
+<Divider label="OR" />
 <Select v-model="role" :options="roles" placeholder="Choose role" />
 <Autocomplete v-model="country" :options="countries" placeholder="Find country" />
 <Combobox v-model="countryId" :options="countries" placeholder="Pick country" clearable />
@@ -278,6 +280,7 @@ app.use(VueForge, {
 - FileUpload
 - Link
 - Breadcrumbs
+- Divider
 - Menu
 - Modal
 - ConfirmDialog
@@ -342,6 +345,7 @@ Input / InputGroup / Search / Password / Textarea (quick API):
 - `AppShell`: application layout shell with sidebar/header/main/footer regions, collapse toggle, and mobile drawer behavior.
 - `KanbanBoard`: task board with draggable cards, customizable column/card slots, and move events.
 - `RichTextEditor`: formatting editor with toolbar actions and Markdown/HTML output.
+- `Divider`: horizontal/vertical visual separator with optional label and style variants.
 - `Wizard`: multi-step flow container with linear navigation, per-step validation, and completion events.
 - `Textarea`: multi-line control, same as Input plus `rows`.
 - `TagInput`: token/tag control, supports `v-model` (array), suggestions, custom tags, `maxTags`, `clearable`, `size`, `variant`.
@@ -1531,6 +1535,40 @@ Component tokens (override via `theme.overrides.components.breadcrumbs`):
 
 - `gap`, `fontSize`, `textColor`, `hoverColor`, `activeColor`
 - `separatorColor`, `disabledOpacity`
+
+## Divider
+
+Props:
+
+- `orientation?: 'horizontal' | 'vertical'` (default `horizontal`)
+- `variant?: 'solid' | 'dashed' | 'dotted'` (default `solid`)
+- `inset?: boolean` (default `false`)
+- `label?: string`
+- `ariaLabel?: string` (default `Divider`)
+
+Slots:
+
+- `default` (optional) - custom label content (horizontal mode only)
+
+Example:
+
+```vue
+<Divider />
+<Divider label="OR" />
+<div style="height: 32px; display: flex; align-items: center; gap: 8px">
+    <span>Left</span>
+    <Divider orientation="vertical" />
+    <span>Right</span>
+</div>
+```
+
+### Divider tokens
+
+Component tokens (override via `theme.overrides.components.divider`):
+
+- `color`, `textColor`, `thickness`, `minLength`
+- `gap`, `inset`
+- `labelPadding`, `labelFontSize`
 
 ## SegmentedControl
 
@@ -3031,7 +3069,7 @@ VueForge exposes design tokens as CSS variables generated from the theme preset.
 Typed tokens:
 
 - `ThemeTokens`/`ThemeOptions`/`ThemePreset` are exported for type-safe theming in TS.
-- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/emptyState/input/inputGroup/inlineEdit/searchInput/mentionInput/passwordInput/otpInput/colorPicker/maskedInput/numberInput/form/formField/textarea/richTextEditor/link/breadcrumbs/menu/modal/confirmDialog/drawer/popover/dropdown/contextMenu/commandPalette/notificationCenter/appShell/kanbanBoard/tour/select/autocomplete/combobox/multiselect/taginput/datepicker/calendar/daterangepicker/timepicker/datetimepicker/pagination/switch/segmentedControl/tooltip/skeleton/progress/badge/chip/filterChips/avatar/datatable/slider/splitter/stepper/wizard/rating/tree/treeselect/virtualScroller).
+- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/emptyState/input/inputGroup/inlineEdit/searchInput/mentionInput/passwordInput/otpInput/colorPicker/maskedInput/numberInput/form/formField/textarea/richTextEditor/link/breadcrumbs/divider/menu/modal/confirmDialog/drawer/popover/dropdown/contextMenu/commandPalette/notificationCenter/appShell/kanbanBoard/tour/select/autocomplete/combobox/multiselect/taginput/datepicker/calendar/daterangepicker/timepicker/datetimepicker/pagination/switch/segmentedControl/tooltip/skeleton/progress/badge/chip/filterChips/avatar/datatable/slider/splitter/stepper/wizard/rating/tree/treeselect/virtualScroller).
 
 Default core values (from `DefaultTheme`):
 

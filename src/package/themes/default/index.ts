@@ -18,6 +18,7 @@ import richTextEditor from './components/rich-text-editor';
 import fileUpload from './components/file-upload';
 import link from './components/link';
 import breadcrumbs from './components/breadcrumbs';
+import divider from './components/divider';
 import menu from './components/menu';
 import modal from './components/modal';
 import confirmDialog from './components/confirm-dialog';
@@ -92,6 +93,7 @@ export default {
         fileUpload,
         link,
         breadcrumbs,
+        divider,
         menu,
         modal,
         confirmDialog,

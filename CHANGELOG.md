@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.69.0] - 2026-02-19
+
+- Added Divider component with horizontal/vertical orientations, solid/dashed/dotted variants, inset mode, and optional label.
+- Added default theme tokens and typed token support for `components.divider`.
+- Added Divider export, README docs, example app showcase, and unit tests.
+
 ## [0.68.0] - 2026-02-19
 
 - Added RichTextEditor component with Markdown/HTML formatting modes, toolbar actions, and optional character counter.
