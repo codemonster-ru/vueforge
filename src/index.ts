@@ -63,6 +63,7 @@ export { default as Badge } from '@/package/components/badge.vue';
 export { default as Chip } from '@/package/components/chip.vue';
 export { default as FilterChips } from '@/package/components/filter-chips.vue';
 export { default as Avatar } from '@/package/components/avatar.vue';
+export { default as Spinner } from '@/package/components/spinner.vue';
 export { default as DataTable } from '@/package/components/data-table.vue';
 export { default as Slider } from '@/package/components/slider.vue';
 export { default as Splitter } from '@/package/components/splitter.vue';
@@ -78,7 +79,13 @@ export { default as Breadcrumbs } from '@/package/components/breadcrumbs.vue';
 export { default as Divider } from '@/package/components/divider.vue';
 export { default as VirtualScroller } from '@/package/components/virtual-scroller.vue';
 export type { DataTableColumn } from '@/package/components/data-table.vue';
-export type { FormErrors, FormTouched, FormValidateHandler, FormValidateResult, FormValues } from '@/package/components/form.vue';
+export type {
+    FormErrors,
+    FormTouched,
+    FormValidateHandler,
+    FormValidateResult,
+    FormValues,
+} from '@/package/components/form.vue';
 export type { TreeItem, TreeValue } from '@/package/components/tree.vue';
 export type { TimelineItem } from '@/package/components/timeline.vue';
 export type { TourStep } from '@/package/components/tour.vue';

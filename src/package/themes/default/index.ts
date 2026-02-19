@@ -60,6 +60,7 @@ import badge from './components/badge';
 import chip from './components/chip';
 import filterChips from './components/filter-chips';
 import avatar from './components/avatar';
+import spinner from './components/spinner';
 import slider from './components/slider';
 import splitter from './components/splitter';
 import stepper from './components/stepper';
@@ -135,6 +136,7 @@ export default {
         chip,
         filterChips,
         avatar,
+        spinner,
         slider,
         splitter,
         stepper,

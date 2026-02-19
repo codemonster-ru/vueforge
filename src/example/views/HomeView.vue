@@ -975,6 +975,14 @@
                             </div>
                         </div>
                         <div class="vf-home__card">
+                            <h3>Spinner</h3>
+                            <div class="vf-home__stack">
+                                <Spinner />
+                                <Spinner label="Loading users..." size="small" />
+                                <Spinner variant="overlay" severity="info" label="Sync in progress" />
+                            </div>
+                        </div>
+                        <div class="vf-home__card">
                             <h3>Slider</h3>
                             <div class="vf-home__stack">
                                 <Slider v-model="volume" :min="0" :max="100" :step="5" show-value />
@@ -1094,6 +1102,7 @@ import {
     FilterChips,
     Avatar,
     Progress,
+    Spinner,
     Slider,
     Splitter,
     SplitterPanel,
@@ -1416,6 +1425,7 @@ const searchCatalog = [
     'FilterChips',
     'DataTable',
     'KanbanBoard',
+    'Spinner',
     'TreeSelect',
     'CommandPalette',
     'NotificationCenter',

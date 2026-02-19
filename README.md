@@ -63,6 +63,7 @@ import {
     EmptyState,
     Skeleton,
     Progress,
+    Spinner,
     Badge,
     Chip,
     FilterChips,
@@ -163,6 +164,7 @@ app.use(VueForge, {
 <EmptyState title="No projects yet" description="Create your first project to get started." icon="📂" />
 <Skeleton height="12px" width="140px" />
 <Progress :value="64" />
+<Spinner label="Loading..." />
 <Badge label="Beta" />
 <Chip label="New" />
 <FilterChips
@@ -310,6 +312,7 @@ app.use(VueForge, {
 - Tooltip
 - Skeleton
 - Progress
+- Spinner
 - Badge
 - Chip
 - FilterChips
@@ -346,6 +349,7 @@ Input / InputGroup / Search / Password / Textarea (quick API):
 - `KanbanBoard`: task board with draggable cards, customizable column/card slots, and move events.
 - `RichTextEditor`: formatting editor with toolbar actions and Markdown/HTML output.
 - `Divider`: horizontal/vertical visual separator with optional label and style variants.
+- `Spinner`: lightweight loading indicator with inline/overlay variants and severity colors.
 - `Wizard`: multi-step flow container with linear navigation, per-step validation, and completion events.
 - `Textarea`: multi-line control, same as Input plus `rows`.
 - `TagInput`: token/tag control, supports `v-model` (array), suggestions, custom tags, `maxTags`, `clearable`, `size`, `variant`.
@@ -2632,6 +2636,40 @@ Component tokens (override via `theme.overrides.components.progress`):
 - `small.height`, `small.labelFontSize`, `small.circularSize`, `small.circularThickness`
 - `large.height`, `large.labelFontSize`, `large.circularSize`, `large.circularThickness`
 
+## Spinner
+
+Props:
+
+- `variant?: 'inline' | 'overlay'` (default `inline`)
+- `size?: 'small' | 'normal' | 'large'` (default `normal`)
+- `severity?: 'neutral' | 'info' | 'success' | 'warn' | 'danger'` (default `neutral`)
+- `label?: string`
+- `ariaLabel?: string` (default `Loading`)
+
+Slots:
+
+- `default` (optional) - custom label content
+
+Example:
+
+```vue
+<Spinner />
+<Spinner label="Loading users..." size="small" />
+<Spinner variant="overlay" severity="info" label="Sync in progress" />
+```
+
+### Spinner tokens
+
+Component tokens (override via `theme.overrides.components.spinner`):
+
+- `size`, `thickness`, `color`, `trackColor`
+- `gap`, `labelColor`, `labelFontSize`
+- `animationDuration`
+- `overlayMinHeight`, `overlayPadding`, `overlayBorderRadius`, `overlayBackgroundColor`
+- `info.color`, `success.color`, `warn.color`, `danger.color`
+- `small.size`, `small.thickness`, `small.labelFontSize`
+- `large.size`, `large.thickness`, `large.labelFontSize`
+
 ## Slider
 
 Props:
@@ -3069,7 +3107,7 @@ VueForge exposes design tokens as CSS variables generated from the theme preset.
 Typed tokens:
 
 - `ThemeTokens`/`ThemeOptions`/`ThemePreset` are exported for type-safe theming in TS.
-- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/emptyState/input/inputGroup/inlineEdit/searchInput/mentionInput/passwordInput/otpInput/colorPicker/maskedInput/numberInput/form/formField/textarea/richTextEditor/link/breadcrumbs/divider/menu/modal/confirmDialog/drawer/popover/dropdown/contextMenu/commandPalette/notificationCenter/appShell/kanbanBoard/tour/select/autocomplete/combobox/multiselect/taginput/datepicker/calendar/daterangepicker/timepicker/datetimepicker/pagination/switch/segmentedControl/tooltip/skeleton/progress/badge/chip/filterChips/avatar/datatable/slider/splitter/stepper/wizard/rating/tree/treeselect/virtualScroller).
+- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/emptyState/input/inputGroup/inlineEdit/searchInput/mentionInput/passwordInput/otpInput/colorPicker/maskedInput/numberInput/form/formField/textarea/richTextEditor/link/breadcrumbs/divider/menu/modal/confirmDialog/drawer/popover/dropdown/contextMenu/commandPalette/notificationCenter/appShell/kanbanBoard/tour/select/autocomplete/combobox/multiselect/taginput/datepicker/calendar/daterangepicker/timepicker/datetimepicker/pagination/switch/segmentedControl/tooltip/skeleton/progress/spinner/badge/chip/filterChips/avatar/datatable/slider/splitter/stepper/wizard/rating/tree/treeselect/virtualScroller).
 
 Default core values (from `DefaultTheme`):
 

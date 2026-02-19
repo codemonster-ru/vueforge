@@ -1423,6 +1423,42 @@ export type ProgressTokens = {
         circularThickness?: string;
     };
 };
+export type SpinnerTokens = {
+    size?: string;
+    thickness?: string;
+    color?: string;
+    trackColor?: string;
+    gap?: string;
+    labelColor?: string;
+    labelFontSize?: string;
+    animationDuration?: string;
+    overlayMinHeight?: string;
+    overlayPadding?: string;
+    overlayBorderRadius?: string;
+    overlayBackgroundColor?: string;
+    info?: {
+        color?: string;
+    };
+    success?: {
+        color?: string;
+    };
+    warn?: {
+        color?: string;
+    };
+    danger?: {
+        color?: string;
+    };
+    small?: {
+        size?: string;
+        thickness?: string;
+        labelFontSize?: string;
+    };
+    large?: {
+        size?: string;
+        thickness?: string;
+        labelFontSize?: string;
+    };
+};
 export type SliderTokens = {
     width?: string;
     gap?: string;
@@ -2101,6 +2137,7 @@ export type ThemeComponentTokens = {
     tour?: TourTokens;
     skeleton?: SkeletonTokens;
     progress?: ProgressTokens;
+    spinner?: SpinnerTokens;
     slider?: SliderTokens;
     splitter?: SplitterTokens;
     stepper?: StepperTokens;

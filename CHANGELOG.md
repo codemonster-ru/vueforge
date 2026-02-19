@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.70.0] - 2026-02-19
+
+- Added Spinner component with inline/overlay variants, size and severity options, and optional label slot.
+- Added default theme tokens and typed token support for `components.spinner`.
+- Added Spinner export, README docs, example app showcase, and unit tests.
+
 ## [0.69.0] - 2026-02-19
 
 - Added Divider component with horizontal/vertical orientations, solid/dashed/dotted variants, inset mode, and optional label.
