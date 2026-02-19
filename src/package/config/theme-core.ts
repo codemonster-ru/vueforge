@@ -518,6 +518,34 @@ export type DividerTokens = {
     labelPadding?: string;
     labelFontSize?: string;
 };
+export type PageHeaderTokens = {
+    gap?: string;
+    contentGap?: string;
+    breadcrumbGap?: string;
+    actionsGap?: string;
+    metaGap?: string;
+    padding?: string;
+    borderRadius?: string;
+    borderColor?: string;
+    backgroundColor?: string;
+    textColor?: string;
+    dividerColor?: string;
+    titleFontSize?: string;
+    titleLineHeight?: string;
+    titleFontWeight?: string;
+    subtitleFontSize?: string;
+    subtitleColor?: string;
+    small?: {
+        padding?: string;
+        titleFontSize?: string;
+        subtitleFontSize?: string;
+    };
+    large?: {
+        padding?: string;
+        titleFontSize?: string;
+        subtitleFontSize?: string;
+    };
+};
 export type MenuTokens = {
     iconGap?: string;
     submenuOffset?: string;
@@ -2114,6 +2142,7 @@ export type ThemeComponentTokens = {
     link?: LinkTokens;
     breadcrumbs?: BreadcrumbsTokens;
     divider?: DividerTokens;
+    pageHeader?: PageHeaderTokens;
     menu?: MenuTokens;
     modal?: ModalTokens;
     confirmDialog?: ConfirmDialogTokens;

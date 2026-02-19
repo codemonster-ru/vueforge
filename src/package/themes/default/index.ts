@@ -20,6 +20,7 @@ import fileUpload from './components/file-upload';
 import link from './components/link';
 import breadcrumbs from './components/breadcrumbs';
 import divider from './components/divider';
+import pageHeader from './components/page-header';
 import menu from './components/menu';
 import modal from './components/modal';
 import confirmDialog from './components/confirm-dialog';
@@ -97,6 +98,7 @@ export default {
         link,
         breadcrumbs,
         divider,
+        pageHeader,
         menu,
         modal,
         confirmDialog,

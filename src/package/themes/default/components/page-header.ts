@@ -1,0 +1,28 @@
+export default {
+    gap: '0.5rem',
+    contentGap: '0.35rem',
+    breadcrumbGap: '0.25rem',
+    actionsGap: '0.5rem',
+    metaGap: '0.5rem',
+    padding: '0.9rem 1rem',
+    borderRadius: 'var(--vf-radii-lg)',
+    borderColor: 'var(--vf-border-color)',
+    backgroundColor: 'var(--vf-bg-color)',
+    textColor: 'var(--vf-text-color)',
+    dividerColor: 'var(--vf-divider-color)',
+    titleFontSize: '1.75rem',
+    titleLineHeight: '1.2',
+    titleFontWeight: '700',
+    subtitleFontSize: '1rem',
+    subtitleColor: 'var(--vf-secondary-text-color)',
+    small: {
+        padding: '0.75rem 0.85rem',
+        titleFontSize: '1.4rem',
+        subtitleFontSize: '0.9rem',
+    },
+    large: {
+        padding: '1.1rem 1.25rem',
+        titleFontSize: '2rem',
+        subtitleFontSize: '1.05rem',
+    },
+};

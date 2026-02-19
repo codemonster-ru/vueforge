@@ -45,6 +45,7 @@ import {
     FileUpload,
     Breadcrumbs,
     Divider,
+    PageHeader,
     Select,
     Autocomplete,
     Combobox,
@@ -145,6 +146,12 @@ app.use(VueForge, {
 <FileUpload v-model="resume" accept=".pdf,.doc,.docx" />
 <Breadcrumbs :items="breadcrumbItems" />
 <Divider label="OR" />
+<PageHeader title="Projects" subtitle="Manage active projects and team workload.">
+    <template #actions>
+        <Button label="Import" variant="outlined" severity="secondary" />
+        <Button label="New project" icon="plus" />
+    </template>
+</PageHeader>
 <Select v-model="role" :options="roles" placeholder="Choose role" />
 <Autocomplete v-model="country" :options="countries" placeholder="Find country" />
 <Combobox v-model="countryId" :options="countries" placeholder="Pick country" clearable />
@@ -290,6 +297,7 @@ app.use(VueForge, {
 - Link
 - Breadcrumbs
 - Divider
+- PageHeader
 - Menu
 - Modal
 - ConfirmDialog
@@ -358,6 +366,7 @@ Input / InputGroup / Search / Password / Textarea (quick API):
 - `RichTextEditor`: formatting editor with toolbar actions and Markdown/HTML output.
 - `Divider`: horizontal/vertical visual separator with optional label and style variants.
 - `Spinner`: lightweight loading indicator with inline/overlay variants and severity colors.
+- `PageHeader`: page-level heading block with breadcrumbs/meta/actions slots for dashboard screens.
 - `Wizard`: multi-step flow container with linear navigation, per-step validation, and completion events.
 - `Textarea`: multi-line control, same as Input plus `rows`.
 - `TagInput`: token/tag control, supports `v-model` (array), suggestions, custom tags, `maxTags`, `clearable`, `size`, `variant`.
@@ -1612,6 +1621,53 @@ Component tokens (override via `theme.overrides.components.divider`):
 - `color`, `textColor`, `thickness`, `minLength`
 - `gap`, `inset`
 - `labelPadding`, `labelFontSize`
+
+## PageHeader
+
+Props:
+
+- `title?: string`
+- `subtitle?: string`
+- `size?: 'small' | 'normal' | 'large'` (default `normal`)
+- `divider?: boolean` (default `false`)
+
+Slots:
+
+- `breadcrumbs` (optional)
+- `title` (optional) - replaces `title` prop rendering
+- `subtitle` (optional) - replaces `subtitle` prop rendering
+- `meta` (optional)
+- `actions` (optional)
+- `default` (optional) - additional body content
+
+Example:
+
+```vue
+<PageHeader title="Projects" subtitle="Manage active projects and team workload.">
+    <template #breadcrumbs>
+        <Breadcrumbs :items="breadcrumbItems" />
+    </template>
+    <template #meta>
+        <Badge severity="info" variant="soft">24 active</Badge>
+        <Chip label="Last sync: 2m ago" />
+    </template>
+    <template #actions>
+        <Button label="Import" variant="outlined" severity="secondary" />
+        <Button label="New project" icon="plus" />
+    </template>
+</PageHeader>
+```
+
+### PageHeader tokens
+
+Component tokens (override via `theme.overrides.components.pageHeader`):
+
+- `gap`, `contentGap`, `breadcrumbGap`, `actionsGap`, `metaGap`
+- `padding`, `borderRadius`, `borderColor`, `backgroundColor`, `textColor`, `dividerColor`
+- `titleFontSize`, `titleLineHeight`, `titleFontWeight`
+- `subtitleFontSize`, `subtitleColor`
+- `small.padding`, `small.titleFontSize`, `small.subtitleFontSize`
+- `large.padding`, `large.titleFontSize`, `large.subtitleFontSize`
 
 ## SegmentedControl
 
@@ -3146,7 +3202,7 @@ VueForge exposes design tokens as CSS variables generated from the theme preset.
 Typed tokens:
 
 - `ThemeTokens`/`ThemeOptions`/`ThemePreset` are exported for type-safe theming in TS.
-- `components.*` accepts component-specific tokens (typed keys: button/buttonGroup/card/checkbox/radio/tabs/accordion/toast/alert/emptyState/input/inputGroup/inlineEdit/searchInput/mentionInput/passwordInput/otpInput/colorPicker/maskedInput/numberInput/form/formField/textarea/richTextEditor/link/breadcrumbs/divider/menu/modal/confirmDialog/drawer/popover/dropdown/contextMenu/commandPalette/notificationCenter/appShell/kanbanBoard/tour/select/autocomplete/combobox/multiselect/taginput/datepicker/calendar/daterangepicker/timepicker/datetimepicker/pagination/switch/segmentedControl/tooltip/skeleton/progress/spinner/badge/chip/filterChips/avatar/datatable/slider/splitter/stepper/wizard/rating/tree/treeselect/virtualScroller).
+- `components.*` accepts component-specific tokens (typed keys: button/buttonGroup/card/checkbox/radio/tabs/accordion/toast/alert/emptyState/input/inputGroup/inlineEdit/searchInput/mentionInput/passwordInput/otpInput/colorPicker/maskedInput/numberInput/form/formField/textarea/richTextEditor/link/breadcrumbs/divider/pageHeader/menu/modal/confirmDialog/drawer/popover/dropdown/contextMenu/commandPalette/notificationCenter/appShell/kanbanBoard/tour/select/autocomplete/combobox/multiselect/taginput/datepicker/calendar/daterangepicker/timepicker/datetimepicker/pagination/switch/segmentedControl/tooltip/skeleton/progress/spinner/badge/chip/filterChips/avatar/datatable/slider/splitter/stepper/wizard/rating/tree/treeselect/virtualScroller).
 
 Default core values (from `DefaultTheme`):
 

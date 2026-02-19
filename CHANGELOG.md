@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.72.0] - 2026-02-19
+
+- Added PageHeader component with title/subtitle props, optional divider, and slots for breadcrumbs, meta, actions, and custom body.
+- Added default theme tokens and typed token support for `components.pageHeader`.
+- Added PageHeader export, README docs, example app showcase, and unit tests.
+
 ## [0.71.0] - 2026-02-19
 
 - Added ButtonGroup component with horizontal/vertical layouts, attached mode, and Button/SplitButton inheritance for size, variant, and severity.

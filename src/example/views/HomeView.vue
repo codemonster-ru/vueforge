@@ -65,6 +65,22 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="vf-home__card vf-home__card_large">
+                            <h3>PageHeader</h3>
+                            <PageHeader title="Projects" subtitle="Manage active projects and team workload.">
+                                <template #breadcrumbs>
+                                    <Breadcrumbs :items="breadcrumbItems" />
+                                </template>
+                                <template #meta>
+                                    <Badge severity="info" variant="soft">24 active</Badge>
+                                    <Chip label="Last sync: 2m ago" />
+                                </template>
+                                <template #actions>
+                                    <Button label="Import" variant="outlined" severity="secondary" />
+                                    <Button label="New project" icon="plus" />
+                                </template>
+                            </PageHeader>
+                        </div>
                         <div class="vf-home__card">
                             <h3>Input</h3>
                             <div class="vf-home__stack">
@@ -1129,6 +1145,7 @@ import {
     Tree,
     TreeSelect,
     VirtualScroller,
+    PageHeader,
     setTheme,
     updateTheme,
 } from '@/index';
@@ -1418,6 +1435,7 @@ const brandPresets = ['#2b6cb0', '#0cbc87', '#d6293e', '#f7c32e', '#6f42c1'];
 const searchCatalog = [
     'Button',
     'ButtonGroup',
+    'PageHeader',
     'Input',
     'InputGroup',
     'Divider',
