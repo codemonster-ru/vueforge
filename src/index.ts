@@ -3,6 +3,7 @@ export { default as Link } from '@/package/components/link.vue';
 export { default as Card } from '@/package/components/card.vue';
 export { default as Menu } from '@/package/components/menu.vue';
 export { default as Button } from '@/package/components/button.vue';
+export { default as ButtonGroup } from '@/package/components/button-group.vue';
 export { default as Input } from '@/package/components/input.vue';
 export { default as InputGroup } from '@/package/components/input-group.vue';
 export { default as InputAddon } from '@/package/components/input-addon.vue';

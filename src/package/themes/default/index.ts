@@ -1,5 +1,6 @@
 import base from './base';
 import button from './components/button';
+import buttonGroup from './components/button-group';
 import card from './components/card';
 import input from './components/input';
 import inputGroup from './components/input-group';
@@ -76,6 +77,7 @@ export default {
     components: {
         base,
         button,
+        buttonGroup,
         card,
         input,
         inputGroup,

@@ -28,6 +28,20 @@
                             </div>
                         </div>
                         <div class="vf-home__card">
+                            <h3>ButtonGroup</h3>
+                            <div class="vf-home__stack">
+                                <ButtonGroup attached size="small" variant="outlined" severity="primary">
+                                    <Button label="Day" />
+                                    <Button label="Week" />
+                                    <Button label="Month" />
+                                </ButtonGroup>
+                                <ButtonGroup class="vf-home__button-group_fit" orientation="vertical" severity="secondary" attached>
+                                    <Button label="Move up" icon="arrowUp" />
+                                    <Button label="Move down" icon="arrowDown" />
+                                </ButtonGroup>
+                            </div>
+                        </div>
+                        <div class="vf-home__card">
                             <h3>Link</h3>
                             <div class="vf-home__stack">
                                 <Link href="https://example.com" target="_blank">External link</Link>
@@ -1038,6 +1052,7 @@ import {
     Accordion,
     AccordionItem,
     Button,
+    ButtonGroup,
     Card,
     Checkbox,
     SegmentedControl,
@@ -1402,6 +1417,7 @@ const skillOptions = [
 const brandPresets = ['#2b6cb0', '#0cbc87', '#d6293e', '#f7c32e', '#6f42c1'];
 const searchCatalog = [
     'Button',
+    'ButtonGroup',
     'Input',
     'InputGroup',
     'Divider',
@@ -1714,6 +1730,10 @@ body {
     flex-wrap: wrap;
     align-items: center;
     gap: 0.5rem;
+}
+
+.vf-home__button-group_fit {
+    justify-self: start;
 }
 
 .vf-home__popover-content {

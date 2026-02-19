@@ -26,6 +26,7 @@ import {
     VueForge,
     DefaultTheme,
     Button,
+    ButtonGroup,
     Input,
     InputGroup,
     InputAddon,
@@ -104,6 +105,11 @@ app.use(VueForge, {
 
 ```vue
 <Button label="Hello" severity="primary" />
+<ButtonGroup attached variant="outlined" size="small">
+    <Button label="Day" />
+    <Button label="Week" />
+    <Button label="Month" />
+</ButtonGroup>
 <Form v-model="formValues" :validate="validateForm" @submit="onSubmit">
     <template #default="{ values, errors, touched, setFieldValue, setFieldTouched }">
         <FormField label="Email" :error="touched.email ? errors.email : ''">
@@ -250,6 +256,7 @@ app.use(VueForge, {
 ## Components
 
 - Button
+- ButtonGroup
 - Card
 - Checkbox
 - RadioGroup
@@ -332,6 +339,7 @@ app.use(VueForge, {
 Input / InputGroup / Search / Password / Textarea (quick API):
 
 - `Input`: single-line control, supports `v-model`, `size`, `variant`, `disabled`, `readonly`.
+- `ButtonGroup`: grouped button actions with shared size/variant/severity and attached/stacked layouts.
 - `InputGroup`: horizontal control combiner for field/addon/button layouts with unified corners and borders.
 - `EmptyState`: reusable empty-data block with icon/title/description/actions for table/list/search blank states.
 - `InlineEdit`: inline value editing with view/edit states, save/cancel actions, and text/number modes.
@@ -1507,6 +1515,37 @@ Example:
     <RadioButton value="pro">Pro</RadioButton>
 </RadioGroup>
 ```
+
+## ButtonGroup
+
+Props:
+
+- `size?: 'small' | 'normal' | 'large'` (inherits to nested `Button`/`SplitButton` when child props are not set)
+- `variant?: 'filled' | 'outlined' | 'text'` (inherits to nested `Button`/`SplitButton`)
+- `severity?: 'primary' | 'secondary' | 'success' | 'info' | 'warning' | 'danger'` (inherits to nested `Button`/`SplitButton`)
+- `disabled?: boolean` (default `false`)
+- `orientation?: 'horizontal' | 'vertical'` (default `horizontal`)
+- `attached?: boolean` (default `false`)
+
+Slots:
+
+- `default` - place `Button` / `SplitButton` items
+
+Example:
+
+```vue
+<ButtonGroup attached size="small" variant="outlined" severity="primary">
+    <Button label="Day" />
+    <Button label="Week" />
+    <Button label="Month" />
+</ButtonGroup>
+```
+
+### ButtonGroup tokens
+
+Component tokens (override via `theme.overrides.components.buttonGroup`):
+
+- `gap`, `borderRadius`, `disabledOpacity`
 
 ## Breadcrumbs
 
@@ -3107,7 +3146,7 @@ VueForge exposes design tokens as CSS variables generated from the theme preset.
 Typed tokens:
 
 - `ThemeTokens`/`ThemeOptions`/`ThemePreset` are exported for type-safe theming in TS.
-- `components.*` accepts component-specific tokens (typed keys: button/card/checkbox/radio/tabs/accordion/toast/alert/emptyState/input/inputGroup/inlineEdit/searchInput/mentionInput/passwordInput/otpInput/colorPicker/maskedInput/numberInput/form/formField/textarea/richTextEditor/link/breadcrumbs/divider/menu/modal/confirmDialog/drawer/popover/dropdown/contextMenu/commandPalette/notificationCenter/appShell/kanbanBoard/tour/select/autocomplete/combobox/multiselect/taginput/datepicker/calendar/daterangepicker/timepicker/datetimepicker/pagination/switch/segmentedControl/tooltip/skeleton/progress/spinner/badge/chip/filterChips/avatar/datatable/slider/splitter/stepper/wizard/rating/tree/treeselect/virtualScroller).
+- `components.*` accepts component-specific tokens (typed keys: button/buttonGroup/card/checkbox/radio/tabs/accordion/toast/alert/emptyState/input/inputGroup/inlineEdit/searchInput/mentionInput/passwordInput/otpInput/colorPicker/maskedInput/numberInput/form/formField/textarea/richTextEditor/link/breadcrumbs/divider/menu/modal/confirmDialog/drawer/popover/dropdown/contextMenu/commandPalette/notificationCenter/appShell/kanbanBoard/tour/select/autocomplete/combobox/multiselect/taginput/datepicker/calendar/daterangepicker/timepicker/datetimepicker/pagination/switch/segmentedControl/tooltip/skeleton/progress/spinner/badge/chip/filterChips/avatar/datatable/slider/splitter/stepper/wizard/rating/tree/treeselect/virtualScroller).
 
 Default core values (from `DefaultTheme`):
 

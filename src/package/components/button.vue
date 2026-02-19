@@ -1,5 +1,5 @@
 <template>
-    <button v-if="isButton" :type="buttonType" :class="getClass" :disabled="props.loading || props.disabled">
+    <button v-if="isButton" :type="buttonType" :class="getClass" :disabled="props.loading || isDisabled">
         <v-icon v-if="props.icon && !props.loading" :icon="props.icon" :class="getIconClass" />
         <v-icon v-if="props.loading" icon="circleNotch" :class="getIconClass" spin />
         <template v-if="$slots.default">
@@ -19,7 +19,7 @@
         :href="props.href ?? props.url"
         :as="linkType"
         :class="getClass"
-        :disabled="props.loading || props.disabled"
+        :disabled="props.loading || isDisabled"
     >
         <v-icon v-if="props.icon" :icon="props.icon" :class="getIconClass" />
         <template v-if="$slots.default">
@@ -36,9 +36,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, inject } from 'vue';
 import Link from '@/package/components/link.vue';
 import { CmIcon as VIcon } from '@codemonster-ru/vueiconify';
+import { buttonGroupContextKey } from '@/package/components/button-group-context';
 
 type ButtonType = 'button' | 'submit' | 'reset';
 type LinkType = 'a' | 'router-link';
@@ -67,15 +68,16 @@ const props = withDefaults(defineProps<Props>(), {
     as: undefined,
     icon: undefined,
     type: 'button',
-    size: 'normal',
+    size: undefined,
     label: '',
     loading: false,
     rounded: false,
     iconPos: 'left',
     variant: undefined,
-    severity: 'primary',
+    severity: undefined,
     disabled: false,
 });
+const buttonGroupContext = inject(buttonGroupContextKey, null);
 const buttonTypes: Array<ButtonType> = ['button', 'submit', 'reset'];
 const isButtonType = (value: string | undefined): value is ButtonType => {
     return !!value && buttonTypes.includes(value as ButtonType);
@@ -108,25 +110,29 @@ const linkType = computed<LinkType>(() => {
     return props.to ? 'router-link' : 'a';
 });
 const getClass = computed(() => {
-    let classes = ['vf-button', `vf-button_${props.severity}`];
+    const size = props.size ?? buttonGroupContext?.value.size ?? 'normal';
+    const variant = props.variant ?? buttonGroupContext?.value.variant;
+    const severity = props.severity ?? buttonGroupContext?.value.severity ?? 'primary';
+    const disabled = props.loading || props.disabled || buttonGroupContext?.value.disabled;
+    let classes = ['vf-button', `vf-button_${severity}`];
 
     if (['top', 'bottom'].includes(props.iconPos)) {
         classes.push('vf-button_vertical');
     }
 
-    if (props.variant === 'text') {
+    if (variant === 'text') {
         classes.push('vf-button_text');
     }
 
-    if (props.variant === 'outlined') {
+    if (variant === 'outlined') {
         classes.push('vf-button_outlined');
     }
 
-    if (['small', 'large'].indexOf(props.size) > -1) {
-        classes.push(`vf-button_${props.size}`);
+    if (['small', 'large'].indexOf(size) > -1) {
+        classes.push(`vf-button_${size}`);
     }
 
-    if (props.loading || props.disabled) {
+    if (disabled) {
         classes.push('vf-button_disabled');
     }
 
@@ -136,6 +142,7 @@ const getClass = computed(() => {
 
     return classes;
 });
+const isDisabled = computed(() => props.disabled || buttonGroupContext?.value.disabled === true);
 const getIconClass = computed(() => {
     return ['vf-button__icon', `vf-button__icon_${props.iconPos}`];
 });

@@ -6,11 +6,11 @@
             :label="label"
             :icon="icon"
             :type="type"
-            :size="size"
-            :variant="variant"
-            :severity="severity"
+            :size="effectiveSize"
+            :variant="effectiveVariant"
+            :severity="effectiveSeverity"
             :loading="loading"
-            :disabled="disabled"
+            :disabled="effectiveDisabled"
             @click="onPrimaryClick"
         >
             <slot />
@@ -21,11 +21,11 @@
             :label="label"
             :icon="icon"
             :type="type"
-            :size="size"
-            :variant="variant"
-            :severity="severity"
+            :size="effectiveSize"
+            :variant="effectiveVariant"
+            :severity="effectiveSeverity"
             :loading="loading"
-            :disabled="disabled"
+            :disabled="effectiveDisabled"
             @click="onPrimaryClick"
         />
         <Dropdown
@@ -35,7 +35,7 @@
             :items="items"
             :placement="placement"
             :offset="offset"
-            :disabled="disabled || loading"
+            :disabled="effectiveDisabled || loading"
             :close-on-select="closeOnSelect"
             :close-on-esc="closeOnEsc"
             :match-trigger-width="matchTriggerWidth"
@@ -48,10 +48,10 @@
                 <Button
                     class="vf-splitbutton__toggle"
                     icon="chevronDown"
-                    :size="size"
-                    :variant="variant"
-                    :severity="severity"
-                    :disabled="disabled || loading"
+                    :size="effectiveSize"
+                    :variant="effectiveVariant"
+                    :severity="effectiveSeverity"
+                    :disabled="effectiveDisabled || loading"
                     :aria-label="toggleAriaLabel"
                 />
             </template>
@@ -63,9 +63,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, inject, ref } from 'vue';
 import Button from '@/package/components/button.vue';
 import Dropdown from '@/package/components/dropdown.vue';
+import { buttonGroupContextKey } from '@/package/components/button-group-context';
 
 type Placement = 'bottom-start' | 'bottom-end' | 'top-start' | 'top-end' | 'bottom' | 'top';
 type ButtonType = 'button' | 'submit' | 'reset';
@@ -115,9 +116,9 @@ const props = withDefaults(defineProps<Props>(), {
     label: '',
     icon: undefined,
     type: 'button',
-    size: 'normal',
+    size: undefined,
     variant: undefined,
-    severity: 'primary',
+    severity: undefined,
     disabled: false,
     loading: false,
     placement: 'bottom-start',
@@ -130,25 +131,30 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emits = defineEmits(['click', 'update:modelValue', 'open', 'close', 'select']);
 defineOptions({ name: 'VfSplitButton' });
+const buttonGroupContext = inject(buttonGroupContextKey, null);
 
 const dropdown = ref<DropdownExposed | null>(null);
+const effectiveSize = computed(() => props.size ?? buttonGroupContext?.value.size ?? 'normal');
+const effectiveVariant = computed(() => props.variant ?? buttonGroupContext?.value.variant);
+const effectiveSeverity = computed(() => props.severity ?? buttonGroupContext?.value.severity ?? 'primary');
+const effectiveDisabled = computed(() => props.disabled || buttonGroupContext?.value.disabled === true);
 
 const getClass = computed(() => {
     const classes = ['vf-splitbutton'];
 
-    if (props.disabled || props.loading) {
+    if (effectiveDisabled.value || props.loading) {
         classes.push('vf-splitbutton_disabled');
     }
 
-    if (props.size === 'small' || props.size === 'large') {
-        classes.push(`vf-splitbutton_${props.size}`);
+    if (effectiveSize.value === 'small' || effectiveSize.value === 'large') {
+        classes.push(`vf-splitbutton_${effectiveSize.value}`);
     }
 
     return classes;
 });
 
 const onPrimaryClick = (event: MouseEvent) => {
-    if (props.disabled || props.loading) {
+    if (effectiveDisabled.value || props.loading) {
         event.preventDefault();
 
         return;

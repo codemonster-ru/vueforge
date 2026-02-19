@@ -22,6 +22,11 @@ export type ButtonTokens = {
     };
     colorScheme?: Record<string, Record<string, Record<string, string>>>;
 };
+export type ButtonGroupTokens = {
+    gap?: string;
+    borderRadius?: string;
+    disabledOpacity?: string;
+};
 export type CardTokens = {
     padding?: string;
     borderColor?: string;
@@ -2085,6 +2090,7 @@ export type AvatarTokens = {
 };
 export type ThemeComponentTokens = {
     button?: ButtonTokens;
+    buttonGroup?: ButtonGroupTokens;
     card?: CardTokens;
     checkbox?: CheckboxTokens;
     radio?: RadioTokens;
