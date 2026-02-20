@@ -6,6 +6,7 @@
 - Added default theme tokens and typed token support for `components.container`.
 - Added Container export, README docs, unit tests, and example app showcase updates (including a full-width HomeView demo card).
 - Added and refined the core baseline execution checklist for roadmap-driven development.
+- Reorganized documentation: migrated from monolithic reference to per-component pages under `docs/components`, normalized page structure, and simplified root `README.md`.
 
 ## [0.72.0] - 2026-02-19
 
