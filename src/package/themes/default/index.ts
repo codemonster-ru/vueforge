@@ -2,6 +2,7 @@ import base from './base';
 import button from './components/button';
 import buttonGroup from './components/button-group';
 import card from './components/card';
+import container from './components/container';
 import input from './components/input';
 import inputGroup from './components/input-group';
 import inlineEdit from './components/inline-edit';
@@ -80,6 +81,7 @@ export default {
         button,
         buttonGroup,
         card,
+        container,
         input,
         inputGroup,
         inlineEdit,

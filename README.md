@@ -25,6 +25,7 @@ import { createApp } from 'vue';
 import {
     VueForge,
     DefaultTheme,
+    Container,
     Button,
     ButtonGroup,
     Input,
@@ -265,6 +266,7 @@ app.use(VueForge, {
 - Button
 - ButtonGroup
 - Card
+- Container
 - Checkbox
 - RadioGroup
 - RadioButton
@@ -1555,6 +1557,37 @@ Example:
 Component tokens (override via `theme.overrides.components.buttonGroup`):
 
 - `gap`, `borderRadius`, `disabledOpacity`
+
+## Container
+
+Props:
+
+- `as?: string` (default `div`)
+- `size?: 'sm' | 'md' | 'lg' | 'xl' | 'full'` (default `lg`)
+- `maxWidth?: string` (optional runtime override)
+- `paddingX?: string` (optional runtime override)
+
+Slots:
+
+- `default`
+
+Example:
+
+```vue
+<Container size="xl">
+    <PageHeader title="Projects" subtitle="Manage active projects and team workload." />
+</Container>
+<Container as="main" max-width="90rem" padding-x="2rem">
+    <div>Custom width and horizontal padding</div>
+</Container>
+```
+
+### Container tokens
+
+Component tokens (override via `theme.overrides.components.container`):
+
+- `maxWidth`, `maxWidthSm`, `maxWidthMd`, `maxWidthLg`, `maxWidthXl`
+- `paddingX`, `paddingXSm`, `paddingXLg`
 
 ## Breadcrumbs
 
@@ -3202,7 +3235,7 @@ VueForge exposes design tokens as CSS variables generated from the theme preset.
 Typed tokens:
 
 - `ThemeTokens`/`ThemeOptions`/`ThemePreset` are exported for type-safe theming in TS.
-- `components.*` accepts component-specific tokens (typed keys: button/buttonGroup/card/checkbox/radio/tabs/accordion/toast/alert/emptyState/input/inputGroup/inlineEdit/searchInput/mentionInput/passwordInput/otpInput/colorPicker/maskedInput/numberInput/form/formField/textarea/richTextEditor/link/breadcrumbs/divider/pageHeader/menu/modal/confirmDialog/drawer/popover/dropdown/contextMenu/commandPalette/notificationCenter/appShell/kanbanBoard/tour/select/autocomplete/combobox/multiselect/taginput/datepicker/calendar/daterangepicker/timepicker/datetimepicker/pagination/switch/segmentedControl/tooltip/skeleton/progress/spinner/badge/chip/filterChips/avatar/datatable/slider/splitter/stepper/wizard/rating/tree/treeselect/virtualScroller).
+- `components.*` accepts component-specific tokens (typed keys: button/buttonGroup/card/container/checkbox/radio/tabs/accordion/toast/alert/emptyState/input/inputGroup/inlineEdit/searchInput/mentionInput/passwordInput/otpInput/colorPicker/maskedInput/numberInput/form/formField/textarea/richTextEditor/link/breadcrumbs/divider/pageHeader/menu/modal/confirmDialog/drawer/popover/dropdown/contextMenu/commandPalette/notificationCenter/appShell/kanbanBoard/tour/select/autocomplete/combobox/multiselect/taginput/datepicker/calendar/daterangepicker/timepicker/datetimepicker/pagination/switch/segmentedControl/tooltip/skeleton/progress/spinner/badge/chip/filterChips/avatar/datatable/slider/splitter/stepper/wizard/rating/tree/treeselect/virtualScroller).
 
 Default core values (from `DefaultTheme`):
 

@@ -1,6 +1,7 @@
 // components
 export { default as Link } from '@/package/components/link.vue';
 export { default as Card } from '@/package/components/card.vue';
+export { default as Container } from '@/package/components/container.vue';
 export { default as Menu } from '@/package/components/menu.vue';
 export { default as Button } from '@/package/components/button.vue';
 export { default as ButtonGroup } from '@/package/components/button-group.vue';

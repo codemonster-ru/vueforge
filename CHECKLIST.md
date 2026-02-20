@@ -47,12 +47,12 @@ Execution dependencies:
 - [ ] Add docs recipe for app-level layout composition
 
 ### P0.1 `Container` (new)
-- [ ] Define props: `size`, `maxWidth`, `paddingX`, `as`
-- [ ] Implement responsive paddings and max-width behavior
-- [ ] Add theme tokens and typings
-- [ ] Add unit tests (props, classes, slots)
-- [ ] Export from `src/index.ts`
-- [ ] Add docs (API + examples)
+- [x] Define props: `size`, `maxWidth`, `paddingX`, `as`
+- [x] Implement responsive paddings and max-width behavior
+- [x] Add theme tokens and typings
+- [x] Add unit tests (props, classes, slots)
+- [x] Export from `src/index.ts`
+- [x] Add docs (API + examples)
 
 ### P0.2 `Section` (new)
 - [ ] Define props: `paddingY`, `background`, `bordered`, `as`

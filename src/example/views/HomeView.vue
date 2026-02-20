@@ -35,7 +35,12 @@
                                     <Button label="Week" />
                                     <Button label="Month" />
                                 </ButtonGroup>
-                                <ButtonGroup class="vf-home__button-group_fit" orientation="vertical" severity="secondary" attached>
+                                <ButtonGroup
+                                    class="vf-home__button-group_fit"
+                                    orientation="vertical"
+                                    severity="secondary"
+                                    attached
+                                >
                                     <Button label="Move up" icon="arrowUp" />
                                     <Button label="Move down" icon="arrowDown" />
                                 </ButtonGroup>
@@ -52,6 +57,30 @@
                         <div class="vf-home__card">
                             <h3>Breadcrumbs</h3>
                             <Breadcrumbs :items="breadcrumbItems" />
+                        </div>
+                        <div class="vf-home__card vf-home__card_full">
+                            <h3>Container</h3>
+                            <div class="vf-home__stack">
+                                <div class="vf-home__container-stage">
+                                    <Container size="sm" class="vf-home__container-demo">
+                                        <div class="vf-home__container-box">size="sm"</div>
+                                    </Container>
+                                    <Container size="md" class="vf-home__container-demo">
+                                        <div class="vf-home__container-box">size="md"</div>
+                                    </Container>
+                                    <Container size="lg" class="vf-home__container-demo">
+                                        <div class="vf-home__container-box">size="lg" (default)</div>
+                                    </Container>
+                                    <Container
+                                        size="full"
+                                        max-width="28rem"
+                                        padding-x="0.5rem"
+                                        class="vf-home__container-demo"
+                                    >
+                                        <div class="vf-home__container-box">size="full" + custom max/padding</div>
+                                    </Container>
+                                </div>
+                            </div>
                         </div>
                         <div class="vf-home__card">
                             <h3>Divider</h3>
@@ -1109,6 +1138,7 @@ import {
     DateRangePicker,
     TimePicker,
     DateTimePicker,
+    Container,
     Pagination,
     DataTable,
     EmptyState,
@@ -1733,6 +1763,10 @@ body {
     grid-column: span 6;
 }
 
+.vf-home__card_full {
+    grid-column: span 12;
+}
+
 .vf-home__stack {
     display: grid;
     gap: 0.5rem;
@@ -1752,6 +1786,34 @@ body {
 
 .vf-home__button-group_fit {
     justify-self: start;
+}
+
+.vf-home__container-demo {
+    border: 1px dashed color-mix(in srgb, var(--vf-border-color) 70%, transparent);
+    border-radius: 8px;
+}
+
+.vf-home__container-stage {
+    display: grid;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    border: 1px solid var(--vf-border-color);
+    border-radius: 8px;
+    background: repeating-linear-gradient(
+        90deg,
+        color-mix(in srgb, var(--vf-bg-soft-color) 85%, transparent) 0,
+        color-mix(in srgb, var(--vf-bg-soft-color) 85%, transparent) 24px,
+        transparent 24px,
+        transparent 48px
+    );
+}
+
+.vf-home__container-box {
+    padding: 0.5rem;
+    border-radius: 6px;
+    background-color: var(--vf-bg-soft-color);
+    color: var(--vf-secondary-text-color);
+    text-align: center;
 }
 
 .vf-home__popover-content {

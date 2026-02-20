@@ -32,6 +32,16 @@ export type CardTokens = {
     borderColor?: string;
     borderRadius?: string;
 };
+export type ContainerTokens = {
+    maxWidth?: string;
+    maxWidthSm?: string;
+    maxWidthMd?: string;
+    maxWidthLg?: string;
+    maxWidthXl?: string;
+    paddingX?: string;
+    paddingXSm?: string;
+    paddingXLg?: string;
+};
 export type CheckboxTokens = {
     size?: string;
     gap?: string;
@@ -2120,6 +2130,7 @@ export type ThemeComponentTokens = {
     button?: ButtonTokens;
     buttonGroup?: ButtonGroupTokens;
     card?: CardTokens;
+    container?: ContainerTokens;
     checkbox?: CheckboxTokens;
     radio?: RadioTokens;
     tabs?: TabsTokens;

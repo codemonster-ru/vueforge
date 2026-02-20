@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.73.0] - 2026-02-20
+
+- Added Container layout component with size presets (`sm`/`md`/`lg`/`xl`/`full`) and optional runtime `maxWidth`/`paddingX` overrides.
+- Added default theme tokens and typed token support for `components.container`.
+- Added Container export, README docs, unit tests, and example app showcase updates (including a full-width HomeView demo card).
+- Added and refined the core baseline execution checklist for roadmap-driven development.
+
 ## [0.72.0] - 2026-02-19
 
 - Added PageHeader component with title/subtitle props, optional divider, and slots for breadcrumbs, meta, actions, and custom body.
