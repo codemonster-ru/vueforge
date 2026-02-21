@@ -54,11 +54,15 @@ describe('SplitButton', () => {
     });
 
     it('closes on item select by default', async () => {
-        const wrapper = mountSplitButton();
+        const wrapper = mountSplitButton({
+            slots: {
+                menu: '<button class="close-item" data-dropdown-close>Close</button>',
+            },
+        });
 
         await wrapper.find('.vf-dropdown__trigger').trigger('click');
         await nextTick();
-        await wrapper.find('.vf-menu__link').trigger('click');
+        await wrapper.find('.close-item').trigger('click');
         await nextTick();
 
         expect(wrapper.emitted('select')?.length).toBe(1);
