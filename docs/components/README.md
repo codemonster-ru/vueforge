@@ -3,6 +3,7 @@
 Detailed API pages generated from the current package reference.
 
 ## Pages
+
 - [Accordion / AccordionItem](accordion-accordionitem.md)
 - [Alert](alert.md)
 - [AppShell](appshell.md)
@@ -56,6 +57,7 @@ Detailed API pages generated from the current package reference.
 - [Rating](rating.md)
 - [RichTextEditor](richtexteditor.md)
 - [SearchInput](searchinput.md)
+- [Section](section.md)
 - [SegmentedControl](segmentedcontrol.md)
 - [Select](select.md)
 - [Skeleton](skeleton.md)
@@ -79,4 +81,5 @@ Detailed API pages generated from the current package reference.
 - [Wizard / WizardStep](wizard-wizardstep.md)
 
 Related docs:
+
 - [Theming](../theming.md)

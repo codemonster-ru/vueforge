@@ -42,6 +42,15 @@ export type ContainerTokens = {
     paddingXSm?: string;
     paddingXLg?: string;
 };
+export type SectionTokens = {
+    paddingY?: string;
+    paddingYSm?: string;
+    paddingYLg?: string;
+    backgroundColorSurface?: string;
+    backgroundColorMuted?: string;
+    backgroundColorElevated?: string;
+    borderColor?: string;
+};
 export type CheckboxTokens = {
     size?: string;
     gap?: string;
@@ -2131,6 +2140,7 @@ export type ThemeComponentTokens = {
     buttonGroup?: ButtonGroupTokens;
     card?: CardTokens;
     container?: ContainerTokens;
+    section?: SectionTokens;
     checkbox?: CheckboxTokens;
     radio?: RadioTokens;
     tabs?: TabsTokens;

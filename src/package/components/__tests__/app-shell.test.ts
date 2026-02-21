@@ -28,6 +28,21 @@ describe('AppShell', () => {
         expect(wrapper.find('.vf-app-shell__footer').text()).toContain('Footer');
     });
 
+    it('uses semantic landmarks and main aria label', async () => {
+        const wrapper = mountShell({
+            props: {
+                mainAriaLabel: 'Workspace content',
+            },
+        });
+
+        await nextTick();
+
+        expect(wrapper.find('aside.vf-app-shell__sidebar').exists()).toBe(true);
+        expect(wrapper.find('header.vf-app-shell__header').exists()).toBe(true);
+        expect(wrapper.find('main.vf-app-shell__main').attributes('aria-label')).toBe('Workspace content');
+        expect(wrapper.find('footer.vf-app-shell__footer').exists()).toBe(true);
+    });
+
     it('toggles collapsed state on desktop and emits v-model update', async () => {
         const wrapper = mountShell();
 
@@ -60,6 +75,42 @@ describe('AppShell', () => {
         expect(wrapper.classes()).toContain('vf-app-shell_mobile-open');
         expect(wrapper.emitted('update:modelValue')).toBeUndefined();
         expect(wrapper.emitted('sidebar-toggle')).toBeTruthy();
+
+        Object.defineProperty(window, 'innerWidth', {
+            configurable: true,
+            writable: true,
+            value: previousWidth,
+        });
+        window.dispatchEvent(new Event('resize'));
+    });
+
+    it('closes mobile sidebar on Escape when closeOnEsc is enabled', async () => {
+        const previousWidth = window.innerWidth;
+
+        Object.defineProperty(window, 'innerWidth', {
+            configurable: true,
+            writable: true,
+            value: 600,
+        });
+        window.dispatchEvent(new Event('resize'));
+
+        const wrapper = mountShell({
+            props: {
+                mobileBreakpoint: 900,
+                closeOnEsc: true,
+            },
+        });
+
+        await nextTick();
+        await wrapper.find('.vf-app-shell__toggle').trigger('click');
+        expect(wrapper.classes()).toContain('vf-app-shell_mobile-open');
+        expect(wrapper.find('.vf-app-shell__sidebar').attributes('aria-hidden')).toBe('false');
+
+        window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+        await nextTick();
+
+        expect(wrapper.classes()).not.toContain('vf-app-shell_mobile-open');
+        expect(wrapper.find('.vf-app-shell__sidebar').attributes('aria-hidden')).toBe('true');
 
         Object.defineProperty(window, 'innerWidth', {
             configurable: true,

@@ -83,7 +83,7 @@ const props = withDefaults(defineProps<Props>(), {
     closeOnEsc: true,
     toggleLabel: 'Toggle sidebar',
     closeSidebarLabel: 'Close sidebar',
-    toggleIcon: '☰',
+    toggleIcon: '\u2630',
     mainAriaLabel: 'Main content',
 });
 
@@ -240,6 +240,13 @@ onBeforeUnmount(() => {
 
 .vf-app-shell__toggle:hover {
     background-color: var(--vf-app-shell-toggle-hover-background-color);
+}
+
+.vf-app-shell__toggle:focus-visible {
+    outline: none;
+    box-shadow:
+        0 0 0 2px var(--vf-app-shell-header-background-color),
+        0 0 0 4px var(--vf-primary-color);
 }
 
 .vf-app-shell__header-content {

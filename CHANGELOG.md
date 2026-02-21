@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.74.0] - 2026-02-21
+
+- Added Section layout component with `paddingY`, `background`, `bordered`, and `as` props plus responsive vertical rhythm.
+- Added default theme tokens and typed token support for `components.section`.
+- Added Section export, docs page (with Container composition guidance), and unit tests.
+- AppShell hardening: added landmark/accessibility test coverage and documented app-level layout composition recipe.
+
 ## [0.73.0] - 2026-02-20
 
 - Added Container layout component with size presets (`sm`/`md`/`lg`/`xl`/`full`) and optional runtime `maxWidth`/`paddingX` overrides.

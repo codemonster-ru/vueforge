@@ -82,6 +82,23 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="vf-home__card vf-home__card_large">
+                            <h3>Section</h3>
+                            <div class="vf-home__stack">
+                                <div class="vf-home__section-stage">
+                                    <Section background="surface" bordered>
+                                        <Container size="md">
+                                            <div class="vf-home__container-box">surface + bordered</div>
+                                        </Container>
+                                    </Section>
+                                    <Section background="muted" padding-y="1rem">
+                                        <Container size="md">
+                                            <div class="vf-home__container-box">muted + custom paddingY</div>
+                                        </Container>
+                                    </Section>
+                                </div>
+                            </div>
+                        </div>
                         <div class="vf-home__card">
                             <h3>Divider</h3>
                             <div class="vf-home__stack">
@@ -1139,6 +1156,7 @@ import {
     TimePicker,
     DateTimePicker,
     Container,
+    Section,
     Pagination,
     DataTable,
     EmptyState,
@@ -1466,6 +1484,7 @@ const searchCatalog = [
     'Button',
     'ButtonGroup',
     'PageHeader',
+    'Section',
     'Input',
     'InputGroup',
     'Divider',
@@ -1814,6 +1833,13 @@ body {
     background-color: var(--vf-bg-soft-color);
     color: var(--vf-secondary-text-color);
     text-align: center;
+}
+
+.vf-home__section-stage {
+    display: grid;
+    gap: 0.5rem;
+    border-radius: 8px;
+    overflow: hidden;
 }
 
 .vf-home__popover-content {

@@ -39,6 +39,39 @@
 </AppShell>
 ```
 
+## Recipe: App-level layout composition
+
+```vue
+<template>
+    <AppShell v-model="collapsed" :mobile-breakpoint="960">
+        <template #sidebar="{ collapsed }">
+            <nav aria-label="Primary navigation">
+                <Menu :items="menuItems" :collapsed="collapsed" />
+            </nav>
+        </template>
+
+        <template #header="{ toggleSidebar }">
+            <Container size="xl">
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 1rem;">
+                    <h1>Workspace</h1>
+                    <Button label="Toggle sidebar" @click="toggleSidebar" />
+                </div>
+            </Container>
+        </template>
+
+        <Container size="xl">
+            <Section>
+                <router-view />
+            </Section>
+        </Container>
+
+        <template #footer>
+            <Container size="xl">Status: All systems operational</Container>
+        </template>
+    </AppShell>
+</template>
+```
+
 ## Tokens
 
 Component tokens (override via `theme.overrides.components.appShell`):
@@ -53,4 +86,7 @@ Component tokens (override via `theme.overrides.components.appShell`):
 
 ## Accessibility
 
+- AppShell uses landmark elements (`aside`, `header`, `main`, `footer`) to provide structural navigation.
+- Keep a single primary page `main` landmark active in the application view.
+- Use semantic navigation inside the sidebar slot (for example `nav` with `aria-label`).
 - Ensure keyboard access, visible focus state, and sufficient color contrast in usage contexts.
