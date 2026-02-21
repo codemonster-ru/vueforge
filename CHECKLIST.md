@@ -118,17 +118,17 @@ Execution dependencies:
 ### P0.8 `PageHeader` (existing hardening)
 
 - [x] `PageHeader` component is implemented
-- [ ] Audit heading semantics (`h1` usage rules in docs)
-- [ ] Verify slot accessibility for actions/meta
-- [ ] Add tests for responsive behavior
-- [ ] Add docs examples with `Breadcrumbs` and actions
+- [x] Audit heading semantics (`h1` usage rules in docs)
+- [x] Verify slot accessibility for actions/meta
+- [x] Add tests for responsive behavior
+- [x] Add docs examples with `Breadcrumbs` and actions
 
 ### P0.9 `Breadcrumbs` (existing hardening)
 
 - [x] `Breadcrumbs` component is implemented
-- [ ] Verify `aria-label` defaults and nav semantics
-- [ ] Add tests for active item and separator behavior
-- [ ] Add docs for accessibility usage
+- [x] Verify `aria-label` defaults and nav semantics
+- [x] Add tests for active item and separator behavior
+- [x] Add docs for accessibility usage
 
 ### P0.10 `DataTable` (core production baseline)
 

@@ -12,7 +12,12 @@
                 <p v-if="hasSubtitle" class="vf-page-header__subtitle">
                     <slot name="subtitle">{{ subtitle }}</slot>
                 </p>
-                <div v-if="$slots.meta" class="vf-page-header__meta">
+                <div
+                    v-if="$slots.meta"
+                    class="vf-page-header__meta"
+                    role="group"
+                    :aria-label="metaAriaLabel || undefined"
+                >
                     <slot name="meta" />
                 </div>
                 <div v-if="$slots.default" class="vf-page-header__body">
@@ -20,7 +25,12 @@
                 </div>
             </div>
 
-            <div v-if="$slots.actions" class="vf-page-header__actions">
+            <div
+                v-if="$slots.actions"
+                class="vf-page-header__actions"
+                role="group"
+                :aria-label="actionsAriaLabel || undefined"
+            >
                 <slot name="actions" />
             </div>
         </div>
@@ -28,7 +38,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, useSlots } from 'vue';
+import { computed, onBeforeUnmount, ref, useSlots } from 'vue';
 
 type Size = 'small' | 'normal' | 'large';
 
@@ -37,6 +47,9 @@ interface Props {
     subtitle?: string;
     size?: Size;
     divider?: boolean;
+    mobileBreakpoint?: number;
+    actionsAriaLabel?: string;
+    metaAriaLabel?: string;
 }
 
 defineOptions({ name: 'VfPageHeader' });
@@ -46,12 +59,24 @@ const props = withDefaults(defineProps<Props>(), {
     subtitle: '',
     size: 'normal',
     divider: false,
+    mobileBreakpoint: 720,
+    actionsAriaLabel: 'Page actions',
+    metaAriaLabel: 'Page metadata',
 });
 
 const slots = useSlots();
 
 const hasTitle = computed(() => !!props.title || !!slots.title);
 const hasSubtitle = computed(() => !!props.subtitle || !!slots.subtitle);
+const isMobile = ref(false);
+
+const syncViewport = () => {
+    if (typeof window === 'undefined') {
+        return;
+    }
+
+    isMobile.value = window.innerWidth <= props.mobileBreakpoint;
+};
 
 const getClass = computed(() => {
     const classes = ['vf-page-header'];
@@ -64,7 +89,22 @@ const getClass = computed(() => {
         classes.push('vf-page-header_divider');
     }
 
+    if (isMobile.value) {
+        classes.push('vf-page-header_mobile');
+    }
+
     return classes;
+});
+
+if (typeof window !== 'undefined') {
+    syncViewport();
+    window.addEventListener('resize', syncViewport, false);
+}
+
+onBeforeUnmount(() => {
+    if (typeof window !== 'undefined') {
+        window.removeEventListener('resize', syncViewport, false);
+    }
 });
 </script>
 
@@ -161,13 +201,11 @@ const getClass = computed(() => {
     }
 }
 
-@media (max-width: 720px) {
-    .vf-page-header__main {
-        flex-direction: column;
-    }
+.vf-page-header_mobile .vf-page-header__main {
+    flex-direction: column;
+}
 
-    .vf-page-header__actions {
-        justify-content: flex-start;
-    }
+.vf-page-header_mobile .vf-page-header__actions {
+    justify-content: flex-start;
 }
 </style>

@@ -36,4 +36,7 @@ Component tokens (override via `theme.overrides.components.breadcrumbs`):
 
 ## Accessibility
 
-- Ensure keyboard access, visible focus state, and sufficient color contrast in usage contexts.
+- Breadcrumbs root uses semantic `nav` with `aria-label` (default `Breadcrumbs`).
+- Current item is rendered with `aria-current="page"` and should be a non-link label.
+- Use descriptive labels and keep hierarchy short (typically 2-4 levels).
+- Preserve separator readability when providing custom separator content.

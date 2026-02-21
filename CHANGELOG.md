@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.79.0] - 2026-02-21
+
+- PageHeader hardening: added responsive mobile breakpoint class handling and tests for responsive behavior.
+- PageHeader accessibility: added grouped `meta`/`actions` aria labeling and documented `h1` usage rules.
+- Breadcrumbs hardening: verified nav semantics and default/custom `aria-label` behavior.
+- Added Breadcrumbs tests for active item `aria-current` and separator rendering/slot customization.
+- Expanded Breadcrumbs accessibility usage guidance in docs.
+- Menu demo follow-ups: fixed hidden submenu visibility behavior and horizontal dropdown positioning.
+- Refined Menu demo readability in HomeView (labels, spacing, and chevron offset).
+
 ## [0.78.0] - 2026-02-21
 
 - Menu hardening: improved nested keyboard navigation (`ArrowRight`/`ArrowDown` open, `ArrowLeft`/`Escape` close).

@@ -6,6 +6,9 @@
 - `subtitle?: string`
 - `size?: 'small' | 'normal' | 'large'` (default `normal`)
 - `divider?: boolean` (default `false`)
+- `mobileBreakpoint?: number` (default `720`)
+- `actionsAriaLabel?: string` (default `Page actions`)
+- `metaAriaLabel?: string` (default `Page metadata`)
 
 ## Events
 
@@ -51,4 +54,7 @@ Component tokens (override via `theme.overrides.components.pageHeader`):
 
 ## Accessibility
 
+- `PageHeader` renders title in `h1` by default. Use one `h1` per page view.
+- For nested contexts, prefer `#title` slot and render lower heading levels (`h2`/`h3`) manually.
+- `meta` and `actions` containers are exposed as grouped regions with configurable aria labels.
 - Ensure keyboard access, visible focus state, and sufficient color contrast in usage contexts.
