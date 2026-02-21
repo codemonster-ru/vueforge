@@ -69,6 +69,12 @@ export type StackTokens = {
     justifyContent?: string;
     wrap?: string;
 };
+export type InlineTokens = {
+    gap?: string;
+    alignItems?: string;
+    justifyContent?: string;
+    wrap?: string;
+};
 export type CheckboxTokens = {
     size?: string;
     gap?: string;
@@ -2161,6 +2167,7 @@ export type ThemeComponentTokens = {
     section?: SectionTokens;
     grid?: GridTokens;
     stack?: StackTokens;
+    inline?: InlineTokens;
     checkbox?: CheckboxTokens;
     radio?: RadioTokens;
     tabs?: TabsTokens;

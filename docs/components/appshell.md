@@ -52,10 +52,10 @@
 
         <template #header="{ toggleSidebar }">
             <Container size="xl">
-                <div style="display: flex; align-items: center; justify-content: space-between; gap: 1rem;">
+                <Inline align="center" justify="space-between" wrap="nowrap">
                     <h1>Workspace</h1>
                     <Button label="Toggle sidebar" @click="toggleSidebar" />
-                </div>
+                </Inline>
             </Container>
         </template>
 

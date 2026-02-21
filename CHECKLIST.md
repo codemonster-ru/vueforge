@@ -91,12 +91,12 @@ Execution dependencies:
 
 ### P0.5 `Inline` (new)
 
-- [ ] Define props: `gap`, `align`, `justify`, `wrap`, `as`
-- [ ] Implement horizontal layout primitive
-- [ ] Add theme tokens and typings
-- [ ] Add unit tests
-- [ ] Export from `src/index.ts`
-- [ ] Add docs
+- [x] Define props: `gap`, `align`, `justify`, `wrap`, `as`
+- [x] Implement horizontal layout primitive
+- [x] Add theme tokens and typings
+- [x] Add unit tests
+- [x] Export from `src/index.ts`
+- [x] Add docs
 
 ### P0.6 `Menu` (existing hardening)
 

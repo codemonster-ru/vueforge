@@ -122,6 +122,14 @@
                             </Stack>
                         </div>
                         <div class="vf-home__card">
+                            <h3>Inline</h3>
+                            <Inline gap="0.5rem" align="center" justify="start">
+                                <div class="vf-home__container-box">item 1</div>
+                                <div class="vf-home__container-box">item 2</div>
+                                <div class="vf-home__container-box">item 3</div>
+                            </Inline>
+                        </div>
+                        <div class="vf-home__card">
                             <h3>Divider</h3>
                             <div class="vf-home__stack">
                                 <Divider />
@@ -1182,6 +1190,7 @@ import {
     Grid,
     GridItem,
     Stack,
+    Inline,
     Pagination,
     DataTable,
     EmptyState,
@@ -1512,6 +1521,7 @@ const searchCatalog = [
     'Section',
     'Grid',
     'Stack',
+    'Inline',
     'Input',
     'InputGroup',
     'Divider',

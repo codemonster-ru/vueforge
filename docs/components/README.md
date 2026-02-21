@@ -36,6 +36,7 @@ Detailed API pages generated from the current package reference.
 - [Form](form.md)
 - [FormField](formfield.md)
 - [Grid / GridItem](grid-griditem.md)
+- [Inline](inline.md)
 - [InlineEdit](inlineedit.md)
 - [Input](input.md)
 - [InputGroup / InputAddon](inputgroup-inputaddon.md)

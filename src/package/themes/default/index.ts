@@ -6,6 +6,7 @@ import container from './components/container';
 import grid from './components/grid';
 import section from './components/section';
 import stack from './components/stack';
+import inlineComponent from './components/inline';
 import input from './components/input';
 import inputGroup from './components/input-group';
 import inlineEdit from './components/inline-edit';
@@ -88,6 +89,7 @@ export default {
         grid,
         section,
         stack,
+        inline: inlineComponent,
         input,
         inputGroup,
         inlineEdit,

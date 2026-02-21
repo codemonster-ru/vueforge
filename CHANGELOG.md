@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.77.0] - 2026-02-21
+
+- Added Inline layout primitive with `gap`, `align`, `justify`, `wrap`, and `as` props.
+- Added default theme tokens and typed token support for `components.inline`.
+- Added Inline export, documentation page, and unit tests.
+
 ## [0.76.0] - 2026-02-21
 
 - Added Stack layout primitive with `gap`, `align`, `justify`, `wrap`, and `as` props.
