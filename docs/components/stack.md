@@ -31,6 +31,10 @@
 </Stack>
 ```
 
+## Theming
+
+- Override via `theme.overrides.components.stack`.
+
 ## Tokens
 
 Component tokens (override via `theme.overrides.components.stack`):
@@ -39,6 +43,11 @@ Component tokens (override via `theme.overrides.components.stack`):
 - `alignItems`
 - `justifyContent`
 - `wrap`
+
+## Recipes
+
+- Vertical form layout: `gap="0.75rem"` and `as="section"` for grouped fields.
+- Card list: `gap="1rem"` with default `align="stretch"` for equal-width stacked cards.
 
 ## Accessibility
 

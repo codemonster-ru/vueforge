@@ -42,9 +42,19 @@
 When `error` is set, `FormField` applies invalid-state border highlighting to nested form controls.
 Customize these colors via `theme.overrides.components.formField.errorBorderColor` and `errorFocusBorderColor`.
 
+## Theming
+
+- Override via `theme.overrides.components.formField`.
+
 ## Tokens
 
 - Use `theme.overrides.components` to customize this component where token support is available.
+
+## Recipes
+
+- Standard labeled input row with hint/error linkage through slot props.
+- Required field row with explicit `required` and mapped `aria-required`/`aria-invalid` on control.
+- Compact field rows using `size="small"` in dense forms.
 
 ## Accessibility
 

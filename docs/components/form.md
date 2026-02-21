@@ -153,6 +153,10 @@ const validateWithYup = async (values: Record<string, unknown>) => {
 };
 ```
 
+## Theming
+
+- Override via `theme.overrides.components.form`.
+
 ## Tokens
 
 Component tokens (override via `theme.overrides.components.form`):

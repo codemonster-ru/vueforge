@@ -10,6 +10,8 @@
 - `max?: string` (time `HH:mm`)
 - `step?: number` (minutes, default `30`)
 - `format?: '24h' | '12h'` (default `24h`)
+- `ariaLabel?: string` (default `Time picker`)
+- `panelAriaLabel?: string` (default `Time options`)
 - `size?: 'small' | 'normal' | 'large'` (default `normal`)
 - `variant?: 'filled' | 'outlined'` (default `filled`)
 
@@ -47,4 +49,8 @@ Component tokens (override via `theme.overrides.components.timepicker`):
 
 ## Accessibility
 
-- Ensure keyboard access, visible focus state, and sufficient color contrast in usage contexts.
+- Trigger exposes popup semantics via `aria-haspopup="listbox"`, `aria-expanded`, and `aria-controls`.
+- Keyboard support: `ArrowDown` opens and focuses options; option list supports `ArrowUp`/`ArrowDown`, `Home`/`End`, `Enter`/`Space` select, and `Escape` close.
+- Invalid time values are ignored for display state (treated as empty placeholder).
+- `min`/`max` constraints disable out-of-range options.
+- In `readonly` mode, open/select interactions are blocked.

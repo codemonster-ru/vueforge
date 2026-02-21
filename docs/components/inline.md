@@ -31,6 +31,10 @@
 </Inline>
 ```
 
+## Theming
+
+- Override via `theme.overrides.components.inline`.
+
 ## Tokens
 
 Component tokens (override via `theme.overrides.components.inline`):
@@ -39,6 +43,11 @@ Component tokens (override via `theme.overrides.components.inline`):
 - `alignItems`
 - `justifyContent`
 - `wrap`
+
+## Recipes
+
+- Toolbar row: `wrap="nowrap"` with `justify="space-between"` for label/action alignment.
+- Tag cloud: default `wrap="wrap"` and small `gap` for compact chip collections.
 
 ## Accessibility
 

@@ -159,6 +159,10 @@ const onBulkAction = (action: string, keys: Array<string | number>) => {
 />
 ```
 
+## Theming
+
+- Override via `theme.overrides.components.datatable`.
+
 ## Tokens
 
 Component tokens (override via `theme.overrides.components.datatable`):
@@ -173,6 +177,13 @@ Component tokens (override via `theme.overrides.components.datatable`):
 - `statePadding`, `stateTextColor`
 - `small.fontSize`, `small.cellPadding`
 - `large.fontSize`, `large.cellPadding`
+
+## Recipes
+
+- Client-side sortable table with striped rows for management screens.
+- Server-side handoff using `request` payload for backend-driven pagination/sorting/filtering.
+- Multi-select table with `bulkActions` for batch operations.
+- Sticky header/columns for wide datasets.
 
 ## Accessibility
 

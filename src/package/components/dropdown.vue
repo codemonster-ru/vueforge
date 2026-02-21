@@ -5,12 +5,15 @@
             class="vf-dropdown__trigger"
             role="button"
             tabindex="0"
+            aria-haspopup="menu"
             :aria-expanded="open"
             :aria-controls="panelId"
             :aria-disabled="disabled ? 'true' : 'false'"
             @click="onTriggerClick"
             @keydown.enter.prevent="onTriggerClick"
             @keydown.space.prevent="onTriggerClick"
+            @keydown.down.prevent="openAndFocus('first')"
+            @keydown.up.prevent="openAndFocus('last')"
         >
             <slot name="trigger" />
         </div>
@@ -23,6 +26,7 @@
                 role="menu"
                 :data-placement="currentPlacement"
                 @click="onPanelClick"
+                @keydown="onPanelKeydown"
             >
                 <slot>
                     <Menu v-if="props.items.length" :items="props.items" />
@@ -33,9 +37,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { computed, defineAsyncComponent, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { autoUpdate, computePosition, flip, offset as offsetMiddleware } from '@codemonster-ru/floater.js';
-import Menu from '@/package/components/menu.vue';
 
 type Placement = 'bottom-start' | 'bottom-end' | 'top-start' | 'top-end' | 'bottom' | 'top';
 
@@ -64,6 +67,7 @@ export interface Props {
 
 const emits = defineEmits(['update:modelValue', 'open', 'close', 'select']);
 defineOptions({ name: 'VfDropdown' });
+const Menu = defineAsyncComponent(() => import('@/package/components/menu.vue'));
 
 const props = withDefaults(defineProps<Props>(), {
     modelValue: undefined,
@@ -81,7 +85,18 @@ type FloaterInstance = {
     destroy: () => void;
 } | null;
 
-let dropdownIdCounter = 0;
+const DROPDOWN_COUNTER_KEY = '__vf_dropdown_id_counter__';
+const getGlobalObject = (): Record<string, unknown> => globalThis as Record<string, unknown>;
+const nextDropdownId = () => {
+    const globalObject = getGlobalObject();
+    const current =
+        typeof globalObject[DROPDOWN_COUNTER_KEY] === 'number' ? (globalObject[DROPDOWN_COUNTER_KEY] as number) : 0;
+    const next = current + 1;
+
+    globalObject[DROPDOWN_COUNTER_KEY] = next;
+
+    return next;
+};
 
 const root = ref<HTMLElement | null>(null);
 const trigger = ref<HTMLElement | null>(null);
@@ -89,7 +104,7 @@ const panel = ref<HTMLElement | null>(null);
 const open = ref(false);
 const basePlacement = ref<Placement>(props.placement);
 const currentPlacement = ref<Placement>(props.placement);
-const panelId = `vf-dropdown-panel-${++dropdownIdCounter}`;
+const panelId = `vf-dropdown-panel-${nextDropdownId()}`;
 let floater: FloaterInstance = null;
 
 const isControlled = computed(() => props.modelValue !== undefined);
@@ -133,6 +148,58 @@ const onTriggerClick = () => {
     toggle();
 };
 
+const getFocusableMenuItems = () => {
+    if (!panel.value) {
+        return [];
+    }
+
+    return Array.from(
+        panel.value.querySelectorAll<HTMLElement>('.vf-menu__link, .vf-menu__parent, [data-dropdown-item]'),
+    ).filter(item => !item.hasAttribute('disabled') && item.getAttribute('aria-disabled') !== 'true');
+};
+
+const focusMenuItem = (index: number) => {
+    const items = getFocusableMenuItems();
+
+    if (!items.length) {
+        return;
+    }
+
+    const nextIndex = Math.min(Math.max(index, 0), items.length - 1);
+
+    items[nextIndex].focus();
+};
+
+const moveFocus = (delta: 1 | -1) => {
+    const items = getFocusableMenuItems();
+
+    if (!items.length) {
+        return;
+    }
+
+    const active = document.activeElement as HTMLElement | null;
+    const currentIndex = items.findIndex(item => item === active);
+    const baseIndex = currentIndex === -1 ? (delta > 0 ? -1 : items.length) : currentIndex;
+    const nextIndex = (baseIndex + delta + items.length) % items.length;
+
+    items[nextIndex].focus();
+};
+
+const openAndFocus = async (target: 'first' | 'last') => {
+    if (props.disabled) {
+        return;
+    }
+
+    if (!open.value) {
+        openPanel();
+        await nextTick();
+    }
+
+    await nextTick();
+
+    focusMenuItem(target === 'first' ? 0 : getFocusableMenuItems().length - 1);
+};
+
 const onPanelClick = (event: MouseEvent) => {
     emits('select', event);
 
@@ -152,6 +219,7 @@ const onPanelClick = (event: MouseEvent) => {
 
     if (target.closest('.vf-menu__link') || target.closest('[data-dropdown-close]')) {
         closePanel();
+        trigger.value?.focus();
     }
 };
 
@@ -178,6 +246,39 @@ const onDocumentKeydown = (event: KeyboardEvent) => {
         event.preventDefault();
 
         closePanel();
+        trigger.value?.focus();
+    }
+};
+
+const onPanelKeydown = (event: KeyboardEvent) => {
+    if (!open.value) {
+        return;
+    }
+
+    if (event.key === 'ArrowDown') {
+        event.preventDefault();
+        moveFocus(1);
+
+        return;
+    }
+
+    if (event.key === 'ArrowUp') {
+        event.preventDefault();
+        moveFocus(-1);
+
+        return;
+    }
+
+    if (event.key === 'Home') {
+        event.preventDefault();
+        focusMenuItem(0);
+
+        return;
+    }
+
+    if (event.key === 'End') {
+        event.preventDefault();
+        focusMenuItem(getFocusableMenuItems().length - 1);
     }
 };
 

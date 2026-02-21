@@ -31,6 +31,10 @@
 <Pagination v-model="page" :total-items="240" :page-size="20" />
 ```
 
+## Theming
+
+- Override via `theme.overrides.components.pagination`.
+
 ## Tokens
 
 Component tokens (override via `theme.overrides.components.pagination`):
@@ -44,6 +48,12 @@ Component tokens (override via `theme.overrides.components.pagination`):
 - `disabledOpacity`, `ellipsisPadding`
 - `small.fontSize`, `small.padding`
 - `large.fontSize`, `large.padding`
+
+## Recipes
+
+- Standard list pagination with `totalItems` + `pageSize`.
+- API-driven pagination where page is synced to route/query state.
+- Dense table footer pagination using `size="small"`.
 
 ## Accessibility
 

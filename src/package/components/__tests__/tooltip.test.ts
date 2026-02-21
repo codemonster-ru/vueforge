@@ -1,5 +1,6 @@
 import { mount } from '@vue/test-utils';
 import { nextTick } from 'vue';
+import { afterEach, vi } from 'vitest';
 import Tooltip from '../tooltip.vue';
 
 const mountTooltip = (options: Parameters<typeof mount>[1] = {}) => {
@@ -12,6 +13,10 @@ const mountTooltip = (options: Parameters<typeof mount>[1] = {}) => {
         ...options,
     });
 };
+
+afterEach(() => {
+    vi.useRealTimers();
+});
 
 describe('Tooltip', () => {
     it('shows and hides on hover', async () => {
@@ -77,6 +82,78 @@ describe('Tooltip', () => {
         await nextTick();
 
         expect(wrapper.find('.vf-tooltip__arrow').exists()).toBe(true);
+
+        wrapper.unmount();
+    });
+
+    it('opens and closes on keyboard focus transitions', async () => {
+        const wrapper = mountTooltip({
+            props: { text: 'Hello' },
+            slots: { default: '<button class="trigger">Trigger</button>' },
+        });
+
+        await nextTick();
+        await wrapper.find('.vf-tooltip__trigger').trigger('focusin');
+        await nextTick();
+
+        expect(wrapper.find('.vf-tooltip').isVisible()).toBe(true);
+
+        await wrapper.find('.vf-tooltip__trigger').trigger('focusout');
+        await nextTick();
+
+        expect(wrapper.find('.vf-tooltip').isVisible()).toBe(false);
+
+        wrapper.unmount();
+    });
+
+    it('closes on Escape when closeOnEsc is enabled', async () => {
+        const wrapper = mountTooltip({
+            props: { text: 'Hello', closeOnEsc: true },
+            slots: { default: '<button class="trigger">Trigger</button>' },
+        });
+
+        await nextTick();
+        await wrapper.find('.vf-tooltip__trigger').trigger('mouseenter');
+        await nextTick();
+
+        expect(wrapper.find('.vf-tooltip').isVisible()).toBe(true);
+
+        document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+        await nextTick();
+
+        expect(wrapper.find('.vf-tooltip').isVisible()).toBe(false);
+
+        wrapper.unmount();
+    });
+
+    it('supports showDelay and hideDelay', async () => {
+        vi.useFakeTimers();
+
+        const wrapper = mountTooltip({
+            props: { text: 'Hello', showDelay: 100, hideDelay: 120 },
+            slots: { default: '<button class="trigger">Trigger</button>' },
+        });
+
+        await nextTick();
+        await wrapper.find('.vf-tooltip__trigger').trigger('mouseenter');
+        await nextTick();
+
+        expect(wrapper.find('.vf-tooltip').isVisible()).toBe(false);
+
+        vi.advanceTimersByTime(100);
+        await nextTick();
+
+        expect(wrapper.find('.vf-tooltip').isVisible()).toBe(true);
+
+        await wrapper.find('.vf-tooltip__trigger').trigger('mouseleave');
+        await nextTick();
+
+        expect(wrapper.find('.vf-tooltip').isVisible()).toBe(true);
+
+        vi.advanceTimersByTime(120);
+        await nextTick();
+
+        expect(wrapper.find('.vf-tooltip').isVisible()).toBe(false);
 
         wrapper.unmount();
     });

@@ -92,6 +92,15 @@ const onSearch = async (term: string) => {
 </template>
 ```
 
+## Theming
+
+- Pattern guide only; use theme overrides of concrete components (`select`, `autocomplete`, `combobox`, etc.).
+
+## Accessibility
+
+- Ensure each selection control has an accessible label and clear empty/loading text.
+- Preserve keyboard operability for open, navigate, select, clear, and close flows.
+
 ## Notes
 
 - Keep `readonly` and `disabled` semantics consistent across the selection family.

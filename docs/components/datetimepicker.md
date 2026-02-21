@@ -12,6 +12,9 @@
 - `firstDayOfWeek?: number` (default `0`, Sunday)
 - `minuteStep?: number` (default `30`)
 - `format?: '24h' | '12h'` (default `24h`)
+- `ariaLabel?: string` (default `Date and time picker`)
+- `panelAriaLabel?: string` (default `Date and time selection`)
+- `timeListAriaLabel?: string` (default `Time options`)
 - `size?: 'small' | 'normal' | 'large'` (default `normal`)
 - `variant?: 'filled' | 'outlined'` (default `filled`)
 
@@ -63,4 +66,7 @@ Component tokens (override via `theme.overrides.components.datetimepicker`):
 
 ## Accessibility
 
-- Ensure keyboard access, visible focus state, and sufficient color contrast in usage contexts.
+- The trigger exposes `aria-label`, `aria-expanded`, `aria-controls`, `aria-readonly` (when `readonly=true`) and `aria-haspopup="dialog"`.
+- The popup dialog exposes `panelAriaLabel`, and the time listbox exposes `timeListAriaLabel`.
+- Time options support keyboard navigation (`ArrowUp/ArrowDown`, `Home/End`, `Enter`/`Space`, `Escape`).
+- Ensure visible focus state and sufficient color contrast in usage contexts.

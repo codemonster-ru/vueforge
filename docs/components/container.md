@@ -26,12 +26,21 @@
 </Container>
 ```
 
+## Theming
+
+- Override via `theme.overrides.components.container`.
+
 ## Tokens
 
 Component tokens (override via `theme.overrides.components.container`):
 
 - `maxWidth`, `maxWidthSm`, `maxWidthMd`, `maxWidthLg`, `maxWidthXl`
 - `paddingX`, `paddingXSm`, `paddingXLg`
+
+## Recipes
+
+- Page shell: `Container as="main" size="xl"` for top-level content width.
+- Wide workspace: `size="full"` with custom `max-width` and `padding-x` for dashboards.
 
 ## Accessibility
 

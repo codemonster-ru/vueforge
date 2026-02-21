@@ -40,6 +40,10 @@
 </Drawer>
 ```
 
+## Theming
+
+- Override via `theme.overrides.components.drawer`.
+
 ## Tokens
 
 Component tokens (override via `theme.overrides.components.drawer`):
@@ -56,8 +60,37 @@ Component tokens (override via `theme.overrides.components.drawer`):
 - `closeSize`, `closeRadius`, `closeOffset`
 - `closeColor`, `closeFontSize`, `closeHoverBackgroundColor`
 
+## Recipes
+
+- Filter drawer: right-side drawer with apply/reset footer actions.
+- Mobile bottom sheet: `position="bottom"` with compact content and `size="sm"`.
+- Secondary navigation: left drawer with section links and optional persistent overlay.
+
 ## Accessibility
 
 - Focus is trapped while drawer is open and restored to the previous element on close.
 - Supports `Escape` close behavior when `closeOnEsc` is enabled.
 - For top/bottom drawers, ensure content headings are descriptive for screen readers.
+
+## Interaction Contract
+
+- `modelValue=true`:
+    - emits `open`
+    - moves focus into drawer panel (first focusable element, otherwise panel)
+    - traps `Tab`/`Shift+Tab` focus inside panel
+    - locks document scroll when `lockScroll=true`
+- Close triggers (`overlay`, `Escape`, close button/slot):
+    - emit `update:modelValue=false`
+    - emit `close`
+    - restore focus to element active before open
+- Behavior flags:
+    - `overlay=false` hides overlay entirely
+    - `closeOnOverlay=false` keeps drawer open on overlay click
+    - `closeOnEsc=false` disables `Escape` close
+    - `lockScroll=false` keeps body scrolling enabled
+
+## Z-Index Policy
+
+- Drawer root uses `zIndex` token (`--vf-drawer-z-index`, default `100`).
+- Drawer and modal share default overlay layer (`100`) and are expected to be ordered by mount sequence unless overridden.
+- Prefer project-level theme overrides for custom stacking rules instead of hardcoded component styles.

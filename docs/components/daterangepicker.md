@@ -13,6 +13,8 @@
 - `max?: string` (ISO date `YYYY-MM-DD`)
 - `locale?: string` (default `en-US`)
 - `firstDayOfWeek?: number` (default `0`, Sunday)
+- `ariaLabel?: string` (default `Date range picker`)
+- `panelAriaLabel?: string` (default `Calendar range`)
 - `size?: 'small' | 'normal' | 'large'` (default `normal`)
 - `variant?: 'filled' | 'outlined'` (default `filled`)
 
@@ -39,4 +41,8 @@
 
 ## Accessibility
 
-- Ensure keyboard access, visible focus state, and sufficient color contrast in usage contexts.
+- Trigger exposes popup semantics via `aria-haspopup="dialog"`, `aria-expanded`, and `aria-controls`.
+- Keyboard support: `ArrowDown` opens the popup, `Escape` closes, and day-grid navigation supports `Arrow` keys, `Home`/`End`, `PageUp`/`PageDown`, with `Enter`/`Space` commit.
+- `min`/`max` constraints disable out-of-range days.
+- Invalid ISO range values are ignored (treated as empty placeholders in display).
+- In `readonly` mode, open/select interactions are blocked.

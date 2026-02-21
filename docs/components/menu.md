@@ -72,9 +72,18 @@
 />
 ```
 
+## Theming
+
+- Override via `theme.overrides.components.menu`.
+
 ## Tokens
 
-Override via `theme.overrides.components.menu`.
+- See menu token set in theme overrides (item spacing, separator, colors, submenu spacing, icon gaps).
+
+## Recipes
+
+- Top navigation: `orientation="horizontal"` with first-level product areas and dropdown children.
+- Sidebar navigation: `orientation="vertical"` with grouped sections and separators.
 
 ## Accessibility
 

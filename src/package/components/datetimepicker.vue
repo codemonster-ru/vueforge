@@ -5,11 +5,13 @@
             class="vf-datetimepicker__control"
             type="button"
             :disabled="disabled"
+            :aria-readonly="readonly ? 'true' : undefined"
+            :aria-label="ariaLabel"
             :aria-expanded="open"
             :aria-controls="panelId"
             aria-haspopup="dialog"
             @click="togglePanel"
-            @keydown.down.prevent="openPanel"
+            @keydown.down.prevent="openAndFocusTime"
             @keydown.enter.prevent="togglePanel"
             @keydown.esc.prevent="close"
             @focus="onFocus"
@@ -27,6 +29,7 @@
                 ref="panel"
                 class="vf-datetimepicker__panel"
                 role="dialog"
+                :aria-label="panelAriaLabel"
                 :data-placement="currentPlacement"
                 @keydown.esc.prevent="close"
             >
@@ -69,9 +72,10 @@
                         </button>
                     </div>
                 </div>
-                <div class="vf-datetimepicker__times" role="listbox">
+                <div class="vf-datetimepicker__times" role="listbox" :aria-label="timeListAriaLabel">
                     <button
-                        v-for="option in timeOptions"
+                        v-for="(option, index) in timeOptions"
+                        :id="getTimeOptionId(index)"
                         :key="option.value"
                         class="vf-datetimepicker__time"
                         :class="{ 'is-active': option.isSelected, 'is-disabled': option.isDisabled }"
@@ -80,6 +84,8 @@
                         :data-time="option.value"
                         :disabled="option.isDisabled"
                         :aria-selected="option.isSelected"
+                        @focus="onTimeOptionFocus(index)"
+                        @keydown="onTimeOptionKeydown($event, index)"
                         @click="selectTime(option.minutes)"
                     >
                         {{ option.label }}
@@ -110,6 +116,9 @@ interface Props {
     firstDayOfWeek?: number;
     minuteStep?: number;
     format?: TimeFormat;
+    ariaLabel?: string;
+    panelAriaLabel?: string;
+    timeListAriaLabel?: string;
     variant?: Variant;
     size?: Size;
 }
@@ -157,6 +166,9 @@ const props = withDefaults(defineProps<Props>(), {
     firstDayOfWeek: 0,
     minuteStep: 30,
     format: '24h',
+    ariaLabel: 'Date and time picker',
+    panelAriaLabel: 'Date and time selection',
+    timeListAriaLabel: 'Time options',
     variant: 'filled',
     size: 'normal',
 });
@@ -165,6 +177,7 @@ const root = ref<HTMLElement | null>(null);
 const control = ref<HTMLButtonElement | null>(null);
 const panel = ref<HTMLElement | null>(null);
 const open = ref(false);
+const focusedTimeIndex = ref(-1);
 const basePlacement = ref<Placement>('bottom');
 const currentPlacement = ref<Placement>('bottom');
 const panelId = `vf-datetimepicker-panel-${++datetimePickerIdCounter}`;
@@ -270,6 +283,38 @@ const getClass = computed(() => {
 
     return classes.filter(Boolean);
 });
+const getTimeOptionId = (index: number) => `${panelId}-time-option-${index}`;
+const firstEnabledTimeIndex = () => timeOptions.value.findIndex(option => !option.isDisabled);
+const focusTimeOption = (index: number) => {
+    if (index < 0 || index >= timeOptions.value.length) {
+        return;
+    }
+
+    focusedTimeIndex.value = index;
+    panel.value?.querySelectorAll<HTMLButtonElement>('.vf-datetimepicker__time')[index]?.focus();
+};
+const moveTimeFocus = (step: 1 | -1) => {
+    if (!timeOptions.value.length) {
+        return;
+    }
+
+    let index = focusedTimeIndex.value;
+    const size = timeOptions.value.length;
+
+    if (index < 0 || index >= size) {
+        index = step > 0 ? -1 : size;
+    }
+
+    for (let i = 0; i < size; i += 1) {
+        index = (index + step + size) % size;
+
+        if (!timeOptions.value[index].isDisabled) {
+            focusTimeOption(index);
+
+            return;
+        }
+    }
+};
 
 const onFocus = (event: FocusEvent) => emits('focus', event);
 const onBlur = (event: FocusEvent) => emits('blur', event);
@@ -337,6 +382,18 @@ const openPanel = () => {
     basePlacement.value = 'bottom';
     currentPlacement.value = 'bottom';
 };
+const openAndFocusTime = async () => {
+    if (props.disabled || props.readonly) {
+        return;
+    }
+
+    if (!open.value) {
+        openPanel();
+        await nextTick();
+    }
+
+    focusTimeOption(firstEnabledTimeIndex());
+};
 
 const close = () => {
     open.value = false;
@@ -386,6 +443,66 @@ const selectTime = (minutes: number) => {
 
     emitValueIfReady();
     close();
+};
+const onTimeOptionFocus = (index: number) => {
+    focusedTimeIndex.value = index;
+};
+const onTimeOptionKeydown = (event: KeyboardEvent, index: number) => {
+    if (!open.value || props.disabled || props.readonly) {
+        return;
+    }
+
+    if (event.key === 'ArrowDown') {
+        event.preventDefault();
+        moveTimeFocus(1);
+
+        return;
+    }
+
+    if (event.key === 'ArrowUp') {
+        event.preventDefault();
+        moveTimeFocus(-1);
+
+        return;
+    }
+
+    if (event.key === 'Home') {
+        event.preventDefault();
+        focusTimeOption(firstEnabledTimeIndex());
+
+        return;
+    }
+
+    if (event.key === 'End') {
+        event.preventDefault();
+
+        for (let i = timeOptions.value.length - 1; i >= 0; i -= 1) {
+            if (!timeOptions.value[i].isDisabled) {
+                focusTimeOption(i);
+                break;
+            }
+        }
+
+        return;
+    }
+
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        const option = timeOptions.value[index];
+
+        if (option && !option.isDisabled) {
+            selectTime(option.minutes);
+            control.value?.focus();
+        }
+
+        return;
+    }
+
+    if (event.key === 'Escape') {
+        event.preventDefault();
+        close();
+        control.value?.focus();
+    }
 };
 
 const onDocumentClick = (event: MouseEvent) => {
@@ -479,6 +596,7 @@ watch(
 
 watch(open, async value => {
     if (!value) {
+        focusedTimeIndex.value = -1;
         if (floater) {
             floater.destroy();
             floater = null;
@@ -494,6 +612,12 @@ watch(open, async value => {
     }
 
     void floater?.update();
+
+    if (focusedTimeIndex.value < 0) {
+        const selectedIndex = timeOptions.value.findIndex(option => option.isSelected && !option.isDisabled);
+
+        focusedTimeIndex.value = selectedIndex >= 0 ? selectedIndex : firstEnabledTimeIndex();
+    }
 });
 
 onMounted(() => {
@@ -542,6 +666,10 @@ function parseTime(value?: string) {
 
     const hours = Number(match[1]);
     const minutes = Number(match[2]);
+
+    if (Number.isNaN(hours) || Number.isNaN(minutes)) {
+        return null;
+    }
 
     if (hours < 0 || hours > 23 || minutes < 0 || minutes > 59) {
         return null;

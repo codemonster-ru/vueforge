@@ -1,5 +1,5 @@
 <template>
-    <div :class="getClass">
+    <div :class="getClass" role="group" :aria-label="ariaLabel">
         <div class="vf-calendar__header">
             <button
                 class="vf-calendar__nav"
@@ -39,7 +39,11 @@
                 type="button"
                 :disabled="disabled || cell.isDisabled"
                 :data-date="cell.iso"
+                :aria-label="getDayAriaLabel(cell.date)"
+                :aria-selected="cell.isSelected ? 'true' : 'false'"
                 @click="selectDate(cell.date)"
+                @focus="onDayFocus(cell.iso)"
+                @keydown="onDayKeydown($event, cell)"
             >
                 {{ cell.day }}
             </button>
@@ -61,6 +65,7 @@ interface Props {
     max?: string;
     locale?: string;
     firstDayOfWeek?: number;
+    ariaLabel?: string;
     variant?: Variant;
     size?: Size;
 }
@@ -85,11 +90,13 @@ const props = withDefaults(defineProps<Props>(), {
     max: undefined,
     locale: 'en-US',
     firstDayOfWeek: 0,
+    ariaLabel: 'Calendar',
     variant: 'filled',
     size: 'normal',
 });
 
 const monthCursor = ref(startOfMonth(parseIsoDate(props.modelValue) ?? new Date()));
+const focusedIso = ref<string | null>(null);
 
 const selectedDate = computed(() => parseIsoDate(props.modelValue));
 const minDate = computed(() => parseIsoDate(props.min));
@@ -156,6 +163,114 @@ const nextMonth = () => {
     monthCursor.value = shiftMonth(monthCursor.value, 1);
 };
 
+const onDayFocus = (iso: string) => {
+    focusedIso.value = iso;
+};
+
+const focusDayByIso = async (iso: string) => {
+    await Promise.resolve();
+    const element = document.querySelector<HTMLButtonElement>(`.vf-calendar__day[data-date="${iso}"]`);
+
+    element?.focus();
+};
+
+const shiftFocusedDay = async (delta: number) => {
+    const baseDate = parseIsoDate(focusedIso.value ?? undefined) ?? selectedDate.value ?? new Date();
+    const nextDate = addDays(baseDate, delta);
+
+    monthCursor.value = startOfMonth(nextDate);
+    focusedIso.value = formatIsoDate(nextDate);
+    await focusDayByIso(focusedIso.value);
+};
+
+const jumpFocusedDayInRow = async (toEnd: 'start' | 'end') => {
+    const baseDate = parseIsoDate(focusedIso.value ?? undefined) ?? selectedDate.value ?? new Date();
+    const currentWeekday = baseDate.getDay();
+    const col = (currentWeekday - props.firstDayOfWeek + 7) % 7;
+    const delta = toEnd === 'start' ? -col : 6 - col;
+    const nextDate = addDays(baseDate, delta);
+
+    monthCursor.value = startOfMonth(nextDate);
+    focusedIso.value = formatIsoDate(nextDate);
+    await focusDayByIso(focusedIso.value);
+};
+
+const shiftFocusedMonth = async (delta: number) => {
+    const baseDate = parseIsoDate(focusedIso.value ?? undefined) ?? selectedDate.value ?? new Date();
+    const nextDate = new Date(baseDate.getFullYear(), baseDate.getMonth() + delta, baseDate.getDate());
+
+    monthCursor.value = startOfMonth(nextDate);
+    focusedIso.value = formatIsoDate(nextDate);
+    await focusDayByIso(focusedIso.value);
+};
+
+const onDayKeydown = async (event: KeyboardEvent, cell: CalendarCell) => {
+    if (props.disabled) {
+        return;
+    }
+
+    if (event.key === 'ArrowRight') {
+        event.preventDefault();
+        await shiftFocusedDay(1);
+
+        return;
+    }
+
+    if (event.key === 'ArrowLeft') {
+        event.preventDefault();
+        await shiftFocusedDay(-1);
+
+        return;
+    }
+
+    if (event.key === 'ArrowDown') {
+        event.preventDefault();
+        await shiftFocusedDay(7);
+
+        return;
+    }
+
+    if (event.key === 'ArrowUp') {
+        event.preventDefault();
+        await shiftFocusedDay(-7);
+
+        return;
+    }
+
+    if (event.key === 'Home') {
+        event.preventDefault();
+        await jumpFocusedDayInRow('start');
+
+        return;
+    }
+
+    if (event.key === 'End') {
+        event.preventDefault();
+        await jumpFocusedDayInRow('end');
+
+        return;
+    }
+
+    if (event.key === 'PageUp') {
+        event.preventDefault();
+        await shiftFocusedMonth(-1);
+
+        return;
+    }
+
+    if (event.key === 'PageDown') {
+        event.preventDefault();
+        await shiftFocusedMonth(1);
+
+        return;
+    }
+
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        selectDate(cell.date);
+    }
+};
+
 const selectDate = (date: Date) => {
     if (props.disabled || props.readonly || isDateDisabled(date, minDate.value, maxDate.value)) {
         return;
@@ -174,10 +289,19 @@ watch(
 
         if (parsed) {
             monthCursor.value = startOfMonth(parsed);
+            focusedIso.value = formatIsoDate(parsed);
         }
     },
     { immediate: true },
 );
+
+function getDayAriaLabel(date: Date) {
+    return date.toLocaleDateString(props.locale, {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+    });
+}
 
 function parseIsoDate(value?: string) {
     if (!value) {

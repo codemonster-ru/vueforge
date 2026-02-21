@@ -42,11 +42,21 @@
     - Apply `disabled` for both anchor and router-link modes.
     - Disabled anchors remove `href`, set `aria-disabled="true"`, and remove tab focus.
 
+## Theming
+
+- Override via `theme.overrides.components.link`.
+
 ## Tokens
 
 Override via `theme.overrides.components.link`:
 
 - `hoverColor`, `activeColor`
+
+## Recipes
+
+- External docs link: `href` + `target="_blank"` + `rel="noopener noreferrer"`.
+- In-app navigation: `to="/route"` with router-link mode and active classes from router state.
+- Non-interactive label style: `disabled` for unavailable paths.
 
 ## Accessibility
 

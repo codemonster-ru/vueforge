@@ -50,16 +50,9 @@
 </Grid>
 ```
 
-## Layout Recipes
+## Theming
 
-- 12-column desktop and stacked mobile:
-    - base: `columns=1`
-    - `md`: `columns=12`
-    - each item uses breakpoint `span` for desktop widths
-- Dashboard shell:
-    - sidebar item: `md span=3`
-    - main item: `md span=9`
-    - adjust dense mode via `gap`, `columnGap`, `rowGap`
+- Override via `theme.overrides.components.grid`.
 
 ## Tokens
 
@@ -69,6 +62,17 @@ Component tokens (override via `theme.overrides.components.grid`):
 - `gap`, `columnGap`, `rowGap`
 - `alignItems`, `justifyItems`
 - `breakpointSm`, `breakpointMd`, `breakpointLg`, `breakpointXl`
+
+## Recipes
+
+- 12-column desktop and stacked mobile:
+    - base: `columns=1`
+    - `md`: `columns=12`
+    - each item uses breakpoint `span` for desktop widths
+- Dashboard shell:
+    - sidebar item: `md span=3`
+    - main item: `md span=9`
+    - adjust dense mode via `gap`, `columnGap`, `rowGap`
 
 ## Accessibility
 

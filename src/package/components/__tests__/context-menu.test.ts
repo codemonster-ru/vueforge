@@ -67,6 +67,50 @@ describe('ContextMenu', () => {
         wrapper.unmount();
     });
 
+    it('opens with keyboard fallback (Shift+F10)', async () => {
+        const wrapper = mountContextMenu();
+
+        await wrapper.find('.vf-context-menu').trigger('keydown', { key: 'F10', shiftKey: true });
+        await nextTick();
+
+        expect(wrapper.find('.vf-context-menu__panel').isVisible()).toBe(true);
+
+        wrapper.unmount();
+    });
+
+    it('does not close on Escape when closeOnEsc is false', async () => {
+        const wrapper = mountContextMenu({
+            props: { closeOnEsc: false },
+        });
+
+        await wrapper.find('.vf-context-menu').trigger('contextmenu', { clientX: 120, clientY: 80 });
+        await nextTick();
+
+        document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+        await nextTick();
+
+        expect(wrapper.find('.vf-context-menu__panel').isVisible()).toBe(true);
+
+        wrapper.unmount();
+    });
+
+    it('restores focus to trigger on Escape close', async () => {
+        const wrapper = mountContextMenu();
+        const trigger = wrapper.find('.vf-context-menu');
+
+        (trigger.element as HTMLElement).focus();
+
+        await trigger.trigger('contextmenu', { clientX: 120, clientY: 80 });
+        await nextTick();
+
+        document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+        await nextTick();
+
+        expect(document.activeElement).toBe(trigger.element);
+
+        wrapper.unmount();
+    });
+
     it('closes when selecting custom close target', async () => {
         const wrapper = mountContextMenu({
             slots: {
@@ -81,6 +125,44 @@ describe('ContextMenu', () => {
         await nextTick();
 
         expect(wrapper.find('.vf-context-menu__panel').isVisible()).toBe(false);
+
+        wrapper.unmount();
+    });
+
+    it('repositions inside viewport when opened near edge', async () => {
+        const wrapper = mountContextMenu();
+
+        await wrapper.find('.vf-context-menu').trigger('contextmenu', { clientX: 5000, clientY: 5000 });
+        await nextTick();
+
+        const panel = wrapper.find('.vf-context-menu__panel').element as HTMLElement;
+
+        Object.defineProperty(panel, 'getBoundingClientRect', {
+            configurable: true,
+            value: () =>
+                ({
+                    width: 240,
+                    height: 180,
+                    top: 0,
+                    left: 0,
+                    right: 240,
+                    bottom: 180,
+                    x: 0,
+                    y: 0,
+                    toJSON: () => ({}),
+                }) as DOMRect,
+        });
+
+        window.dispatchEvent(new Event('resize'));
+        await nextTick();
+
+        const left = Number.parseFloat(panel.style.left);
+        const top = Number.parseFloat(panel.style.top);
+
+        expect(Number.isNaN(left)).toBe(false);
+        expect(Number.isNaN(top)).toBe(false);
+        expect(left).toBeLessThanOrEqual(window.innerWidth);
+        expect(top).toBeLessThanOrEqual(window.innerHeight);
 
         wrapper.unmount();
     });

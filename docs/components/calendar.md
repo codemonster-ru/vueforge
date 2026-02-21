@@ -9,6 +9,7 @@
 - `max?: string` (ISO date `YYYY-MM-DD`)
 - `locale?: string` (default `en-US`)
 - `firstDayOfWeek?: number` (default `0`, Sunday)
+- `ariaLabel?: string` (default `Calendar`)
 - `size?: 'small' | 'normal' | 'large'` (default `normal`)
 - `variant?: 'filled' | 'outlined'` (default `filled`)
 
@@ -46,4 +47,8 @@ Component tokens (override via `theme.overrides.components.calendar`):
 
 ## Accessibility
 
-- Ensure keyboard access, visible focus state, and sufficient color contrast in usage contexts.
+- Grid day navigation supports `Arrow` keys, `Home`/`End`, and `PageUp`/`PageDown`.
+- Date commit is keyboard-accessible via `Enter`/`Space`.
+- `min`/`max` constraints disable out-of-range days.
+- Invalid ISO model values are ignored (no selected day state).
+- In `readonly` mode, selection mutation is blocked.

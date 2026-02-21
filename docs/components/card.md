@@ -25,11 +25,21 @@
 </Card>
 ```
 
+## Theming
+
+- Override via `theme.overrides.components.card`.
+
 ## Tokens
 
 Override via `theme.overrides.components.card`:
 
 - `padding`, `borderColor`, `borderRadius`
+
+## Recipes
+
+- Information card with header/body/footer slots.
+- Section container card wrapping `PageHeader` and controls.
+- Lightweight tile cards in grid/list layouts.
 
 ## Accessibility
 

@@ -5,6 +5,8 @@
             class="vf-datepicker__control"
             type="button"
             :disabled="disabled"
+            :aria-readonly="readonly ? 'true' : undefined"
+            :aria-label="ariaLabel"
             :aria-expanded="open"
             :aria-controls="panelId"
             aria-haspopup="dialog"
@@ -27,6 +29,7 @@
                 ref="panel"
                 class="vf-datepicker__panel"
                 role="dialog"
+                :aria-label="panelAriaLabel"
                 :data-placement="currentPlacement"
                 @keydown.esc.prevent="close"
             >
@@ -86,6 +89,8 @@ interface Props {
     max?: string;
     locale?: string;
     firstDayOfWeek?: number;
+    ariaLabel?: string;
+    panelAriaLabel?: string;
     variant?: Variant;
     size?: Size;
 }
@@ -116,6 +121,8 @@ const props = withDefaults(defineProps<Props>(), {
     max: undefined,
     locale: 'en-US',
     firstDayOfWeek: 0,
+    ariaLabel: 'Date picker',
+    panelAriaLabel: 'Calendar',
     variant: 'filled',
     size: 'normal',
 });

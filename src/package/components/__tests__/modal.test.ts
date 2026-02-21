@@ -15,6 +15,10 @@ const mountModal = (options: Parameters<typeof mount>[1] = {}) => {
 };
 
 describe('Modal', () => {
+    afterEach(() => {
+        document.body.style.overflow = '';
+    });
+
     it('emits update when overlay is clicked', async () => {
         const wrapper = mountModal({
             props: { modelValue: true },
@@ -25,6 +29,7 @@ describe('Modal', () => {
         await wrapper.find('.vf-modal__overlay').trigger('click');
 
         expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([false]);
+        expect(wrapper.emitted('close')?.[0]).toEqual([]);
 
         wrapper.unmount();
     });
@@ -57,6 +62,7 @@ describe('Modal', () => {
         await nextTick();
 
         expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([false]);
+        expect(wrapper.emitted('close')?.[0]).toEqual([]);
 
         wrapper.unmount();
     });
@@ -137,6 +143,94 @@ describe('Modal', () => {
         await panel.trigger('keydown', { key: 'Tab', shiftKey: true });
 
         expect(document.activeElement).toBe(last);
+
+        wrapper.unmount();
+    });
+
+    it('restores focus to previously active element on close', async () => {
+        const trigger = document.createElement('button');
+        trigger.textContent = 'open';
+        document.body.appendChild(trigger);
+        trigger.focus();
+
+        const wrapper = mountModal({
+            props: { modelValue: true, showClose: false },
+            slots: {
+                body: '<button class="inside">Inside</button>',
+            },
+        });
+
+        await nextTick();
+        await nextTick();
+
+        expect(document.activeElement).not.toBe(trigger);
+
+        await wrapper.setProps({ modelValue: false });
+        await nextTick();
+        await nextTick();
+
+        expect(document.activeElement).toBe(trigger);
+
+        wrapper.unmount();
+        trigger.remove();
+    });
+
+    it('locks and unlocks body scroll with modelValue', async () => {
+        const wrapper = mountModal({
+            props: { modelValue: false, lockScroll: true },
+        });
+
+        expect(document.body.style.overflow).toBe('');
+
+        await wrapper.setProps({ modelValue: true });
+        await nextTick();
+        await nextTick();
+
+        expect(document.body.style.overflow).toBe('hidden');
+
+        await wrapper.setProps({ modelValue: false });
+        await nextTick();
+        await nextTick();
+
+        expect(document.body.style.overflow).toBe('');
+
+        wrapper.unmount();
+    });
+
+    it('keeps scroll locked until all opened modals are closed', async () => {
+        const first = mountModal({ props: { modelValue: true, lockScroll: true } });
+        const second = mountModal({ props: { modelValue: true, lockScroll: true } });
+
+        await nextTick();
+        await nextTick();
+
+        expect(document.body.style.overflow).toBe('hidden');
+
+        await first.setProps({ modelValue: false });
+        await nextTick();
+        await nextTick();
+
+        expect(document.body.style.overflow).toBe('hidden');
+
+        await second.setProps({ modelValue: false });
+        await nextTick();
+        await nextTick();
+
+        expect(document.body.style.overflow).toBe('');
+
+        first.unmount();
+        second.unmount();
+    });
+
+    it('does not lock body scroll when lockScroll is false', async () => {
+        const wrapper = mountModal({
+            props: { modelValue: true, lockScroll: false },
+        });
+
+        await nextTick();
+        await nextTick();
+
+        expect(document.body.style.overflow).toBe('');
 
         wrapper.unmount();
     });

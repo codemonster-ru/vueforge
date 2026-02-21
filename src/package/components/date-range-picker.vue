@@ -5,6 +5,8 @@
             class="vf-daterangepicker__control"
             type="button"
             :disabled="disabled"
+            :aria-readonly="readonly ? 'true' : undefined"
+            :aria-label="ariaLabel"
             :aria-expanded="open"
             :aria-controls="panelId"
             aria-haspopup="dialog"
@@ -27,6 +29,7 @@
                 ref="panel"
                 class="vf-daterangepicker__panel"
                 role="dialog"
+                :aria-label="panelAriaLabel"
                 :data-placement="currentPlacement"
                 @keydown.esc.prevent="close"
             >
@@ -35,12 +38,19 @@
                         class="vf-daterangepicker__nav"
                         type="button"
                         aria-label="Previous month"
+                        :disabled="disabled || readonly"
                         @click="prevMonth"
                     >
                         &#8249;
                     </button>
                     <span class="vf-daterangepicker__month-label">{{ monthLabel }}</span>
-                    <button class="vf-daterangepicker__nav" type="button" aria-label="Next month" @click="nextMonth">
+                    <button
+                        class="vf-daterangepicker__nav"
+                        type="button"
+                        aria-label="Next month"
+                        :disabled="disabled || readonly"
+                        @click="nextMonth"
+                    >
                         &#8250;
                     </button>
                 </div>
@@ -63,9 +73,13 @@
                             'is-today': cell.isToday,
                         }"
                         type="button"
-                        :disabled="cell.isDisabled"
+                        :disabled="disabled || readonly || cell.isDisabled"
                         :data-date="cell.iso"
+                        :aria-label="getDayAriaLabel(cell.date)"
+                        :aria-selected="cell.isSelected ? 'true' : 'false'"
                         @click="selectDate(cell.date)"
+                        @focus="onDayFocus(cell.iso)"
+                        @keydown="onDayKeydown($event, cell)"
                     >
                         {{ cell.day }}
                     </button>
@@ -98,6 +112,8 @@ interface Props {
     max?: string;
     locale?: string;
     firstDayOfWeek?: number;
+    ariaLabel?: string;
+    panelAriaLabel?: string;
     variant?: Variant;
     size?: Size;
 }
@@ -134,6 +150,8 @@ const props = withDefaults(defineProps<Props>(), {
     max: undefined,
     locale: 'en-US',
     firstDayOfWeek: 0,
+    ariaLabel: 'Date range picker',
+    panelAriaLabel: 'Calendar range',
     variant: 'filled',
     size: 'normal',
 });
@@ -146,6 +164,7 @@ const basePlacement = ref<Placement>('bottom');
 const currentPlacement = ref<Placement>('bottom');
 const panelId = `vf-daterangepicker-panel-${++dateRangePickerIdCounter}`;
 const monthCursor = ref(startOfMonth(new Date()));
+const focusedIso = ref<string | null>(null);
 let floater: FloaterInstance = null;
 
 const minDate = computed(() => parseIsoDate(props.min));
@@ -267,11 +286,127 @@ const togglePanel = () => {
 };
 
 const prevMonth = () => {
+    if (props.disabled || props.readonly) {
+        return;
+    }
+
     monthCursor.value = shiftMonth(monthCursor.value, -1);
 };
 
 const nextMonth = () => {
+    if (props.disabled || props.readonly) {
+        return;
+    }
+
     monthCursor.value = shiftMonth(monthCursor.value, 1);
+};
+
+const onDayFocus = (iso: string) => {
+    focusedIso.value = iso;
+};
+
+const focusDayByIso = async (iso: string) => {
+    await Promise.resolve();
+    const element = document.querySelector<HTMLButtonElement>(`.vf-daterangepicker__day[data-date="${iso}"]`);
+
+    element?.focus();
+};
+
+const shiftFocusedDay = async (delta: number) => {
+    const baseDate = parseIsoDate(focusedIso.value ?? undefined) ?? rangeStart.value ?? rangeEnd.value ?? new Date();
+    const nextDate = addDays(baseDate, delta);
+
+    monthCursor.value = startOfMonth(nextDate);
+    focusedIso.value = formatIsoDate(nextDate);
+    await focusDayByIso(focusedIso.value);
+};
+
+const jumpFocusedDayInRow = async (toEnd: 'start' | 'end') => {
+    const baseDate = parseIsoDate(focusedIso.value ?? undefined) ?? rangeStart.value ?? rangeEnd.value ?? new Date();
+    const currentWeekday = baseDate.getDay();
+    const col = (currentWeekday - props.firstDayOfWeek + 7) % 7;
+    const delta = toEnd === 'start' ? -col : 6 - col;
+    const nextDate = addDays(baseDate, delta);
+
+    monthCursor.value = startOfMonth(nextDate);
+    focusedIso.value = formatIsoDate(nextDate);
+    await focusDayByIso(focusedIso.value);
+};
+
+const shiftFocusedMonth = async (delta: number) => {
+    const baseDate = parseIsoDate(focusedIso.value ?? undefined) ?? rangeStart.value ?? rangeEnd.value ?? new Date();
+    const nextDate = new Date(baseDate.getFullYear(), baseDate.getMonth() + delta, baseDate.getDate());
+
+    monthCursor.value = startOfMonth(nextDate);
+    focusedIso.value = formatIsoDate(nextDate);
+    await focusDayByIso(focusedIso.value);
+};
+
+const onDayKeydown = async (event: KeyboardEvent, cell: CalendarCell) => {
+    if (props.disabled || props.readonly) {
+        return;
+    }
+
+    if (event.key === 'ArrowRight') {
+        event.preventDefault();
+        await shiftFocusedDay(1);
+
+        return;
+    }
+
+    if (event.key === 'ArrowLeft') {
+        event.preventDefault();
+        await shiftFocusedDay(-1);
+
+        return;
+    }
+
+    if (event.key === 'ArrowDown') {
+        event.preventDefault();
+        await shiftFocusedDay(7);
+
+        return;
+    }
+
+    if (event.key === 'ArrowUp') {
+        event.preventDefault();
+        await shiftFocusedDay(-7);
+
+        return;
+    }
+
+    if (event.key === 'Home') {
+        event.preventDefault();
+        await jumpFocusedDayInRow('start');
+
+        return;
+    }
+
+    if (event.key === 'End') {
+        event.preventDefault();
+        await jumpFocusedDayInRow('end');
+
+        return;
+    }
+
+    if (event.key === 'PageUp') {
+        event.preventDefault();
+        await shiftFocusedMonth(-1);
+
+        return;
+    }
+
+    if (event.key === 'PageDown') {
+        event.preventDefault();
+        await shiftFocusedMonth(1);
+
+        return;
+    }
+
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        selectDate(cell.date);
+    }
 };
 
 const updateRange = (start: Date | null, end: Date | null) => {
@@ -379,6 +514,7 @@ watch(
         const cursor = start ?? end ?? new Date();
 
         monthCursor.value = startOfMonth(cursor);
+        focusedIso.value = start ? formatIsoDate(start) : end ? formatIsoDate(end) : null;
     },
     { immediate: true },
 );
@@ -430,6 +566,14 @@ function normalizeRange(value?: DateRangeValue): [Date | null, Date | null] {
     const [start, end] = value;
 
     return [parseIsoDate(start ?? undefined), parseIsoDate(end ?? undefined)];
+}
+
+function getDayAriaLabel(date: Date) {
+    return date.toLocaleDateString(props.locale, {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+    });
 }
 
 function parseIsoDate(value?: string) {

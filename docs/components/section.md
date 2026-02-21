@@ -36,6 +36,10 @@
 - Use `Section` for vertical rhythm and background/border separation.
 - Use nested `Container` to control content width and horizontal gutters.
 
+## Theming
+
+- Override via `theme.overrides.components.section`.
+
 ## Tokens
 
 Component tokens (override via `theme.overrides.components.section`):
@@ -43,6 +47,11 @@ Component tokens (override via `theme.overrides.components.section`):
 - `paddingY`, `paddingYSm`, `paddingYLg`
 - `backgroundColorSurface`, `backgroundColorMuted`, `backgroundColorElevated`
 - `borderColor`
+
+## Recipes
+
+- Alternating page bands: alternate `background="surface"` and `background="muted"` between sections.
+- Hero section: `as="main"` with larger `padding-y` and nested `Container` for readable width.
 
 ## Accessibility
 

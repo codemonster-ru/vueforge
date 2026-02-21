@@ -1,5 +1,53 @@
 # Changelog
 
+## [0.89.0] - 2026-02-21
+
+- Date/time family hardening:
+    - Completed interaction/a11y hardening for `DateTimePicker` with explicit ARIA labeling (`ariaLabel`, `panelAriaLabel`, `timeListAriaLabel`) and readonly semantics (`aria-readonly`).
+    - Added keyboard support for time list interactions in `DateTimePicker` (`ArrowUp`/`ArrowDown`, `Home`/`End`, `Enter`/`Space`, `Escape`) with stable focus handling.
+    - Expanded date/time edge-case test coverage for empty/invalid values and min/max boundary behavior, including same-day time boundary checks.
+    - Added date/time behavior documentation for parsing, formats, and constraints in a dedicated guide.
+- Overlay baseline hardening across core components:
+    - `Modal` and `Drawer`:
+        - Added regression coverage for focus trap, focus restore, escape/overlay close contracts, and scroll-lock behavior.
+        - Fixed multi-instance scroll-lock correctness by moving lock state to shared global runtime state instead of per-instance state.
+        - Added explicit interaction contracts and z-index policy docs.
+    - `Dropdown`:
+        - Added keyboard open shortcuts (`ArrowDown`/`ArrowUp`) and menu keyboard navigation (`ArrowUp`/`ArrowDown`, `Home`/`End`) with focus movement and trigger-focus restore on close.
+        - Added complete regression test suite for open/close/select/keyboard/placement behavior.
+        - Switched internal `Menu` rendering to async import path to avoid unnecessary eager dependency side effects in test/runtime contexts.
+    - `Popover`:
+        - Upgraded from basic toggle behavior to overlay contract with controlled/uncontrolled mode, outside-click and escape dismiss, focus restore, and floating positioning with collision fallback.
+        - Added canonical overlay events (`update:modelValue`, `open`, `close`) while preserving compatibility events (`click`, `onClick`).
+        - Added popover regression tests and documented interaction and z-index policy.
+    - `Tooltip`:
+        - Improved non-hover accessibility behavior with `focusin`/`focusout` handling and escape close support.
+        - Added delay controls (`showDelay`, `hideDelay`) and test coverage for delayed show/hide timing behavior.
+        - Added usage constraints docs for tooltip-appropriate content and accessibility expectations.
+    - `ContextMenu`:
+        - Added keyboard fallback open behavior (`ContextMenu` key, `Shift+F10`) and focus restore on close.
+        - Expanded regression tests for close contracts (`Escape`, outside, selection) and viewport-edge reposition checks.
+        - Added interaction and positioning/z-index contract documentation.
+- Accessibility QA baseline additions:
+    - Added reusable accessibility checklist templates for interactive and non-interactive/display components.
+    - Added dedicated accessibility test suites for:
+        - form flows
+        - table flows
+        - modal/drawer flows
+        - navigation flows
+    - Added component docs template enforcement with required `Accessibility` section and standardized docs structure.
+- Documentation baseline expansion:
+    - Standardized docs template around `Props`, `Events`, `Slots`, `Examples`, `Theming`, `Tokens`, `Recipes`, `Accessibility`.
+    - Applied template sections across updated layout/navigation/overlay/data/form-family docs, including explicit theming and practical recipe blocks.
+    - Added new docs guides and recipes:
+        - Build without Tailwind
+        - Starter Auth page recipe
+        - Starter Dashboard page recipe
+        - Starter Settings page recipe
+    - Added API conventions, API consistency audit summary, migration notes, browser support matrix, browser compatibility checks, and testing/review checklist docs.
+- Theme/docs hardening:
+    - Expanded theming documentation with stricter token validation guidance and concrete token override examples for layout primitives (`Container`, `Section`, `Grid`, `Stack`, `Inline`).
+
 ## [0.88.0] - 2026-02-21
 
 - Completed `P0.14` selection-family hardening for `Select`, `Autocomplete`, `Combobox`, `MultiSelect`, `TagInput`, and `TreeSelect`.

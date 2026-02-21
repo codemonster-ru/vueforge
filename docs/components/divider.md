@@ -28,6 +28,10 @@
 </div>
 ```
 
+## Theming
+
+- Override via `theme.overrides.components.divider`.
+
 ## Tokens
 
 Component tokens (override via `theme.overrides.components.divider`):
@@ -35,6 +39,12 @@ Component tokens (override via `theme.overrides.components.divider`):
 - `color`, `textColor`, `thickness`, `minLength`
 - `gap`, `inset`
 - `labelPadding`, `labelFontSize`
+
+## Recipes
+
+- Horizontal section separator between content groups.
+- Centered label separator (`label="OR"`) for auth/social blocks.
+- Vertical separator inside compact inline toolbars.
 
 ## Accessibility
 

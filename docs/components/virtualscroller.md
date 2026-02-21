@@ -32,6 +32,10 @@
 </VirtualScroller>
 ```
 
+## Theming
+
+- Override via `theme.overrides.components.virtualScroller`.
+
 ## Tokens
 
 Component tokens (override via `theme.overrides.components.virtualScroller`):
@@ -42,6 +46,12 @@ Component tokens (override via `theme.overrides.components.virtualScroller`):
 - `focusRingShadow`
 - `itemPadding`, `itemBorderColor`
 - `emptyPadding`, `emptyColor`
+
+## Recipes
+
+- Long activity feed with virtualized rows and fixed `itemHeight`.
+- Command/search results list with `reachEnd` to trigger lazy loading.
+- Non-virtual fallback mode (`virtual=false`) for short lists.
 
 ## Accessibility
 

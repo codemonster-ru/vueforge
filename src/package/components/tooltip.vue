@@ -3,10 +3,11 @@
         ref="trigger"
         class="vf-tooltip__trigger"
         :aria-describedby="tooltipId"
+        :aria-disabled="disabled ? 'true' : 'false'"
         @mouseenter="open"
         @mouseleave="close"
-        @focus="open"
-        @blur="close"
+        @focusin="open"
+        @focusout="close"
     >
         <slot />
     </span>
@@ -30,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref, useSlots, watch } from 'vue';
 import { autoUpdate, computePosition, flip, offset, shift } from '@codemonster-ru/floater.js';
 
 interface Props {
@@ -38,6 +39,9 @@ interface Props {
     placement?: 'top' | 'bottom' | 'left' | 'right';
     disabled?: boolean;
     arrow?: boolean;
+    showDelay?: number;
+    hideDelay?: number;
+    closeOnEsc?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -45,15 +49,32 @@ const props = withDefaults(defineProps<Props>(), {
     placement: 'top',
     disabled: false,
     arrow: false,
+    showDelay: 0,
+    hideDelay: 0,
+    closeOnEsc: true,
 });
 
-let tooltipIdCounter = 0;
+const TOOLTIP_COUNTER_KEY = '__vf_tooltip_id_counter__';
+const getGlobalObject = (): Record<string, unknown> => globalThis as Record<string, unknown>;
+const nextTooltipId = () => {
+    const globalObject = getGlobalObject();
+    const current =
+        typeof globalObject[TOOLTIP_COUNTER_KEY] === 'number' ? (globalObject[TOOLTIP_COUNTER_KEY] as number) : 0;
+    const next = current + 1;
+
+    globalObject[TOOLTIP_COUNTER_KEY] = next;
+
+    return next;
+};
 
 const trigger = ref<HTMLElement | null>(null);
 const panel = ref<HTMLElement | null>(null);
 const visible = ref(false);
 const currentPlacement = ref<'top' | 'bottom' | 'left' | 'right'>('top');
-const tooltipId = `vf-tooltip-${++tooltipIdCounter}`;
+const tooltipId = `vf-tooltip-${nextTooltipId()}`;
+const slots = useSlots();
+let showTimer: ReturnType<typeof setTimeout> | null = null;
+let hideTimer: ReturnType<typeof setTimeout> | null = null;
 
 type FloaterInstance = {
     update: () => Promise<void>;
@@ -62,14 +83,70 @@ type FloaterInstance = {
 
 let floater: FloaterInstance = null;
 
+const clearTimers = () => {
+    if (showTimer) {
+        clearTimeout(showTimer);
+        showTimer = null;
+    }
+
+    if (hideTimer) {
+        clearTimeout(hideTimer);
+        hideTimer = null;
+    }
+};
+
+const hasContent = computed(() => {
+    return props.text.trim().length > 0 || !!slots.content;
+});
+
 const open = () => {
-    if (props.disabled) {
+    if (props.disabled || !hasContent.value) {
         return;
     }
-    visible.value = true;
+
+    if (hideTimer) {
+        clearTimeout(hideTimer);
+        hideTimer = null;
+    }
+
+    const openNow = () => {
+        visible.value = true;
+    };
+
+    if (props.showDelay > 0) {
+        showTimer = setTimeout(openNow, props.showDelay);
+        return;
+    }
+
+    openNow();
 };
 const close = () => {
-    visible.value = false;
+    if (showTimer) {
+        clearTimeout(showTimer);
+        showTimer = null;
+    }
+
+    const closeNow = () => {
+        visible.value = false;
+    };
+
+    if (props.hideDelay > 0) {
+        hideTimer = setTimeout(closeNow, props.hideDelay);
+        return;
+    }
+
+    closeNow();
+};
+
+const onDocumentKeydown = (event: KeyboardEvent) => {
+    if (!visible.value || !props.closeOnEsc) {
+        return;
+    }
+
+    if (event.key === 'Escape') {
+        event.preventDefault();
+        close();
+    }
 };
 
 const mountFloater = () => {
@@ -138,16 +215,20 @@ onMounted(() => {
     if (visible.value) {
         mountFloater();
     }
+
+    document.addEventListener('keydown', onDocumentKeydown);
 });
 
 onBeforeUnmount(() => {
+    clearTimers();
     floater?.destroy();
     floater = null;
+    document.removeEventListener('keydown', onDocumentKeydown);
 });
 
-const hasText = computed(() => !!props.text || !!(panel.value && panel.value.textContent));
-watch(hasText, value => {
+watch(hasContent, value => {
     if (!value) {
+        clearTimers();
         visible.value = false;
     }
 });

@@ -71,15 +71,50 @@ const props = withDefaults(defineProps<Props>(), {
     size: 'md',
 });
 
-let drawerIdCounter = 0;
-let scrollLockCount = 0;
-let previousBodyOverflow = '';
 let lastActiveElement: HTMLElement | null = null;
+
+type ScrollLockState = {
+    count: number;
+    previousOverflow: string;
+};
+
+const DRAWER_COUNTER_KEY = '__vf_drawer_id_counter__';
+const DRAWER_SCROLL_LOCK_KEY = '__vf_drawer_scroll_lock_state__';
+
+const getGlobalObject = (): Record<string, unknown> => globalThis as Record<string, unknown>;
+const nextDrawerId = () => {
+    const globalObject = getGlobalObject();
+    const current =
+        typeof globalObject[DRAWER_COUNTER_KEY] === 'number' ? (globalObject[DRAWER_COUNTER_KEY] as number) : 0;
+    const next = current + 1;
+
+    globalObject[DRAWER_COUNTER_KEY] = next;
+
+    return next;
+};
+const getScrollLockState = (): ScrollLockState => {
+    const globalObject = getGlobalObject();
+    const existing = globalObject[DRAWER_SCROLL_LOCK_KEY];
+
+    if (existing && typeof existing === 'object') {
+        return existing as ScrollLockState;
+    }
+
+    const state: ScrollLockState = {
+        count: 0,
+        previousOverflow: '',
+    };
+
+    globalObject[DRAWER_SCROLL_LOCK_KEY] = state;
+
+    return state;
+};
 
 const panel = ref<HTMLElement | null>(null);
 const slots: Slots = useSlots();
-const labelId = `vf-drawer-title-${++drawerIdCounter}`;
-const bodyId = `vf-drawer-body-${drawerIdCounter}`;
+const drawerId = nextDrawerId();
+const labelId = `vf-drawer-title-${drawerId}`;
+const bodyId = `vf-drawer-body-${drawerId}`;
 const hasHeader = computed<boolean>(() => !!props.title || !!slots.header);
 const hasBody = computed<boolean>(() => !!slots.body || !!slots.default);
 const transformFrom = computed<string>(() => {
@@ -198,12 +233,14 @@ const lockBodyScroll = () => {
         return;
     }
 
-    if (scrollLockCount === 0) {
-        previousBodyOverflow = document.body.style.overflow;
+    const state = getScrollLockState();
+
+    if (state.count === 0) {
+        state.previousOverflow = document.body.style.overflow;
         document.body.style.overflow = 'hidden';
     }
 
-    scrollLockCount += 1;
+    state.count += 1;
 };
 
 const unlockBodyScroll = () => {
@@ -211,10 +248,12 @@ const unlockBodyScroll = () => {
         return;
     }
 
-    scrollLockCount = Math.max(0, scrollLockCount - 1);
+    const state = getScrollLockState();
 
-    if (scrollLockCount === 0) {
-        document.body.style.overflow = previousBodyOverflow;
+    state.count = Math.max(0, state.count - 1);
+
+    if (state.count === 0) {
+        document.body.style.overflow = state.previousOverflow;
     }
 };
 

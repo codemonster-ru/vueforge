@@ -41,6 +41,10 @@
 </PageHeader>
 ```
 
+## Theming
+
+- Override via `theme.overrides.components.pageHeader`.
+
 ## Tokens
 
 Component tokens (override via `theme.overrides.components.pageHeader`):
@@ -51,6 +55,12 @@ Component tokens (override via `theme.overrides.components.pageHeader`):
 - `subtitleFontSize`, `subtitleColor`
 - `small.padding`, `small.titleFontSize`, `small.subtitleFontSize`
 - `large.padding`, `large.titleFontSize`, `large.subtitleFontSize`
+
+## Recipes
+
+- Resource list header: breadcrumbs + title/subtitle + right-aligned primary actions.
+- Compact mobile header: `size="small"` and minimal action group.
+- Detail page header: title slot with custom heading level and meta badges.
 
 ## Accessibility
 

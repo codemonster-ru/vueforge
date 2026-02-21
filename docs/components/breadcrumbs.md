@@ -27,12 +27,22 @@
 />
 ```
 
+## Theming
+
+- Override via `theme.overrides.components.breadcrumbs`.
+
 ## Tokens
 
 Component tokens (override via `theme.overrides.components.breadcrumbs`):
 
 - `gap`, `fontSize`, `textColor`, `hoverColor`, `activeColor`
 - `separatorColor`, `disabledOpacity`
+
+## Recipes
+
+- Application hierarchy: `Home / Section / Page` with last item active.
+- Product workspace: include entity type level (`Projects / Project A / Settings`).
+- Custom separator: provide `#separator` slot for icon-based separators.
 
 ## Accessibility
 

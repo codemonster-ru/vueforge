@@ -5,8 +5,11 @@
             class="vf-timepicker__control"
             type="button"
             :disabled="disabled"
+            :aria-readonly="readonly ? 'true' : undefined"
+            :aria-label="ariaLabel"
             :aria-expanded="open"
             :aria-controls="panelId"
+            :aria-activedescendant="activeDescendantId"
             aria-haspopup="listbox"
             @click="togglePanel"
             @keydown.down.prevent="openAndFocus"
@@ -27,10 +30,12 @@
                 ref="panel"
                 class="vf-timepicker__panel"
                 role="listbox"
+                :aria-label="panelAriaLabel"
                 :data-placement="currentPlacement"
             >
                 <button
-                    v-for="option in options"
+                    v-for="(option, index) in options"
+                    :id="getOptionId(index)"
                     :key="option.value"
                     class="vf-timepicker__option"
                     :class="{ 'is-active': option.isSelected, 'is-disabled': option.isDisabled }"
@@ -39,6 +44,8 @@
                     :data-time="option.value"
                     :disabled="option.isDisabled"
                     :aria-selected="option.isSelected"
+                    @focus="onOptionFocus(index)"
+                    @keydown="onOptionKeydown($event, index)"
                     @click="selectTime(option.value)"
                 >
                     {{ option.label }}
@@ -68,6 +75,8 @@ interface Props {
     max?: string;
     step?: number;
     format?: TimeFormat;
+    ariaLabel?: string;
+    panelAriaLabel?: string;
     variant?: Variant;
     size?: Size;
 }
@@ -95,6 +104,8 @@ const props = withDefaults(defineProps<Props>(), {
     max: undefined,
     step: 30,
     format: '24h',
+    ariaLabel: 'Time picker',
+    panelAriaLabel: 'Time options',
     variant: 'filled',
     size: 'normal',
 });
@@ -103,6 +114,7 @@ const root = ref<HTMLElement | null>(null);
 const control = ref<HTMLButtonElement | null>(null);
 const panel = ref<HTMLElement | null>(null);
 const open = ref(false);
+const focusedIndex = ref(-1);
 const basePlacement = ref<Placement>('bottom');
 const currentPlacement = ref<Placement>('bottom');
 const panelId = `vf-timepicker-panel-${++timePickerIdCounter}`;
@@ -145,6 +157,13 @@ const options = computed<Array<TimeOption>>(() => {
 
     return result;
 });
+const activeDescendantId = computed(() => {
+    if (!open.value || focusedIndex.value < 0 || focusedIndex.value >= options.value.length) {
+        return undefined;
+    }
+
+    return getOptionId(focusedIndex.value);
+});
 const getClass = computed(() => {
     const classes = ['vf-timepicker', `vf-timepicker_${props.variant}`, open.value ? 'vf-timepicker_open' : ''];
 
@@ -158,6 +177,39 @@ const getClass = computed(() => {
 
     return classes.filter(Boolean);
 });
+const getOptionId = (index: number) => `${panelId}-option-${index}`;
+
+const firstEnabledIndex = () => options.value.findIndex(option => !option.isDisabled);
+const focusOption = (index: number) => {
+    if (index < 0 || index >= options.value.length) {
+        return;
+    }
+
+    focusedIndex.value = index;
+    panel.value?.querySelectorAll<HTMLButtonElement>('.vf-timepicker__option')[index]?.focus();
+};
+const moveFocus = (step: 1 | -1) => {
+    if (!options.value.length) {
+        return;
+    }
+
+    let index = focusedIndex.value;
+    const size = options.value.length;
+
+    if (index < 0 || index >= size) {
+        index = step > 0 ? -1 : size;
+    }
+
+    for (let i = 0; i < size; i += 1) {
+        index = (index + step + size) % size;
+
+        if (!options.value[index].isDisabled) {
+            focusOption(index);
+
+            return;
+        }
+    }
+};
 
 const onFocus = (event: FocusEvent) => emits('focus', event);
 const onBlur = (event: FocusEvent) => emits('blur', event);
@@ -179,6 +231,10 @@ const close = () => {
 };
 
 const togglePanel = () => {
+    if (props.disabled || props.readonly) {
+        return;
+    }
+
     if (open.value) {
         close();
 
@@ -189,13 +245,78 @@ const togglePanel = () => {
 };
 
 const openAndFocus = async () => {
+    if (props.disabled || props.readonly) {
+        return;
+    }
+
     if (!open.value) {
         openPanel();
 
         await nextTick();
     }
 
-    panel.value?.querySelector<HTMLButtonElement>('.vf-timepicker__option:not(.is-disabled)')?.focus();
+    focusOption(firstEnabledIndex());
+};
+
+const onOptionFocus = (index: number) => {
+    focusedIndex.value = index;
+};
+
+const onOptionKeydown = (event: KeyboardEvent, index: number) => {
+    if (!open.value || props.disabled || props.readonly) {
+        return;
+    }
+
+    if (event.key === 'ArrowDown') {
+        event.preventDefault();
+        moveFocus(1);
+
+        return;
+    }
+
+    if (event.key === 'ArrowUp') {
+        event.preventDefault();
+        moveFocus(-1);
+
+        return;
+    }
+
+    if (event.key === 'Home') {
+        event.preventDefault();
+        focusOption(firstEnabledIndex());
+
+        return;
+    }
+
+    if (event.key === 'End') {
+        event.preventDefault();
+        for (let i = options.value.length - 1; i >= 0; i -= 1) {
+            if (!options.value[i].isDisabled) {
+                focusOption(i);
+                break;
+            }
+        }
+
+        return;
+    }
+
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        const option = options.value[index];
+
+        if (option && !option.isDisabled) {
+            selectTime(option.value);
+            control.value?.focus();
+        }
+
+        return;
+    }
+
+    if (event.key === 'Escape') {
+        event.preventDefault();
+        close();
+        control.value?.focus();
+    }
 };
 
 const selectTime = (value: string) => {
@@ -299,6 +420,7 @@ const scrollSelectedIntoView = () => {
 
 watch(open, async value => {
     if (!value) {
+        focusedIndex.value = -1;
         if (floater) {
             floater.destroy();
             floater = null;
@@ -316,6 +438,9 @@ watch(open, async value => {
     void floater?.update();
 
     scrollSelectedIntoView();
+    if (focusedIndex.value < 0) {
+        focusedIndex.value = firstEnabledIndex();
+    }
 });
 
 watch(

@@ -25,3 +25,12 @@ Shared baseline props across the input family:
 - Prefer keeping these four props aligned when composing mixed input UIs.
 - For form-level lock states, set both `disabled` and `readonly` intentionally based on expected tab/focus behavior.
 - For consistency, use the same `size` and `variant` in grouped controls unless there is a specific visual hierarchy reason.
+
+## Theming
+
+- Family-level guidance only; theme overrides are applied per concrete input component.
+
+## Accessibility
+
+- Keep `disabled` and `readonly` semantics consistent within a form so keyboard/tab behavior remains predictable.
+- Use shared error/help patterns (`aria-invalid`, `aria-describedby`) consistently across the family.

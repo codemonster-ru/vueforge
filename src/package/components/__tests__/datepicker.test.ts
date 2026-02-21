@@ -45,4 +45,35 @@ describe('DatePicker', () => {
         expect(wrapper.find('[data-date="2026-02-25"]').attributes('disabled')).toBeDefined();
         expect(wrapper.find('[data-date="2026-02-10"]').attributes('disabled')).toBeUndefined();
     });
+
+    it('opens with keyboard and closes with Escape', async () => {
+        const wrapper = mountDatePicker();
+        const control = wrapper.find('.vf-datepicker__control');
+
+        await control.trigger('keydown', { key: 'ArrowDown' });
+        expect(wrapper.find('.vf-datepicker').classes()).toContain('vf-datepicker_open');
+
+        await control.trigger('keydown', { key: 'Escape' });
+        expect(wrapper.find('.vf-datepicker').classes()).not.toContain('vf-datepicker_open');
+    });
+
+    it('does not open in readonly mode', async () => {
+        const wrapper = mountDatePicker({ readonly: true });
+        const control = wrapper.find('.vf-datepicker__control');
+
+        await control.trigger('click');
+        await control.trigger('keydown', { key: 'ArrowDown' });
+
+        expect(wrapper.find('.vf-datepicker').classes()).not.toContain('vf-datepicker_open');
+        expect(control.attributes('aria-readonly')).toBe('true');
+    });
+
+    it('treats invalid ISO modelValue as empty state', () => {
+        const wrapper = mountDatePicker({
+            modelValue: '2026-02-31',
+            placeholder: 'Pick date',
+        });
+
+        expect(wrapper.find('.vf-datepicker__label').text()).toBe('Pick date');
+    });
 });

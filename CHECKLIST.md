@@ -198,127 +198,127 @@ Execution dependencies:
 ### P0.15 Date/time family (existing hardening)
 
 - [x] Date/time family baseline is implemented (`DatePicker`, `Calendar`, `DateRangePicker`, `TimePicker`, `DateTimePicker`)
-- [ ] Date/time family audit framework is defined (keyboard + parsing + constraints)
-- [ ] `DatePicker` audit + tests
-- [ ] `Calendar` audit + tests
-- [ ] `DateRangePicker` audit + tests
-- [ ] `TimePicker` audit + tests
-- [ ] `DateTimePicker` audit + tests
-- [ ] Add docs for constraints and parsing/format behavior
-- [ ] Add edge-case tests (empty/null/range boundaries)
+- [x] Date/time family audit framework is defined (keyboard + parsing + constraints)
+- [x] `DatePicker` audit + tests
+- [x] `Calendar` audit + tests
+- [x] `DateRangePicker` audit + tests
+- [x] `TimePicker` audit + tests
+- [x] `DateTimePicker` audit + tests
+- [x] Add docs for constraints and parsing/format behavior
+- [x] Add edge-case tests (empty/null/range boundaries)
 
 ### P0.16 `Modal` (overlay baseline)
 
 - [x] `Modal` component is implemented
-- [ ] Verify focus trap and focus restore contracts
-- [ ] Verify escape and outside-click behavior contracts
-- [ ] Verify scroll-lock behavior
-- [ ] Align z-index policy
-- [ ] Add regression tests
-- [ ] Add docs interaction contract
+- [x] Verify focus trap and focus restore contracts
+- [x] Verify escape and outside-click behavior contracts
+- [x] Verify scroll-lock behavior
+- [x] Align z-index policy
+- [x] Add regression tests
+- [x] Add docs interaction contract
 
 ### P0.17 `Drawer` (overlay baseline)
 
 - [x] `Drawer` component is implemented
-- [ ] Verify focus trap and focus restore contracts
-- [ ] Verify escape and outside-click behavior contracts
-- [ ] Verify scroll-lock behavior
-- [ ] Align z-index policy
-- [ ] Add regression tests
-- [ ] Add docs interaction contract
+- [x] Verify focus trap and focus restore contracts
+- [x] Verify escape and outside-click behavior contracts
+- [x] Verify scroll-lock behavior
+- [x] Align z-index policy
+- [x] Add regression tests
+- [x] Add docs interaction contract
 
 ### P0.18 `Dropdown` (overlay baseline)
 
 - [x] `Dropdown` component is implemented
-- [ ] Verify keyboard open/close/navigation/select behavior
-- [ ] Verify positioning and viewport collision behavior
-- [ ] Align z-index policy
-- [ ] Add regression tests
-- [ ] Add docs interaction contract
+- [x] Verify keyboard open/close/navigation/select behavior
+- [x] Verify positioning and viewport collision behavior
+- [x] Align z-index policy
+- [x] Add regression tests
+- [x] Add docs interaction contract
 
 ### P0.19 `Popover` (overlay baseline)
 
 - [x] `Popover` component is implemented
-- [ ] Verify trigger/focus behavior and dismiss rules
-- [ ] Verify positioning and collision behavior
-- [ ] Align z-index policy
-- [ ] Add regression tests
-- [ ] Add docs interaction contract
+- [x] Verify trigger/focus behavior and dismiss rules
+- [x] Verify positioning and collision behavior
+- [x] Align z-index policy
+- [x] Add regression tests
+- [x] Add docs interaction contract
 
 ### P0.20 `Tooltip` (overlay baseline)
 
 - [x] `Tooltip` component is implemented
-- [ ] Verify keyboard/focus access and delays
-- [ ] Verify non-hover accessibility behavior
-- [ ] Align z-index policy
-- [ ] Add regression tests
-- [ ] Add docs usage constraints
+- [x] Verify keyboard/focus access and delays
+- [x] Verify non-hover accessibility behavior
+- [x] Align z-index policy
+- [x] Add regression tests
+- [x] Add docs usage constraints
 
 ### P0.21 `ContextMenu` (overlay baseline)
 
 - [x] `ContextMenu` component is implemented
-- [ ] Verify keyboard fallback and close behavior
-- [ ] Verify positioning and collision behavior
-- [ ] Align z-index policy
-- [ ] Add regression tests
-- [ ] Add docs interaction contract
+- [x] Verify keyboard fallback and close behavior
+- [x] Verify positioning and collision behavior
+- [x] Align z-index policy
+- [x] Add regression tests
+- [x] Add docs interaction contract
 
 ### P0.22 Core accessibility QA gate
 
-- [ ] Define shared a11y checklist template for interactive components
-- [ ] Define a11y checklist template for non-interactive/display components
-- [ ] Add accessibility test suite: form flows
-- [ ] Add accessibility test suite: table flows
-- [ ] Add accessibility test suite: modal/drawer flows
-- [ ] Add accessibility test suite: navigation flows
-- [ ] Enforce required a11y docs section in component docs template
+- [x] Define shared a11y checklist template for interactive components
+- [x] Define a11y checklist template for non-interactive/display components
+- [x] Add accessibility test suite: form flows
+- [x] Add accessibility test suite: table flows
+- [x] Add accessibility test suite: modal/drawer flows
+- [x] Add accessibility test suite: navigation flows
+- [x] Enforce required a11y docs section in component docs template
 
 ### P0.23 Core documentation baseline
 
-- [ ] Define standard docs template sections: Props, Events, Slots, A11y, Theming, Recipes
-- [ ] Apply docs template to layout primitives (`Container`, `Section`, `Grid`, `Stack`, `Inline`)
-- [ ] Apply docs template to navigation components (`Menu`, `Link`, `PageHeader`, `Breadcrumbs`)
-- [ ] Apply docs template to overlays (`Modal`, `Drawer`, `Dropdown`, `Popover`, `Tooltip`, `ContextMenu`)
-- [ ] Apply docs template to data components (`DataTable`, `Pagination`, `VirtualScroller`, `Card`, `Divider`)
-- [ ] Apply docs template to forms and input families (`Form`, `FormField`, input/selection/date-time groups)
-- [ ] Add "Build without Tailwind" guide
-- [ ] Add starter recipe: auth page
-- [ ] Add starter recipe: dashboard page
-- [ ] Add starter recipe: settings page
+- [x] Define standard docs template sections: Props, Events, Slots, A11y, Theming, Recipes
+- [x] Apply docs template to layout primitives (`Container`, `Section`, `Grid`, `Stack`, `Inline`)
+- [x] Apply docs template to navigation components (`Menu`, `Link`, `PageHeader`, `Breadcrumbs`)
+- [x] Apply docs template to overlays (`Modal`, `Drawer`, `Dropdown`, `Popover`, `Tooltip`, `ContextMenu`)
+- [x] Apply docs template to data components (`DataTable`, `Pagination`, `VirtualScroller`, `Card`, `Divider`)
+- [x] Apply docs template to forms and input families (`Form`, `FormField`, input/selection/date-time groups)
+- [x] Add "Build without Tailwind" guide
+- [x] Add starter recipe: auth page
+- [x] Add starter recipe: dashboard page
+- [x] Add starter recipe: settings page
 
 ### P0.24 API consistency baseline (cross-library)
 
-- [ ] Define API conventions: prop naming and defaults
-- [ ] Define API conventions: emitted event naming
-- [ ] Define API conventions: slot naming and slot-prop patterns
-- [ ] Define API conventions: `v-model` contracts and controlled/uncontrolled behavior
-- [ ] Audit layout components against conventions
-- [ ] Audit navigation components against conventions
-- [ ] Audit data components against conventions
-- [ ] Audit overlays against conventions
-- [ ] Audit form/input/select/date-time families against conventions
-- [ ] Normalize high-priority inconsistencies (breaking-safe changes first)
-- [ ] Add migration notes for any normalized behavior
-- [ ] Add tests/docs notes for normalized contracts
+- [x] Define API conventions: prop naming and defaults
+- [x] Define API conventions: emitted event naming
+- [x] Define API conventions: slot naming and slot-prop patterns
+- [x] Define API conventions: `v-model` contracts and controlled/uncontrolled behavior
+- [x] Audit layout components against conventions
+- [x] Audit navigation components against conventions
+- [x] Audit data components against conventions
+- [x] Audit overlays against conventions
+- [x] Audit form/input/select/date-time families against conventions
+- [x] Normalize high-priority inconsistencies (breaking-safe changes first)
+- [x] Add migration notes for any normalized behavior
+- [x] Add tests/docs notes for normalized contracts
 
 ### P0.25 Browser support baseline
 
-- [ ] Define official browser support matrix
-- [ ] Add compatibility checks for critical components against matrix
-- [ ] Document supported browsers and known limitations
+- [x] Define official browser support matrix
+- [x] Add compatibility checks for critical components against matrix
+- [x] Document supported browsers and known limitations
 
 ### P0.26 Core theme system (existing hardening)
 
 - [x] Theme runtime API is implemented (`setTheme`, `updateTheme`, `getTheme`)
 - [x] Component token override system is implemented
-- [ ] Add stricter token validation guidance in docs
-- [ ] Add token usage examples for layout primitives
+- [x] Add stricter token validation guidance in docs
+- [x] Add token usage examples for layout primitives
 
 ### P0.27 Core test baseline (existing hardening)
 
 - [x] Unit-test baseline exists for many components
-- [ ] Define minimum test coverage expectations for new/updated components
-- [ ] Enforce test checklist in contribution/review process
+- [x] Define minimum test coverage expectations for new/updated components
+- [x] Enforce test checklist in contribution/review process
 
 ## P1 (Advanced Competitiveness)
 

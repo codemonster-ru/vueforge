@@ -68,14 +68,28 @@ const props = withDefaults(defineProps<Props>(), {
     offset: 2,
 });
 
-let contextMenuIdCounter = 0;
+const CONTEXT_MENU_COUNTER_KEY = '__vf_context_menu_id_counter__';
+const getGlobalObject = (): Record<string, unknown> => globalThis as Record<string, unknown>;
+const nextContextMenuId = () => {
+    const globalObject = getGlobalObject();
+    const current =
+        typeof globalObject[CONTEXT_MENU_COUNTER_KEY] === 'number'
+            ? (globalObject[CONTEXT_MENU_COUNTER_KEY] as number)
+            : 0;
+    const next = current + 1;
+
+    globalObject[CONTEXT_MENU_COUNTER_KEY] = next;
+
+    return next;
+};
 
 const root = ref<HTMLElement | null>(null);
 const panel = ref<HTMLElement | null>(null);
 const open = ref(false);
 const panelStyle = ref<Record<string, string>>({});
-const panelId = `vf-context-menu-panel-${++contextMenuIdCounter}`;
+const panelId = `vf-context-menu-panel-${nextContextMenuId()}`;
 const lastPoint = ref<Point>({ x: 0, y: 0 });
+let lastActiveElement: HTMLElement | null = null;
 
 const isControlled = computed(() => props.modelValue !== undefined);
 
@@ -134,6 +148,9 @@ const updatePosition = () => {
 
 const openAt = async (point: Point) => {
     lastPoint.value = point;
+    if (typeof document !== 'undefined') {
+        lastActiveElement = document.activeElement as HTMLElement | null;
+    }
 
     setOpen(true);
 
@@ -142,8 +159,18 @@ const openAt = async (point: Point) => {
     updatePosition();
 };
 
-const closeMenu = () => {
+const closeMenu = (restoreFocus = false) => {
     setOpen(false);
+
+    if (restoreFocus) {
+        const fallbackTarget = root.value;
+
+        if (lastActiveElement && document.contains(lastActiveElement)) {
+            lastActiveElement.focus();
+        } else {
+            fallbackTarget?.focus();
+        }
+    }
 };
 
 const onContextMenu = (event: MouseEvent) => {
@@ -188,7 +215,7 @@ const onPanelClick = (event: MouseEvent) => {
     }
 
     if (target.closest('.vf-menu__link') || target.closest('[data-context-menu-close]')) {
-        closeMenu();
+        closeMenu(true);
     }
 };
 
@@ -203,7 +230,7 @@ const onDocumentClick = (event: MouseEvent) => {
         return;
     }
 
-    closeMenu();
+    closeMenu(true);
 };
 
 const onDocumentKeydown = (event: KeyboardEvent) => {
@@ -214,7 +241,7 @@ const onDocumentKeydown = (event: KeyboardEvent) => {
     if (event.key === 'Escape') {
         event.preventDefault();
 
-        closeMenu();
+        closeMenu(true);
     }
 };
 

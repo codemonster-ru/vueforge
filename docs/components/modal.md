@@ -38,6 +38,10 @@
 </Modal>
 ```
 
+## Theming
+
+- Override via `theme.overrides.components.modal`.
+
 ## Tokens
 
 Component tokens (override via `theme.overrides.components.modal`):
@@ -55,8 +59,36 @@ Component tokens (override via `theme.overrides.components.modal`):
 - `closeSize`, `closeRadius`, `closeOffset`
 - `closeColor`, `closeFontSize`, `closeHoverBackgroundColor`
 
+## Recipes
+
+- Confirmation dialog: small modal with body text and cancel/confirm actions.
+- Form modal: medium modal with primary submit action and `lockScroll=true`.
+- Info modal: close-only flow with `showClose=true` and disabled overlay close if needed.
+
 ## Accessibility
 
 - Focus is trapped while modal is open and restored to the previous element on close.
 - Supports `Escape` close behavior when `closeOnEsc` is enabled.
 - Uses overlay and close controls that should have clear labels/titles in content.
+
+## Interaction Contract
+
+- `modelValue=true`:
+    - emits `open`
+    - moves focus into the modal panel (first focusable element, otherwise panel itself)
+    - traps `Tab`/`Shift+Tab` focus inside panel
+    - locks document scroll when `lockScroll=true`
+- Close triggers (`overlay`, `Escape`, close button/slot):
+    - emit `update:modelValue=false`
+    - emit `close`
+    - restore focus to element active before open
+- Behavior flags:
+    - `closeOnOverlay=false` disables outside click close
+    - `closeOnEsc=false` disables `Escape` close
+    - `lockScroll=false` keeps body scrolling enabled
+
+## Z-Index Policy
+
+- Modal root uses `zIndex` token (`--vf-modal-z-index`, default `100`).
+- Keep modal and drawer overlays in the same layer by default (`modal.zIndex` and `drawer.zIndex` are both `100` in default theme).
+- Raise specific overlays only through theme overrides when a project needs custom stacking order.
