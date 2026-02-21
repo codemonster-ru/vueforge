@@ -3,7 +3,6 @@
 ## [0.80.0] - 2026-02-21
 
 - Build stability: fixed declaration generation errors by exporting shared `Props`/`Item` interfaces from `Modal` and `Dropdown`.
-- Menu polish: refined submenu visibility and horizontal dropdown behavior in HomeView demos.
 - Tooling cleanup: applied lint auto-fixes in Vue templates (`form`, `menu`, `rating`) to remove warnings.
 
 ## [0.79.0] - 2026-02-21
