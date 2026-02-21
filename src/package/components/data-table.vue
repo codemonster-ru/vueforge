@@ -92,6 +92,7 @@ type Size = 'small' | 'normal' | 'large';
 type Variant = 'filled' | 'outlined';
 type Align = 'left' | 'center' | 'right';
 type SortOrder = 'asc' | 'desc' | null;
+type DataTableFilters = Record<string, unknown>;
 
 export interface DataTableColumn {
     field: string;
@@ -101,6 +102,14 @@ export interface DataTableColumn {
     width?: string;
     minWidth?: string;
     formatter?: (row: Record<string, unknown>, value: unknown, column: DataTableColumn) => string | number;
+}
+
+export interface DataTableQuery {
+    sortField: string | null;
+    sortOrder: SortOrder;
+    page: number;
+    pageSize: number;
+    filters: DataTableFilters;
 }
 
 interface Props {
@@ -119,6 +128,10 @@ interface Props {
     variant?: Variant;
     showHeader?: boolean;
     ariaLabel?: string;
+    server?: boolean;
+    page?: number;
+    pageSize?: number;
+    filters?: DataTableFilters;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -137,12 +150,30 @@ const props = withDefaults(defineProps<Props>(), {
     variant: 'filled',
     showHeader: true,
     ariaLabel: 'Data table',
+    server: false,
+    page: 1,
+    pageSize: 10,
+    filters: () => ({}),
 });
 
-const emits = defineEmits(['update:sortField', 'update:sortOrder', 'sort', 'rowClick']);
+const emits = defineEmits([
+    'update:sortField',
+    'update:sortOrder',
+    'sort',
+    'rowClick',
+    'update:page',
+    'update:pageSize',
+    'update:filters',
+    'page',
+    'filter',
+    'request',
+]);
 
 const internalSortField = ref<string | null>(props.sortField ?? null);
 const internalSortOrder = ref<SortOrder>(props.sortOrder ?? null);
+const internalPage = ref<number>(Math.max(1, props.page ?? 1));
+const internalPageSize = ref<number>(Math.max(1, props.pageSize ?? 10));
+const internalFilters = ref<DataTableFilters>({ ...(props.filters ?? {}) });
 
 watch(
     () => props.sortField,
@@ -156,9 +187,31 @@ watch(
         internalSortOrder.value = value ?? null;
     },
 );
+watch(
+    () => props.page,
+    value => {
+        internalPage.value = Math.max(1, value ?? 1);
+    },
+);
+watch(
+    () => props.pageSize,
+    value => {
+        internalPageSize.value = Math.max(1, value ?? 10);
+    },
+);
+watch(
+    () => props.filters,
+    value => {
+        internalFilters.value = { ...(value ?? {}) };
+    },
+    { deep: true },
+);
 
 const effectiveSortField = computed(() => internalSortField.value);
 const effectiveSortOrder = computed(() => internalSortOrder.value);
+const effectivePage = computed(() => internalPage.value);
+const effectivePageSize = computed(() => internalPageSize.value);
+const effectiveFilters = computed(() => internalFilters.value);
 const stateColspan = computed(() => Math.max(1, props.columns.length));
 
 const isColumnSortable = (column: DataTableColumn) => {
@@ -195,6 +248,10 @@ const compareValues = (a: unknown, b: unknown) => {
 
 const sortedRows = computed(() => {
     const rows = props.rows ?? [];
+    if (props.server) {
+        return rows;
+    }
+
     const sortField = effectiveSortField.value;
     const sortOrder = effectiveSortOrder.value;
 
@@ -209,6 +266,14 @@ const sortedRows = computed(() => {
 
         return sortOrder === 'asc' ? result : -result;
     });
+});
+
+const getRequestPayload = (): DataTableQuery => ({
+    sortField: effectiveSortField.value,
+    sortOrder: effectiveSortOrder.value,
+    page: effectivePage.value,
+    pageSize: effectivePageSize.value,
+    filters: { ...effectiveFilters.value },
 });
 
 const getClass = computed(() => {
@@ -282,14 +347,18 @@ const toggleSort = (column: DataTableColumn) => {
     emits('update:sortField', nextField);
     emits('update:sortOrder', nextOrder);
     emits('sort', nextField, nextOrder);
+
+    if (props.server) {
+        emits('request', getRequestPayload());
+    }
 };
 
 const getSortIcon = (column: DataTableColumn) => {
     if (effectiveSortField.value !== column.field) {
-        return '↕';
+        return '\u2195';
     }
 
-    return effectiveSortOrder.value === 'asc' ? '↑' : '↓';
+    return effectiveSortOrder.value === 'asc' ? '\u2191' : '\u2193';
 };
 
 const getSortIconClass = (column: DataTableColumn) => {
@@ -363,6 +432,52 @@ const getColumnStyle = (column: DataTableColumn) => {
 const onRowClick = (row: Record<string, unknown>, index: number, event: Event) => {
     emits('rowClick', row, index, event);
 };
+
+const setPage = (value: number) => {
+    const nextPage = Math.max(1, Number(value) || 1);
+
+    internalPage.value = nextPage;
+    emits('update:page', nextPage);
+    emits('page', nextPage);
+
+    if (props.server) {
+        emits('request', getRequestPayload());
+    }
+};
+
+const setPageSize = (value: number) => {
+    const nextPageSize = Math.max(1, Number(value) || 1);
+
+    internalPageSize.value = nextPageSize;
+    emits('update:pageSize', nextPageSize);
+    emits('page', effectivePage.value);
+
+    if (props.server) {
+        emits('request', getRequestPayload());
+    }
+};
+
+const setFilters = (value: DataTableFilters) => {
+    internalFilters.value = { ...(value ?? {}) };
+    emits('update:filters', { ...internalFilters.value });
+    emits('filter', { ...internalFilters.value });
+
+    if (props.server) {
+        emits('request', getRequestPayload());
+    }
+};
+
+const clearFilters = () => {
+    setFilters({});
+};
+
+defineExpose({
+    setPage,
+    setPageSize,
+    setFilters,
+    clearFilters,
+    getQuery: getRequestPayload,
+});
 </script>
 
 <style lang="scss">
@@ -387,6 +502,10 @@ const onRowClick = (row: Record<string, unknown>, index: number, event: Event) =
 
 .vf-datatable__row {
     border-bottom: var(--vf-border-width) solid var(--vf-datatable-row-border-color);
+}
+
+.vf-datatable__body .vf-datatable__row:last-child {
+    border-bottom: none;
 }
 
 .vf-datatable__header,
@@ -427,6 +546,7 @@ const onRowClick = (row: Record<string, unknown>, index: number, event: Event) =
 .vf-datatable__sort-icon {
     font-size: var(--vf-datatable-sort-icon-size);
     color: var(--vf-datatable-sort-icon-color);
+    line-height: 1;
 }
 
 .vf-datatable__sort-icon.is-active {

@@ -17,6 +17,10 @@
 - `variant?: 'filled' | 'outlined'` (default `filled`)
 - `showHeader?: boolean` (default `true`)
 - `ariaLabel?: string` (default `Data table`)
+- `server?: boolean` (default `false`) - enables server-mode handoff
+- `page?: number` (default `1`) - current server-side page
+- `pageSize?: number` (default `10`) - current server-side page size
+- `filters?: Record<string, unknown>` (default `{}`) - current server-side filters
 
 ## Events
 
@@ -24,6 +28,12 @@
 - `update:sortOrder`
 - `sort`
 - `rowClick`
+- `update:page`
+- `update:pageSize`
+- `update:filters`
+- `page`
+- `filter`
+- `request` - payload: `{ sortField, sortOrder, page, pageSize, filters }`
 
 ## Slots
 
@@ -49,6 +59,51 @@
     sortable
     striped
 />
+```
+
+### Server-side table handoff
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const rows = ref([]);
+const sortField = ref<string | null>(null);
+const sortOrder = ref<'asc' | 'desc' | null>(null);
+const page = ref(1);
+const pageSize = ref(20);
+const filters = ref<Record<string, unknown>>({ search: '' });
+
+const onRequest = async (query: {
+    sortField: string | null;
+    sortOrder: 'asc' | 'desc' | null;
+    page: number;
+    pageSize: number;
+    filters: Record<string, unknown>;
+}) => {
+    // Send query to backend and replace rows with server response.
+};
+</script>
+
+<template>
+    <DataTable
+        :columns="columns"
+        :rows="rows"
+        server
+        sortable
+        :sort-field="sortField"
+        :sort-order="sortOrder"
+        :page="page"
+        :page-size="pageSize"
+        :filters="filters"
+        @update:sort-field="sortField = $event"
+        @update:sort-order="sortOrder = $event"
+        @update:page="page = $event"
+        @update:page-size="pageSize = $event"
+        @update:filters="filters = $event"
+        @request="onRequest"
+    />
+</template>
 ```
 
 ## Tokens

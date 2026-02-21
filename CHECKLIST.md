@@ -133,21 +133,21 @@ Execution dependencies:
 ### P0.10 `DataTable` (core production baseline)
 
 - [x] `DataTable` component is implemented
-- [ ] Define server-mode API contracts (props + emitted events)
-- [ ] Implement server-mode handoff for sorting
-- [ ] Implement server-mode handoff for pagination
-- [ ] Implement server-mode handoff for filtering
+- [x] Define server-mode API contracts (props + emitted events)
+- [x] Implement server-mode handoff for sorting
+- [x] Implement server-mode handoff for pagination
+- [x] Implement server-mode handoff for filtering
 - [ ] Define row selection API shape
 - [ ] Implement row selection (single)
 - [ ] Implement row selection (multi)
 - [ ] Add bulk action integration points/events
 - [ ] Implement sticky header behavior
 - [ ] Implement sticky columns behavior
-- [ ] Add tests: server-mode sorting/pagination/filtering
+- [x] Add tests: server-mode sorting/pagination/filtering
 - [ ] Add tests: selection and bulk action hooks
 - [ ] Add tests: sticky header/columns
 - [ ] Add tests: keyboard focus behavior in interactive table state
-- [ ] Add docs recipe: server-side table
+- [x] Add docs recipe: server-side table
 - [ ] Add docs recipe: selectable table with bulk actions
 - [ ] Add docs recipe: sticky header/columns
 

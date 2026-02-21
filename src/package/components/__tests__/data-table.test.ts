@@ -49,4 +49,73 @@ describe('DataTable', () => {
 
         expect(wrapper.text()).toContain('No data');
     });
+
+    it('does not perform local sorting in server mode and emits request payload', async () => {
+        const wrapper = mount(DataTable, {
+            props: {
+                columns,
+                rows,
+                sortable: true,
+                server: true,
+                page: 2,
+                pageSize: 20,
+                filters: { role: 'Dev' },
+            },
+        });
+
+        const beforeSortFirstAge = wrapper.findAll('tbody .vf-datatable__row')[0].findAll('td')[2].text();
+        expect(beforeSortFirstAge).toBe('29');
+
+        const ageHeader = wrapper.findAll('.vf-datatable__sort-button').find(button => button.text().includes('Age'));
+        await ageHeader?.trigger('click');
+
+        const afterSortFirstAge = wrapper.findAll('tbody .vf-datatable__row')[0].findAll('td')[2].text();
+        expect(afterSortFirstAge).toBe('29');
+
+        expect(wrapper.emitted('request')?.[0]?.[0]).toEqual({
+            sortField: 'age',
+            sortOrder: 'asc',
+            page: 2,
+            pageSize: 20,
+            filters: { role: 'Dev' },
+        });
+    });
+
+    it('exposes server handoff methods for page, page size and filters', async () => {
+        const wrapper = mount(DataTable, {
+            props: {
+                columns,
+                rows,
+                server: true,
+            },
+        });
+
+        const exposed = wrapper.vm as unknown as {
+            setPage: (value: number) => void;
+            setPageSize: (value: number) => void;
+            setFilters: (value: Record<string, unknown>) => void;
+            clearFilters: () => void;
+            getQuery: () => Record<string, unknown>;
+        };
+
+        exposed.setPage(3);
+        exposed.setPageSize(50);
+        exposed.setFilters({ search: 'alice' });
+        exposed.clearFilters();
+
+        await wrapper.vm.$nextTick();
+
+        expect(wrapper.emitted('update:page')?.[0]).toEqual([3]);
+        expect(wrapper.emitted('update:pageSize')?.[0]).toEqual([50]);
+        expect(wrapper.emitted('update:filters')?.[0]).toEqual([{ search: 'alice' }]);
+        expect(wrapper.emitted('update:filters')?.[1]).toEqual([{}]);
+        expect(wrapper.emitted('request')?.length).toBe(4);
+        expect(exposed.getQuery()).toEqual({
+            sortField: null,
+            sortOrder: null,
+            page: 3,
+            pageSize: 50,
+            filters: {},
+        });
+    });
 });

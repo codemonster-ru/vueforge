@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.81.0] - 2026-02-21
+
+- DataTable production baseline: added server-mode API contracts (`server`, `page`, `pageSize`, `filters`) and emitted events for server handoff.
+- DataTable server-mode handoff now emits unified `request` payloads on sorting, paging, and filtering updates.
+- Added DataTable server-mode tests and a server-side table recipe in docs.
+- DataTable visuals: removed duplicate bottom border on the last table row to avoid double border rendering.
+
 ## [0.80.0] - 2026-02-21
 
 - Build stability: fixed declaration generation errors by exporting shared `Props`/`Item` interfaces from `Modal` and `Dropdown`.
