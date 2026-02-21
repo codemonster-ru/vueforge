@@ -22,7 +22,48 @@ describe('PasswordInput', () => {
         await toggle.trigger('click');
 
         expect(input.attributes('type')).toBe('text');
+        expect(toggle.attributes('aria-label')).toBe('Hide password');
         expect(wrapper.emitted('toggleVisibility')?.[0]).toEqual([true]);
+    });
+
+    it('applies native and aria attributes to password control', () => {
+        const wrapper = mount(PasswordInput, {
+            props: {
+                modelValue: 'secret',
+                id: 'password',
+                name: 'password',
+                required: true,
+                ariaLabel: 'Account password',
+                ariaDescribedby: 'password-hint',
+                ariaInvalid: true,
+            },
+        });
+        const input = wrapper.find('input');
+
+        expect(input.attributes('id')).toBe('password');
+        expect(input.attributes('name')).toBe('password');
+        expect(input.attributes('required')).toBeDefined();
+        expect(input.attributes('aria-label')).toBe('Account password');
+        expect(input.attributes('aria-describedby')).toBe('password-hint');
+        expect(input.attributes('aria-invalid')).toBe('true');
+        expect(input.attributes('aria-required')).toBe('true');
+    });
+
+    it('applies disabled and readonly semantics', () => {
+        const wrapper = mount(PasswordInput, {
+            props: {
+                modelValue: 'secret',
+                disabled: true,
+                readonly: true,
+            },
+        });
+        const input = wrapper.find('input');
+        const toggle = wrapper.find('.vf-password-input__toggle');
+
+        expect(wrapper.classes()).toContain('vf-password-input_disabled');
+        expect(input.attributes('disabled')).toBeDefined();
+        expect(input.attributes('readonly')).toBeDefined();
+        expect(toggle.attributes('disabled')).toBeDefined();
     });
 
     it('shows strength label when enabled', () => {

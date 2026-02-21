@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.87.0] - 2026-02-21
+
+- Completed `P0.13` input-family hardening for `Textarea`, `NumberInput`, `PasswordInput`, `SearchInput`, `MaskedInput`, `MentionInput`, and `OtpInput`.
+- Input-family accessibility: added/normalized native + ARIA contracts across the updated components (`required`, `id`, `name`, `autocomplete`, `inputmode`, `aria*`) and improved component-specific keyboard behavior (steppers, mention combobox/listbox semantics, OTP cell navigation/editing guards).
+- Expanded component test coverage for the updated input-family controls (keyboard flows, ARIA/native attributes, disabled/readonly semantics, focus/blur behavior).
+- Added consolidated shared-props matrix docs for input-family components and linked it from the components catalog.
+- Checklist update: all `P0.13` items are now marked as completed.
+
 ## [0.86.0] - 2026-02-21
 
 - Input hardening: expanded base `Input` API with native/a11y props (`required`, `id`, `name`, `autocomplete`, `inputmode`, `aria*`) and improved ARIA mapping for required/invalid states.

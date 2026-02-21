@@ -8,6 +8,11 @@
 - `placeholder?: string`
 - `disabled?: boolean`
 - `readonly?: boolean`
+- `required?: boolean` (default `false`)
+- `id?: string`
+- `name?: string`
+- `autocomplete?: string` (default `off`)
+- `inputmode?: 'none' | 'text' | 'tel' | 'url' | 'email' | 'numeric' | 'decimal' | 'search'` (default `text`)
 - `loading?: boolean` (default `false`)
 - `loadingText?: string` (default `Loading...`)
 - `emptyText?: string` (default `No matches`)
@@ -16,7 +21,11 @@
 - `appendSpace?: boolean` (default `true`)
 - `size?: 'small' | 'normal' | 'large'` (default `normal`)
 - `variant?: 'filled' | 'outlined'` (default `filled`)
-- `ariaLabel?: string`
+- `ariaLabel?: string` (default `Mention input`)
+- `ariaLabelledby?: string`
+- `ariaDescribedby?: string`
+- `ariaInvalid?: boolean | 'true' | 'false'`
+- `ariaRequired?: boolean | 'true' | 'false'` (defaults to `'true'` when `required`)
 
 ## Events
 
@@ -65,4 +74,9 @@ Note: default filled backgrounds for Input/Select/Textarea use `controls.backgro
 
 ## Accessibility
 
-- Ensure keyboard access, visible focus state, and sufficient color contrast in usage contexts.
+- Input exposes combobox semantics (`role="combobox"`, `aria-expanded`, `aria-controls`, `aria-activedescendant`, `aria-autocomplete="list"`).
+- Suggestion panel uses `role="listbox"` and options use `role="option"` with `aria-selected` for highlighted state.
+- Provide an accessible name (`label` + `id`, or `ariaLabel` / `ariaLabelledby`).
+- For help/error text, wire `ariaDescribedby`.
+- For invalid and required states, use `ariaInvalid` / `required` (or `ariaRequired` override).
+- Keyboard focus uses the component focus ring (`:focus-within`) for visible state.

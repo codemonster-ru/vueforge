@@ -173,14 +173,14 @@ Execution dependencies:
 - [x] Input family baseline is implemented (`Input`, `Textarea`, `NumberInput`, `PasswordInput`, `SearchInput`, `MaskedInput`, `MentionInput`, `OtpInput`)
 - [x] Input family audit framework is defined (shared keyboard + ARIA checklist)
 - [x] `Input` keyboard/focus-visible/ARIA audit + tests
-- [ ] `Textarea` keyboard/focus-visible/ARIA audit + tests
-- [ ] `NumberInput` keyboard/focus-visible/ARIA audit + tests
-- [ ] `PasswordInput` keyboard/focus-visible/ARIA audit + tests
-- [ ] `SearchInput` keyboard/focus-visible/ARIA audit + tests
-- [ ] `MaskedInput` keyboard/focus-visible/ARIA audit + tests
-- [ ] `MentionInput` keyboard/focus-visible/ARIA audit + tests
-- [ ] `OtpInput` keyboard/focus-visible/ARIA audit + tests
-- [ ] Add consolidated docs matrix for shared input props (`size`, `variant`, `disabled`, `readonly`)
+- [x] `Textarea` keyboard/focus-visible/ARIA audit + tests
+- [x] `NumberInput` keyboard/focus-visible/ARIA audit + tests
+- [x] `PasswordInput` keyboard/focus-visible/ARIA audit + tests
+- [x] `SearchInput` keyboard/focus-visible/ARIA audit + tests
+- [x] `MaskedInput` keyboard/focus-visible/ARIA audit + tests
+- [x] `MentionInput` keyboard/focus-visible/ARIA audit + tests
+- [x] `OtpInput` keyboard/focus-visible/ARIA audit + tests
+- [x] Add consolidated docs matrix for shared input props (`size`, `variant`, `disabled`, `readonly`)
 
 ### P0.14 Selection family (existing hardening)
 

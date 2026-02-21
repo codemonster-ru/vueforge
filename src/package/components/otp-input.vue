@@ -1,18 +1,41 @@
 <template>
-    <div :class="getClass" role="group" :aria-label="ariaLabel" @paste="onPaste">
+    <div
+        :id="id"
+        :class="getClass"
+        role="group"
+        :aria-label="ariaLabel"
+        :aria-labelledby="ariaLabelledby"
+        :aria-describedby="ariaDescribedby"
+        @paste="onPaste"
+    >
         <input
             v-for="(_item, index) in lengthValue"
             :key="index"
             :ref="element => setInputRef(element, index)"
             class="vf-otp-input__cell"
             :type="mask ? 'password' : 'text'"
-            inputmode="numeric"
+            :name="name ? `${name}-${index + 1}` : undefined"
+            :inputmode="inputmode"
             :pattern="alphanumeric ? undefined : '[0-9]*'"
             :placeholder="placeholder"
             :value="characters[index]"
             :disabled="disabled"
             :readonly="readonly"
+            :required="required"
             :autocomplete="autocomplete"
+            :aria-label="getCellAriaLabel(index)"
+            :aria-invalid="
+                ariaInvalid === true || ariaInvalid === 'true' ? 'true' : ariaInvalid === 'false' ? 'false' : undefined
+            "
+            :aria-required="
+                required
+                    ? 'true'
+                    : ariaRequired === true || ariaRequired === 'true'
+                      ? 'true'
+                      : ariaRequired === 'false'
+                        ? 'false'
+                        : undefined
+            "
             maxlength="1"
             @input="onInput($event, index)"
             @keydown="onKeydown($event, index)"
@@ -34,13 +57,22 @@ interface Props {
     placeholder?: string;
     disabled?: boolean;
     readonly?: boolean;
+    required?: boolean;
+    id?: string;
+    name?: string;
     size?: Size;
     variant?: Variant;
     mask?: boolean;
     alphanumeric?: boolean;
     autocomplete?: string;
+    inputmode?: 'none' | 'text' | 'tel' | 'url' | 'email' | 'numeric' | 'decimal' | 'search';
     autoFocus?: boolean;
     ariaLabel?: string;
+    ariaLabelledby?: string;
+    ariaDescribedby?: string;
+    ariaInvalid?: boolean | 'true' | 'false';
+    ariaRequired?: boolean | 'true' | 'false';
+    cellAriaLabelPrefix?: string;
 }
 
 const emits = defineEmits(['update:modelValue', 'change', 'complete', 'focus', 'blur', 'paste']);
@@ -50,13 +82,22 @@ const props = withDefaults(defineProps<Props>(), {
     placeholder: '',
     disabled: false,
     readonly: false,
+    required: false,
+    id: undefined,
+    name: undefined,
     size: 'normal',
     variant: 'filled',
     mask: false,
     alphanumeric: false,
     autocomplete: 'one-time-code',
+    inputmode: 'numeric',
     autoFocus: false,
     ariaLabel: 'OTP input',
+    ariaLabelledby: undefined,
+    ariaDescribedby: undefined,
+    ariaInvalid: undefined,
+    ariaRequired: undefined,
+    cellAriaLabelPrefix: 'OTP digit',
 });
 
 const inputRefs = ref<Array<HTMLInputElement | null>>([]);
@@ -106,6 +147,8 @@ const setInputRef = (element: unknown, index: number) => {
     inputRefs.value[index] = element as HTMLInputElement | null;
 };
 
+const getCellAriaLabel = (index: number) => `${props.cellAriaLabelPrefix} ${index + 1} of ${lengthValue.value}`;
+
 const focusCell = (index: number) => {
     const safeIndex = Math.max(0, Math.min(lengthValue.value - 1, index));
     const input = inputRefs.value[safeIndex];
@@ -149,6 +192,10 @@ const applyChunk = (chunk: string, fromIndex: number) => {
 };
 
 const onInput = (event: Event, index: number) => {
+    if (props.disabled || props.readonly) {
+        return;
+    }
+
     const target = event.target as HTMLInputElement;
     const raw = target.value ?? '';
 
@@ -181,7 +228,15 @@ const onPaste = (event: ClipboardEvent) => {
 };
 
 const onKeydown = (event: KeyboardEvent, index: number) => {
+    if (props.disabled) {
+        return;
+    }
+
     if (event.key === 'Backspace') {
+        if (props.readonly) {
+            return;
+        }
+
         event.preventDefault();
 
         const nextChars = [...characters.value];

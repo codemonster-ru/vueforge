@@ -6,6 +6,9 @@
 - `placeholder?: string`
 - `disabled?: boolean`
 - `readonly?: boolean`
+- `required?: boolean` (default `false`)
+- `id?: string`
+- `name?: string`
 - `autocomplete?: string` (default `current-password`)
 - `showToggle?: boolean` (default `true`)
 - `showStrength?: boolean` (default `false`)
@@ -21,6 +24,10 @@
 - `size?: 'small' | 'normal' | 'large'` (default `normal`)
 - `variant?: 'filled' | 'outlined'` (default `filled`)
 - `ariaLabel?: string` (default `Password input`)
+- `ariaLabelledby?: string`
+- `ariaDescribedby?: string`
+- `ariaInvalid?: boolean | 'true' | 'false'`
+- `ariaRequired?: boolean | 'true' | 'false'` (defaults to `'true'` when `required`)
 
 ## Events
 
@@ -59,4 +66,8 @@ Component tokens (override via `theme.overrides.components.passwordInput`):
 
 ## Accessibility
 
-- Ensure keyboard access, visible focus state, and sufficient color contrast in usage contexts.
+- Provide an accessible name (`label` + `id`, or `ariaLabel` / `ariaLabelledby`).
+- For help/error text, wire `ariaDescribedby`.
+- For invalid and required states, use `ariaInvalid` / `required` (or `ariaRequired` override).
+- Visibility toggle is a native `button`, so it is keyboard accessible by default.
+- Keyboard focus uses the component focus ring (`:focus-within`) for visible state.

@@ -39,6 +39,7 @@ Detailed API pages generated from the current package reference.
 - [Inline](inline.md)
 - [InlineEdit](inlineedit.md)
 - [Input](input.md)
+- [Input Shared Props Matrix](input-shared-props.md)
 - [InputGroup / InputAddon](inputgroup-inputaddon.md)
 - [KanbanBoard](kanbanboard.md)
 - [Link](link.md)

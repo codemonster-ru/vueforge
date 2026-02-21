@@ -87,4 +87,61 @@ describe('MentionInput', () => {
 
         expect(wrapper.find('.vf-mention-input').classes()).not.toContain('vf-mention-input_open');
     });
+
+    it('applies native and aria attributes for combobox semantics', async () => {
+        const wrapper = mount(MentionInput, {
+            props: {
+                modelValue: '@al',
+                suggestions,
+                id: 'mention',
+                name: 'mention',
+                required: true,
+                autocomplete: 'off',
+                inputmode: 'text',
+                ariaLabel: 'Mention users',
+                ariaDescribedby: 'mention-hint',
+                ariaInvalid: true,
+            },
+        });
+        const input = wrapper.find('input');
+
+        (input.element as HTMLInputElement).value = '@al';
+        (input.element as HTMLInputElement).setSelectionRange(3, 3);
+        await input.trigger('input');
+
+        expect(input.attributes('id')).toBe('mention');
+        expect(input.attributes('name')).toBe('mention');
+        expect(input.attributes('required')).toBeDefined();
+        expect(input.attributes('role')).toBe('combobox');
+        expect(input.attributes('aria-autocomplete')).toBe('list');
+        expect(input.attributes('aria-controls')).toBeTruthy();
+        expect(input.attributes('aria-expanded')).toBe('true');
+        expect(input.attributes('aria-activedescendant')).toBeTruthy();
+        expect(input.attributes('aria-label')).toBe('Mention users');
+        expect(input.attributes('aria-describedby')).toBe('mention-hint');
+        expect(input.attributes('aria-invalid')).toBe('true');
+        expect(input.attributes('aria-required')).toBe('true');
+    });
+
+    it('does not open suggestion panel when disabled or readonly', async () => {
+        const disabled = mount(MentionInput, {
+            props: { modelValue: '@al', suggestions, disabled: true },
+        });
+        const readonly = mount(MentionInput, {
+            props: { modelValue: '@al', suggestions, readonly: true },
+        });
+
+        const disabledInput = disabled.find('input');
+        (disabledInput.element as HTMLInputElement).value = '@al';
+        (disabledInput.element as HTMLInputElement).setSelectionRange(3, 3);
+        await disabledInput.trigger('input');
+
+        const readonlyInput = readonly.find('input');
+        (readonlyInput.element as HTMLInputElement).value = '@al';
+        (readonlyInput.element as HTMLInputElement).setSelectionRange(3, 3);
+        await readonlyInput.trigger('input');
+
+        expect(disabled.find('.vf-mention-input').classes()).not.toContain('vf-mention-input_open');
+        expect(readonly.find('.vf-mention-input').classes()).not.toContain('vf-mention-input_open');
+    });
 });

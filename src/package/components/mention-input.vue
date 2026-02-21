@@ -1,16 +1,37 @@
 <template>
     <div ref="root" :class="getClass">
         <input
+            :id="id"
             ref="control"
             class="vf-mention-input__control"
             type="text"
+            :name="name"
             :value="modelValue"
             :placeholder="placeholder"
+            :autocomplete="autocomplete"
+            :inputmode="inputmode"
             :disabled="disabled"
             :readonly="readonly"
+            :required="required"
+            role="combobox"
             :aria-label="ariaLabel"
+            :aria-labelledby="ariaLabelledby"
+            :aria-describedby="ariaDescribedby"
             :aria-expanded="open"
             :aria-controls="panelId"
+            :aria-activedescendant="activeDescendantId"
+            :aria-invalid="
+                ariaInvalid === true || ariaInvalid === 'true' ? 'true' : ariaInvalid === 'false' ? 'false' : undefined
+            "
+            :aria-required="
+                required
+                    ? 'true'
+                    : ariaRequired === true || ariaRequired === 'true'
+                      ? 'true'
+                      : ariaRequired === 'false'
+                        ? 'false'
+                        : undefined
+            "
             aria-autocomplete="list"
             @input="onInput"
             @change="onChange"
@@ -23,11 +44,13 @@
             <template v-else-if="visibleOptions.length">
                 <button
                     v-for="(option, index) in visibleOptions"
+                    :id="getOptionId(index)"
                     :key="`${option.trigger ?? ''}-${String(option.value ?? option.label)}-${index}`"
                     class="vf-mention-input__option"
                     :class="{ 'is-highlighted': index === highlightedIndex }"
                     type="button"
                     role="option"
+                    :aria-selected="index === highlightedIndex"
                     :disabled="option.disabled"
                     @mousedown.prevent
                     @click="selectOption(option)"
@@ -68,6 +91,11 @@ interface Props {
     placeholder?: string;
     disabled?: boolean;
     readonly?: boolean;
+    required?: boolean;
+    id?: string;
+    name?: string;
+    autocomplete?: string;
+    inputmode?: 'none' | 'text' | 'tel' | 'url' | 'email' | 'numeric' | 'decimal' | 'search';
     loading?: boolean;
     loadingText?: string;
     emptyText?: string;
@@ -77,6 +105,10 @@ interface Props {
     size?: Size;
     variant?: Variant;
     ariaLabel?: string;
+    ariaLabelledby?: string;
+    ariaDescribedby?: string;
+    ariaInvalid?: boolean | 'true' | 'false';
+    ariaRequired?: boolean | 'true' | 'false';
 }
 
 let mentionInputIdCounter = 0;
@@ -89,6 +121,11 @@ const props = withDefaults(defineProps<Props>(), {
     placeholder: '',
     disabled: false,
     readonly: false,
+    required: false,
+    id: undefined,
+    name: undefined,
+    autocomplete: 'off',
+    inputmode: 'text',
     loading: false,
     loadingText: 'Loading...',
     emptyText: 'No matches',
@@ -98,6 +135,10 @@ const props = withDefaults(defineProps<Props>(), {
     size: 'normal',
     variant: 'filled',
     ariaLabel: 'Mention input',
+    ariaLabelledby: undefined,
+    ariaDescribedby: undefined,
+    ariaInvalid: undefined,
+    ariaRequired: undefined,
 });
 
 const root = ref<HTMLElement | null>(null);
@@ -133,6 +174,13 @@ const matchedOptions = computed(() => {
         .slice(0, Math.max(1, props.maxSuggestions));
 });
 const visibleOptions = computed(() => matchedOptions.value);
+const activeDescendantId = computed(() => {
+    if (!open.value || highlightedIndex.value < 0 || highlightedIndex.value >= visibleOptions.value.length) {
+        return undefined;
+    }
+
+    return `${panelId}-option-${highlightedIndex.value}`;
+});
 const getClass = computed(() => {
     const classes = [
         'vf-mention-input',
@@ -155,6 +203,8 @@ const closePanel = () => {
     open.value = false;
     highlightedIndex.value = -1;
 };
+
+const getOptionId = (index: number) => `${panelId}-option-${index}`;
 
 const openPanel = () => {
     if (props.disabled || props.readonly) {

@@ -2,14 +2,33 @@
     <div :class="getClass">
         <span class="vf-search-input__icon" aria-hidden="true" />
         <input
+            :id="id"
             ref="control"
             class="vf-search-input__control"
             type="search"
+            :name="name"
             :value="query"
             :placeholder="placeholder"
+            :autocomplete="autocomplete"
+            :inputmode="inputmode"
             :disabled="disabled"
             :readonly="readonly"
+            :required="required"
             :aria-label="ariaLabel"
+            :aria-labelledby="ariaLabelledby"
+            :aria-describedby="ariaDescribedby"
+            :aria-invalid="
+                ariaInvalid === true || ariaInvalid === 'true' ? 'true' : ariaInvalid === 'false' ? 'false' : undefined
+            "
+            :aria-required="
+                required
+                    ? 'true'
+                    : ariaRequired === true || ariaRequired === 'true'
+                      ? 'true'
+                      : ariaRequired === 'false'
+                        ? 'false'
+                        : undefined
+            "
             @input="onInput"
             @change="onChange"
             @keydown.enter.prevent="onEnter"
@@ -41,12 +60,21 @@ interface Props {
     placeholder?: string;
     disabled?: boolean;
     readonly?: boolean;
+    required?: boolean;
+    id?: string;
+    name?: string;
+    autocomplete?: string;
+    inputmode?: 'none' | 'text' | 'tel' | 'url' | 'email' | 'numeric' | 'decimal' | 'search';
     debounce?: number;
     loading?: boolean;
     clearable?: boolean;
     size?: Size;
     variant?: Variant;
     ariaLabel?: string;
+    ariaLabelledby?: string;
+    ariaDescribedby?: string;
+    ariaInvalid?: boolean | 'true' | 'false';
+    ariaRequired?: boolean | 'true' | 'false';
 }
 
 const emits = defineEmits(['update:modelValue', 'input', 'change', 'search', 'clear', 'focus', 'blur']);
@@ -55,12 +83,21 @@ const props = withDefaults(defineProps<Props>(), {
     placeholder: '',
     disabled: false,
     readonly: false,
+    required: false,
+    id: undefined,
+    name: undefined,
+    autocomplete: 'off',
+    inputmode: 'search',
     debounce: 300,
     loading: false,
     clearable: false,
     size: 'normal',
     variant: 'filled',
     ariaLabel: 'Search input',
+    ariaLabelledby: undefined,
+    ariaDescribedby: undefined,
+    ariaInvalid: undefined,
+    ariaRequired: undefined,
 });
 
 const control = ref<HTMLInputElement | null>(null);

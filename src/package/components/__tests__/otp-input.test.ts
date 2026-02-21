@@ -50,4 +50,43 @@ describe('OtpInput', () => {
 
         expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['1']);
     });
+
+    it('applies group and cell aria/native attributes', () => {
+        const wrapper = mount(OtpInput, {
+            props: {
+                modelValue: '12',
+                length: 4,
+                id: 'otp',
+                name: 'otp',
+                required: true,
+                ariaLabel: 'Verification code',
+                ariaDescribedby: 'otp-hint',
+                ariaInvalid: true,
+            },
+        });
+        const root = wrapper.find('.vf-otp-input');
+        const cells = wrapper.findAll('input');
+
+        expect(root.attributes('id')).toBe('otp');
+        expect(root.attributes('role')).toBe('group');
+        expect(root.attributes('aria-label')).toBe('Verification code');
+        expect(root.attributes('aria-describedby')).toBe('otp-hint');
+        expect(cells).toHaveLength(4);
+        expect(cells[0].attributes('name')).toBe('otp-1');
+        expect(cells[0].attributes('required')).toBeDefined();
+        expect(cells[0].attributes('aria-label')).toBe('OTP digit 1 of 4');
+        expect(cells[0].attributes('aria-invalid')).toBe('true');
+        expect(cells[0].attributes('aria-required')).toBe('true');
+    });
+
+    it('does not mutate value on backspace when readonly', async () => {
+        const wrapper = mount(OtpInput, {
+            props: { modelValue: '12', length: 4, readonly: true },
+        });
+        const cells = wrapper.findAll('input');
+
+        await cells[1].trigger('keydown', { key: 'Backspace' });
+
+        expect(wrapper.emitted('update:modelValue')).toBeFalsy();
+    });
 });

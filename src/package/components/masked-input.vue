@@ -4,13 +4,33 @@
             <slot name="prefix" />
         </span>
         <input
+            :id="id"
             ref="control"
             class="vf-masked-input__control"
             type="text"
+            :name="name"
             :value="displayValue"
             :placeholder="placeholder"
+            :autocomplete="autocomplete"
+            :inputmode="inputmode"
             :disabled="disabled"
             :readonly="readonly"
+            :required="required"
+            :aria-label="ariaLabel"
+            :aria-labelledby="ariaLabelledby"
+            :aria-describedby="ariaDescribedby"
+            :aria-invalid="
+                ariaInvalid === true || ariaInvalid === 'true' ? 'true' : ariaInvalid === 'false' ? 'false' : undefined
+            "
+            :aria-required="
+                required
+                    ? 'true'
+                    : ariaRequired === true || ariaRequired === 'true'
+                      ? 'true'
+                      : ariaRequired === 'false'
+                        ? 'false'
+                        : undefined
+            "
             @input="onInput"
             @change="onChange"
             @focus="onFocus"
@@ -36,6 +56,16 @@ interface Props {
     placeholderChar?: string;
     disabled?: boolean;
     readonly?: boolean;
+    required?: boolean;
+    id?: string;
+    name?: string;
+    autocomplete?: string;
+    inputmode?: 'none' | 'text' | 'tel' | 'url' | 'email' | 'numeric' | 'decimal' | 'search';
+    ariaLabel?: string;
+    ariaLabelledby?: string;
+    ariaDescribedby?: string;
+    ariaInvalid?: boolean | 'true' | 'false';
+    ariaRequired?: boolean | 'true' | 'false';
     unmask?: boolean;
     size?: Size;
     variant?: Variant;
@@ -49,6 +79,16 @@ const props = withDefaults(defineProps<Props>(), {
     placeholderChar: '_',
     disabled: false,
     readonly: false,
+    required: false,
+    id: undefined,
+    name: undefined,
+    autocomplete: 'off',
+    inputmode: 'text',
+    ariaLabel: 'Masked input',
+    ariaLabelledby: undefined,
+    ariaDescribedby: undefined,
+    ariaInvalid: undefined,
+    ariaRequired: undefined,
     unmask: false,
     size: 'normal',
     variant: 'filled',

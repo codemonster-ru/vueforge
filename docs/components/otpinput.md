@@ -7,13 +7,22 @@
 - `placeholder?: string`
 - `disabled?: boolean`
 - `readonly?: boolean`
+- `required?: boolean` (default `false`)
+- `id?: string`
+- `name?: string` (cell names are generated as `${name}-1`, `${name}-2`, ...)
 - `mask?: boolean` (default `false`)
 - `alphanumeric?: boolean` (default `false`)
 - `autocomplete?: string` (default `one-time-code`)
+- `inputmode?: 'none' | 'text' | 'tel' | 'url' | 'email' | 'numeric' | 'decimal' | 'search'` (default `numeric`)
 - `autoFocus?: boolean` (default `false`)
 - `size?: 'small' | 'normal' | 'large'` (default `normal`)
 - `variant?: 'filled' | 'outlined'` (default `filled`)
 - `ariaLabel?: string` (default `OTP input`)
+- `ariaLabelledby?: string`
+- `ariaDescribedby?: string`
+- `ariaInvalid?: boolean | 'true' | 'false'`
+- `ariaRequired?: boolean | 'true' | 'false'` (defaults to `'true'` when `required`)
+- `cellAriaLabelPrefix?: string` (default `OTP digit`)
 
 ## Events
 
@@ -49,4 +58,8 @@ Component tokens (override via `theme.overrides.components.otpInput`):
 
 ## Accessibility
 
-- Ensure keyboard access, visible focus state, and sufficient color contrast in usage contexts.
+- Root uses `role="group"` and supports `ariaLabel` / `ariaLabelledby` / `ariaDescribedby`.
+- Each cell exposes a generated label like `OTP digit 1 of 6` (customizable via `cellAriaLabelPrefix`).
+- For invalid and required states, use `ariaInvalid` / `required` (or `ariaRequired` override).
+- Keyboard supports `ArrowLeft`/`ArrowRight` navigation, `Backspace` clearing, and paste distribution across cells.
+- Keyboard focus ring is provided per cell via `:focus-visible`.

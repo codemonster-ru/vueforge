@@ -8,6 +8,16 @@
 - `placeholderChar?: string` (default `_`)
 - `disabled?: boolean`
 - `readonly?: boolean`
+- `required?: boolean` (default `false`)
+- `id?: string`
+- `name?: string`
+- `autocomplete?: string` (default `off`)
+- `inputmode?: 'none' | 'text' | 'tel' | 'url' | 'email' | 'numeric' | 'decimal' | 'search'` (default `text`)
+- `ariaLabel?: string` (default `Masked input`)
+- `ariaLabelledby?: string`
+- `ariaDescribedby?: string`
+- `ariaInvalid?: boolean | 'true' | 'false'`
+- `ariaRequired?: boolean | 'true' | 'false'` (defaults to `'true'` when `required`)
 - `unmask?: boolean` (default `false`)
 - `size?: 'small' | 'normal' | 'large'` (default `normal`)
 - `variant?: 'filled' | 'outlined'` (default `filled`)
@@ -46,4 +56,7 @@ Component tokens (override via `theme.overrides.components.maskedInput`):
 
 ## Accessibility
 
-- Ensure keyboard access, visible focus state, and sufficient color contrast in usage contexts.
+- Provide an accessible name (`label` + `id`, or `ariaLabel` / `ariaLabelledby`).
+- For help/error text, wire `ariaDescribedby`.
+- For invalid and required states, use `ariaInvalid` / `required` (or `ariaRequired` override).
+- Keyboard focus uses the component focus ring (`:focus-within`) for visible state.

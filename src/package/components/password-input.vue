@@ -5,14 +5,35 @@
                 <slot name="prefix" />
             </span>
             <input
+                :id="id"
                 class="vf-password-input__control"
                 :type="isRevealed ? 'text' : 'password'"
+                :name="name"
                 :value="modelValue"
                 :placeholder="placeholder"
                 :disabled="disabled"
                 :readonly="readonly"
+                :required="required"
                 :autocomplete="autocomplete"
                 :aria-label="ariaLabel"
+                :aria-labelledby="ariaLabelledby"
+                :aria-describedby="ariaDescribedby"
+                :aria-invalid="
+                    ariaInvalid === true || ariaInvalid === 'true'
+                        ? 'true'
+                        : ariaInvalid === 'false'
+                          ? 'false'
+                          : undefined
+                "
+                :aria-required="
+                    required
+                        ? 'true'
+                        : ariaRequired === true || ariaRequired === 'true'
+                          ? 'true'
+                          : ariaRequired === 'false'
+                            ? 'false'
+                            : undefined
+                "
                 @input="onInput"
                 @change="onChange"
                 @focus="onFocus"
@@ -60,6 +81,9 @@ interface Props {
     placeholder?: string;
     disabled?: boolean;
     readonly?: boolean;
+    required?: boolean;
+    id?: string;
+    name?: string;
     size?: Size;
     variant?: Variant;
     autocomplete?: string;
@@ -75,6 +99,10 @@ interface Props {
     mediumLabel?: string;
     strongLabel?: string;
     ariaLabel?: string;
+    ariaLabelledby?: string;
+    ariaDescribedby?: string;
+    ariaInvalid?: boolean | 'true' | 'false';
+    ariaRequired?: boolean | 'true' | 'false';
 }
 
 const emits = defineEmits(['update:modelValue', 'input', 'change', 'focus', 'blur', 'toggleVisibility']);
@@ -83,6 +111,9 @@ const props = withDefaults(defineProps<Props>(), {
     placeholder: '',
     disabled: false,
     readonly: false,
+    required: false,
+    id: undefined,
+    name: undefined,
     size: 'normal',
     variant: 'filled',
     autocomplete: 'current-password',
@@ -98,6 +129,10 @@ const props = withDefaults(defineProps<Props>(), {
     mediumLabel: 'Medium password',
     strongLabel: 'Strong password',
     ariaLabel: 'Password input',
+    ariaLabelledby: undefined,
+    ariaDescribedby: undefined,
+    ariaInvalid: undefined,
+    ariaRequired: undefined,
 });
 
 const isRevealed = ref(false);
