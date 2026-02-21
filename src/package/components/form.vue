@@ -1,8 +1,8 @@
 <template>
     <form
+        :id="id"
         ref="formRef"
         :class="getClass"
-        :id="id"
         :aria-label="ariaLabel"
         :aria-labelledby="ariaLabelledby"
         :novalidate="novalidate"
@@ -16,12 +16,12 @@
             :values="values"
             :errors="errors"
             :touched="touched"
-            :isValid="isValid"
-            :isDirty="isDirty"
-            :isSubmitting="isSubmitting"
-            :setFieldValue="setFieldValue"
-            :setFieldTouched="setFieldTouched"
-            :setFieldError="setFieldError"
+            :is-valid="isValid"
+            :is-dirty="isDirty"
+            :is-submitting="isSubmitting"
+            :set-field-value="setFieldValue"
+            :set-field-touched="setFieldTouched"
+            :set-field-error="setFieldError"
             :validate="validateForm"
             :submit="submitForm"
             :reset="resetForm"
@@ -64,15 +64,7 @@ const props = withDefaults(defineProps<Props>(), {
     ariaLabelledby: undefined,
 });
 
-const emits = defineEmits([
-    'update:modelValue',
-    'change',
-    'blur',
-    'validate',
-    'submit',
-    'invalidSubmit',
-    'reset',
-]);
+const emits = defineEmits(['update:modelValue', 'change', 'blur', 'validate', 'submit', 'invalidSubmit', 'reset']);
 
 const formRef = ref<HTMLFormElement | null>(null);
 const initialSnapshot = ref<FormValues>(cloneValue(mergeRecords(props.initialValues, props.modelValue)));

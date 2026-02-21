@@ -1,8 +1,8 @@
 <template>
     <div
+        ref="rootRef"
         class="vf-rating"
         :class="getClass"
-        ref="rootRef"
         role="radiogroup"
         :aria-label="ariaLabel || undefined"
         :aria-readonly="readonly || undefined"
@@ -13,9 +13,9 @@
         <button
             v-for="item in items"
             :key="item"
+            ref="itemRefs"
             type="button"
             class="vf-rating__item"
-            ref="itemRefs"
             role="radio"
             :aria-checked="getAriaChecked(item)"
             :aria-label="getItemLabel(item)"

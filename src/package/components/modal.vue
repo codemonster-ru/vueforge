@@ -42,7 +42,7 @@
 import { computed, nextTick, onBeforeUnmount, ref, useAttrs, useSlots, watch } from 'vue';
 import type { Slots } from 'vue';
 
-interface Props {
+export interface Props {
     modelValue?: boolean;
     title?: string;
     closeOnOverlay?: boolean;

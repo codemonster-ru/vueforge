@@ -39,7 +39,7 @@ import Menu from '@/package/components/menu.vue';
 
 type Placement = 'bottom-start' | 'bottom-end' | 'top-start' | 'top-end' | 'bottom' | 'top';
 
-interface Item {
+export interface Item {
     to?: string;
     href?: string;
     url?: string;
@@ -51,7 +51,7 @@ interface Item {
     command?: () => void;
 }
 
-interface Props {
+export interface Props {
     modelValue?: boolean;
     items?: Array<Item>;
     placement?: Placement;

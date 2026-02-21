@@ -14,8 +14,8 @@
                 <hr v-else-if="item.separator" class="vf-menu__separator" role="separator" />
                 <template v-else-if="item.items && item.items.length">
                     <button
-                        class="vf-menu__parent"
                         :id="getParentId(item, index)"
+                        class="vf-menu__parent"
                         :class="{ 'vf-menu__parent_active': item.active }"
                         type="button"
                         role="menuitem"
