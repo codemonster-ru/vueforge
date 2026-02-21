@@ -156,4 +156,47 @@ describe('DataTable', () => {
         expect(wrapper.emitted('bulkAction')?.[0]?.[0]).toBe('archive');
         expect(wrapper.emitted('bulkAction')?.[0]?.[1]).toEqual([1, 2, 3]);
     });
+
+    it('applies sticky header and sticky column styles', () => {
+        const wrapper = mount(DataTable, {
+            props: {
+                rows,
+                stickyHeader: true,
+                columns: [
+                    { field: 'name', header: 'Name', sticky: 'left', width: '120px' },
+                    { field: 'role', header: 'Role' },
+                    { field: 'age', header: 'Age', sticky: 'right', width: '80px' },
+                ],
+            },
+        });
+
+        expect(wrapper.classes()).toContain('vf-datatable_sticky-header');
+
+        const headers = wrapper.findAll('.vf-datatable__header');
+        expect(headers[0].attributes('style')).toContain('position: sticky;');
+        expect(headers[0].attributes('style')).toContain('left: 0px;');
+        expect(headers[2].attributes('style')).toContain('right: 0px;');
+    });
+
+    it('keeps keyboard focus on interactive controls in table state', async () => {
+        const wrapper = mount(DataTable, {
+            attachTo: document.body,
+            props: {
+                columns,
+                rows,
+                sortable: true,
+                selectionMode: 'multiple',
+            },
+        });
+
+        const sortButton = wrapper.find('.vf-datatable__sort-button').element as HTMLButtonElement;
+        sortButton.focus();
+        expect(document.activeElement).toBe(sortButton);
+
+        const selectionControl = wrapper.find('.vf-datatable__selection-control').element as HTMLInputElement;
+        selectionControl.focus();
+        expect(document.activeElement).toBe(selectionControl);
+
+        wrapper.unmount();
+    });
 });

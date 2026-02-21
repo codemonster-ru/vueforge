@@ -141,15 +141,15 @@ Execution dependencies:
 - [x] Implement row selection (single)
 - [x] Implement row selection (multi)
 - [x] Add bulk action integration points/events
-- [ ] Implement sticky header behavior
-- [ ] Implement sticky columns behavior
+- [x] Implement sticky header behavior
+- [x] Implement sticky columns behavior
 - [x] Add tests: server-mode sorting/pagination/filtering
 - [x] Add tests: selection and bulk action hooks
-- [ ] Add tests: sticky header/columns
-- [ ] Add tests: keyboard focus behavior in interactive table state
+- [x] Add tests: sticky header/columns
+- [x] Add tests: keyboard focus behavior in interactive table state
 - [x] Add docs recipe: server-side table
 - [x] Add docs recipe: selectable table with bulk actions
-- [ ] Add docs recipe: sticky header/columns
+- [x] Add docs recipe: sticky header/columns
 
 ### P0.11 `Form` (core DX baseline)
 

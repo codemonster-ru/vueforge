@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.83.0] - 2026-02-21
+
+- DataTable sticky behavior: added `stickyHeader` and per-column `sticky` support (`left`/`right`).
+- Added tests for sticky header/columns and keyboard focus in interactive table state.
+- Added docs recipe for sticky header/columns usage.
+
 ## [0.82.0] - 2026-02-21
 
 - DataTable selection baseline: added selection API (`selectionMode`, `selection`) with single and multiple row selection.

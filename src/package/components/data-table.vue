@@ -152,6 +152,7 @@ export interface DataTableColumn {
     align?: Align;
     width?: string;
     minWidth?: string;
+    sticky?: 'left' | 'right';
     formatter?: (row: Record<string, unknown>, value: unknown, column: DataTableColumn) => string | number;
 }
 
@@ -194,6 +195,7 @@ interface Props {
     bulkActions?: Array<DataTableBulkAction>;
     selectAllAriaLabel?: string;
     selectRowAriaLabel?: string;
+    stickyHeader?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -221,6 +223,7 @@ const props = withDefaults(defineProps<Props>(), {
     bulkActions: () => [],
     selectAllAriaLabel: 'Select all rows',
     selectRowAriaLabel: 'Select row',
+    stickyHeader: false,
 });
 
 const emits = defineEmits([
@@ -406,6 +409,10 @@ const getClass = computed(() => {
         classes.push('vf-datatable_hover');
     }
 
+    if (props.stickyHeader) {
+        classes.push('vf-datatable_sticky-header');
+    }
+
     return classes;
 });
 
@@ -585,6 +592,10 @@ const getHeaderClass = (column: DataTableColumn) => {
         classes.push('vf-datatable__header_sortable');
     }
 
+    if (column.sticky) {
+        classes.push(`vf-datatable__cell_sticky-${column.sticky}`);
+    }
+
     return classes;
 };
 
@@ -593,6 +604,10 @@ const getCellClass = (column: DataTableColumn) => {
 
     if (column.align) {
         classes.push(`vf-datatable__cell_${column.align}`);
+    }
+
+    if (column.sticky) {
+        classes.push(`vf-datatable__cell_sticky-${column.sticky}`);
     }
 
     return classes;
@@ -607,6 +622,37 @@ const getColumnStyle = (column: DataTableColumn) => {
 
     if (column.minWidth) {
         styles.minWidth = column.minWidth;
+    }
+
+    if (column.sticky) {
+        styles.position = 'sticky';
+        styles.backgroundColor = 'var(--vf-datatable-row-background-color)';
+        styles.zIndex = '1';
+
+        const stickyColumns = props.columns.filter(item => item.sticky === column.sticky);
+        const currentIndex = stickyColumns.findIndex(item => item.field === column.field);
+        const before =
+            column.sticky === 'left' ? stickyColumns.slice(0, currentIndex) : stickyColumns.slice(currentIndex + 1);
+        const offset = before.reduce((acc, item) => {
+            const width = item.width ?? item.minWidth;
+            if (!width || !width.endsWith('px')) {
+                return acc;
+            }
+
+            const px = Number.parseFloat(width);
+
+            if (!Number.isFinite(px)) {
+                return acc;
+            }
+
+            return acc + px;
+        }, 0);
+
+        if (column.sticky === 'left') {
+            styles.left = `${offset}px`;
+        } else {
+            styles.right = `${offset}px`;
+        }
     }
 
     return styles;
@@ -754,6 +800,12 @@ defineExpose({
     border-bottom: var(--vf-border-width) solid var(--vf-datatable-header-border-color);
 }
 
+.vf-datatable_sticky-header .vf-datatable__header {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
 .vf-datatable__header-text {
     display: inline-flex;
     align-items: center;
@@ -789,6 +841,17 @@ defineExpose({
 .vf-datatable__cell {
     color: var(--vf-datatable-row-text-color);
     background-color: var(--vf-datatable-row-background-color);
+}
+
+.vf-datatable__header.vf-datatable__cell_sticky-left,
+.vf-datatable__header.vf-datatable__cell_sticky-right {
+    background-color: var(--vf-datatable-header-background-color);
+    z-index: 3;
+}
+
+.vf-datatable__cell.vf-datatable__cell_sticky-left,
+.vf-datatable__cell.vf-datatable__cell_sticky-right {
+    z-index: 1;
 }
 
 .vf-datatable__cell_state {

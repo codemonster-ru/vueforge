@@ -3,7 +3,7 @@
 ## Props
 
 - `rows?: Array<Record<string, unknown>>`
-- `columns?: Array<{ field: string; header?: string; sortable?: boolean; align?: 'left' | 'center' | 'right'; width?: string; minWidth?: string; formatter?: (row, value, column) => string | number }>`
+- `columns?: Array<{ field: string; header?: string; sortable?: boolean; align?: 'left' | 'center' | 'right'; width?: string; minWidth?: string; sticky?: 'left' | 'right'; formatter?: (row, value, column) => string | number }>`
 - `rowKey?: string | ((row, index) => string | number)`
 - `sortable?: boolean`
 - `sortField?: string | null`
@@ -26,6 +26,7 @@
 - `bulkActions?: Array<{ label: string; value: string; disabled?: boolean }>` (default `[]`)
 - `selectAllAriaLabel?: string` (default `Select all rows`)
 - `selectRowAriaLabel?: string` (default `Select row`)
+- `stickyHeader?: boolean` (default `false`)
 
 ## Events
 
@@ -142,6 +143,20 @@ const onBulkAction = (action: string, keys: Array<string | number>) => {
         @bulk-action="onBulkAction"
     />
 </template>
+```
+
+### Sticky header and sticky columns
+
+```vue
+<DataTable
+    :columns="[
+        { field: 'name', header: 'Name', sticky: 'left', width: '180px' },
+        { field: 'role', header: 'Role' },
+        { field: 'age', header: 'Age', align: 'right', sticky: 'right', width: '100px' },
+    ]"
+    :rows="rows"
+    sticky-header
+/>
 ```
 
 ## Tokens
