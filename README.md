@@ -67,7 +67,6 @@ Full catalog: [`docs/components/README.md`](docs/components/README.md)
 
 - Theming: [`docs/theming.md`](docs/theming.md)
 - Components catalog: [`docs/components/README.md`](docs/components/README.md)
-- `Container` API: [`docs/components/container.md`](docs/components/container.md)
 - Roadmap / execution checklist: [`CHECKLIST.md`](CHECKLIST.md)
 - Release notes: [`CHANGELOG.md`](CHANGELOG.md)
 
