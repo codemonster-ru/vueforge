@@ -118,4 +118,42 @@ describe('DataTable', () => {
             filters: {},
         });
     });
+
+    it('supports single row selection and emits selection updates', async () => {
+        const wrapper = mount(DataTable, {
+            props: {
+                columns,
+                rows,
+                selectionMode: 'single',
+            },
+        });
+
+        const controls = wrapper.findAll('.vf-datatable__selection-control');
+        await controls[0].trigger('change');
+
+        expect(wrapper.emitted('update:selection')?.[0]).toEqual([1]);
+        expect(wrapper.emitted('selectionChange')?.[0]?.[0]).toBe(1);
+    });
+
+    it('supports multiple selection and bulk action hook', async () => {
+        const wrapper = mount(DataTable, {
+            props: {
+                columns,
+                rows,
+                selectionMode: 'multiple',
+                bulkActions: [{ label: 'Archive', value: 'archive' }],
+            },
+        });
+
+        const controls = wrapper.findAll('.vf-datatable__selection-control');
+        await controls[0].setValue(true);
+
+        expect(wrapper.emitted('update:selection')?.[0]).toEqual([[1, 2, 3]]);
+
+        const bulkButton = wrapper.find('.vf-datatable__bulk-action');
+        await bulkButton.trigger('click');
+
+        expect(wrapper.emitted('bulkAction')?.[0]?.[0]).toBe('archive');
+        expect(wrapper.emitted('bulkAction')?.[0]?.[1]).toEqual([1, 2, 3]);
+    });
 });

@@ -21,6 +21,11 @@
 - `page?: number` (default `1`) - current server-side page
 - `pageSize?: number` (default `10`) - current server-side page size
 - `filters?: Record<string, unknown>` (default `{}`) - current server-side filters
+- `selectionMode?: 'single' | 'multiple' | null` (default `null`)
+- `selection?: string | number | Array<string | number> | null` (default `null`)
+- `bulkActions?: Array<{ label: string; value: string; disabled?: boolean }>` (default `[]`)
+- `selectAllAriaLabel?: string` (default `Select all rows`)
+- `selectRowAriaLabel?: string` (default `Select row`)
 
 ## Events
 
@@ -34,6 +39,9 @@
 - `page`
 - `filter`
 - `request` - payload: `{ sortField, sortOrder, page, pageSize, filters }`
+- `update:selection`
+- `selectionChange`
+- `bulkAction` - payload: `(action, selectedKeys, selectedRows)`
 
 ## Slots
 
@@ -41,6 +49,7 @@
 - `cell-{field}`
 - `empty`
 - `loading`
+- `bulk-actions` - slot props: `{ selectedKeys, selectedRows, clearSelection, applyAction }`
 
 ## Examples
 
@@ -102,6 +111,35 @@ const onRequest = async (query: {
         @update:page-size="pageSize = $event"
         @update:filters="filters = $event"
         @request="onRequest"
+    />
+</template>
+```
+
+### Selectable table with bulk actions
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const selection = ref<Array<string | number>>([]);
+
+const onBulkAction = (action: string, keys: Array<string | number>) => {
+    // Handle bulk action for selected keys.
+};
+</script>
+
+<template>
+    <DataTable
+        :columns="columns"
+        :rows="rows"
+        selection-mode="multiple"
+        :selection="selection"
+        :bulk-actions="[
+            { label: 'Archive', value: 'archive' },
+            { label: 'Delete', value: 'delete' },
+        ]"
+        @update:selection="selection = $event"
+        @bulk-action="onBulkAction"
     />
 </template>
 ```

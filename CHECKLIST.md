@@ -137,18 +137,18 @@ Execution dependencies:
 - [x] Implement server-mode handoff for sorting
 - [x] Implement server-mode handoff for pagination
 - [x] Implement server-mode handoff for filtering
-- [ ] Define row selection API shape
-- [ ] Implement row selection (single)
-- [ ] Implement row selection (multi)
-- [ ] Add bulk action integration points/events
+- [x] Define row selection API shape
+- [x] Implement row selection (single)
+- [x] Implement row selection (multi)
+- [x] Add bulk action integration points/events
 - [ ] Implement sticky header behavior
 - [ ] Implement sticky columns behavior
 - [x] Add tests: server-mode sorting/pagination/filtering
-- [ ] Add tests: selection and bulk action hooks
+- [x] Add tests: selection and bulk action hooks
 - [ ] Add tests: sticky header/columns
 - [ ] Add tests: keyboard focus behavior in interactive table state
 - [x] Add docs recipe: server-side table
-- [ ] Add docs recipe: selectable table with bulk actions
+- [x] Add docs recipe: selectable table with bulk actions
 - [ ] Add docs recipe: sticky header/columns
 
 ### P0.11 `Form` (core DX baseline)

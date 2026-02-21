@@ -1,8 +1,46 @@
 <template>
     <div :class="getClass">
+        <div v-if="showBulkActions" class="vf-datatable__bulk">
+            <slot
+                name="bulk-actions"
+                :selected-keys="selectedKeys"
+                :selected-rows="selectedRows"
+                :clear-selection="clearSelection"
+                :apply-action="applyBulkAction"
+            >
+                <div class="vf-datatable__bulk-default">
+                    <span class="vf-datatable__bulk-count">{{ selectedKeys.length }} selected</span>
+                    <button
+                        v-for="action in bulkActions"
+                        :key="action.value"
+                        type="button"
+                        class="vf-datatable__bulk-action"
+                        :disabled="action.disabled"
+                        @click="applyBulkAction(action.value)"
+                    >
+                        {{ action.label }}
+                    </button>
+                    <button type="button" class="vf-datatable__bulk-clear" @click="clearSelection">Clear</button>
+                </div>
+            </slot>
+        </div>
         <table class="vf-datatable__table" :aria-label="ariaLabel">
             <thead v-if="showHeader" class="vf-datatable__head">
                 <tr class="vf-datatable__row">
+                    <th
+                        v-if="hasSelectionColumn"
+                        class="vf-datatable__header vf-datatable__header_selection"
+                        scope="col"
+                    >
+                        <input
+                            v-if="selectionMode === 'multiple'"
+                            type="checkbox"
+                            class="vf-datatable__selection-control"
+                            :checked="allVisibleSelected"
+                            :aria-label="selectAllAriaLabel"
+                            @change="toggleSelectAll"
+                        />
+                    </th>
                     <th
                         v-for="column in columns"
                         :key="column.field"
@@ -60,6 +98,17 @@
                     :class="getRowClass(rowIndex)"
                     @click="onRowClick(row, rowIndex, $event)"
                 >
+                    <td v-if="hasSelectionColumn" class="vf-datatable__cell vf-datatable__cell_selection">
+                        <input
+                            :type="selectionMode === 'multiple' ? 'checkbox' : 'radio'"
+                            name="vf-datatable-selection"
+                            class="vf-datatable__selection-control"
+                            :checked="isRowSelected(row, rowIndex)"
+                            :aria-label="getSelectRowAriaLabel(row, rowIndex)"
+                            @click.stop
+                            @change="toggleRowSelection(row, rowIndex)"
+                        />
+                    </td>
                     <td
                         v-for="column in columns"
                         :key="column.field"
@@ -93,6 +142,8 @@ type Variant = 'filled' | 'outlined';
 type Align = 'left' | 'center' | 'right';
 type SortOrder = 'asc' | 'desc' | null;
 type DataTableFilters = Record<string, unknown>;
+type DataTableSelectionMode = 'single' | 'multiple' | null;
+type DataTableRowKey = string | number;
 
 export interface DataTableColumn {
     field: string;
@@ -110,6 +161,12 @@ export interface DataTableQuery {
     page: number;
     pageSize: number;
     filters: DataTableFilters;
+}
+
+export interface DataTableBulkAction {
+    label: string;
+    value: string;
+    disabled?: boolean;
 }
 
 interface Props {
@@ -132,6 +189,11 @@ interface Props {
     page?: number;
     pageSize?: number;
     filters?: DataTableFilters;
+    selectionMode?: DataTableSelectionMode;
+    selection?: DataTableRowKey | Array<DataTableRowKey> | null;
+    bulkActions?: Array<DataTableBulkAction>;
+    selectAllAriaLabel?: string;
+    selectRowAriaLabel?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -154,6 +216,11 @@ const props = withDefaults(defineProps<Props>(), {
     page: 1,
     pageSize: 10,
     filters: () => ({}),
+    selectionMode: null,
+    selection: null,
+    bulkActions: () => [],
+    selectAllAriaLabel: 'Select all rows',
+    selectRowAriaLabel: 'Select row',
 });
 
 const emits = defineEmits([
@@ -167,6 +234,9 @@ const emits = defineEmits([
     'page',
     'filter',
     'request',
+    'update:selection',
+    'selectionChange',
+    'bulkAction',
 ]);
 
 const internalSortField = ref<string | null>(props.sortField ?? null);
@@ -174,6 +244,7 @@ const internalSortOrder = ref<SortOrder>(props.sortOrder ?? null);
 const internalPage = ref<number>(Math.max(1, props.page ?? 1));
 const internalPageSize = ref<number>(Math.max(1, props.pageSize ?? 10));
 const internalFilters = ref<DataTableFilters>({ ...(props.filters ?? {}) });
+const internalSelection = ref<DataTableRowKey | Array<DataTableRowKey> | null>(props.selection ?? null);
 
 watch(
     () => props.sortField,
@@ -206,13 +277,57 @@ watch(
     },
     { deep: true },
 );
+watch(
+    () => props.selection,
+    value => {
+        internalSelection.value = value ?? null;
+    },
+    { deep: true },
+);
 
 const effectiveSortField = computed(() => internalSortField.value);
 const effectiveSortOrder = computed(() => internalSortOrder.value);
 const effectivePage = computed(() => internalPage.value);
 const effectivePageSize = computed(() => internalPageSize.value);
 const effectiveFilters = computed(() => internalFilters.value);
-const stateColspan = computed(() => Math.max(1, props.columns.length));
+const hasSelectionColumn = computed(() => props.selectionMode === 'single' || props.selectionMode === 'multiple');
+const stateColspan = computed(() => Math.max(1, props.columns.length + (hasSelectionColumn.value ? 1 : 0)));
+const selectedKeys = computed<Array<DataTableRowKey>>(() => {
+    if (props.selectionMode === 'single') {
+        return internalSelection.value == null ? [] : [internalSelection.value as DataTableRowKey];
+    }
+
+    if (props.selectionMode === 'multiple') {
+        return Array.isArray(internalSelection.value) ? internalSelection.value : [];
+    }
+
+    return [];
+});
+const selectedRows = computed(() => {
+    const selected = new Set(selectedKeys.value);
+
+    return (props.rows ?? []).filter((row, index) => {
+        const rowKey = getRowKey(row, index);
+
+        return selected.has(rowKey);
+    });
+});
+const allVisibleSelected = computed(() => {
+    if (props.selectionMode !== 'multiple' || !sortedRows.value.length) {
+        return false;
+    }
+
+    const selected = new Set(selectedKeys.value);
+
+    return sortedRows.value.every((row, index) => selected.has(getRowKey(row, index)));
+});
+const showBulkActions = computed(() => {
+    if (props.selectionMode !== 'multiple' || selectedKeys.value.length === 0) {
+        return false;
+    }
+
+    return true;
+});
 
 const isColumnSortable = (column: DataTableColumn) => {
     if (column.sortable === false) {
@@ -306,6 +421,74 @@ const getRowKey = (row: Record<string, unknown>, index: number) => {
     }
 
     return index;
+};
+
+const emitSelection = (value: DataTableRowKey | Array<DataTableRowKey> | null) => {
+    internalSelection.value = value;
+    emits('update:selection', value);
+    emits('selectionChange', value, selectedRows.value);
+};
+
+const isRowSelected = (row: Record<string, unknown>, index: number) => {
+    const rowKey = getRowKey(row, index);
+
+    if (props.selectionMode === 'single') {
+        return internalSelection.value === rowKey;
+    }
+
+    if (props.selectionMode === 'multiple') {
+        const selected = Array.isArray(internalSelection.value) ? internalSelection.value : [];
+
+        return selected.includes(rowKey);
+    }
+
+    return false;
+};
+
+const getSelectRowAriaLabel = (row: Record<string, unknown>, index: number) => {
+    const key = getRowKey(row, index);
+
+    return `${props.selectRowAriaLabel} ${String(key)}`;
+};
+
+const toggleRowSelection = (row: Record<string, unknown>, index: number) => {
+    const rowKey = getRowKey(row, index);
+
+    if (props.selectionMode === 'single') {
+        const nextValue = internalSelection.value === rowKey ? null : rowKey;
+
+        emitSelection(nextValue);
+
+        return;
+    }
+
+    if (props.selectionMode === 'multiple') {
+        const current = Array.isArray(internalSelection.value) ? [...internalSelection.value] : [];
+        const selectedIndex = current.indexOf(rowKey);
+
+        if (selectedIndex >= 0) {
+            current.splice(selectedIndex, 1);
+        } else {
+            current.push(rowKey);
+        }
+
+        emitSelection(current);
+    }
+};
+
+const toggleSelectAll = () => {
+    if (props.selectionMode !== 'multiple') {
+        return;
+    }
+
+    if (allVisibleSelected.value) {
+        emitSelection([]);
+
+        return;
+    }
+
+    const allKeys = sortedRows.value.map((row, index) => getRowKey(row, index));
+    emitSelection(allKeys);
 };
 
 const getCellValue = (row: Record<string, unknown>, column: DataTableColumn) => {
@@ -471,12 +654,24 @@ const clearFilters = () => {
     setFilters({});
 };
 
+const clearSelection = () => {
+    emitSelection(props.selectionMode === 'multiple' ? [] : null);
+};
+
+const applyBulkAction = (value: string) => {
+    emits('bulkAction', value, selectedKeys.value, selectedRows.value);
+};
+
 defineExpose({
     setPage,
     setPageSize,
     setFilters,
     clearFilters,
     getQuery: getRequestPayload,
+    clearSelection,
+    getSelectedKeys: () => [...selectedKeys.value],
+    getSelectedRows: () => [...selectedRows.value],
+    applyBulkAction,
 });
 </script>
 
@@ -487,6 +682,34 @@ defineExpose({
     border-radius: var(--vf-datatable-border-radius);
     background-color: var(--vf-datatable-background-color);
     overflow: hidden;
+}
+
+.vf-datatable__bulk {
+    padding: 0.75rem;
+    border-bottom: var(--vf-border-width) solid var(--vf-datatable-row-border-color);
+    background-color: var(--vf-datatable-header-background-color);
+}
+
+.vf-datatable__bulk-default {
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.vf-datatable__bulk-count {
+    font-weight: 600;
+}
+
+.vf-datatable__bulk-action,
+.vf-datatable__bulk-clear {
+    border: var(--vf-border-width) solid var(--vf-datatable-header-border-color);
+    background-color: var(--vf-datatable-background-color);
+    color: inherit;
+    border-radius: var(--vf-radii-sm);
+    padding: 0.25rem 0.5rem;
+    cursor: pointer;
+    font: inherit;
 }
 
 .vf-datatable__table {
@@ -512,6 +735,16 @@ defineExpose({
 .vf-datatable__cell {
     text-align: left;
     padding: var(--vf-datatable-cell-padding);
+}
+
+.vf-datatable__header_selection,
+.vf-datatable__cell_selection {
+    width: 2.25rem;
+    text-align: center;
+}
+
+.vf-datatable__selection-control {
+    cursor: pointer;
 }
 
 .vf-datatable__header {

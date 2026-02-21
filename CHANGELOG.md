@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.82.0] - 2026-02-21
+
+- DataTable selection baseline: added selection API (`selectionMode`, `selection`) with single and multiple row selection.
+- DataTable bulk actions: added integration points via `bulkActions`, `bulk-actions` slot, and `bulkAction` event.
+- Added tests for selection/bulk action hooks and docs recipe for selectable tables with bulk actions.
+
 ## [0.81.0] - 2026-02-21
 
 - DataTable production baseline: added server-mode API contracts (`server`, `page`, `pageSize`, `filters`) and emitted events for server handoff.
