@@ -98,4 +98,55 @@ describe('CommandPalette', () => {
         input.remove();
         wrapper.unmount();
     });
+
+    it('focuses input on open and restores trigger focus on close', async () => {
+        const trigger = document.createElement('button');
+        document.body.appendChild(trigger);
+        trigger.focus();
+        const wrapper = mountCommandPalette({
+            props: {
+                modelValue: false,
+                items,
+            },
+        });
+
+        await wrapper.setProps({ modelValue: true });
+        await nextTick();
+        const input = wrapper.find('.vf-command-palette__input').element as HTMLInputElement;
+        expect(document.activeElement).toBe(input);
+
+        await wrapper.find('.vf-command-palette__panel').trigger('keydown', { key: 'Escape' });
+        await nextTick();
+        expect(wrapper.emitted('update:modelValue')?.at(-1)).toEqual([false]);
+        await wrapper.setProps({ modelValue: false });
+        await nextTick();
+        expect(document.activeElement).toBe(trigger);
+
+        wrapper.unmount();
+        trigger.remove();
+    });
+
+    it('navigates active option with arrow keys and selects by Enter', async () => {
+        const wrapper = mountCommandPalette({
+            props: {
+                modelValue: true,
+                items: [
+                    { label: 'Disabled', value: 'disabled', disabled: true },
+                    { label: 'Open docs', value: 'docs' },
+                    { label: 'Publish', value: 'publish' },
+                ],
+            },
+        });
+
+        await nextTick();
+        const panel = wrapper.find('.vf-command-palette__panel');
+        await panel.trigger('keydown', { key: 'ArrowDown' });
+        await nextTick();
+        await panel.trigger('keydown', { key: 'ArrowDown' });
+        await nextTick();
+        await panel.trigger('keydown', { key: 'Enter' });
+
+        const selected = wrapper.emitted('select')?.[0]?.[0] as { value?: string } | undefined;
+        expect(selected?.value).toBe('publish');
+    });
 });

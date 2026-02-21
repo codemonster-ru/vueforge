@@ -8,8 +8,8 @@
 - `readonly?: boolean`
 - `min?: string` (ISO datetime `YYYY-MM-DDTHH:mm`)
 - `max?: string` (ISO datetime `YYYY-MM-DDTHH:mm`)
-- `locale?: string` (default `en-US`)
-- `firstDayOfWeek?: number` (default `0`, Sunday)
+- `locale?: string` (default from global date/time locale config, fallback `en-US`)
+- `firstDayOfWeek?: number` (default from global date/time locale config, fallback `0`, Sunday)
 - `minuteStep?: number` (default `30`)
 - `format?: '24h' | '12h'` (default `24h`)
 - `ariaLabel?: string` (default `Date and time picker`)
@@ -70,3 +70,4 @@ Component tokens (override via `theme.overrides.components.datetimepicker`):
 - The popup dialog exposes `panelAriaLabel`, and the time listbox exposes `timeListAriaLabel`.
 - Time options support keyboard navigation (`ArrowUp/ArrowDown`, `Home/End`, `Enter`/`Space`, `Escape`).
 - Ensure visible focus state and sufficient color contrast in usage contexts.
+- Locale and week-start defaults can be configured globally: [`Date/Time Locale Setup`](../guides/date-time-locale-setup.md).

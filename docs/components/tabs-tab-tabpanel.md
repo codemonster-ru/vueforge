@@ -45,6 +45,25 @@ Props (TabPanel):
 </Tabs>
 ```
 
+## Recipes
+
+### Settings page sections with vertical tabs
+
+```vue
+<Tabs v-model="section" orientation="vertical" aria-label="Settings sections">
+    <template #tabs>
+        <Tab value="profile">Profile</Tab>
+        <Tab value="security">Security</Tab>
+        <Tab value="billing" :disabled="isBillingDisabled">Billing</Tab>
+    </template>
+    <template #panels>
+        <TabPanel value="profile">Profile settings</TabPanel>
+        <TabPanel value="security">Security settings</TabPanel>
+        <TabPanel value="billing">Billing settings</TabPanel>
+    </template>
+</Tabs>
+```
+
 ## Tokens
 
 Component tokens (override via `theme.overrides.components.tabs`):
@@ -58,4 +77,6 @@ Component tokens (override via `theme.overrides.components.tabs`):
 
 ## Accessibility
 
-- Ensure keyboard access, visible focus state, and sufficient color contrast in usage contexts.
+- Supports tablist keyboard navigation with arrow keys and `Home`/`End`.
+- Uses `tab`/`tabpanel` semantics with `aria-controls` and `aria-labelledby`.
+- Ensure visible focus state and sufficient color contrast in usage contexts.

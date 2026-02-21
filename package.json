@@ -1,6 +1,6 @@
 {
     "name": "@codemonster-ru/vueforge",
-    "version": "0.89.0",
+    "version": "0.90.0",
     "description": "Open source UI components for Vue.js.",
     "license": "MIT",
     "author": "Kirill Kolesnikov",
@@ -48,7 +48,8 @@
         "build": "vite build --mode production",
         "lint": "node --import tsx ./node_modules/eslint/bin/eslint.js . --ext .ts,.vue --config eslint.config.ts",
         "typecheck": "vue-tsc --noEmit",
-        "test": "vitest run"
+        "test": "vitest run",
+        "verify:semver": "node ./scripts/verify-semver-checklist.mjs"
     },
     "peerDependencies": {
         "@codemonster-ru/vueiconify": "^0.7.0",

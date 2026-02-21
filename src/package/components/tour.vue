@@ -10,6 +10,7 @@
                 aria-modal="true"
                 :aria-label="ariaLabel || undefined"
                 :data-placement="currentPlacement"
+                tabindex="-1"
             >
                 <div v-if="currentStep?.title || $slots.title" class="vf-tour__title">
                     <slot name="title" :step="currentStep" :index="activeIndex">
@@ -122,6 +123,7 @@ const activeIndex = ref(0);
 const currentPlacement = ref<Placement>('bottom');
 const spotlightStyle = ref<Record<string, string>>({});
 const resolvedTarget = ref<HTMLElement | null>(null);
+const previousActiveElement = ref<HTMLElement | null>(null);
 let floater: FloaterInstance = null;
 
 const totalSteps = computed(() => props.steps.length);
@@ -312,11 +314,13 @@ watch(
     () => props.modelValue,
     async value => {
         if (value) {
+            previousActiveElement.value = document.activeElement instanceof HTMLElement ? document.activeElement : null;
             activeIndex.value = clampIndex(props.startIndex);
             emits('open');
             emits('stepChange', activeIndex.value, currentStep.value);
 
             await refreshPosition();
+            panel.value?.focus();
             document.addEventListener('keydown', onDocumentKeydown, false);
         } else {
             floater?.destroy();
@@ -324,6 +328,8 @@ watch(
             spotlightStyle.value = {};
             resolvedTarget.value = null;
             document.removeEventListener('keydown', onDocumentKeydown, false);
+            previousActiveElement.value?.focus();
+            previousActiveElement.value = null;
         }
     },
     { immediate: true },

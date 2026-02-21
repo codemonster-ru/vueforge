@@ -11,6 +11,7 @@
             aria-haspopup="tree"
             @click="togglePanel"
             @keydown.down.prevent="openPanel"
+            @keydown.up.prevent="openPanelFromTop"
             @keydown.enter.prevent="togglePanel"
             @keydown.esc.prevent="close"
             @focus="onFocus"
@@ -47,6 +48,7 @@
                         :placeholder="searchPlaceholder"
                         :readonly="readonly"
                         @input="onSearchInput"
+                        @keydown.down.prevent="focusFirstTreeItem"
                         @keydown.esc.prevent="close"
                     />
                 </div>
@@ -284,7 +286,31 @@ const openPanel = async () => {
         await nextTick();
 
         searchInput.value?.focus();
+        return;
     }
+
+    await nextTick();
+    focusFirstTreeItem();
+};
+
+const openPanelFromTop = async () => {
+    if (props.disabled || props.readonly) {
+        return;
+    }
+
+    basePlacement.value = 'top';
+    currentPlacement.value = 'top';
+    open.value = true;
+
+    if (props.filter) {
+        await nextTick();
+
+        searchInput.value?.focus();
+        return;
+    }
+
+    await nextTick();
+    focusFirstTreeItem();
 };
 
 const togglePanel = () => {
@@ -354,6 +380,11 @@ const onSearchInput = (event: Event) => {
 
 const onFocus = (event: FocusEvent) => emits('focus', event);
 const onBlur = (event: FocusEvent) => emits('blur', event);
+
+const focusFirstTreeItem = () => {
+    const item = panel.value?.querySelector<HTMLElement>('[role="treeitem"]:not([aria-disabled="true"])');
+    item?.focus();
+};
 
 const onDocumentClick = (event: MouseEvent) => {
     if (!open.value || !root.value) {
@@ -504,7 +535,7 @@ onBeforeUnmount(() => {
 .vf-treeselect__label {
     flex: 1 1 auto;
     min-width: 0;
-    text-align: left;
+    text-align: start;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -524,7 +555,7 @@ onBeforeUnmount(() => {
     flex: 0 0 auto;
     width: var(--vf-treeselect-clear-size);
     height: var(--vf-treeselect-clear-size);
-    margin-right: 0.35rem;
+    margin-inline-end: 0.35rem;
     padding: 0;
     border: none;
     border-radius: var(--vf-treeselect-clear-radius);

@@ -103,7 +103,22 @@ export type { WizardStepItem } from '@/package/components/wizard.vue';
 export type { NotificationCenterItem } from '@/package/components/notification-center.vue';
 export type { KanbanBoardItem, KanbanColumn } from '@/package/components/kanban-board.vue';
 // config
-export { default as VueForge, setTheme, updateTheme, getTheme } from '@/package/config/index';
+export {
+    default as VueForge,
+    setTheme,
+    updateTheme,
+    getTheme,
+    setDateTimeLocale,
+    updateDateTimeLocale,
+    getDateTimeLocale,
+    setDensityPreset,
+    getDensityPreset,
+    setReducedMotion,
+    getReducedMotion,
+    getUiPreferences,
+    applyUiPreferences,
+} from '@/package/config/index';
 export type { ThemeTokens, ThemeOptions, ThemePreset } from '@/package/config/theme-core';
+export type { DateTimeLocaleOptions, DensityPreset } from '@/package/config/index';
 // themes
 export { default as DefaultTheme } from '@/package/themes/default';

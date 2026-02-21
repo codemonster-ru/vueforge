@@ -53,6 +53,7 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
+import { useDateTimeLocale } from '../config/date-time-locale';
 
 type Size = 'small' | 'normal' | 'large';
 type Variant = 'filled' | 'outlined';
@@ -88,12 +89,18 @@ const props = withDefaults(defineProps<Props>(), {
     readonly: false,
     min: undefined,
     max: undefined,
-    locale: 'en-US',
-    firstDayOfWeek: 0,
+    locale: undefined,
+    firstDayOfWeek: undefined,
     ariaLabel: 'Calendar',
     variant: 'filled',
     size: 'normal',
 });
+
+const dateTimeLocale = useDateTimeLocale();
+const effectiveLocale = computed(() => props.locale ?? dateTimeLocale.locale);
+const effectiveFirstDayOfWeek = computed(() =>
+    normalizeFirstDayOfWeek(props.firstDayOfWeek ?? dateTimeLocale.firstDayOfWeek),
+);
 
 const monthCursor = ref(startOfMonth(parseIsoDate(props.modelValue) ?? new Date()));
 const focusedIso = ref<string | null>(null);
@@ -102,17 +109,17 @@ const selectedDate = computed(() => parseIsoDate(props.modelValue));
 const minDate = computed(() => parseIsoDate(props.min));
 const maxDate = computed(() => parseIsoDate(props.max));
 const monthLabel = computed(() => {
-    return monthCursor.value.toLocaleDateString(props.locale, {
+    return monthCursor.value.toLocaleDateString(effectiveLocale.value, {
         year: 'numeric',
         month: 'long',
     });
 });
 const weekdayLabels = computed(() => {
-    const formatter = new Intl.DateTimeFormat(props.locale, { weekday: 'short' });
+    const formatter = new Intl.DateTimeFormat(effectiveLocale.value, { weekday: 'short' });
     const referenceSunday = new Date(2026, 0, 4);
 
     return Array.from({ length: 7 }, (_, index) => {
-        const shiftedIndex = (index + props.firstDayOfWeek) % 7;
+        const shiftedIndex = (index + effectiveFirstDayOfWeek.value) % 7;
         const labelDate = new Date(referenceSunday);
 
         labelDate.setDate(referenceSunday.getDate() + shiftedIndex);
@@ -121,7 +128,7 @@ const weekdayLabels = computed(() => {
     });
 });
 const calendarDays = computed<Array<CalendarCell>>(() => {
-    const start = startOfGrid(monthCursor.value, props.firstDayOfWeek);
+    const start = startOfGrid(monthCursor.value, effectiveFirstDayOfWeek.value);
     const selectedIso = selectedDate.value ? formatIsoDate(selectedDate.value) : null;
     const todayIso = formatIsoDate(new Date());
 
@@ -186,7 +193,7 @@ const shiftFocusedDay = async (delta: number) => {
 const jumpFocusedDayInRow = async (toEnd: 'start' | 'end') => {
     const baseDate = parseIsoDate(focusedIso.value ?? undefined) ?? selectedDate.value ?? new Date();
     const currentWeekday = baseDate.getDay();
-    const col = (currentWeekday - props.firstDayOfWeek + 7) % 7;
+    const col = (currentWeekday - effectiveFirstDayOfWeek.value + 7) % 7;
     const delta = toEnd === 'start' ? -col : 6 - col;
     const nextDate = addDays(baseDate, delta);
 
@@ -296,7 +303,7 @@ watch(
 );
 
 function getDayAriaLabel(date: Date) {
-    return date.toLocaleDateString(props.locale, {
+    return date.toLocaleDateString(effectiveLocale.value, {
         year: 'numeric',
         month: 'long',
         day: 'numeric',
@@ -370,6 +377,14 @@ function isDateDisabled(date: Date, min: Date | null, max: Date | null) {
     }
 
     return false;
+}
+
+function normalizeFirstDayOfWeek(value: number) {
+    if (!Number.isFinite(value)) {
+        return 0;
+    }
+
+    return ((Math.floor(value) % 7) + 7) % 7;
 }
 </script>
 

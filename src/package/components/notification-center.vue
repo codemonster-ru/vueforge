@@ -132,6 +132,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const panel = ref<HTMLElement | null>(null);
 const localItems = ref<Array<NotificationCenterItem>>([]);
+const previousActiveElement = ref<HTMLElement | null>(null);
 
 const unreadCount = computed(() => localItems.value.filter(item => !item.read).length);
 const hasUnread = computed(() => unreadCount.value > 0);
@@ -183,12 +184,15 @@ watch(
     () => props.modelValue,
     async value => {
         if (value) {
+            previousActiveElement.value = document.activeElement instanceof HTMLElement ? document.activeElement : null;
             emits('open');
             await nextTick();
             panel.value?.focus();
             document.addEventListener('keydown', onDocumentKeydown, false);
         } else {
             document.removeEventListener('keydown', onDocumentKeydown, false);
+            previousActiveElement.value?.focus();
+            previousActiveElement.value = null;
         }
     },
     { immediate: true },

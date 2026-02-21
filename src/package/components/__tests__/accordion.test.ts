@@ -73,4 +73,36 @@ describe('Accordion', () => {
 
         expect(wrapper.vm.value).toBe('a');
     });
+
+    it('moves header focus with arrow keys', async () => {
+        const wrapper = mount(
+            {
+                components: { Accordion, AccordionItem },
+                template: `
+                    <Accordion v-model="value">
+                        <AccordionItem value="a" title="A">A body</AccordionItem>
+                        <AccordionItem value="b" title="B">B body</AccordionItem>
+                        <AccordionItem value="c" title="C">C body</AccordionItem>
+                    </Accordion>
+                `,
+                data() {
+                    return { value: 'a' };
+                },
+            },
+            { attachTo: document.body },
+        );
+
+        const headers = wrapper.findAll('.vf-accordion__header');
+        const first = headers[0].element as HTMLButtonElement;
+        const second = headers[1].element as HTMLButtonElement;
+
+        first.focus();
+        await headers[0].trigger('keydown', { key: 'ArrowDown' });
+        expect(document.activeElement).toBe(second);
+
+        await headers[1].trigger('keydown', { key: 'Home' });
+        expect(document.activeElement).toBe(first);
+
+        wrapper.unmount();
+    });
 });

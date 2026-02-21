@@ -77,4 +77,37 @@ describe('Tabs', () => {
 
         expect(wrapper.vm.value).toBe('b');
     });
+
+    it('supports vertical keyboard navigation and Home/End', async () => {
+        const wrapper = mount({
+            components: { Tabs, Tab, TabPanel },
+            template: `
+                <Tabs v-model="value" orientation="vertical">
+                    <template #tabs>
+                        <Tab value="a">A</Tab>
+                        <Tab value="b">B</Tab>
+                        <Tab value="c">C</Tab>
+                    </template>
+                    <template #panels>
+                        <TabPanel value="a">A panel</TabPanel>
+                        <TabPanel value="b">B panel</TabPanel>
+                        <TabPanel value="c">C panel</TabPanel>
+                    </template>
+                </Tabs>
+            `,
+            data() {
+                return { value: 'b' };
+            },
+        });
+
+        const list = wrapper.find('[role="tablist"]');
+        await list.trigger('keydown', { key: 'ArrowDown' });
+        expect(wrapper.vm.value).toBe('c');
+
+        await list.trigger('keydown', { key: 'Home' });
+        expect(wrapper.vm.value).toBe('a');
+
+        await list.trigger('keydown', { key: 'End' });
+        expect(wrapper.vm.value).toBe('c');
+    });
 });

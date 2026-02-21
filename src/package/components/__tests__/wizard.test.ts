@@ -8,7 +8,7 @@ const createWrapper = (options: Parameters<typeof mount>[1] = {}) => {
         {
             components: { Wizard, WizardStep },
             template: `
-                <Wizard v-model="step" :steps="steps" :validate-step="validateStep" @complete="onComplete">
+                <Wizard v-model="step" :steps="steps" :linear="linear" :validate-step="validateStep" @complete="onComplete">
                     <WizardStep value="account">Account content</WizardStep>
                     <WizardStep value="plan">Plan content</WizardStep>
                     <WizardStep value="confirm">Confirm content</WizardStep>
@@ -22,6 +22,7 @@ const createWrapper = (options: Parameters<typeof mount>[1] = {}) => {
                         { value: 'plan', title: 'Plan' },
                         { value: 'confirm', title: 'Confirm' },
                     ],
+                    linear: true,
                     validateStep: undefined as ((...args: Array<unknown>) => boolean) | undefined,
                 };
             },
@@ -68,6 +69,7 @@ describe('Wizard', () => {
                         { value: 'plan', title: 'Plan' },
                         { value: 'confirm', title: 'Confirm' },
                     ],
+                    linear: true,
                     validateStep: undefined,
                 };
             },
@@ -77,5 +79,37 @@ describe('Wizard', () => {
         await wrapper.find('.vf-wizard__button_primary').trigger('click');
 
         expect(wrapper.findComponent(Wizard).emitted('complete')?.length).toBe(1);
+    });
+
+    it('supports keyboard navigation across step tabs', async () => {
+        const wrapper = createWrapper({
+            attachTo: document.body,
+            data() {
+                return {
+                    step: 'account',
+                    steps: [
+                        { value: 'account', title: 'Account' },
+                        { value: 'plan', title: 'Plan' },
+                        { value: 'confirm', title: 'Confirm' },
+                    ],
+                    linear: false,
+                    validateStep: undefined,
+                };
+            },
+        });
+
+        const tablist = wrapper.find('.vf-wizard__list[role="tablist"]');
+        const tabs = wrapper.findAll('.vf-wizard__step[role="tab"]');
+
+        (tabs[0].element as HTMLButtonElement).focus();
+        await tablist.trigger('keydown', { key: 'ArrowRight' });
+        await nextTick();
+        expect((wrapper.vm as unknown as { step: string }).step).toBe('plan');
+
+        await tablist.trigger('keydown', { key: 'End' });
+        await nextTick();
+        expect((wrapper.vm as unknown as { step: string }).step).toBe('confirm');
+
+        wrapper.unmount();
     });
 });

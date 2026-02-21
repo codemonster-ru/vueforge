@@ -15,6 +15,7 @@ Invalid values are ignored (component falls back to empty/unselected state and d
 ## Display Format Behavior
 
 - Date labels are localized via `locale` where supported (`DatePicker`, `Calendar`, `DateRangePicker`, `DateTimePicker`).
+- Locale/week-start defaults can be configured globally via [`Date/Time Locale Setup`](../guides/date-time-locale-setup.md).
 - Time labels support:
     - `format="24h"`: `HH:mm`
     - `format="12h"`: `h:mm AM/PM`

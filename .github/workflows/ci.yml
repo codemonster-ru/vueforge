@@ -16,5 +16,6 @@ jobs:
             - run: npm ci
             - run: npm run lint
             - run: npm run typecheck
+            - run: npm run verify:semver
             - run: npm run test
             - run: npm run build

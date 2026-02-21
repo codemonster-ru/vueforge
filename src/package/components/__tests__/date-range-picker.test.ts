@@ -1,6 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { nextTick } from 'vue';
 import DateRangePicker from '../date-range-picker.vue';
+import { setDateTimeLocale } from '../../config/date-time-locale';
 
 const mountDateRangePicker = (props: Record<string, unknown> = {}) => {
     return mount(DateRangePicker, {
@@ -15,6 +16,10 @@ const mountDateRangePicker = (props: Record<string, unknown> = {}) => {
 };
 
 describe('DateRangePicker', () => {
+    afterEach(() => {
+        setDateTimeLocale({ locale: 'en-US', firstDayOfWeek: 0 });
+    });
+
     it('shows placeholder when range is empty', () => {
         const wrapper = mountDateRangePicker({ placeholder: 'Pick range' });
 
@@ -115,5 +120,18 @@ describe('DateRangePicker', () => {
         await wrapper.find('[data-date="2026-02-10"]').trigger('click');
 
         expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([['2026-02-10', '2026-02-14']]);
+    });
+
+    it('uses global locale config when props are omitted', async () => {
+        setDateTimeLocale({ locale: 'it-IT', firstDayOfWeek: 1 });
+        const wrapper = mountDateRangePicker();
+
+        await wrapper.find('.vf-daterangepicker__control').trigger('click');
+        await nextTick();
+
+        const weekday = wrapper.findAll('.vf-daterangepicker__weekday')[0].text();
+        const expected = new Intl.DateTimeFormat('it-IT', { weekday: 'short' }).format(new Date(2026, 0, 5));
+
+        expect(weekday).toBe(expected);
     });
 });

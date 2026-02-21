@@ -145,12 +145,26 @@ const getVisibleItems = (target: EventTarget | null) => {
     return Array.from(root.querySelectorAll<HTMLElement>('[role="treeitem"]'));
 };
 
+const getEnabledItems = (items: Array<HTMLElement>) => {
+    return items.filter(item => item.getAttribute('aria-disabled') !== 'true');
+};
+
 const focusItemAt = (items: Array<HTMLElement>, index: number) => {
     if (index < 0 || index >= items.length) {
         return;
     }
 
     items[index].focus();
+};
+
+const focusFirstChild = (element: HTMLElement) => {
+    const group = element.nextElementSibling;
+    if (!(group instanceof HTMLElement) || group.getAttribute('role') !== 'group') {
+        return;
+    }
+
+    const firstChild = group.querySelector<HTMLElement>('[role="treeitem"]:not([aria-disabled="true"])');
+    firstChild?.focus();
 };
 
 const focusParent = (element: HTMLElement) => {
@@ -190,10 +204,9 @@ const onRowKeydown = (event: KeyboardEvent) => {
             return;
         }
 
-        const items = getVisibleItems(event.target);
-        const index = items.indexOf(current);
-
-        focusItemAt(items, index + 1);
+        if (hasChildren.value && expanded.value) {
+            focusFirstChild(current);
+        }
 
         return;
     }
@@ -215,7 +228,7 @@ const onRowKeydown = (event: KeyboardEvent) => {
     if (event.key === 'ArrowDown' || event.key === 'ArrowUp' || event.key === 'Home' || event.key === 'End') {
         event.preventDefault();
 
-        const items = getVisibleItems(event.target);
+        const items = getEnabledItems(getVisibleItems(event.target));
 
         if (!items.length) {
             return;
@@ -261,13 +274,15 @@ const onToggleClick = (event: MouseEvent) => {
     gap: var(--vf-tree-row-gap);
     width: 100%;
     padding: var(--vf-tree-row-padding);
-    padding-left: calc(var(--vf-tree-row-padding-inline) + (var(--vf-tree-indent) * (var(--vf-tree-level) - 1)));
+    padding-inline-start: calc(
+        var(--vf-tree-row-padding-inline) + (var(--vf-tree-indent) * (var(--vf-tree-level) - 1))
+    );
     border-radius: var(--vf-tree-row-border-radius);
     border: none;
     background-color: var(--vf-tree-row-background-color);
     color: var(--vf-tree-row-text-color);
     font-size: var(--vf-tree-row-font-size);
-    text-align: left;
+    text-align: start;
     cursor: pointer;
     outline: none;
 }
@@ -323,7 +338,9 @@ const onToggleClick = (event: MouseEvent) => {
 .vf-tree__row_small {
     font-size: var(--vf-tree-small-row-font-size);
     padding: var(--vf-tree-small-row-padding);
-    padding-left: calc(var(--vf-tree-small-row-padding-inline) + (var(--vf-tree-indent) * (var(--vf-tree-level) - 1)));
+    padding-inline-start: calc(
+        var(--vf-tree-small-row-padding-inline) + (var(--vf-tree-indent) * (var(--vf-tree-level) - 1))
+    );
 
     .vf-tree__toggle,
     .vf-tree__toggle-spacer {
@@ -336,7 +353,9 @@ const onToggleClick = (event: MouseEvent) => {
 .vf-tree__row_large {
     font-size: var(--vf-tree-large-row-font-size);
     padding: var(--vf-tree-large-row-padding);
-    padding-left: calc(var(--vf-tree-large-row-padding-inline) + (var(--vf-tree-indent) * (var(--vf-tree-level) - 1)));
+    padding-inline-start: calc(
+        var(--vf-tree-large-row-padding-inline) + (var(--vf-tree-indent) * (var(--vf-tree-level) - 1))
+    );
 
     .vf-tree__toggle,
     .vf-tree__toggle-spacer {

@@ -35,6 +35,12 @@ Props (ToastContainer):
 </ToastContainer>
 ```
 
+## Recipes
+
+- Success feedback: short-lived save confirmation (`duration` 1500-3000 ms).
+- Persistent warning: `duration=0` with close button for user-dismissed alerts.
+- Global stack: place a single `ToastContainer` near app root and render toast instances from store.
+
 ## Tokens
 
 Component tokens (override via `theme.overrides.components.toast`):
@@ -48,4 +54,26 @@ Component tokens (override via `theme.overrides.components.toast`):
 
 ## Accessibility
 
-- Ensure keyboard access, visible focus state, and sufficient color contrast in usage contexts.
+- Toast uses `role="status"` with `aria-live="polite"` for non-blocking announcements.
+- Close control is a native button with accessible label (`Close toast`).
+- Keep toasts brief and actionable; avoid long interactive content in toast body.
+
+## Interaction Contract
+
+- `modelValue=true`:
+    - emits `open`
+    - renders toast content in current container
+- Close triggers:
+    - close button (when `closable=true`)
+    - auto-dismiss timer when `duration > 0`
+- On close:
+    - emits `update:modelValue=false`
+    - emits `close`
+
+## Z-Index Policy
+
+- Toast stack uses `--vf-toast-z-index` (default `120`).
+- Default layer intent:
+    - above command palette (`110`) and modal/drawer (`100`)
+    - below notification center (`125`)
+- Keep toast non-blocking; do not use as modal replacement.

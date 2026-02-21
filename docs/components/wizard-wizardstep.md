@@ -62,6 +62,37 @@ Events (`Wizard`):
 </Wizard>
 ```
 
+## Recipes
+
+### Linear onboarding flow with validation
+
+```vue
+<Wizard
+    v-model="step"
+    :steps="steps"
+    :validate-step="currentStep => (currentStep.value === 'account' && !email ? 'Email is required' : true)"
+    @invalid-step="message => showError(message)"
+>
+    <WizardStep value="account">
+        <Input v-model="email" placeholder="Email" />
+    </WizardStep>
+    <WizardStep value="plan">
+        <Select v-model="plan" :options="plans" />
+    </WizardStep>
+    <WizardStep value="confirm">Review and finish</WizardStep>
+</Wizard>
+```
+
+### Non-linear edit/review flow
+
+```vue
+<Wizard v-model="step" :steps="steps" :linear="false">
+    <WizardStep value="profile">Profile form</WizardStep>
+    <WizardStep value="notifications">Notification settings</WizardStep>
+    <WizardStep value="review">Review changes</WizardStep>
+</Wizard>
+```
+
 ## Tokens
 
 Component tokens (override via `theme.overrides.components.wizard`):
@@ -82,4 +113,6 @@ Component tokens (override via `theme.overrides.components.wizard`):
 
 ## Accessibility
 
-- Ensure keyboard access, visible focus state, and sufficient color contrast in usage contexts.
+- Step header uses `tablist`/`tab` relationships and step content uses `tabpanel` with label linkage.
+- Keyboard navigation supports `ArrowLeft`/`ArrowRight` and `Home`/`End` across enabled steps.
+- Ensure visible focus state and sufficient color contrast in usage contexts.

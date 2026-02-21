@@ -1,6 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { nextTick } from 'vue';
 import DateTimePicker from '../datetimepicker.vue';
+import { setDateTimeLocale } from '../../config/date-time-locale';
 
 const mountDateTimePicker = (props: Record<string, unknown> = {}) => {
     return mount(DateTimePicker, {
@@ -14,6 +15,10 @@ const mountDateTimePicker = (props: Record<string, unknown> = {}) => {
 };
 
 describe('DateTimePicker', () => {
+    afterEach(() => {
+        setDateTimeLocale({ locale: 'en-US', firstDayOfWeek: 0 });
+    });
+
     it('shows placeholder when value is empty', () => {
         const wrapper = mountDateTimePicker({ placeholder: 'Pick date and time' });
 
@@ -124,5 +129,18 @@ describe('DateTimePicker', () => {
         expect(wrapper.find('[data-time="12:00"]').attributes('disabled')).toBeUndefined();
         expect(wrapper.find('[data-time="09:00"]').attributes('disabled')).toBeDefined();
         expect(wrapper.find('[data-time="13:00"]').attributes('disabled')).toBeDefined();
+    });
+
+    it('uses global locale config for weekday labels when props are omitted', async () => {
+        setDateTimeLocale({ locale: 'es-ES', firstDayOfWeek: 1 });
+        const wrapper = mountDateTimePicker();
+
+        await wrapper.find('.vf-datetimepicker__control').trigger('click');
+        await nextTick();
+
+        const weekday = wrapper.findAll('.vf-datetimepicker__weekday')[0].text();
+        const expected = new Intl.DateTimeFormat('es-ES', { weekday: 'short' }).format(new Date(2026, 0, 5));
+
+        expect(weekday).toBe(expected);
     });
 });

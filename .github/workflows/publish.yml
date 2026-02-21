@@ -18,6 +18,7 @@ jobs:
             - run: npm install -g npm@latest
             - run: npm -v
             - run: npm ci
+            - run: npm run verify:semver
             - run: npm run build
             - run: npm audit signatures
             - run: npm publish --access public --provenance

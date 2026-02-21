@@ -324,46 +324,46 @@ Execution dependencies:
 
 ### P1.1 `DataTable` advanced
 
-- [ ] Add column resize
-- [ ] Add column reorder
-- [ ] Add tests for resize/reorder
-- [ ] Add docs for advanced usage
+- [x] Add column resize
+- [x] Add column reorder
+- [x] Add tests for resize/reorder
+- [x] Add docs for advanced usage
 
 ### P1.2 `Tree` and `TreeSelect` hardening
 
-- [ ] Improve keyboard navigation edge cases
-- [ ] Add tests for large tree behavior
-- [ ] Add RTL behavior verification
-- [ ] Add advanced docs recipes
+- [x] Improve keyboard navigation edge cases
+- [x] Add tests for large tree behavior
+- [x] Add RTL behavior verification
+- [x] Add advanced docs recipes
 
 ### P1.3 `Tabs` / `Accordion` / `Stepper` / `Wizard` hardening
 
-- [ ] Audit keyboard and ARIA behavior for all four components
-- [ ] Add regression tests for navigation and state transitions
-- [ ] Add docs recipes for common multi-step flows and disclosures
-- [ ] Normalize shared API patterns where applicable
+- [x] Audit keyboard and ARIA behavior for all four components
+- [x] Add regression tests for navigation and state transitions
+- [x] Add docs recipes for common multi-step flows and disclosures
+- [x] Normalize shared API patterns where applicable
 
 ### P1.4 `NotificationCenter` / `Toast` / `Tour` / `CommandPalette` hardening
 
 - [x] `NotificationCenter`, `Toast`, `Tour`, and `CommandPalette` are implemented
-- [ ] Define interaction and accessibility contracts for each component
-- [ ] Add keyboard and focus management regression tests
-- [ ] Verify overlay/layering behavior against global policy
-- [ ] Add docs recipes for real app usage patterns
+- [x] Define interaction and accessibility contracts for each component
+- [x] Add keyboard and focus management regression tests
+- [x] Verify overlay/layering behavior against global policy
+- [x] Add docs recipes for real app usage patterns
 
 ### P1.5 Date/time locale maturity
 
-- [ ] Add global locale configuration for date/time components
-- [ ] Add locale-aware week/day behavior
-- [ ] Add tests for locale-specific behavior
-- [ ] Add docs for locale setup
+- [x] Add global locale configuration for date/time components
+- [x] Add locale-aware week/day behavior
+- [x] Add tests for locale-specific behavior
+- [x] Add docs for locale setup
 
 ### P1.6 Theme density and motion
 
-- [ ] Add density presets (`comfortable`, `compact`)
-- [ ] Add motion token guidance
-- [ ] Add reduced-motion support
-- [ ] Add tests/docs for density and motion behavior
+- [x] Add density presets (`comfortable`, `compact`)
+- [x] Add motion token guidance
+- [x] Add reduced-motion support
+- [x] Add tests/docs for density and motion behavior
 
 ### P1.7 Visual and runtime quality pipeline
 
@@ -397,7 +397,7 @@ Execution dependencies:
 ### P2.1 Release discipline
 
 - [ ] Add bundle-size tracking per release
-- [ ] Add and enforce semver checklist
+- [x] Add and enforce semver checklist
 - [ ] Add deprecation policy
 - [ ] Add migration guide template
 - [ ] Define component-level breaking-change rules and examples

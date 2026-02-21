@@ -36,6 +36,13 @@ Before merge:
 - [ ] Ran targeted tests for changed components
 - [ ] Confirmed no regressions in related component family
 
+## Release/Semver Checklist
+
+For any versioned release, complete the semver checklist in `CHANGELOG.md` and keep it checked.
+
+- Required template and rules: [Semver Release Checklist](./semver-release-checklist.md)
+- Enforcement command: `npm run verify:semver`
+
 ## CI Recommendation
 
 - Keep at least one targeted test command in PR description.

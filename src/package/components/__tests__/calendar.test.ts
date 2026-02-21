@@ -1,6 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { nextTick } from 'vue';
 import Calendar from '../calendar.vue';
+import { setDateTimeLocale } from '../../config/date-time-locale';
 
 const mountCalendar = (props: Record<string, unknown> = {}) => {
     return mount(Calendar, {
@@ -10,6 +11,10 @@ const mountCalendar = (props: Record<string, unknown> = {}) => {
 };
 
 describe('Calendar', () => {
+    afterEach(() => {
+        setDateTimeLocale({ locale: 'en-US', firstDayOfWeek: 0 });
+    });
+
     it('emits selected date in ISO format', async () => {
         const wrapper = mountCalendar({ modelValue: '2026-02-10' });
 
@@ -67,5 +72,15 @@ describe('Calendar', () => {
         const wrapper = mountCalendar({ modelValue: '2026-02-31' });
 
         expect(wrapper.find('.vf-calendar__day.is-selected').exists()).toBe(false);
+    });
+
+    it('uses global locale config when locale props are omitted', () => {
+        setDateTimeLocale({ locale: 'de-DE', firstDayOfWeek: 1 });
+        const wrapper = mountCalendar({ modelValue: '2026-02-10' });
+
+        const weekday = wrapper.findAll('.vf-calendar__weekday')[0].text();
+        const expected = new Intl.DateTimeFormat('de-DE', { weekday: 'short' }).format(new Date(2026, 0, 5));
+
+        expect(weekday).toBe(expected);
     });
 });

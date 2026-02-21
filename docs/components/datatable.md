@@ -3,7 +3,7 @@
 ## Props
 
 - `rows?: Array<Record<string, unknown>>`
-- `columns?: Array<{ field: string; header?: string; sortable?: boolean; align?: 'left' | 'center' | 'right'; width?: string; minWidth?: string; sticky?: 'left' | 'right'; formatter?: (row, value, column) => string | number }>`
+- `columns?: Array<{ field: string; header?: string; sortable?: boolean; resizable?: boolean; align?: 'left' | 'center' | 'right'; width?: string; minWidth?: string; sticky?: 'left' | 'right'; formatter?: (row, value, column) => string | number }>`
 - `rowKey?: string | ((row, index) => string | number)`
 - `sortable?: boolean`
 - `sortField?: string | null`
@@ -27,6 +27,10 @@
 - `selectAllAriaLabel?: string` (default `Select all rows`)
 - `selectRowAriaLabel?: string` (default `Select row`)
 - `stickyHeader?: boolean` (default `false`)
+- `columnResize?: boolean` (default `false`) - enables drag-to-resize for header columns
+- `minColumnWidth?: number` (default `80`) - minimum width in pixels for resized columns
+- `columnReorder?: boolean` (default `false`) - enables drag-and-drop column reordering
+- `columnOrder?: Array<string>` (default `[]`) - controlled ordered list of column fields
 
 ## Events
 
@@ -43,6 +47,9 @@
 - `update:selection`
 - `selectionChange`
 - `bulkAction` - payload: `(action, selectedKeys, selectedRows)`
+- `columnResize` - payload: `{ field, width, widthPx }`
+- `update:columnOrder`
+- `columnReorder` - payload: `{ fromField, toField, order }`
 
 ## Slots
 
@@ -159,6 +166,46 @@ const onBulkAction = (action: string, keys: Array<string | number>) => {
 />
 ```
 
+### Column resize
+
+```vue
+<DataTable
+    column-resize
+    :min-column-width="96"
+    :columns="[
+        { field: 'name', header: 'Name', width: '180px', resizable: true },
+        { field: 'role', header: 'Role', resizable: true },
+        { field: 'age', header: 'Age', align: 'right', resizable: false },
+    ]"
+    :rows="rows"
+    @column-resize="payload => console.log(payload)"
+/>
+```
+
+### Column reorder
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const order = ref(['name', 'role', 'age']);
+</script>
+
+<template>
+    <DataTable
+        column-reorder
+        :column-order="order"
+        :columns="[
+            { field: 'name', header: 'Name' },
+            { field: 'role', header: 'Role' },
+            { field: 'age', header: 'Age', align: 'right', sortable: true },
+        ]"
+        :rows="rows"
+        @update:column-order="order = $event"
+    />
+</template>
+```
+
 ## Theming
 
 - Override via `theme.overrides.components.datatable`.
@@ -184,6 +231,8 @@ Component tokens (override via `theme.overrides.components.datatable`):
 - Server-side handoff using `request` payload for backend-driven pagination/sorting/filtering.
 - Multi-select table with `bulkActions` for batch operations.
 - Sticky header/columns for wide datasets.
+- Column-resize mode for dense/variable datasets.
+- Column reorder mode for user-customizable table layouts.
 
 ## Accessibility
 

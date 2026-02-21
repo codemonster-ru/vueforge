@@ -1,7 +1,7 @@
 <template>
     <div :class="getClass" :aria-label="ariaLabel || undefined" :aria-labelledby="ariaLabelledby || undefined">
         <nav class="vf-wizard__header" aria-label="Wizard steps">
-            <ol class="vf-wizard__list">
+            <ol class="vf-wizard__list" role="tablist" aria-orientation="horizontal" @keydown="onHeaderKeydown">
                 <li
                     v-for="(step, index) in normalizedSteps"
                     :key="String(step.value)"
@@ -16,6 +16,7 @@
                         :aria-selected="isActive(step.value) ? 'true' : 'false'"
                         :aria-controls="getPanelId(step.value)"
                         :disabled="isStepDisabled(step, index)"
+                        :tabindex="isActive(step.value) ? 0 : -1"
                         @click="onStepClick(index)"
                     >
                         <span class="vf-wizard__indicator">
@@ -47,7 +48,12 @@
                 :prev="goPrev"
                 :complete="completeWizard"
             >
-                <button class="vf-wizard__button vf-wizard__button_secondary" type="button" :disabled="isFirst" @click="goPrev">
+                <button
+                    class="vf-wizard__button vf-wizard__button_secondary"
+                    type="button"
+                    :disabled="isFirst"
+                    @click="goPrev"
+                >
                     {{ prevLabel }}
                 </button>
                 <button class="vf-wizard__button vf-wizard__button_primary" type="button" @click="goNext">
@@ -91,14 +97,7 @@ interface Props {
     ariaLabelledby?: string;
 }
 
-const emits = defineEmits([
-    'update:modelValue',
-    'change',
-    'next',
-    'prev',
-    'complete',
-    'invalidStep',
-]);
+const emits = defineEmits(['update:modelValue', 'change', 'next', 'prev', 'complete', 'invalidStep']);
 const props = withDefaults(defineProps<Props>(), {
     modelValue: undefined,
     steps: () => [],
@@ -301,6 +300,59 @@ const onStepClick = async (index: number) => {
     }
 
     await moveToIndex(index, index > activeIndex.value ? 'next' : 'prev');
+};
+
+const getEnabledWizardTabs = (target: EventTarget | null) => {
+    const element = target as HTMLElement | null;
+    const root = element?.closest('.vf-wizard__list');
+
+    if (!root) {
+        return [];
+    }
+
+    return Array.from(root.querySelectorAll<HTMLButtonElement>('.vf-wizard__step[role="tab"]:not(:disabled)'));
+};
+
+const onHeaderKeydown = (event: KeyboardEvent) => {
+    const supported = ['ArrowRight', 'ArrowLeft', 'Home', 'End'];
+
+    if (!supported.includes(event.key)) {
+        return;
+    }
+
+    const tabs = getEnabledWizardTabs(event.target);
+
+    if (!tabs.length) {
+        return;
+    }
+
+    const current = event.target as HTMLElement;
+    let currentIndex = tabs.findIndex(tab => tab === current);
+
+    if (currentIndex < 0) {
+        currentIndex = tabs.findIndex(tab => tab === document.activeElement);
+    }
+
+    if (currentIndex < 0) {
+        return;
+    }
+
+    let nextIndex = currentIndex;
+
+    if (event.key === 'ArrowRight') {
+        nextIndex = (currentIndex + 1) % tabs.length;
+    } else if (event.key === 'ArrowLeft') {
+        nextIndex = (currentIndex - 1 + tabs.length) % tabs.length;
+    } else if (event.key === 'Home') {
+        nextIndex = 0;
+    } else if (event.key === 'End') {
+        nextIndex = tabs.length - 1;
+    }
+
+    event.preventDefault();
+    const next = tabs[nextIndex];
+    next?.focus();
+    next?.click();
 };
 
 watch(

@@ -119,4 +119,114 @@ describe('TreeSelect', () => {
         expect(wrapper.find('.vf-treeselect').classes()).not.toContain('vf-treeselect_open');
         expect(trigger.attributes('aria-expanded')).toBe('false');
     });
+
+    it('moves focus to first tree node when opened from keyboard without filter', async () => {
+        const wrapper = mount(TreeSelect, {
+            attachTo: document.body,
+            props: {
+                items,
+                filter: false,
+            },
+            global: {
+                stubs: {
+                    teleport: true,
+                },
+            },
+        });
+        const trigger = wrapper.find('.vf-treeselect__control');
+
+        await trigger.trigger('keydown', { key: 'ArrowDown' });
+        await nextTick();
+
+        const firstRow = wrapper.findAll('[role="treeitem"]')[0].element as HTMLElement;
+        expect(document.activeElement).toBe(firstRow);
+        wrapper.unmount();
+    });
+
+    it('moves focus from search input to tree on ArrowDown', async () => {
+        const wrapper = mount(TreeSelect, {
+            attachTo: document.body,
+            props: {
+                items,
+                filter: true,
+                expandedKeys: ['docs'],
+            },
+            global: {
+                stubs: {
+                    teleport: true,
+                },
+            },
+        });
+        const trigger = wrapper.find('.vf-treeselect__control');
+
+        await trigger.trigger('keydown', { key: 'ArrowDown' });
+        await nextTick();
+
+        const search = wrapper.find('.vf-treeselect__search-control');
+        await search.trigger('keydown', { key: 'ArrowDown' });
+        await nextTick();
+
+        const firstRow = wrapper.findAll('[role="treeitem"]')[0].element as HTMLElement;
+        expect(document.activeElement).toBe(firstRow);
+        wrapper.unmount();
+    });
+
+    it('filters correctly on large tree datasets', async () => {
+        const largeItems = Array.from({ length: 20 }, (_, groupIndex) => ({
+            key: `group-${groupIndex}`,
+            label: `Group ${groupIndex}`,
+            children: Array.from({ length: 10 }, (_, childIndex) => ({
+                key: `leaf-${groupIndex}-${childIndex}`,
+                label: `Leaf ${groupIndex}-${childIndex}`,
+            })),
+        }));
+
+        const wrapper = mount(TreeSelect, {
+            props: {
+                items: largeItems,
+                expandedKeys: largeItems.map(item => item.key),
+            },
+            global: {
+                stubs: {
+                    teleport: true,
+                },
+            },
+        });
+
+        await wrapper.find('.vf-treeselect__control').trigger('click');
+        await nextTick();
+        await wrapper.find('.vf-treeselect__search-control').setValue('Leaf 19-9');
+        await nextTick();
+
+        const labels = wrapper.findAll('[role="treeitem"]').map(row => row.text());
+        expect(labels.some(label => label.includes('Group 19'))).toBe(true);
+        expect(labels.some(label => label.includes('Leaf 19-9'))).toBe(true);
+        expect(labels.some(label => label.includes('Leaf 0-0'))).toBe(false);
+    });
+
+    it('keeps open/select behavior in rtl mode', async () => {
+        const wrapper = mount(TreeSelect, {
+            attrs: {
+                dir: 'rtl',
+            },
+            props: {
+                items,
+                modelValue: undefined,
+                expandedKeys: ['docs'],
+            },
+            global: {
+                stubs: {
+                    teleport: true,
+                },
+            },
+        });
+
+        const trigger = wrapper.find('.vf-treeselect__control');
+        await trigger.trigger('keydown', { key: 'ArrowDown' });
+        await nextTick();
+
+        await wrapper.findAll('[role="treeitem"]')[1].trigger('click');
+
+        expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['guides']);
+    });
 });

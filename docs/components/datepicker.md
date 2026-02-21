@@ -8,8 +8,8 @@
 - `readonly?: boolean`
 - `min?: string` (ISO date `YYYY-MM-DD`)
 - `max?: string` (ISO date `YYYY-MM-DD`)
-- `locale?: string` (default `en-US`)
-- `firstDayOfWeek?: number` (default `0`, Sunday)
+- `locale?: string` (default from global date/time locale config, fallback `en-US`)
+- `firstDayOfWeek?: number` (default from global date/time locale config, fallback `0`, Sunday)
 - `ariaLabel?: string` (default `Date picker`)
 - `panelAriaLabel?: string` (default `Calendar`)
 - `size?: 'small' | 'normal' | 'large'` (default `normal`)
@@ -43,3 +43,4 @@
 - Invalid ISO values are ignored (treated as empty state) and do not produce invalid committed dates.
 - `min`/`max` constraints disable out-of-range days in the calendar grid.
 - In `readonly` mode, open/select interactions are blocked.
+- Locale and week-start defaults can be configured globally: [`Date/Time Locale Setup`](../guides/date-time-locale-setup.md).

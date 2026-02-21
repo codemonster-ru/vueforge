@@ -1,5 +1,10 @@
 <template>
-    <nav :class="rootClass" :aria-label="ariaLabel || undefined" :aria-labelledby="ariaLabelledby || undefined">
+    <nav
+        :class="rootClass"
+        :aria-label="ariaLabel || undefined"
+        :aria-labelledby="ariaLabelledby || undefined"
+        @keydown="onKeydown"
+    >
         <ol class="vf-stepper__list">
             <li
                 v-for="(step, index) in steps"
@@ -76,6 +81,7 @@ interface Props {
     orientation?: StepperOrientation;
     size?: StepperSize;
     clickable?: boolean;
+    disabled?: boolean;
     ariaLabel?: string;
     ariaLabelledby?: string;
 }
@@ -87,6 +93,7 @@ const props = withDefaults(defineProps<Props>(), {
     orientation: 'horizontal',
     size: 'normal',
     clickable: false,
+    disabled: false,
     ariaLabel: '',
     ariaLabelledby: '',
 });
@@ -112,6 +119,10 @@ const rootClass = computed(() => {
         classes.push('vf-stepper_clickable');
     }
 
+    if (props.disabled) {
+        classes.push('vf-stepper_disabled');
+    }
+
     return classes;
 });
 
@@ -135,7 +146,7 @@ const isActive = (index: number) => getStatus(steps.value[index], index) === 'ac
 const isCompleted = (index: number) => getStatus(steps.value[index], index) === 'completed';
 const isUpcoming = (index: number) => getStatus(steps.value[index], index) === 'upcoming';
 const isError = (step: StepperStep, index: number) => getStatus(step, index) === 'error';
-const isDisabled = (step: StepperStep) => Boolean(step.disabled);
+const isDisabled = (step: StepperStep) => Boolean(props.disabled || step.disabled);
 
 const getItemClass = (step: StepperStep, index: number) => ({
     'is-active': isActive(index),
@@ -150,7 +161,7 @@ const getButtonType = (step: StepperStep) => (props.clickable && !isDisabled(ste
 const getDisabledAttr = (step: StepperStep) => (getTag(step) === 'button' ? isDisabled(step) : undefined);
 
 const onSelect = (step: StepperStep, index: number, event: Event) => {
-    if (!props.clickable || isDisabled(step)) {
+    if (!props.clickable || props.disabled || isDisabled(step)) {
         return;
     }
 
@@ -164,6 +175,62 @@ const getKey = (step: StepperStep, index: number) => {
     const base = step.value ?? step.label ?? 'step';
 
     return `${base}_${index.toString()}`;
+};
+
+const getFocusableStepButtons = (target: EventTarget | null) => {
+    const element = target as HTMLElement | null;
+    const root = element?.closest('.vf-stepper');
+
+    if (!root) {
+        return [];
+    }
+
+    return Array.from(root.querySelectorAll<HTMLButtonElement>('button.vf-stepper__button:not(:disabled)'));
+};
+
+const onKeydown = (event: KeyboardEvent) => {
+    if (!props.clickable || props.disabled) {
+        return;
+    }
+
+    const isHorizontal = props.orientation === 'horizontal';
+    const nextKeys = isHorizontal ? ['ArrowRight'] : ['ArrowDown'];
+    const prevKeys = isHorizontal ? ['ArrowLeft'] : ['ArrowUp'];
+    const supported = [...nextKeys, ...prevKeys, 'Home', 'End'];
+
+    if (!supported.includes(event.key)) {
+        return;
+    }
+
+    const buttons = getFocusableStepButtons(event.target);
+
+    if (!buttons.length) {
+        return;
+    }
+
+    const current = event.target as HTMLElement;
+    const currentIndex = buttons.findIndex(button => button === current);
+
+    if (currentIndex < 0) {
+        return;
+    }
+
+    let nextIndex = currentIndex;
+
+    if (nextKeys.includes(event.key)) {
+        nextIndex = (currentIndex + 1) % buttons.length;
+    } else if (prevKeys.includes(event.key)) {
+        nextIndex = (currentIndex - 1 + buttons.length) % buttons.length;
+    } else if (event.key === 'Home') {
+        nextIndex = 0;
+    } else if (event.key === 'End') {
+        nextIndex = buttons.length - 1;
+    }
+
+    event.preventDefault();
+    const next = buttons[nextIndex];
+    next?.focus();
+    next?.click();
 };
 </script>
 
@@ -322,6 +389,14 @@ const getKey = (step: StepperStep, index: number) => {
 
 .vf-stepper__item.is-disabled {
     opacity: var(--vf-stepper-disabled-opacity);
+}
+
+.vf-stepper_disabled {
+    opacity: var(--vf-stepper-disabled-opacity);
+
+    .vf-stepper__button {
+        cursor: not-allowed;
+    }
 }
 
 .vf-stepper_size-small .vf-stepper__indicator {

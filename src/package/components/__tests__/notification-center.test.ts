@@ -54,4 +54,43 @@ describe('NotificationCenter', () => {
         expect(wrapper.emitted('clear')).toBeTruthy();
         expect(wrapper.find('.vf-notification-center__empty').exists()).toBe(true);
     });
+
+    it('closes on Escape and restores trigger focus', async () => {
+        const trigger = document.createElement('button');
+        document.body.appendChild(trigger);
+        trigger.focus();
+
+        const wrapper = mountCenter({
+            attachTo: document.body,
+        });
+
+        await nextTick();
+        expect(document.activeElement).toBe(wrapper.find('.vf-notification-center__panel').element);
+
+        document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+        await nextTick();
+
+        expect(wrapper.emitted('update:modelValue')?.at(-1)).toEqual([false]);
+        await wrapper.setProps({ modelValue: false });
+        await nextTick();
+        expect(document.activeElement).toBe(trigger);
+
+        wrapper.unmount();
+        trigger.remove();
+    });
+
+    it('does not close on overlay when closeOnOverlay is false', async () => {
+        const wrapper = mountCenter({
+            props: {
+                modelValue: true,
+                items,
+                closeOnOverlay: false,
+            },
+        });
+
+        await nextTick();
+        await wrapper.find('.vf-notification-center__overlay').trigger('click');
+
+        expect(wrapper.emitted('update:modelValue')).toBeUndefined();
+    });
 });

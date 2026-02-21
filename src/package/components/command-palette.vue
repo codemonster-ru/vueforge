@@ -122,6 +122,7 @@ const inputRef = ref<HTMLInputElement | null>(null);
 const open = ref(false);
 const query = ref('');
 const activeIndex = ref(-1);
+const previousActiveElement = ref<HTMLElement | null>(null);
 
 const isControlled = computed(() => props.modelValue !== undefined);
 
@@ -197,6 +198,7 @@ const setOpen = (value: boolean) => {
 };
 
 const openPalette = async () => {
+    previousActiveElement.value = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     setOpen(true);
 
     query.value = '';
@@ -208,6 +210,8 @@ const openPalette = async () => {
 
 const closePalette = () => {
     setOpen(false);
+    previousActiveElement.value?.focus();
+    previousActiveElement.value = null;
 };
 
 const togglePalette = async () => {
@@ -358,6 +362,10 @@ watch(
             return;
         }
 
+        if (value && !open.value) {
+            previousActiveElement.value = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+        }
+
         open.value = !!value;
     },
     { immediate: true },
@@ -377,6 +385,8 @@ watch(open, async value => {
     }
 
     emits('close');
+    previousActiveElement.value?.focus();
+    previousActiveElement.value = null;
 });
 
 watch(

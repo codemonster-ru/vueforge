@@ -42,14 +42,28 @@
                         />
                     </th>
                     <th
-                        v-for="column in columns"
+                        v-for="column in orderedColumns"
                         :key="column.field"
                         class="vf-datatable__header"
                         :class="getHeaderClass(column)"
                         :style="getColumnStyle(column)"
                         :aria-sort="getAriaSort(column)"
                         scope="col"
+                        @dragover.prevent
+                        @drop.prevent="onHeaderDrop(column.field)"
                     >
+                        <span
+                            v-if="columnReorder"
+                            class="vf-datatable__reorder-handle"
+                            role="button"
+                            tabindex="0"
+                            aria-label="Reorder column"
+                            draggable="true"
+                            @dragstart="onColumnDragStart(column.field)"
+                            @dragend="onColumnDragEnd"
+                        >
+                            ::
+                        </span>
                         <button
                             v-if="isColumnSortable(column)"
                             type="button"
@@ -76,6 +90,14 @@
                             />
                             <template v-else>{{ column.header ?? column.field }}</template>
                         </span>
+                        <span
+                            v-if="isColumnResizable(column)"
+                            class="vf-datatable__resize-handle"
+                            role="separator"
+                            aria-orientation="vertical"
+                            :aria-label="`Resize ${column.header ?? column.field} column`"
+                            @mousedown="startColumnResize($event, column)"
+                        />
                     </th>
                 </tr>
             </thead>
@@ -110,7 +132,7 @@
                         />
                     </td>
                     <td
-                        v-for="column in columns"
+                        v-for="column in orderedColumns"
                         :key="column.field"
                         class="vf-datatable__cell"
                         :class="getCellClass(column)"
@@ -135,7 +157,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { computed, onBeforeUnmount, ref, watch } from 'vue';
 
 type Size = 'small' | 'normal' | 'large';
 type Variant = 'filled' | 'outlined';
@@ -149,6 +171,7 @@ export interface DataTableColumn {
     field: string;
     header?: string;
     sortable?: boolean;
+    resizable?: boolean;
     align?: Align;
     width?: string;
     minWidth?: string;
@@ -196,6 +219,10 @@ interface Props {
     selectAllAriaLabel?: string;
     selectRowAriaLabel?: string;
     stickyHeader?: boolean;
+    columnResize?: boolean;
+    minColumnWidth?: number;
+    columnReorder?: boolean;
+    columnOrder?: Array<string>;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -224,6 +251,10 @@ const props = withDefaults(defineProps<Props>(), {
     selectAllAriaLabel: 'Select all rows',
     selectRowAriaLabel: 'Select row',
     stickyHeader: false,
+    columnResize: false,
+    minColumnWidth: 80,
+    columnReorder: false,
+    columnOrder: () => [],
 });
 
 const emits = defineEmits([
@@ -240,6 +271,9 @@ const emits = defineEmits([
     'update:selection',
     'selectionChange',
     'bulkAction',
+    'columnResize',
+    'update:columnOrder',
+    'columnReorder',
 ]);
 
 const internalSortField = ref<string | null>(props.sortField ?? null);
@@ -248,6 +282,10 @@ const internalPage = ref<number>(Math.max(1, props.page ?? 1));
 const internalPageSize = ref<number>(Math.max(1, props.pageSize ?? 10));
 const internalFilters = ref<DataTableFilters>({ ...(props.filters ?? {}) });
 const internalSelection = ref<DataTableRowKey | Array<DataTableRowKey> | null>(props.selection ?? null);
+const resizedColumnWidths = ref<Record<string, number>>({});
+const internalColumnOrder = ref<Array<string>>([]);
+const draggingColumnField = ref<string | null>(null);
+let stopResizeListeners: (() => void) | null = null;
 
 watch(
     () => props.sortField,
@@ -287,6 +325,16 @@ watch(
     },
     { deep: true },
 );
+watch(
+    () => [props.columns, props.columnOrder] as const,
+    ([columns, externalOrder]) => {
+        const fields = (columns ?? []).map(column => column.field);
+        const preferred = externalOrder && externalOrder.length ? externalOrder : internalColumnOrder.value;
+
+        internalColumnOrder.value = normalizeColumnOrder(fields, preferred);
+    },
+    { deep: true, immediate: true },
+);
 
 const effectiveSortField = computed(() => internalSortField.value);
 const effectiveSortOrder = computed(() => internalSortOrder.value);
@@ -323,6 +371,32 @@ const allVisibleSelected = computed(() => {
     const selected = new Set(selectedKeys.value);
 
     return sortedRows.value.every((row, index) => selected.has(getRowKey(row, index)));
+});
+function normalizeColumnOrder(fields: Array<string>, preferred?: Array<string>) {
+    const allowed = new Set(fields);
+    const normalized: Array<string> = [];
+
+    (preferred ?? []).forEach(field => {
+        if (allowed.has(field) && !normalized.includes(field)) {
+            normalized.push(field);
+        }
+    });
+
+    fields.forEach(field => {
+        if (!normalized.includes(field)) {
+            normalized.push(field);
+        }
+    });
+
+    return normalized;
+}
+
+const orderedColumns = computed(() => {
+    const byField = new Map(props.columns.map(column => [column.field, column]));
+
+    return internalColumnOrder.value
+        .map(field => byField.get(field))
+        .filter((column): column is DataTableColumn => Boolean(column));
 });
 const showBulkActions = computed(() => {
     if (props.selectionMode !== 'multiple' || selectedKeys.value.length === 0) {
@@ -581,6 +655,146 @@ const getRowClass = (index: number) => {
     return classes;
 };
 
+const parsePixelWidth = (value?: string) => {
+    if (!value || !value.endsWith('px')) {
+        return null;
+    }
+
+    const parsed = Number.parseFloat(value);
+
+    return Number.isFinite(parsed) ? parsed : null;
+};
+
+const getResolvedColumnWidth = (column: DataTableColumn) => {
+    const resized = resizedColumnWidths.value[column.field];
+    if (Number.isFinite(resized)) {
+        return resized;
+    }
+
+    const fromWidth = parsePixelWidth(column.width);
+    if (fromWidth != null) {
+        return fromWidth;
+    }
+
+    return parsePixelWidth(column.minWidth);
+};
+
+const getResolvedMinColumnWidth = (column: DataTableColumn) => {
+    const columnMin = parsePixelWidth(column.minWidth);
+    const propMin = Number.isFinite(props.minColumnWidth) ? props.minColumnWidth : 80;
+
+    return Math.max(24, columnMin ?? propMin);
+};
+
+const isColumnResizable = (column: DataTableColumn) => {
+    if (column.resizable === false) {
+        return false;
+    }
+
+    if (column.resizable === true) {
+        return true;
+    }
+
+    return props.columnResize;
+};
+
+const stopColumnResize = () => {
+    if (stopResizeListeners) {
+        stopResizeListeners();
+        stopResizeListeners = null;
+    }
+};
+
+const emitColumnOrder = (nextOrder: Array<string>, fromField: string, toField: string) => {
+    internalColumnOrder.value = nextOrder;
+    emits('update:columnOrder', [...nextOrder]);
+    emits('columnReorder', {
+        fromField,
+        toField,
+        order: [...nextOrder],
+    });
+};
+
+const onColumnDragStart = (field: string) => {
+    if (!props.columnReorder) {
+        return;
+    }
+
+    draggingColumnField.value = field;
+};
+
+const onColumnDragEnd = () => {
+    draggingColumnField.value = null;
+};
+
+const onHeaderDrop = (targetField: string) => {
+    if (!props.columnReorder || !draggingColumnField.value) {
+        return;
+    }
+
+    const fromField = draggingColumnField.value;
+    draggingColumnField.value = null;
+
+    if (fromField === targetField) {
+        return;
+    }
+
+    const nextOrder = [...internalColumnOrder.value];
+    const fromIndex = nextOrder.indexOf(fromField);
+    const toIndex = nextOrder.indexOf(targetField);
+
+    if (fromIndex === -1 || toIndex === -1) {
+        return;
+    }
+
+    nextOrder.splice(fromIndex, 1);
+    nextOrder.splice(toIndex, 0, fromField);
+    emitColumnOrder(nextOrder, fromField, targetField);
+};
+
+const startColumnResize = (event: MouseEvent, column: DataTableColumn) => {
+    if (!isColumnResizable(column) || event.button !== 0) {
+        return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    const headerElement = (event.currentTarget as HTMLElement | null)?.closest('th');
+    const measuredWidth = headerElement?.getBoundingClientRect().width;
+    const fallbackWidth = getResolvedColumnWidth(column) ?? getResolvedMinColumnWidth(column);
+    const startWidth =
+        Number.isFinite(measuredWidth) && (measuredWidth ?? 0) > 0 ? (measuredWidth as number) : fallbackWidth;
+    const startX = event.clientX;
+    const minWidth = getResolvedMinColumnWidth(column);
+
+    const onMouseMove = (moveEvent: MouseEvent) => {
+        const nextWidth = Math.max(minWidth, Math.round(startWidth + (moveEvent.clientX - startX)));
+        resizedColumnWidths.value = {
+            ...resizedColumnWidths.value,
+            [column.field]: nextWidth,
+        };
+    };
+
+    const onMouseUp = () => {
+        const finalWidth = resizedColumnWidths.value[column.field] ?? startWidth;
+
+        emits('columnResize', {
+            field: column.field,
+            width: `${Math.round(finalWidth)}px`,
+            widthPx: Math.round(finalWidth),
+        });
+        stopColumnResize();
+    };
+
+    window.addEventListener('mousemove', onMouseMove);
+    window.addEventListener('mouseup', onMouseUp);
+    stopResizeListeners = () => {
+        window.removeEventListener('mousemove', onMouseMove);
+        window.removeEventListener('mouseup', onMouseUp);
+    };
+};
+
 const getHeaderClass = (column: DataTableColumn) => {
     const classes: Array<string> = [];
 
@@ -594,6 +808,10 @@ const getHeaderClass = (column: DataTableColumn) => {
 
     if (column.sticky) {
         classes.push(`vf-datatable__cell_sticky-${column.sticky}`);
+    }
+
+    if (isColumnResizable(column)) {
+        classes.push('vf-datatable__header_resizable');
     }
 
     return classes;
@@ -616,7 +834,11 @@ const getCellClass = (column: DataTableColumn) => {
 const getColumnStyle = (column: DataTableColumn) => {
     const styles: Record<string, string> = {};
 
-    if (column.width) {
+    const resolvedWidth = getResolvedColumnWidth(column);
+
+    if (resolvedWidth != null) {
+        styles.width = `${resolvedWidth}px`;
+    } else if (column.width) {
         styles.width = column.width;
     }
 
@@ -629,23 +851,17 @@ const getColumnStyle = (column: DataTableColumn) => {
         styles.backgroundColor = 'var(--vf-datatable-row-background-color)';
         styles.zIndex = '1';
 
-        const stickyColumns = props.columns.filter(item => item.sticky === column.sticky);
+        const stickyColumns = orderedColumns.value.filter(item => item.sticky === column.sticky);
         const currentIndex = stickyColumns.findIndex(item => item.field === column.field);
         const before =
             column.sticky === 'left' ? stickyColumns.slice(0, currentIndex) : stickyColumns.slice(currentIndex + 1);
         const offset = before.reduce((acc, item) => {
-            const width = item.width ?? item.minWidth;
-            if (!width || !width.endsWith('px')) {
+            const width = getResolvedColumnWidth(item);
+            if (width == null) {
                 return acc;
             }
 
-            const px = Number.parseFloat(width);
-
-            if (!Number.isFinite(px)) {
-                return acc;
-            }
-
-            return acc + px;
+            return acc + width;
         }, 0);
 
         if (column.sticky === 'left') {
@@ -657,6 +873,27 @@ const getColumnStyle = (column: DataTableColumn) => {
 
     return styles;
 };
+
+watch(
+    () => props.columns.map(column => column.field),
+    fields => {
+        const allowed = new Set(fields);
+        const next: Record<string, number> = {};
+
+        Object.entries(resizedColumnWidths.value).forEach(([field, width]) => {
+            if (allowed.has(field)) {
+                next[field] = width;
+            }
+        });
+
+        resizedColumnWidths.value = next;
+    },
+    { immediate: true },
+);
+
+onBeforeUnmount(() => {
+    stopColumnResize();
+});
 
 const onRowClick = (row: Record<string, unknown>, index: number, event: Event) => {
     emits('rowClick', row, index, event);
@@ -708,6 +945,14 @@ const applyBulkAction = (value: string) => {
     emits('bulkAction', value, selectedKeys.value, selectedRows.value);
 };
 
+const setColumnOrder = (value: Array<string>) => {
+    const fields = props.columns.map(column => column.field);
+    const nextOrder = normalizeColumnOrder(fields, value);
+
+    internalColumnOrder.value = nextOrder;
+    emits('update:columnOrder', [...nextOrder]);
+};
+
 defineExpose({
     setPage,
     setPageSize,
@@ -718,6 +963,8 @@ defineExpose({
     getSelectedKeys: () => [...selectedKeys.value],
     getSelectedRows: () => [...selectedRows.value],
     applyBulkAction,
+    setColumnOrder,
+    getColumnOrder: () => [...internalColumnOrder.value],
 });
 </script>
 
@@ -794,6 +1041,7 @@ defineExpose({
 }
 
 .vf-datatable__header {
+    position: relative;
     font-weight: var(--vf-datatable-header-font-weight);
     font-size: var(--vf-datatable-header-font-size);
     color: var(--vf-datatable-header-text-color);
@@ -816,6 +1064,24 @@ defineExpose({
     cursor: pointer;
 }
 
+.vf-datatable__header_resizable {
+    padding-right: 0.875rem;
+}
+
+.vf-datatable__reorder-handle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 0.375rem;
+    color: var(--vf-datatable-header-text-color);
+    cursor: grab;
+    user-select: none;
+}
+
+.vf-datatable__reorder-handle:active {
+    cursor: grabbing;
+}
+
 .vf-datatable__sort-button {
     display: inline-flex;
     align-items: center;
@@ -826,6 +1092,16 @@ defineExpose({
     color: inherit;
     font: inherit;
     cursor: pointer;
+}
+
+.vf-datatable__resize-handle {
+    position: absolute;
+    top: 0;
+    right: -0.25rem;
+    width: 0.5rem;
+    height: 100%;
+    cursor: col-resize;
+    user-select: none;
 }
 
 .vf-datatable__sort-icon {

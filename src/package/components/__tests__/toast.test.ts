@@ -23,4 +23,14 @@ describe('Toast', () => {
         wrapper.unmount();
         vi.useRealTimers();
     });
+
+    it('exposes status semantics and close button label', () => {
+        const wrapper = mount(Toast, {
+            props: { modelValue: true, title: 'Saved', closable: true },
+        });
+
+        expect(wrapper.find('.vf-toast').attributes('role')).toBe('status');
+        expect(wrapper.find('.vf-toast').attributes('aria-live')).toBe('polite');
+        expect(wrapper.find('.vf-toast__close').attributes('aria-label')).toBe('Close toast');
+    });
 });

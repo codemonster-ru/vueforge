@@ -36,6 +36,12 @@
 <NotificationCenter v-model="open" v-model:items="notifications" />
 ```
 
+## Recipes
+
+- Header bell pattern: open panel from a header icon button and sync `items` from app store.
+- Inbox workflow: use `readAll` and `clear` events to trigger API mutations and optimistic UI updates.
+- Non-blocking center: set `closeOnOverlay=false` for persistent side panel behavior during multitasking.
+
 ## Tokens
 
 Component tokens (override via `theme.overrides.components.notificationCenter`):
@@ -54,4 +60,28 @@ Component tokens (override via `theme.overrides.components.notificationCenter`):
 
 ## Accessibility
 
-- Ensure keyboard access, visible focus state, and sufficient color contrast in usage contexts.
+- Panel uses `role="dialog"` and `aria-modal="true"`.
+- On open, focus moves into the panel; on close, focus is restored to previously active element.
+- Supports `Escape` close behavior when `closeOnEsc` is enabled.
+
+## Interaction Contract
+
+- `modelValue=true`:
+    - emits `open`
+    - focuses panel container for keyboard users
+- Close triggers:
+    - overlay click when `closeOnOverlay=true`
+    - `Escape` when `closeOnEsc=true`
+    - close button
+- On close:
+    - emits `update:modelValue=false`
+    - emits `close`
+    - restores focus to the element active before open
+
+## Z-Index Policy
+
+- Uses `--vf-notification-center-z-index` (default `125`).
+- Default layer intent:
+    - above modal/drawer (`100`) and command palette (`110`)
+    - above toast/tour (`120`)
+- Override via theme tokens only when project-specific stacking order is required.

@@ -199,4 +199,60 @@ describe('DataTable', () => {
 
         wrapper.unmount();
     });
+
+    it('resizes column width with drag handle and emits resize payload', async () => {
+        const wrapper = mount(DataTable, {
+            props: {
+                rows,
+                columnResize: true,
+                columns: [
+                    { field: 'name', header: 'Name', width: '140px' },
+                    { field: 'role', header: 'Role' },
+                ],
+            },
+        });
+
+        const firstHandle = wrapper.findAll('.vf-datatable__resize-handle')[0];
+        await firstHandle.trigger('mousedown', { button: 0, clientX: 100 });
+        window.dispatchEvent(new MouseEvent('mousemove', { clientX: 130 }));
+        window.dispatchEvent(new MouseEvent('mouseup', { clientX: 130 }));
+        await wrapper.vm.$nextTick();
+
+        const firstHeader = wrapper.findAll('.vf-datatable__header')[0];
+        expect(firstHeader.attributes('style')).toContain('width: 170px;');
+        expect(wrapper.emitted('columnResize')?.[0]?.[0]).toEqual({
+            field: 'name',
+            width: '170px',
+            widthPx: 170,
+        });
+    });
+
+    it('reorders columns with drag and drop and emits updated order', async () => {
+        const wrapper = mount(DataTable, {
+            props: {
+                rows,
+                columnReorder: true,
+                columns,
+            },
+        });
+
+        const handles = wrapper.findAll('.vf-datatable__reorder-handle');
+        const headers = wrapper.findAll('.vf-datatable__header');
+
+        await handles[2].trigger('dragstart');
+        await headers[0].trigger('drop');
+        await wrapper.vm.$nextTick();
+
+        const firstRowCells = wrapper.findAll('tbody .vf-datatable__row')[0].findAll('td');
+        expect(firstRowCells[0].text()).toBe('29');
+        expect(firstRowCells[1].text()).toBe('Alice');
+        expect(firstRowCells[2].text()).toBe('Dev');
+
+        expect(wrapper.emitted('update:columnOrder')?.[0]).toEqual([['age', 'name', 'role']]);
+        expect(wrapper.emitted('columnReorder')?.[0]?.[0]).toEqual({
+            fromField: 'age',
+            toField: 'name',
+            order: ['age', 'name', 'role'],
+        });
+    });
 });

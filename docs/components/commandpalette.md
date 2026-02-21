@@ -39,6 +39,12 @@
 />
 ```
 
+## Recipes
+
+- Global app command launcher: bind to `Ctrl/Cmd+K` and group commands by domain (`Navigation`, `Actions`).
+- Admin shortcuts: attach `command` callbacks for direct side effects plus `select` event analytics.
+- Search-only mode: keep `filter=true`, feed dynamic `items` from server, and use `search` for debounced fetch.
+
 ## Tokens
 
 Component tokens (override via `theme.overrides.components.commandPalette`):
@@ -61,4 +67,32 @@ Component tokens (override via `theme.overrides.components.commandPalette`):
 
 ## Accessibility
 
-- Ensure keyboard access, visible focus state, and sufficient color contrast in usage contexts.
+- Panel uses `role="dialog"` and command list uses `listbox` + `option`.
+- On open, focus moves to search input; on close, focus restores to previously active element.
+- Keyboard navigation supports `ArrowUp`/`ArrowDown`, `Enter` selection, and `Escape` close.
+
+## Interaction Contract
+
+- Open paths:
+    - external `modelValue=true`
+    - shortcut (`Ctrl/Cmd + shortcutKey`) when `enableShortcut=true`
+- On open:
+    - emits `open`
+    - clears query and resets active item to first enabled option
+    - focuses input
+- Selection:
+    - `Enter` selects active enabled item
+    - emits `select`
+    - runs item `command` callback when provided
+    - closes when `closeOnSelect=true`
+- Dismiss:
+    - overlay click closes when `closeOnOverlay=true`
+    - `Escape` closes when `closeOnEsc=true`
+    - emits `close`
+
+## Z-Index Policy
+
+- Uses `--vf-command-palette-z-index` (default `110`).
+- Default layer intent:
+    - above modal/drawer (`100`)
+    - below toast/tour (`120`) and notification center (`125`)

@@ -33,6 +33,40 @@
 <Tree v-model="selectedMany" :items="treeItems" multiple variant="outlined" />
 ```
 
+## Recipes
+
+### Controlled expand/select with external state sync
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const selected = ref<string | undefined>();
+const expanded = ref<Array<string>>(['docs']);
+const items = [
+    {
+        key: 'docs',
+        label: 'Docs',
+        children: [
+            { key: 'guides', label: 'Guides' },
+            { key: 'api', label: 'API' },
+        ],
+    },
+    { key: 'blog', label: 'Blog' },
+];
+</script>
+
+<template>
+    <Tree v-model="selected" v-model:expandedKeys="expanded" :items="items" />
+</template>
+```
+
+### Large tree with pre-expanded sections
+
+```vue
+<Tree :items="largeTreeItems" :expanded-keys="['group-0', 'group-1', 'group-2']" aria-label="Project structure" />
+```
+
 ## Tokens
 
 Component tokens (override via `theme.overrides.components.tree`):
@@ -47,4 +81,7 @@ Component tokens (override via `theme.overrides.components.tree`):
 
 ## Accessibility
 
-- Ensure keyboard access, visible focus state, and sufficient color contrast in usage contexts.
+- Keyboard navigation supports `ArrowUp`/`ArrowDown`, `Home`/`End`, `ArrowRight` (expand/focus first child), and `ArrowLeft` (collapse/focus parent).
+- Disabled nodes are skipped during keyboard focus traversal.
+- Layout indentation and label alignment use logical properties, so the component works in both LTR and RTL containers.
+- Ensure visible focus state and sufficient color contrast in usage contexts.

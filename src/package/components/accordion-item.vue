@@ -8,6 +8,7 @@
             :aria-expanded="isOpen"
             :aria-controls="panelId"
             @click="onClick"
+            @keydown="onHeaderKeydown"
         >
             <span class="vf-accordion__title">
                 <slot name="title">{{ title }}</slot>
@@ -96,6 +97,53 @@ const onClick = (event: Event) => {
     }
 
     context.onToggle(props.value, event);
+};
+
+const getFocusableHeaders = (target: EventTarget | null) => {
+    const element = target as HTMLElement | null;
+    const root = element?.closest('.vf-accordion');
+
+    if (!root) {
+        return [];
+    }
+
+    return Array.from(root.querySelectorAll<HTMLButtonElement>('.vf-accordion__header:not(:disabled)'));
+};
+
+const onHeaderKeydown = (event: KeyboardEvent) => {
+    const supported = ['ArrowDown', 'ArrowUp', 'Home', 'End'];
+
+    if (!supported.includes(event.key)) {
+        return;
+    }
+
+    const headers = getFocusableHeaders(event.currentTarget);
+
+    if (!headers.length) {
+        return;
+    }
+
+    const current = event.currentTarget as HTMLButtonElement;
+    const currentIndex = headers.indexOf(current);
+
+    if (currentIndex < 0) {
+        return;
+    }
+
+    let nextIndex = currentIndex;
+
+    if (event.key === 'ArrowDown') {
+        nextIndex = (currentIndex + 1) % headers.length;
+    } else if (event.key === 'ArrowUp') {
+        nextIndex = (currentIndex - 1 + headers.length) % headers.length;
+    } else if (event.key === 'Home') {
+        nextIndex = 0;
+    } else if (event.key === 'End') {
+        nextIndex = headers.length - 1;
+    }
+
+    event.preventDefault();
+    headers[nextIndex]?.focus();
 };
 </script>
 

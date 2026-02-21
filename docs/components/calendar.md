@@ -7,8 +7,8 @@
 - `readonly?: boolean`
 - `min?: string` (ISO date `YYYY-MM-DD`)
 - `max?: string` (ISO date `YYYY-MM-DD`)
-- `locale?: string` (default `en-US`)
-- `firstDayOfWeek?: number` (default `0`, Sunday)
+- `locale?: string` (default from global date/time locale config, fallback `en-US`)
+- `firstDayOfWeek?: number` (default from global date/time locale config, fallback `0`, Sunday)
 - `ariaLabel?: string` (default `Calendar`)
 - `size?: 'small' | 'normal' | 'large'` (default `normal`)
 - `variant?: 'filled' | 'outlined'` (default `filled`)
@@ -52,3 +52,4 @@ Component tokens (override via `theme.overrides.components.calendar`):
 - `min`/`max` constraints disable out-of-range days.
 - Invalid ISO model values are ignored (no selected day state).
 - In `readonly` mode, selection mutation is blocked.
+- Locale and week-start defaults can be configured globally: [`Date/Time Locale Setup`](../guides/date-time-locale-setup.md).

@@ -94,4 +94,81 @@ describe('Tree', () => {
         expect(wrapper.vm.value).toBeUndefined();
         expect(wrapper.find('.vf-tree').classes()).toContain('vf-tree_disabled');
     });
+
+    it('skips disabled nodes during arrow navigation', async () => {
+        const wrapper = mount(Tree, {
+            attachTo: document.body,
+            props: {
+                items: [
+                    { key: 'a', label: 'A' },
+                    { key: 'b', label: 'B', disabled: true },
+                    { key: 'c', label: 'C' },
+                ],
+            },
+        });
+
+        const rows = wrapper.findAll('[role="treeitem"]');
+        const first = rows[0].element as HTMLElement;
+        const third = rows[2].element as HTMLElement;
+
+        first.focus();
+        await rows[0].trigger('keydown', { key: 'ArrowDown' });
+
+        expect(document.activeElement).toBe(third);
+
+        wrapper.unmount();
+    });
+
+    it('handles large expanded tree datasets with keyboard navigation', async () => {
+        const largeItems = Array.from({ length: 30 }, (_, groupIndex) => ({
+            key: `group-${groupIndex}`,
+            label: `Group ${groupIndex}`,
+            children: Array.from({ length: 10 }, (_, childIndex) => ({
+                key: `node-${groupIndex}-${childIndex}`,
+                label: `Node ${groupIndex}-${childIndex}`,
+            })),
+        }));
+        const expandedKeys = largeItems.map(item => item.key);
+
+        const wrapper = mount(Tree, {
+            attachTo: document.body,
+            props: {
+                items: largeItems,
+                expandedKeys,
+            },
+        });
+
+        const rows = wrapper.findAll('[role="treeitem"]');
+        expect(rows.length).toBe(330);
+
+        const first = rows[0];
+        const last = rows[rows.length - 1].element as HTMLElement;
+        (first.element as HTMLElement).focus();
+        await first.trigger('keydown', { key: 'End' });
+
+        expect(document.activeElement).toBe(last);
+        wrapper.unmount();
+    });
+
+    it('keeps expand/select behavior in rtl mode', async () => {
+        const wrapper = mount(Tree, {
+            attrs: {
+                dir: 'rtl',
+            },
+            props: {
+                items,
+                expandedKeys: [],
+            },
+        });
+
+        const first = wrapper.findAll('[role="treeitem"]')[0];
+        await first.trigger('keydown', { key: 'ArrowRight' });
+
+        expect(wrapper.emitted('update:expandedKeys')?.[0]).toEqual([['docs']]);
+
+        await wrapper.setProps({ expandedKeys: ['docs'] });
+        await wrapper.findAll('[role="treeitem"]')[1].trigger('click');
+
+        expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['getting-started']);
+    });
 });

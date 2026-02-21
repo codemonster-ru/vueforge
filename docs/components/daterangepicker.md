@@ -11,8 +11,8 @@
 - `readonly?: boolean`
 - `min?: string` (ISO date `YYYY-MM-DD`)
 - `max?: string` (ISO date `YYYY-MM-DD`)
-- `locale?: string` (default `en-US`)
-- `firstDayOfWeek?: number` (default `0`, Sunday)
+- `locale?: string` (default from global date/time locale config, fallback `en-US`)
+- `firstDayOfWeek?: number` (default from global date/time locale config, fallback `0`, Sunday)
 - `ariaLabel?: string` (default `Date range picker`)
 - `panelAriaLabel?: string` (default `Calendar range`)
 - `size?: 'small' | 'normal' | 'large'` (default `normal`)
@@ -46,3 +46,4 @@
 - `min`/`max` constraints disable out-of-range days.
 - Invalid ISO range values are ignored (treated as empty placeholders in display).
 - In `readonly` mode, open/select interactions are blocked.
+- Locale and week-start defaults can be configured globally: [`Date/Time Locale Setup`](../guides/date-time-locale-setup.md).

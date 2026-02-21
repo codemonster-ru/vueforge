@@ -6,8 +6,8 @@
                 <slot>{{ message }}</slot>
             </div>
         </div>
-        <button v-if="closable" class="vf-toast__close" type="button" @click="close">
-            <slot name="close">×</slot>
+        <button v-if="closable" class="vf-toast__close" type="button" aria-label="Close toast" @click="close">
+            <slot name="close">&times;</slot>
         </button>
     </div>
 </template>

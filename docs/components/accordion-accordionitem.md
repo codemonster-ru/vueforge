@@ -45,6 +45,27 @@ Props (AccordionItem):
 </Accordion>
 ```
 
+## Recipes
+
+### FAQ disclosure with single-open behavior
+
+```vue
+<Accordion v-model="activeFaq" aria-label="Frequently asked questions">
+    <AccordionItem value="shipping" title="Shipping">Shipping details</AccordionItem>
+    <AccordionItem value="returns" title="Returns">Returns policy</AccordionItem>
+    <AccordionItem value="warranty" title="Warranty">Warranty terms</AccordionItem>
+</Accordion>
+```
+
+### Multi-open policy sections
+
+```vue
+<Accordion v-model="openSections" multiple>
+    <AccordionItem value="privacy" title="Privacy">Privacy policy</AccordionItem>
+    <AccordionItem value="terms" title="Terms">Terms of service</AccordionItem>
+</Accordion>
+```
+
 ## Tokens
 
 Component tokens (override via `theme.overrides.components.accordion`):
@@ -60,4 +81,6 @@ Component tokens (override via `theme.overrides.components.accordion`):
 
 ## Accessibility
 
-- Ensure keyboard access, visible focus state, and sufficient color contrast in usage contexts.
+- Header buttons expose `aria-expanded` and `aria-controls`, and panels use `region` + `aria-labelledby`.
+- Header keyboard traversal supports `ArrowUp`/`ArrowDown` and `Home`/`End`.
+- Ensure visible focus state and sufficient color contrast in usage contexts.

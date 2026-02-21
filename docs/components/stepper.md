@@ -7,6 +7,7 @@
 - `orientation?: 'horizontal' | 'vertical'` (default `horizontal`)
 - `size?: 'small' | 'normal' | 'large'` (default `normal`)
 - `clickable?: boolean` (default `false`)
+- `disabled?: boolean` (default `false`)
 - `ariaLabel?: string`
 - `ariaLabelledby?: string`
 
@@ -26,6 +27,37 @@
 <Stepper v-model="step" :steps="steps" orientation="vertical" size="small" />
 ```
 
+## Recipes
+
+### Checkout progress navigation
+
+```vue
+<Stepper
+    v-model="checkoutStep"
+    clickable
+    :steps="[
+        { value: 'cart', label: 'Cart' },
+        { value: 'address', label: 'Address' },
+        { value: 'payment', label: 'Payment' },
+        { value: 'confirm', label: 'Confirm' },
+    ]"
+/>
+```
+
+### Error state for failed step validation
+
+```vue
+<Stepper
+    v-model="step"
+    :steps="[
+        { value: 'account', label: 'Account', status: 'completed' },
+        { value: 'plan', label: 'Plan', status: 'error', description: 'Fix validation errors' },
+        { value: 'confirm', label: 'Confirm' },
+    ]"
+    clickable
+/>
+```
+
 ## Tokens
 
 Component tokens (override via `theme.overrides.components.stepper`):
@@ -43,4 +75,7 @@ Component tokens (override via `theme.overrides.components.stepper`):
 
 ## Accessibility
 
-- Ensure keyboard access, visible focus state, and sufficient color contrast in usage contexts.
+- Active step is announced with `aria-current="step"`.
+- In clickable mode, keyboard navigation supports arrow keys and `Home`/`End` for step transitions.
+- Global `disabled` state prevents interactive step transitions for consistent behavior with other navigation/disclosure components.
+- Ensure visible focus state and sufficient color contrast in usage contexts.

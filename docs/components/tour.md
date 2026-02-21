@@ -48,6 +48,12 @@
 />
 ```
 
+## Recipes
+
+- First-run onboarding: launch tour after account creation with `startIndex=0`.
+- Feature spotlight: pass concrete target selectors and per-step `placement` for complex pages.
+- Progressive walkthrough: persist completion state and reopen only for new feature milestones.
+
 ## Tokens
 
 Component tokens (override via `theme.overrides.components.tour`):
@@ -68,4 +74,29 @@ Component tokens (override via `theme.overrides.components.tour`):
 
 ## Accessibility
 
-- Ensure keyboard access, visible focus state, and sufficient color contrast in usage contexts.
+- Panel uses `role="dialog"` and `aria-modal="true"`.
+- On open, focus moves to tour panel; on close, focus restores to previously active element.
+- Supports `Escape` close behavior when `closeOnEsc` is enabled.
+
+## Interaction Contract
+
+- `modelValue=true`:
+    - emits `open`
+    - emits `stepChange` for initial step
+    - resolves target and positions panel/spotlight
+- Navigation:
+    - `Back`/`Next` move between steps
+    - last `Next` emits `complete` and closes
+    - skip emits `skip` and closes
+- Close reasons emitted via `close` payload: `overlay | esc | complete | skip`
+- Behavior flags:
+    - `closeOnOverlay=false` keeps tour open on mask click
+    - `closeOnEsc=false` disables `Escape` close
+
+## Z-Index Policy
+
+- Tour root uses `--vf-tour-z-index` (default `120`).
+- Spotlight and panel are layered inside tour root (`overlay` < `spotlight` < `panel`).
+- Default intent:
+    - above app content and modal/drawer base (`100`)
+    - below notification center (`125`)

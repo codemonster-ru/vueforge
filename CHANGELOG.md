@@ -1,5 +1,45 @@
 # Changelog
 
+## [0.90.0] - 2026-02-21
+
+- Semver checklist:
+    - [x] Semver impact classified (`minor`)
+    - [x] Breaking-change assessment completed (`no`)
+    - [x] Deprecations documented (N/A)
+    - [x] Migration notes added when required (N/A)
+- Release discipline:
+    - Added semver release checklist documentation and CI/publish enforcement via `npm run verify:semver`.
+- DataTable advanced baseline:
+    - Added opt-in column resize support (`columnResize`, `minColumnWidth`, per-column `resizable`) with resize event payload and docs.
+    - Added opt-in column reorder support (`columnReorder`, controlled `columnOrder`, `columnReorder` event) with drag-and-drop behavior.
+    - Added DataTable regression coverage for column resize/reorder behavior and updated advanced docs examples.
+- Tree/TreeSelect keyboard hardening:
+    - Improved tree keyboard edge-case behavior by skipping disabled nodes during focus traversal and refining `ArrowRight` child navigation behavior.
+    - Improved TreeSelect keyboard flow so keyboard-open focuses tree content and `ArrowDown` in search field moves focus into the tree.
+    - Added regression tests and updated accessibility notes for keyboard contracts.
+    - Added large-dataset regression coverage for expanded tree traversal and TreeSelect filtering behavior.
+    - Added RTL behavior verification with dedicated Tree/TreeSelect RTL interaction tests and logical CSS property alignment updates.
+    - Added advanced Tree/TreeSelect docs recipes for controlled state, large trees, and async loading/search usage patterns.
+- Tabs/Accordion/Stepper/Wizard hardening:
+    - Added keyboard navigation hardening for disclosure and multi-step components (`Accordion`, `Stepper`, `Wizard`) with arrow/home/end traversal behavior.
+    - Added expanded regression coverage for navigation and state transitions across `Tabs`, `Accordion`, `Stepper`, and `Wizard`.
+    - Added a dedicated disclosure/multi-step accessibility audit doc and advanced recipes for common settings, onboarding, and FAQ flows.
+    - Normalized shared API behavior by adding global `disabled` support to `Stepper` for consistency with related navigation/disclosure components.
+- NotificationCenter/Toast/Tour/CommandPalette hardening:
+    - Added explicit interaction and accessibility contracts for all four components, including close/focus behavior and keyboard expectations.
+    - Expanded keyboard/focus regression coverage (`Escape`/overlay behavior, focus-in/focus-restore, active-option keyboard traversal).
+    - Added overlay layering verification audit and token-order regression checks against the default z-index policy.
+    - Added practical docs recipes for notification, feedback, onboarding, and global command-launcher usage patterns.
+- Date/time locale maturity:
+    - Added global date/time locale runtime configuration API (`setDateTimeLocale`, `updateDateTimeLocale`, `getDateTimeLocale`) and plugin install support.
+    - Updated `Calendar`, `DatePicker`, `DateRangePicker`, and `DateTimePicker` to use global locale/week-start defaults with per-component override precedence.
+    - Added locale-specific regression tests for global fallback and weekday ordering behavior across date/time components.
+    - Added date/time locale setup documentation and linked it from component docs.
+- Density and motion baseline:
+    - Added runtime UI preference API for density presets (`normal`, `comfortable`, `compact`) and reduced-motion toggling.
+    - Added motion token variables and reduced-motion CSS behavior tied to runtime root attributes and OS preference.
+    - Added density/motion runtime tests and setup documentation for plugin/runtime usage.
+
 ## [0.89.0] - 2026-02-21
 
 - Date/time family hardening:

@@ -55,6 +55,20 @@ updateTheme({
 - `updateTheme(partial)` - patch current theme
 - `getTheme()` - read active options
 
+## Density and Motion API
+
+VueForge also exposes runtime UI preference controls:
+
+- `setDensityPreset('normal' | 'comfortable' | 'compact')`
+- `getDensityPreset()`
+- `setReducedMotion(boolean)`
+- `getReducedMotion()`
+- `applyUiPreferences({ density?, reducedMotion? })`
+- `getUiPreferences()`
+
+These APIs update root attributes and shared CSS variables for density/motion behavior.
+See: [`guides/density-motion.md`](guides/density-motion.md)
+
 ## Token Validation Guidance
 
 Use strict token hygiene to avoid runtime styling regressions:

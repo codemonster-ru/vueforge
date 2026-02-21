@@ -50,6 +50,60 @@
 
 More recipes: [`Selection Patterns`](selection-patterns.md).
 
+## Recipes
+
+### Searchable multi-select with controlled expansion
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const value = ref<Array<string>>([]);
+const expanded = ref<Array<string>>(['docs']);
+</script>
+
+<template>
+    <TreeSelect
+        v-model="value"
+        v-model:expandedKeys="expanded"
+        :items="treeItems"
+        multiple
+        clearable
+        filter
+        placeholder="Select sections"
+    />
+</template>
+```
+
+### Async loading + loading/empty states
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const loading = ref(true);
+const items = ref<Array<{ key: string; label: string; children?: Array<{ key: string; label: string }> }>>([]);
+
+setTimeout(() => {
+    items.value = [
+        { key: 'docs', label: 'Docs' },
+        { key: 'blog', label: 'Blog' },
+    ];
+    loading.value = false;
+}, 600);
+</script>
+
+<template>
+    <TreeSelect
+        v-model="selectedNode"
+        :items="items"
+        :loading="loading"
+        loading-text="Loading sections..."
+        empty-text="No sections found"
+    />
+</template>
+```
+
 ## Tokens
 
 Component tokens (override via `theme.overrides.components.treeselect`):
@@ -69,6 +123,9 @@ Component tokens (override via `theme.overrides.components.treeselect`):
 
 ## Accessibility
 
-- Trigger opens the panel with keyboard (`ArrowDown`) and closes with `Escape`.
+- Trigger opens the panel with keyboard (`ArrowDown`/`ArrowUp`) and closes with `Escape`.
+- When opened from keyboard, focus moves into the tree (or search input when filtering is enabled).
+- In filter mode, `ArrowDown` from the search input moves focus to the first enabled tree node.
 - Tree hierarchy navigation is supported via tree keyboard bindings (`ArrowRight` expand, `ArrowLeft` collapse/parent, `ArrowUp`/`ArrowDown` move, `Enter`/`Space` select).
+- Trigger/label/clear-control alignment relies on logical CSS properties, so RTL containers are supported.
 - In `readonly` mode, panel open/search interactions and selection mutations are blocked.
