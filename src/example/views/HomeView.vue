@@ -114,6 +114,14 @@
                             </Grid>
                         </div>
                         <div class="vf-home__card">
+                            <h3>Stack</h3>
+                            <Stack gap="0.5rem">
+                                <div class="vf-home__container-box">item 1</div>
+                                <div class="vf-home__container-box">item 2</div>
+                                <div class="vf-home__container-box">item 3</div>
+                            </Stack>
+                        </div>
+                        <div class="vf-home__card">
                             <h3>Divider</h3>
                             <div class="vf-home__stack">
                                 <Divider />
@@ -1173,6 +1181,7 @@ import {
     Section,
     Grid,
     GridItem,
+    Stack,
     Pagination,
     DataTable,
     EmptyState,
@@ -1502,6 +1511,7 @@ const searchCatalog = [
     'PageHeader',
     'Section',
     'Grid',
+    'Stack',
     'Input',
     'InputGroup',
     'Divider',

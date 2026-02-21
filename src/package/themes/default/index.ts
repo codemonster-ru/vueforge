@@ -5,6 +5,7 @@ import card from './components/card';
 import container from './components/container';
 import grid from './components/grid';
 import section from './components/section';
+import stack from './components/stack';
 import input from './components/input';
 import inputGroup from './components/input-group';
 import inlineEdit from './components/inline-edit';
@@ -86,6 +87,7 @@ export default {
         container,
         grid,
         section,
+        stack,
         input,
         inputGroup,
         inlineEdit,

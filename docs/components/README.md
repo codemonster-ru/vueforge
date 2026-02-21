@@ -64,6 +64,7 @@ Detailed API pages generated from the current package reference.
 - [Skeleton](skeleton.md)
 - [Slider](slider.md)
 - [Spinner](spinner.md)
+- [Stack](stack.md)
 - [SplitButton](splitbutton.md)
 - [Splitter / SplitterPanel](splitter-splitterpanel.md)
 - [Stepper](stepper.md)

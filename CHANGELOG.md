@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.76.0] - 2026-02-21
+
+- Added Stack layout primitive with `gap`, `align`, `justify`, `wrap`, and `as` props.
+- Added default theme tokens and typed token support for `components.stack`.
+- Added Stack export, documentation page, and unit tests.
+
 ## [0.75.0] - 2026-02-21
 
 - Added Grid and GridItem layout primitives with columns/gap/align/justify props and responsive breakpoint overrides.

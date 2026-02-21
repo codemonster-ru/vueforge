@@ -82,12 +82,12 @@ Execution dependencies:
 
 ### P0.4 `Stack` (new)
 
-- [ ] Define props: `gap`, `align`, `justify`, `wrap`, `as`
-- [ ] Implement vertical layout primitive
-- [ ] Add theme tokens and typings
-- [ ] Add unit tests
-- [ ] Export from `src/index.ts`
-- [ ] Add docs
+- [x] Define props: `gap`, `align`, `justify`, `wrap`, `as`
+- [x] Implement vertical layout primitive
+- [x] Add theme tokens and typings
+- [x] Add unit tests
+- [x] Export from `src/index.ts`
+- [x] Add docs
 
 ### P0.5 `Inline` (new)
 

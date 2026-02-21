@@ -63,6 +63,12 @@ export type GridTokens = {
     breakpointLg?: string;
     breakpointXl?: string;
 };
+export type StackTokens = {
+    gap?: string;
+    alignItems?: string;
+    justifyContent?: string;
+    wrap?: string;
+};
 export type CheckboxTokens = {
     size?: string;
     gap?: string;
@@ -2154,6 +2160,7 @@ export type ThemeComponentTokens = {
     container?: ContainerTokens;
     section?: SectionTokens;
     grid?: GridTokens;
+    stack?: StackTokens;
     checkbox?: CheckboxTokens;
     radio?: RadioTokens;
     tabs?: TabsTokens;
