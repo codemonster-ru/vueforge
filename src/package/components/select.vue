@@ -5,20 +5,30 @@
             class="vf-select__control"
             type="button"
             :disabled="disabled"
+            :aria-readonly="readonly ? 'true' : undefined"
+            :aria-label="ariaLabel"
             :aria-expanded="open"
             :aria-controls="panelId"
+            :aria-activedescendant="activeDescendantId"
             aria-haspopup="listbox"
-            @click="toggle"
-            @keydown.down.prevent="openAndFocus"
-            @keydown.enter.prevent="toggle"
-            @keydown.esc.prevent="close"
+            @click="onTriggerClick"
+            @keydown="onTriggerKeydown"
             @focus="onFocus"
             @blur="onBlur"
         >
             <span class="vf-select__label" :class="{ 'vf-select__label_placeholder': !selectedLabel }">
                 {{ selectedLabel || placeholder }}
             </span>
-            <span class="vf-select__chevron" aria-hidden="true">&#9662;</span>
+            <span v-if="!showClear" class="vf-select__chevron" aria-hidden="true">&#9662;</span>
+        </button>
+        <button
+            v-if="showClear"
+            class="vf-select__clear"
+            type="button"
+            :aria-label="clearLabel"
+            @click.stop="clearValue"
+        >
+            ×
         </button>
         <Teleport to="body">
             <div
@@ -28,9 +38,11 @@
                 class="vf-select__panel"
                 role="listbox"
                 :data-placement="currentPlacement"
+                :aria-label="panelAriaLabel"
             >
                 <button
-                    v-for="option in normalizedOptions"
+                    v-for="(option, index) in normalizedOptions"
+                    :id="getOptionId(index)"
                     :key="option.value"
                     class="vf-select__option"
                     :class="{ 'is-active': isActive(option), 'is-disabled': option.disabled }"
@@ -38,6 +50,7 @@
                     role="option"
                     :disabled="option.disabled"
                     :aria-selected="isActive(option)"
+                    @keydown="onOptionKeydown($event, index)"
                     @click="selectOption(option)"
                 >
                     {{ option.label }}
@@ -69,6 +82,11 @@ interface Props {
     optionValue?: string;
     placeholder?: string;
     disabled?: boolean;
+    readonly?: boolean;
+    clearable?: boolean;
+    clearLabel?: string;
+    ariaLabel?: string;
+    panelAriaLabel?: string;
     variant?: Variant;
     size?: Size;
 }
@@ -81,6 +99,11 @@ const props = withDefaults(defineProps<Props>(), {
     optionValue: 'value',
     placeholder: '',
     disabled: false,
+    readonly: false,
+    clearable: false,
+    clearLabel: 'Clear selection',
+    ariaLabel: 'Select option',
+    panelAriaLabel: 'Options',
     variant: 'filled',
     size: 'normal',
 });
@@ -94,6 +117,7 @@ const root = ref<HTMLElement | null>(null);
 const trigger = ref<HTMLButtonElement | null>(null);
 const panel = ref<HTMLElement | null>(null);
 const open = ref(false);
+const focusedIndex = ref(-1);
 const basePlacement = ref<'bottom' | 'top'>('bottom');
 const currentPlacement = ref<'bottom' | 'top'>('bottom');
 const panelId = `vf-select-panel-${++selectIdCounter}`;
@@ -112,6 +136,16 @@ const selectedOption = computed(() => {
     return normalizedOptions.value.find(option => option.value === props.modelValue);
 });
 const selectedLabel = computed(() => selectedOption.value?.label ?? '');
+const showClear = computed(
+    () => props.clearable && props.modelValue !== undefined && !props.disabled && !props.readonly,
+);
+const activeDescendantId = computed(() => {
+    if (!open.value || focusedIndex.value < 0 || focusedIndex.value >= normalizedOptions.value.length) {
+        return undefined;
+    }
+
+    return getOptionId(focusedIndex.value);
+});
 
 const getClass = computed(() => {
     const classes = ['vf-select', `vf-select_${props.variant}`, open.value ? 'vf-select_open' : ''];
@@ -128,8 +162,49 @@ const getClass = computed(() => {
 });
 
 const isActive = (option: { value: string | number }) => option.value === props.modelValue;
+const getOptionId = (index: number) => `${panelId}-option-${index}`;
+
+const firstEnabledIndex = () => normalizedOptions.value.findIndex(option => !option.disabled);
+const lastEnabledIndex = () => {
+    for (let index = normalizedOptions.value.length - 1; index >= 0; index -= 1) {
+        if (!normalizedOptions.value[index].disabled) {
+            return index;
+        }
+    }
+
+    return -1;
+};
+const focusOption = (index: number) => {
+    if (index < 0 || index >= normalizedOptions.value.length) {
+        return;
+    }
+
+    focusedIndex.value = index;
+    panel.value?.querySelectorAll<HTMLButtonElement>('.vf-select__option')[index]?.focus();
+};
+const moveFocus = (step: 1 | -1) => {
+    if (!normalizedOptions.value.length) {
+        return;
+    }
+
+    let index = focusedIndex.value;
+    const size = normalizedOptions.value.length;
+
+    if (index < 0 || index >= size) {
+        index = step > 0 ? -1 : size;
+    }
+
+    for (let i = 0; i < size; i += 1) {
+        index = (index + step + size) % size;
+        if (!normalizedOptions.value[index].disabled) {
+            focusOption(index);
+
+            return;
+        }
+    }
+};
 const selectOption = (option: { value: string | number; disabled?: boolean }) => {
-    if (option.disabled) {
+    if (option.disabled || props.readonly) {
         return;
     }
 
@@ -138,16 +213,25 @@ const selectOption = (option: { value: string | number; disabled?: boolean }) =>
 
     close();
 };
+const clearValue = () => {
+    if (props.disabled || props.readonly) {
+        return;
+    }
+
+    emits('update:modelValue', undefined);
+    emits('change', undefined);
+};
 const onFocus = (event: FocusEvent) => emits('focus', event);
 const onBlur = (event: FocusEvent) => emits('blur', event);
 
 const close = () => {
     open.value = false;
+    focusedIndex.value = -1;
     basePlacement.value = 'bottom';
     currentPlacement.value = 'bottom';
 };
 const toggle = () => {
-    if (props.disabled) {
+    if (props.disabled || props.readonly) {
         return;
     }
 
@@ -158,13 +242,95 @@ const toggle = () => {
         currentPlacement.value = 'bottom';
     }
 };
-const openAndFocus = async () => {
+const openAndFocus = async (direction: 'first' | 'last' = 'first') => {
+    if (props.disabled || props.readonly) {
+        return;
+    }
+
     if (!open.value) {
         open.value = true;
         await nextTick();
     }
 
-    panel.value?.querySelector<HTMLButtonElement>('.vf-select__option:not(.is-disabled)')?.focus();
+    if (direction === 'last') {
+        focusOption(lastEnabledIndex());
+
+        return;
+    }
+
+    focusOption(firstEnabledIndex());
+};
+
+const onTriggerClick = () => {
+    toggle();
+};
+const onTriggerKeydown = (event: KeyboardEvent) => {
+    if (props.disabled || props.readonly) {
+        return;
+    }
+
+    if (event.key === 'ArrowDown') {
+        event.preventDefault();
+        void openAndFocus('first');
+
+        return;
+    }
+
+    if (event.key === 'ArrowUp') {
+        event.preventDefault();
+        void openAndFocus('last');
+
+        return;
+    }
+
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        toggle();
+
+        return;
+    }
+
+    if (event.key === 'Escape') {
+        event.preventDefault();
+        close();
+    }
+};
+const onOptionKeydown = (event: KeyboardEvent, index: number) => {
+    if (!open.value) {
+        return;
+    }
+
+    if (event.key === 'ArrowDown') {
+        event.preventDefault();
+        moveFocus(1);
+
+        return;
+    }
+
+    if (event.key === 'ArrowUp') {
+        event.preventDefault();
+        moveFocus(-1);
+
+        return;
+    }
+
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        const option = normalizedOptions.value[index];
+
+        if (option) {
+            selectOption(option);
+            trigger.value?.focus();
+        }
+
+        return;
+    }
+
+    if (event.key === 'Escape') {
+        event.preventDefault();
+        close();
+        trigger.value?.focus();
+    }
 };
 
 const onDocumentClick = (event: MouseEvent) => {
@@ -249,6 +415,14 @@ watch(open, async value => {
     void floater?.update();
 });
 watch(
+    () => props.modelValue,
+    value => {
+        const selectedIndex = normalizedOptions.value.findIndex(option => option.value === value && !option.disabled);
+        focusedIndex.value = selectedIndex >= 0 ? selectedIndex : -1;
+    },
+    { immediate: true },
+);
+watch(
     () => props.options,
     () => {
         void floater?.update();
@@ -316,6 +490,34 @@ onBeforeUnmount(() => {
 .vf-select__chevron {
     font-size: var(--vf-select-chevron-size);
     opacity: 0.7;
+}
+
+.vf-select__clear {
+    position: absolute;
+    top: 50%;
+    right: calc(var(--vf-select-control-gap) + 0.15rem);
+    transform: translateY(-50%);
+    width: 1.25rem;
+    height: 1.25rem;
+    border: none;
+    border-radius: 999px;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    font: inherit;
+}
+
+.vf-select__clear:hover {
+    background-color: var(--vf-select-option-hover-background-color);
+}
+
+.vf-select__clear:focus-visible {
+    outline: none;
+    box-shadow: var(--vf-select-focus-ring-shadow);
 }
 
 .vf-select__panel {

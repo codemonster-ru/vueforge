@@ -17,6 +17,9 @@
 - `strict?: boolean` (default `true`)
 - `allowCreate?: boolean` (default `false`)
 - `clearable?: boolean` (default `false`)
+- `ariaLabel?: string` (default `Combobox input`)
+- `ariaLabelledby?: string`
+- `ariaDescribedby?: string`
 - `size?: 'small' | 'normal' | 'large'` (default `normal`)
 - `variant?: 'filled' | 'outlined'` (default `filled`)
 
@@ -40,6 +43,8 @@
 <Combobox v-model="countryId" v-model:inputValue="countryQuery" :options="countries" placeholder="Pick country" />
 ```
 
+More recipes: [`Selection Patterns`](selection-patterns.md).
+
 ## Tokens
 
 Component tokens (override via `theme.overrides.components.combobox`):
@@ -60,4 +65,6 @@ Component tokens (override via `theme.overrides.components.combobox`):
 
 ## Accessibility
 
-- Ensure keyboard access, visible focus state, and sufficient color contrast in usage contexts.
+- Input uses combobox semantics (`role="combobox"`, `aria-expanded`, `aria-controls`, `aria-activedescendant`, `aria-autocomplete="list"`).
+- Keyboard support: `ArrowDown`/`ArrowUp` navigate highlighted option, `Enter` selects highlighted option or commits custom value according to `strict`/`allowCreate`, `Escape` closes panel.
+- In `readonly` mode, search/open interactions are blocked.

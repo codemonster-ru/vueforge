@@ -5,7 +5,7 @@ import Combobox from '../combobox.vue';
 const options = [
     { label: 'United States', value: 'us' },
     { label: 'Germany', value: 'de' },
-    { label: 'Japan', value: 'jp' },
+    { label: 'Japan', value: 'jp', disabled: true },
 ];
 
 const mountCombobox = (props: Record<string, unknown> = {}) => {
@@ -52,6 +52,41 @@ describe('Combobox', () => {
 
         expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['Portugal']);
         expect(wrapper.emitted('create')?.[0]).toEqual(['Portugal']);
+    });
+
+    it('commits custom value when strict is false', async () => {
+        const wrapper = mountCombobox({ strict: false });
+        const input = wrapper.find('input');
+
+        await input.setValue('Spain');
+        await input.trigger('keydown', { key: 'Enter' });
+
+        expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['Spain']);
+        expect(wrapper.emitted('create')).toBeFalsy();
+    });
+
+    it('selects highlighted option with keyboard navigation', async () => {
+        const wrapper = mountCombobox();
+        const input = wrapper.find('input');
+
+        await input.trigger('focus');
+        await input.trigger('keydown', { key: 'ArrowDown' });
+        await input.trigger('keydown', { key: 'Enter' });
+
+        expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['de']);
+    });
+
+    it('does not search or open panel in readonly mode', async () => {
+        const wrapper = mountCombobox({ readonly: true });
+        const input = wrapper.find('input');
+
+        await input.setValue('ger');
+        await input.trigger('focus');
+        await input.trigger('keydown', { key: 'ArrowDown' });
+
+        expect(wrapper.emitted('search')).toBeFalsy();
+        expect(wrapper.find('.vf-combobox').classes()).not.toContain('vf-combobox_open');
+        expect(wrapper.find('.vf-combobox__chevron').attributes('disabled')).toBeDefined();
     });
 
     it('clears value when clear button is clicked', async () => {

@@ -5,6 +5,7 @@
             class="vf-treeselect__control"
             type="button"
             :disabled="disabled"
+            :aria-readonly="readonly ? 'true' : undefined"
             :aria-expanded="open"
             :aria-controls="panelId"
             aria-haspopup="tree"
@@ -44,6 +45,7 @@
                         type="text"
                         :value="query"
                         :placeholder="searchPlaceholder"
+                        :readonly="readonly"
                         @input="onSearchInput"
                         @keydown.esc.prevent="close"
                     />
@@ -58,7 +60,7 @@
                     :multiple="multiple"
                     :selectable="selectable"
                     :expand-on-click="expandOnClick"
-                    :disabled="disabled"
+                    :disabled="disabled || readonly"
                     :size="size"
                     :variant="variant"
                     @update:model-value="onModelUpdate"
@@ -270,7 +272,7 @@ const close = () => {
 };
 
 const openPanel = async () => {
-    if (props.disabled) {
+    if (props.disabled || props.readonly) {
         return;
     }
 
@@ -339,6 +341,10 @@ const clearSelection = () => {
 };
 
 const onSearchInput = (event: Event) => {
+    if (props.readonly) {
+        return;
+    }
+
     const target = event.target as HTMLInputElement;
 
     query.value = target.value;

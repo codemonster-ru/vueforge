@@ -50,7 +50,7 @@
         <button
             class="vf-tag-input__chevron"
             type="button"
-            :disabled="disabled"
+            :disabled="disabled || readonly"
             aria-hidden="true"
             tabindex="-1"
             @mousedown.prevent
@@ -377,7 +377,7 @@ const highlightByStep = (step: number) => {
 };
 
 const openPanel = () => {
-    if (props.disabled) {
+    if (props.disabled || props.readonly) {
         return;
     }
 
@@ -413,6 +413,10 @@ const focusInput = () => {
 };
 
 const onInput = (event: Event) => {
+    if (props.disabled || props.readonly) {
+        return;
+    }
+
     const target = event.target as HTMLInputElement;
 
     query.value = target.value;
@@ -427,7 +431,9 @@ const onInput = (event: Event) => {
 const onFocus = (event: FocusEvent) => {
     emits('focus', event);
 
-    openPanel();
+    if (!props.readonly) {
+        openPanel();
+    }
 };
 
 const onBlur = (event: FocusEvent) => {

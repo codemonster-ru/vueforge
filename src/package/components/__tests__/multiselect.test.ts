@@ -60,4 +60,41 @@ describe('MultiSelect', () => {
         expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([[]]);
         expect(wrapper.emitted('change')?.[0]).toEqual([[]]);
     });
+
+    it('removes a selected chip by remove action', async () => {
+        const wrapper = mountMultiSelect({
+            modelValue: ['us', 'de'],
+        });
+
+        const chipRemove = wrapper.findAll('.vf-multiselect__chip-remove')[0];
+        await chipRemove.trigger('click');
+
+        expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([['de']]);
+        expect(wrapper.emitted('change')?.[0]).toEqual([['de']]);
+    });
+
+    it('removes last selected item on Backspace from trigger', async () => {
+        const wrapper = mountMultiSelect({
+            modelValue: ['us', 'de'],
+        });
+        const trigger = wrapper.find('.vf-multiselect__control');
+
+        await trigger.trigger('keydown', { key: 'Backspace' });
+
+        expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([['us']]);
+    });
+
+    it('does not open or search in readonly mode', async () => {
+        const wrapper = mountMultiSelect({
+            modelValue: ['us'],
+            readonly: true,
+        });
+        const trigger = wrapper.find('.vf-multiselect__control');
+
+        await trigger.trigger('click');
+        await trigger.trigger('keydown', { key: 'ArrowDown' });
+
+        expect(wrapper.find('.vf-multiselect').classes()).not.toContain('vf-multiselect_open');
+        expect(trigger.attributes('aria-readonly')).toBe('true');
+    });
 });

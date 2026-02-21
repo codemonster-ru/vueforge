@@ -5,6 +5,7 @@
             class="vf-multiselect__control"
             type="button"
             :disabled="disabled"
+            :aria-readonly="readonly ? 'true' : undefined"
             :aria-expanded="open"
             :aria-controls="panelId"
             aria-haspopup="listbox"
@@ -13,14 +14,28 @@
             @keydown.up.prevent="onArrowUp"
             @keydown.enter.prevent="onEnter"
             @keydown.esc.prevent="close"
+            @keydown.backspace.prevent="onBackspace"
             @focus="onFocus"
             @blur="onBlur"
         >
-            <span
-                class="vf-multiselect__label"
-                :class="{ 'vf-multiselect__label_placeholder': selectedValues.length === 0 }"
-            >
+            <span v-if="selectedOptions.length === 0" class="vf-multiselect__label vf-multiselect__label_placeholder">
                 {{ displayLabel }}
+            </span>
+            <span v-else class="vf-multiselect__chips">
+                <span v-for="option in selectedOptions" :key="option.value" class="vf-multiselect__chip">
+                    <span class="vf-multiselect__chip-label">{{ option.label }}</span>
+                    <span
+                        v-if="!disabled && !readonly"
+                        class="vf-multiselect__chip-remove"
+                        role="button"
+                        tabindex="-1"
+                        aria-label="Remove item"
+                        @mousedown.prevent.stop
+                        @click.stop="removeOption(option.value)"
+                    >
+                        ×
+                    </span>
+                </span>
             </span>
             <span class="vf-multiselect__chevron" aria-hidden="true">&#9662;</span>
         </button>
@@ -50,6 +65,7 @@
                         type="text"
                         :value="query"
                         :placeholder="searchPlaceholder"
+                        :readonly="readonly"
                         @input="onSearchInput"
                         @keydown.down.prevent="onArrowDown"
                         @keydown.up.prevent="onArrowUp"
@@ -243,6 +259,13 @@ const clearSelection = () => {
 
     emitValue([]);
 };
+const removeOption = (value: OptionValue) => {
+    if (props.readonly) {
+        return;
+    }
+
+    emitValue(selectedValues.value.filter(item => item !== value));
+};
 
 const highlightByStep = (step: number) => {
     const options = filteredOptions.value;
@@ -273,7 +296,7 @@ const highlightByStep = (step: number) => {
 };
 
 const openPanel = async () => {
-    if (props.disabled) {
+    if (props.disabled || props.readonly) {
         return;
     }
 
@@ -301,6 +324,10 @@ const close = () => {
 };
 
 const togglePanel = () => {
+    if (props.disabled || props.readonly) {
+        return;
+    }
+
     if (open.value) {
         close();
 
@@ -311,6 +338,10 @@ const togglePanel = () => {
 };
 
 const onArrowDown = () => {
+    if (props.disabled || props.readonly) {
+        return;
+    }
+
     if (!open.value) {
         void openPanel();
 
@@ -321,6 +352,10 @@ const onArrowDown = () => {
 };
 
 const onArrowUp = () => {
+    if (props.disabled || props.readonly) {
+        return;
+    }
+
     if (!open.value) {
         void openPanel();
 
@@ -331,6 +366,10 @@ const onArrowUp = () => {
 };
 
 const onEnter = () => {
+    if (props.disabled || props.readonly) {
+        return;
+    }
+
     if (!open.value) {
         void openPanel();
 
@@ -343,8 +382,19 @@ const onEnter = () => {
         toggleOption(option);
     }
 };
+const onBackspace = () => {
+    if (props.readonly || selectedValues.value.length === 0) {
+        return;
+    }
+
+    emitValue(selectedValues.value.slice(0, -1));
+};
 
 const onSearchInput = (event: Event) => {
+    if (props.readonly) {
+        return;
+    }
+
     const target = event.target as HTMLInputElement;
 
     query.value = target.value;
@@ -524,6 +574,49 @@ onBeforeUnmount(() => {
 
 .vf-multiselect__label_placeholder {
     color: var(--vf-multiselect-placeholder-color);
+}
+
+.vf-multiselect__chips {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    overflow: hidden;
+}
+
+.vf-multiselect__chip {
+    max-width: 100%;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.1rem 0.4rem;
+    border-radius: 999px;
+    background-color: var(--vf-multiselect-option-active-background-color);
+    color: var(--vf-multiselect-option-active-text-color);
+    font-size: 0.85em;
+}
+
+.vf-multiselect__chip-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 9rem;
+}
+
+.vf-multiselect__chip-remove {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 999px;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.vf-multiselect__chip-remove:hover {
+    background-color: var(--vf-multiselect-clear-hover-background-color);
 }
 
 .vf-multiselect__chevron {

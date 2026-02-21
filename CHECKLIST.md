@@ -185,15 +185,15 @@ Execution dependencies:
 ### P0.14 Selection family (existing hardening)
 
 - [x] Selection family baseline is implemented (`Select`, `Autocomplete`, `Combobox`, `MultiSelect`, `TagInput`, `TreeSelect`)
-- [ ] Selection family audit framework is defined (open/close, focus, keyboard, ARIA)
-- [ ] `Select` audit + tests (keyboard, clearability, disabled states)
-- [ ] `Autocomplete` audit + tests (search, navigation, selection)
-- [ ] `Combobox` audit + tests (custom value flows, keyboard)
-- [ ] `MultiSelect` audit + tests (multi selection, chip removal, clearability)
-- [ ] `TagInput` audit + tests (token creation/removal, keyboard)
-- [ ] `TreeSelect` audit + tests (hierarchy navigation, selection behavior)
-- [ ] Standardize active/selected/disabled behavior across the family
-- [ ] Add docs patterns for simple, large-list, and async options
+- [x] Selection family audit framework is defined (open/close, focus, keyboard, ARIA)
+- [x] `Select` audit + tests (keyboard, clearability, disabled states)
+- [x] `Autocomplete` audit + tests (search, navigation, selection)
+- [x] `Combobox` audit + tests (custom value flows, keyboard)
+- [x] `MultiSelect` audit + tests (multi selection, chip removal, clearability)
+- [x] `TagInput` audit + tests (token creation/removal, keyboard)
+- [x] `TreeSelect` audit + tests (hierarchy navigation, selection behavior)
+- [x] Standardize active/selected/disabled behavior across the family
+- [x] Add docs patterns for simple, large-list, and async options
 
 ### P0.15 Date/time family (existing hardening)
 

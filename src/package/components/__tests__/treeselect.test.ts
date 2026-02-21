@@ -82,4 +82,41 @@ describe('TreeSelect', () => {
 
         expect(wrapper.emitted('update:expandedKeys')?.[0]).toEqual([['docs']]);
     });
+
+    it('supports hierarchy keyboard navigation and selection', async () => {
+        const wrapper = mountTreeSelect({
+            modelValue: undefined,
+            expandedKeys: [],
+            filter: false,
+        });
+        const trigger = wrapper.find('.vf-treeselect__control');
+
+        await trigger.trigger('keydown', { key: 'ArrowDown' });
+        await nextTick();
+
+        const rowsBeforeExpand = wrapper.findAll('[role="treeitem"]');
+        await rowsBeforeExpand[0].trigger('keydown', { key: 'ArrowRight' });
+
+        expect(wrapper.emitted('update:expandedKeys')?.[0]).toEqual([['docs']]);
+
+        await wrapper.setProps({ expandedKeys: ['docs'] });
+        await nextTick();
+
+        const rowsAfterExpand = wrapper.findAll('[role="treeitem"]');
+        await rowsAfterExpand[0].trigger('keydown', { key: 'ArrowDown' });
+        await rowsAfterExpand[1].trigger('keydown', { key: 'Enter' });
+
+        expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['guides']);
+    });
+
+    it('does not open or search in readonly mode', async () => {
+        const wrapper = mountTreeSelect({ readonly: true });
+        const trigger = wrapper.find('.vf-treeselect__control');
+
+        await trigger.trigger('click');
+        await trigger.trigger('keydown', { key: 'ArrowDown' });
+
+        expect(wrapper.find('.vf-treeselect').classes()).not.toContain('vf-treeselect_open');
+        expect(trigger.attributes('aria-expanded')).toBe('false');
+    });
 });

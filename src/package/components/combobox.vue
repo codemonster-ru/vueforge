@@ -9,6 +9,9 @@
             :placeholder="placeholder"
             :disabled="disabled"
             :readonly="readonly"
+            :aria-label="ariaLabel"
+            :aria-labelledby="ariaLabelledby"
+            :aria-describedby="ariaDescribedby"
             :aria-expanded="open"
             aria-autocomplete="list"
             :aria-controls="panelId"
@@ -36,7 +39,7 @@
         <button
             class="vf-combobox__chevron"
             type="button"
-            :disabled="disabled"
+            :disabled="disabled || readonly"
             aria-hidden="true"
             tabindex="-1"
             @mousedown.prevent
@@ -113,6 +116,9 @@ interface Props {
     strict?: boolean;
     allowCreate?: boolean;
     clearable?: boolean;
+    ariaLabel?: string;
+    ariaLabelledby?: string;
+    ariaDescribedby?: string;
     variant?: Variant;
     size?: Size;
 }
@@ -134,6 +140,9 @@ const props = withDefaults(defineProps<Props>(), {
     strict: true,
     allowCreate: false,
     clearable: false,
+    ariaLabel: 'Combobox input',
+    ariaLabelledby: undefined,
+    ariaDescribedby: undefined,
     variant: 'filled',
     size: 'normal',
 });
@@ -260,7 +269,7 @@ const highlightByStep = (step: number) => {
 };
 
 const openPanel = () => {
-    if (props.disabled) {
+    if (props.disabled || props.readonly) {
         return;
     }
 
@@ -281,6 +290,10 @@ const close = () => {
 };
 
 const togglePanel = () => {
+    if (props.disabled || props.readonly) {
+        return;
+    }
+
     if (open.value) {
         close();
 
@@ -338,6 +351,10 @@ const clearValue = () => {
 };
 
 const onInput = (event: Event) => {
+    if (props.disabled || props.readonly) {
+        return;
+    }
+
     const target = event.target as HTMLInputElement;
 
     query.value = target.value;
@@ -352,7 +369,9 @@ const onInput = (event: Event) => {
 
 const onFocus = (event: FocusEvent) => {
     emits('focus', event);
-    openPanel();
+    if (!props.readonly) {
+        openPanel();
+    }
 };
 
 const onBlur = (event: FocusEvent) => {
@@ -370,6 +389,10 @@ const onBlur = (event: FocusEvent) => {
 };
 
 const onArrowDown = () => {
+    if (props.disabled || props.readonly) {
+        return;
+    }
+
     if (!open.value) {
         openPanel();
 
@@ -380,6 +403,10 @@ const onArrowDown = () => {
 };
 
 const onArrowUp = () => {
+    if (props.disabled || props.readonly) {
+        return;
+    }
+
     if (!open.value) {
         openPanel();
 
@@ -390,6 +417,10 @@ const onArrowUp = () => {
 };
 
 const onEnter = () => {
+    if (props.disabled || props.readonly) {
+        return;
+    }
+
     if (!open.value) {
         openPanel();
 

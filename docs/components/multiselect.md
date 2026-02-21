@@ -36,10 +36,16 @@
 <MultiSelect v-model="countries" :options="countryOptions" placeholder="Select countries" clearable />
 ```
 
+More recipes: [`Selection Patterns`](selection-patterns.md).
+
 ## Tokens
 
 - Use `theme.overrides.components` to customize this component where token support is available.
 
 ## Accessibility
 
-- Ensure keyboard access, visible focus state, and sufficient color contrast in usage contexts.
+- Keyboard support includes open/navigation/select via `ArrowDown`/`ArrowUp`/`Enter` and close via `Escape`.
+- Selected values are shown as chips in the trigger and can be removed individually.
+- `Backspace` on the trigger removes the last selected item.
+- `clearable` provides a keyboard-accessible action to clear all selected items.
+- In `readonly` mode, panel open/search and selection mutation interactions are blocked.

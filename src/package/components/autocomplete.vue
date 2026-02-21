@@ -9,6 +9,9 @@
             :placeholder="placeholder"
             :disabled="disabled"
             :readonly="readonly"
+            :aria-label="ariaLabel"
+            :aria-labelledby="ariaLabelledby"
+            :aria-describedby="ariaDescribedby"
             :aria-expanded="open"
             aria-autocomplete="list"
             :aria-controls="panelId"
@@ -26,7 +29,7 @@
         <button
             class="vf-autocomplete__chevron"
             type="button"
-            :disabled="disabled"
+            :disabled="disabled || readonly"
             aria-hidden="true"
             tabindex="-1"
             @mousedown.prevent
@@ -99,6 +102,9 @@ interface Props {
     loadingText?: string;
     emptyText?: string;
     filter?: boolean;
+    ariaLabel?: string;
+    ariaLabelledby?: string;
+    ariaDescribedby?: string;
     variant?: Variant;
     size?: Size;
 }
@@ -116,6 +122,9 @@ const props = withDefaults(defineProps<Props>(), {
     loadingText: 'Loading...',
     emptyText: 'No results',
     filter: true,
+    ariaLabel: 'Autocomplete input',
+    ariaLabelledby: undefined,
+    ariaDescribedby: undefined,
     variant: 'filled',
     size: 'normal',
 });
@@ -219,7 +228,7 @@ const highlightByStep = (step: number) => {
 };
 
 const openPanel = () => {
-    if (props.disabled) {
+    if (props.disabled || props.readonly) {
         return;
     }
 
@@ -263,6 +272,10 @@ const selectOption = (option: { value: OptionValue; label: string; disabled?: bo
 };
 
 const onInput = (event: Event) => {
+    if (props.disabled || props.readonly) {
+        return;
+    }
+
     const target = event.target as HTMLInputElement;
 
     query.value = target.value;
@@ -277,7 +290,9 @@ const onInput = (event: Event) => {
 const onFocus = (event: FocusEvent) => {
     emits('focus', event);
 
-    openPanel();
+    if (!props.readonly) {
+        openPanel();
+    }
 };
 
 const onBlur = (event: FocusEvent) => {

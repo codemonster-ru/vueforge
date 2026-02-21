@@ -8,6 +8,11 @@
 - `optionValue?: string` (default `value`)
 - `placeholder?: string`
 - `disabled?: boolean` (default `false`)
+- `readonly?: boolean` (default `false`)
+- `clearable?: boolean` (default `false`)
+- `clearLabel?: string` (default `Clear selection`)
+- `ariaLabel?: string` (default `Select option`)
+- `panelAriaLabel?: string` (default `Options`)
 - `variant?: 'filled' | 'outlined'` (default `filled`)
 - `size?: 'small' | 'normal' | 'large'` (default `normal`)
 
@@ -28,10 +33,16 @@
 <Select v-model="role" :options="roles" placeholder="Choose role" />
 ```
 
+More recipes: [`Selection Patterns`](selection-patterns.md).
+
 ## Tokens
 
 Override via `theme.overrides.components.select`.
 
 ## Accessibility
 
-- Ensure keyboard access, visible focus state, and sufficient color contrast in usage contexts.
+- Trigger exposes popup semantics via `aria-expanded`, `aria-controls`, and `aria-haspopup="listbox"`.
+- Keyboard support: `ArrowDown`/`ArrowUp` open and navigate options, `Enter`/`Space` select, `Escape` closes.
+- Options are exposed as `role="option"` within `role="listbox"` panel and sync selected state via `aria-selected`.
+- `clearable` renders a keyboard-accessible clear button for resetting selection.
+- In `readonly` mode, open/select/clear interactions are blocked.

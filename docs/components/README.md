@@ -61,6 +61,7 @@ Detailed API pages generated from the current package reference.
 - [RichTextEditor](richtexteditor.md)
 - [SearchInput](searchinput.md)
 - [Section](section.md)
+- [Selection Patterns](selection-patterns.md)
 - [SegmentedControl](segmentedcontrol.md)
 - [Select](select.md)
 - [Skeleton](skeleton.md)
@@ -87,3 +88,6 @@ Detailed API pages generated from the current package reference.
 Related docs:
 
 - [Theming](../theming.md)
+- [Input Family Accessibility Audit](../accessibility/input-family-audit.md)
+- [Selection Family Accessibility Audit](../accessibility/selection-family-audit.md)
+- [Selection State Conventions](../accessibility/selection-state-conventions.md)

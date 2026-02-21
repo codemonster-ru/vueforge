@@ -48,6 +48,8 @@
 <TreeSelect v-model="selectedMany" :items="treeItems" multiple variant="outlined" />
 ```
 
+More recipes: [`Selection Patterns`](selection-patterns.md).
+
 ## Tokens
 
 Component tokens (override via `theme.overrides.components.treeselect`):
@@ -67,4 +69,6 @@ Component tokens (override via `theme.overrides.components.treeselect`):
 
 ## Accessibility
 
-- Ensure keyboard access, visible focus state, and sufficient color contrast in usage contexts.
+- Trigger opens the panel with keyboard (`ArrowDown`) and closes with `Escape`.
+- Tree hierarchy navigation is supported via tree keyboard bindings (`ArrowRight` expand, `ArrowLeft` collapse/parent, `ArrowUp`/`ArrowDown` move, `Enter`/`Space` select).
+- In `readonly` mode, panel open/search interactions and selection mutations are blocked.

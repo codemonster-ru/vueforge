@@ -1,6 +1,6 @@
 {
     "name": "@codemonster-ru/vueforge",
-    "version": "0.87.0",
+    "version": "0.88.0",
     "description": "Open source UI components for Vue.js.",
     "license": "MIT",
     "author": "Kirill Kolesnikov",
@@ -82,5 +82,6 @@
         "@codemonster-ru/floater.js": "^1.0.8"
     }
 }
+
 
 

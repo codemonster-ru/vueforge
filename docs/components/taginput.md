@@ -41,6 +41,8 @@
 <TagInput v-model="skills" :options="skillOptions" placeholder="Add skills" clearable />
 ```
 
+More recipes: [`Selection Patterns`](selection-patterns.md).
+
 ## Tokens
 
 Component tokens (override via `theme.overrides.components.taginput`):
@@ -62,24 +64,9 @@ Component tokens (override via `theme.overrides.components.taginput`):
 - `small.fontSize`, `small.padding`, `small.chipPadding`, `small.chipFontSize`
 - `large.fontSize`, `large.padding`, `large.chipPadding`, `large.chipFontSize`
 
-
-Component tokens (override via `theme.overrides.components.multiselect`):
-
-- `minWidth`, `fontSize`, `controlGap`, `chevronSize`
-- `padding`, `borderRadius`, `borderColor`
-- `backgroundColor`, `textColor`, `placeholderColor`
-- `focusBorderColor`, `focusRingShadow`, `hoverBorderColor`
-- `disabledOpacity`
-- `panelBackgroundColor`, `panelBorderColor`, `panelPadding`, `panelMaxHeight`, `panelRadiusOffset`, `panelShadow`
-- `searchPadding`, `searchBorderColor`, `searchBorderRadius`
-- `optionPadding`, `optionBorderRadius`
-- `optionHoverBackgroundColor`, `optionActiveBackgroundColor`, `optionActiveTextColor`, `optionHighlightedBackgroundColor`
-- `emptyPadding`, `emptyColor`
-- `loadingPadding`, `loadingColor`
-- `clearSize`, `clearRadius`, `clearHoverBackgroundColor`
-- `small.fontSize`, `small.padding`
-- `large.fontSize`, `large.padding`
-
 ## Accessibility
 
-- Ensure keyboard access, visible focus state, and sufficient color contrast in usage contexts.
+- Keyboard token creation is supported by `Enter`, `Tab`, and comma (`,`).
+- Keyboard token removal is supported via `Backspace` when query is empty.
+- Chip remove buttons and `clearable` action provide explicit removal flows.
+- In `readonly` mode, token mutation and open/search interactions are blocked.

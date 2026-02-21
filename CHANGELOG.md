@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.88.0] - 2026-02-21
+
+- Completed `P0.14` selection-family hardening for `Select`, `Autocomplete`, `Combobox`, `MultiSelect`, `TagInput`, and `TreeSelect`.
+- Selection interaction polish: added keyboard/navigation and selection behavior coverage across the family, including new `Select` test coverage and TreeSelect hierarchy keyboard selection checks.
+- Selection state consistency: standardized `active`/`selected`/`disabled`/`readonly` behavior contracts across the selection family.
+- Selection docs expansion: added selection-family accessibility audit framework, selection state conventions, and recipe patterns for simple, large-list, and async option sources.
+- Checklist update: all `P0.14` items are now marked as completed.
+
 ## [0.87.0] - 2026-02-21
 
 - Completed `P0.13` input-family hardening for `Textarea`, `NumberInput`, `PasswordInput`, `SearchInput`, `MaskedInput`, `MentionInput`, and `OtpInput`.

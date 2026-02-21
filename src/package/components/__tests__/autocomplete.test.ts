@@ -5,7 +5,7 @@ import Autocomplete from '../autocomplete.vue';
 const options = [
     { label: 'United States', value: 'us' },
     { label: 'Germany', value: 'de' },
-    { label: 'Japan', value: 'jp' },
+    { label: 'Japan', value: 'jp', disabled: true },
 ];
 
 const mountAutocomplete = (props: Record<string, unknown> = {}) => {
@@ -53,5 +53,30 @@ describe('Autocomplete', () => {
         await input.trigger('keydown', { key: 'Enter' });
 
         expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['de']);
+    });
+
+    it('closes panel on Escape after opening with keyboard', async () => {
+        const wrapper = mountAutocomplete();
+        const input = wrapper.find('input');
+
+        await input.trigger('focus');
+        expect(wrapper.find('.vf-autocomplete').classes()).toContain('vf-autocomplete_open');
+
+        await input.trigger('keydown', { key: 'Escape' });
+
+        expect(wrapper.find('.vf-autocomplete').classes()).not.toContain('vf-autocomplete_open');
+    });
+
+    it('does not search or open panel in readonly mode', async () => {
+        const wrapper = mountAutocomplete({ readonly: true });
+        const input = wrapper.find('input');
+
+        await input.setValue('ger');
+        await input.trigger('focus');
+        await input.trigger('keydown', { key: 'ArrowDown' });
+
+        expect(wrapper.emitted('search')).toBeFalsy();
+        expect(wrapper.find('.vf-autocomplete').classes()).not.toContain('vf-autocomplete_open');
+        expect(wrapper.find('.vf-autocomplete__chevron').attributes('disabled')).toBeDefined();
     });
 });

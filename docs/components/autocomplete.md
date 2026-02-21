@@ -13,6 +13,9 @@
 - `loadingText?: string` (default `Loading...`)
 - `emptyText?: string` (default `No results`)
 - `filter?: boolean` (default `true`)
+- `ariaLabel?: string` (default `Autocomplete input`)
+- `ariaLabelledby?: string`
+- `ariaDescribedby?: string`
 - `size?: 'small' | 'normal' | 'large'` (default `normal`)
 - `variant?: 'filled' | 'outlined'` (default `filled`)
 
@@ -34,10 +37,15 @@
 <Autocomplete v-model="country" :options="countries" placeholder="Find country" />
 ```
 
+More recipes: [`Selection Patterns`](selection-patterns.md).
+
 ## Tokens
 
 - Use `theme.overrides.components` to customize this component where token support is available.
 
 ## Accessibility
 
-- Ensure keyboard access, visible focus state, and sufficient color contrast in usage contexts.
+- Input uses combobox semantics (`role="combobox"`, `aria-expanded`, `aria-controls`, `aria-activedescendant`, `aria-autocomplete="list"`).
+- Options panel uses `role="listbox"` and options use `role="option"` with selected/highlighted state sync.
+- Keyboard support: `ArrowDown`/`ArrowUp` navigate, `Enter` selects highlighted option, `Escape` closes panel.
+- In `readonly` mode, panel open/search interactions are blocked.
