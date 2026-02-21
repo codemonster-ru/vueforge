@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.86.0] - 2026-02-21
+
+- Input hardening: expanded base `Input` API with native/a11y props (`required`, `id`, `name`, `autocomplete`, `inputmode`, `aria*`) and improved ARIA mapping for required/invalid states.
+- Added `Input` unit tests for keyboard/input flow, ARIA/native attributes, disabled/readonly semantics, and focus/blur events.
+- Updated `Input` documentation accessibility guidance and marked `P0.13` `Input` audit item as completed in checklist.
+
 ## [0.85.0] - 2026-02-21
 
 - FormField hardening: improved slot-prop accessibility contract with `ariaInvalid` and `ariaRequired`.

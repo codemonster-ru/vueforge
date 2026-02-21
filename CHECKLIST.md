@@ -172,7 +172,7 @@ Execution dependencies:
 
 - [x] Input family baseline is implemented (`Input`, `Textarea`, `NumberInput`, `PasswordInput`, `SearchInput`, `MaskedInput`, `MentionInput`, `OtpInput`)
 - [x] Input family audit framework is defined (shared keyboard + ARIA checklist)
-- [ ] `Input` keyboard/focus-visible/ARIA audit + tests
+- [x] `Input` keyboard/focus-visible/ARIA audit + tests
 - [ ] `Textarea` keyboard/focus-visible/ARIA audit + tests
 - [ ] `NumberInput` keyboard/focus-visible/ARIA audit + tests
 - [ ] `PasswordInput` keyboard/focus-visible/ARIA audit + tests

@@ -4,12 +4,32 @@
             <slot name="prefix" />
         </span>
         <input
+            :id="id"
             class="vf-input__control"
             :type="type"
+            :name="name"
             :value="modelValue"
             :placeholder="placeholder"
+            :autocomplete="autocomplete"
+            :inputmode="inputmode"
             :disabled="disabled"
             :readonly="readonly"
+            :required="required"
+            :aria-label="ariaLabel"
+            :aria-labelledby="ariaLabelledby"
+            :aria-describedby="ariaDescribedby"
+            :aria-invalid="
+                ariaInvalid === true || ariaInvalid === 'true' ? 'true' : ariaInvalid === 'false' ? 'false' : undefined
+            "
+            :aria-required="
+                required
+                    ? 'true'
+                    : ariaRequired === true || ariaRequired === 'true'
+                      ? 'true'
+                      : ariaRequired === 'false'
+                        ? 'false'
+                        : undefined
+            "
             @input="onInput"
             @change="onChange"
             @focus="onFocus"
@@ -26,6 +46,7 @@ import { computed } from 'vue';
 
 type Size = 'small' | 'normal' | 'large';
 type Variant = 'filled' | 'outlined';
+type InputMode = 'none' | 'text' | 'tel' | 'url' | 'email' | 'numeric' | 'decimal' | 'search';
 
 interface Props {
     modelValue?: string | number;
@@ -33,6 +54,16 @@ interface Props {
     placeholder?: string;
     disabled?: boolean;
     readonly?: boolean;
+    required?: boolean;
+    id?: string;
+    name?: string;
+    autocomplete?: string;
+    inputmode?: InputMode;
+    ariaLabel?: string;
+    ariaLabelledby?: string;
+    ariaDescribedby?: string;
+    ariaInvalid?: boolean | 'true' | 'false';
+    ariaRequired?: boolean | 'true' | 'false';
     size?: Size;
     variant?: Variant;
 }
@@ -44,6 +75,16 @@ const props = withDefaults(defineProps<Props>(), {
     placeholder: '',
     disabled: false,
     readonly: false,
+    required: false,
+    id: undefined,
+    name: undefined,
+    autocomplete: undefined,
+    inputmode: undefined,
+    ariaLabel: undefined,
+    ariaLabelledby: undefined,
+    ariaDescribedby: undefined,
+    ariaInvalid: undefined,
+    ariaRequired: undefined,
     size: 'normal',
     variant: 'filled',
 });
