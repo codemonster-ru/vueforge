@@ -99,6 +99,20 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="vf-home__card vf-home__card_large">
+                            <h3>Grid</h3>
+                            <Grid :columns="1" gap="0.5rem" :breakpoints="{ md: { columns: 12, gap: '0.75rem' } }">
+                                <GridItem :span="1" :breakpoints="{ md: { span: 4 } }">
+                                    <div class="vf-home__container-box">sidebar</div>
+                                </GridItem>
+                                <GridItem :span="1" :breakpoints="{ md: { span: 8 } }">
+                                    <div class="vf-home__container-box">content</div>
+                                </GridItem>
+                                <GridItem :span="1" :breakpoints="{ md: { start: 1, end: 13 } }">
+                                    <div class="vf-home__container-box">full-width row</div>
+                                </GridItem>
+                            </Grid>
+                        </div>
                         <div class="vf-home__card">
                             <h3>Divider</h3>
                             <div class="vf-home__stack">
@@ -1157,6 +1171,8 @@ import {
     DateTimePicker,
     Container,
     Section,
+    Grid,
+    GridItem,
     Pagination,
     DataTable,
     EmptyState,
@@ -1485,6 +1501,7 @@ const searchCatalog = [
     'ButtonGroup',
     'PageHeader',
     'Section',
+    'Grid',
     'Input',
     'InputGroup',
     'Divider',

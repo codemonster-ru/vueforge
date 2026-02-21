@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.75.0] - 2026-02-21
+
+- Added Grid and GridItem layout primitives with columns/gap/align/justify props and responsive breakpoint overrides.
+- Added span/start/end API for grid items with responsive per-breakpoint placement.
+- Added default theme tokens and typed token support for `components.grid`.
+- Added Grid/GridItem exports, docs page with layout recipes, and unit tests.
+
 ## [0.74.0] - 2026-02-21
 
 - Added Section layout component with `paddingY`, `background`, `bordered`, and `as` props plus responsive vertical rhythm.

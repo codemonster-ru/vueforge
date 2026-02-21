@@ -55,7 +55,7 @@ import { Container, PageHeader, Button } from '@codemonster-ru/vueforge';
 
 VueForge currently includes core building blocks for:
 
-- Layout and navigation: `Container`, `Section`, `AppShell`, `Menu`, `Link`, `Breadcrumbs`, `PageHeader`, `Divider`
+- Layout and navigation: `Container`, `Section`, `Grid`, `AppShell`, `Menu`, `Link`, `Breadcrumbs`, `PageHeader`, `Divider`
 - Forms and inputs: `Form`, `FormField`, `Input`, `Textarea`, `Select`, `Autocomplete`, `Combobox`, `MultiSelect`, `TagInput`, `Date*`, `Time*`
 - Data display: `DataTable`, `Pagination`, `VirtualScroller`, `Card`, `EmptyState`
 - Overlays and feedback: `Modal`, `Drawer`, `Popover`, `Dropdown`, `ContextMenu`, `Tooltip`, `Toast`, `Alert`, `NotificationCenter`

@@ -72,13 +72,13 @@ Execution dependencies:
 
 ### P0.3 `Grid` (new)
 
-- [ ] Define props: columns, gaps, breakpoints, align, justify
-- [ ] Add item API for span/start/end
-- [ ] Implement responsive class/style generation
-- [ ] Add theme tokens and typings
-- [ ] Add unit tests (breakpoints and span behavior)
-- [ ] Export from `src/index.ts`
-- [ ] Add docs (layout recipes)
+- [x] Define props: columns, gaps, breakpoints, align, justify
+- [x] Add item API for span/start/end
+- [x] Implement responsive class/style generation
+- [x] Add theme tokens and typings
+- [x] Add unit tests (breakpoints and span behavior)
+- [x] Export from `src/index.ts`
+- [x] Add docs (layout recipes)
 
 ### P0.4 `Stack` (new)
 

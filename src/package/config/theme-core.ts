@@ -51,6 +51,18 @@ export type SectionTokens = {
     backgroundColorElevated?: string;
     borderColor?: string;
 };
+export type GridTokens = {
+    columns?: string;
+    gap?: string;
+    columnGap?: string;
+    rowGap?: string;
+    alignItems?: string;
+    justifyItems?: string;
+    breakpointSm?: string;
+    breakpointMd?: string;
+    breakpointLg?: string;
+    breakpointXl?: string;
+};
 export type CheckboxTokens = {
     size?: string;
     gap?: string;
@@ -2141,6 +2153,7 @@ export type ThemeComponentTokens = {
     card?: CardTokens;
     container?: ContainerTokens;
     section?: SectionTokens;
+    grid?: GridTokens;
     checkbox?: CheckboxTokens;
     radio?: RadioTokens;
     tabs?: TabsTokens;

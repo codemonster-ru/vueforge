@@ -35,6 +35,7 @@ Detailed API pages generated from the current package reference.
 - [FilterChips](filterchips.md)
 - [Form](form.md)
 - [FormField](formfield.md)
+- [Grid / GridItem](grid-griditem.md)
 - [InlineEdit](inlineedit.md)
 - [Input](input.md)
 - [InputGroup / InputAddon](inputgroup-inputaddon.md)

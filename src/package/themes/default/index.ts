@@ -3,6 +3,7 @@ import button from './components/button';
 import buttonGroup from './components/button-group';
 import card from './components/card';
 import container from './components/container';
+import grid from './components/grid';
 import section from './components/section';
 import input from './components/input';
 import inputGroup from './components/input-group';
@@ -83,6 +84,7 @@ export default {
         buttonGroup,
         card,
         container,
+        grid,
         section,
         input,
         inputGroup,
