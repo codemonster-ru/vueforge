@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.84.0] - 2026-02-21
+
+- Form DX baseline: added official async submit API (`submit`, `mapSubmitError`) with `submitSuccess` and `submitError` events.
+- Added tests for async validation and submit error handling in `Form`.
+- Expanded Form docs with recipes for async submit, API errors, reset flows, and Zod/Yup adapter examples.
+
 ## [0.83.0] - 2026-02-21
 
 - DataTable sticky behavior: added `stickyHeader` and per-column `sticky` support (`left`/`right`).

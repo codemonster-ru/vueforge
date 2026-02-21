@@ -154,11 +154,11 @@ Execution dependencies:
 ### P0.11 `Form` (core DX baseline)
 
 - [x] `Form` component is implemented
-- [ ] Define official async submit pattern in API/docs
-- [ ] Add zod adapter example
-- [ ] Add yup adapter example
-- [ ] Add tests for async validation and submit error handling
-- [ ] Add docs recipes: async submit, API errors, reset flows
+- [x] Define official async submit pattern in API/docs
+- [x] Add zod adapter example
+- [x] Add yup adapter example
+- [x] Add tests for async validation and submit error handling
+- [x] Add docs recipes: async submit, API errors, reset flows
 
 ### P0.12 `FormField` (existing hardening)
 

@@ -72,4 +72,57 @@ describe('Form', () => {
         expect(wrapper.emitted('submit')).toBeTruthy();
         expect(wrapper.emitted('invalidSubmit')).toBeFalsy();
     });
+
+    it('handles async validation and emits invalidSubmit', async () => {
+        const wrapper = mount(Form, {
+            props: {
+                validate: async values => {
+                    await Promise.resolve();
+                    const nextErrors: Record<string, string> = {};
+
+                    if (!values.email) {
+                        nextErrors.email = 'Email is required';
+                    }
+
+                    return nextErrors;
+                },
+            },
+            slots: {
+                default: ({ errors }: { errors: Record<string, string> }) =>
+                    h('div', [h('input', { name: 'email' }), h('p', { class: 'error' }, errors.email ?? '')]),
+            },
+        });
+
+        await wrapper.find('form').trigger('submit');
+
+        expect(wrapper.emitted('invalidSubmit')).toBeTruthy();
+        expect(wrapper.find('.error').text()).toBe('Email is required');
+    });
+
+    it('maps submit errors and emits submitError', async () => {
+        const wrapper = mount(Form, {
+            props: {
+                validate: () => ({}),
+                submit: async () => {
+                    throw new Error('API');
+                },
+                mapSubmitError: () => ({
+                    _form: 'Request failed, try again',
+                }),
+            },
+            slots: {
+                default: ({ errors }: { errors: Record<string, string> }) =>
+                    h('div', [h('input', { name: 'email' }), h('p', { class: 'error' }, errors._form ?? '')]),
+            },
+        });
+
+        await wrapper.find('input').setValue('ok@example.com');
+        await wrapper.find('form').trigger('submit');
+        await Promise.resolve();
+        await wrapper.vm.$nextTick();
+
+        expect(wrapper.emitted('submitError')).toBeTruthy();
+        expect(wrapper.emitted('invalidSubmit')).toBeTruthy();
+        expect(wrapper.find('.error').text()).toBe('Request failed, try again');
+    });
 });

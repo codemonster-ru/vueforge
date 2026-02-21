@@ -39,11 +39,15 @@ export type FormErrors = Record<string, string>;
 export type FormTouched = Record<string, boolean>;
 export type FormValidateResult = FormErrors | string | boolean | null | undefined;
 export type FormValidateHandler = (values: FormValues) => FormValidateResult | Promise<FormValidateResult>;
+export type FormSubmitHandler = (values: FormValues) => unknown | Promise<unknown>;
+export type FormSubmitErrorMapper = (error: unknown, values: FormValues) => FormValidateResult;
 
 interface Props {
     modelValue?: FormValues;
     initialValues?: FormValues;
     validate?: FormValidateHandler;
+    submit?: FormSubmitHandler;
+    mapSubmitError?: FormSubmitErrorMapper;
     validateOn?: ValidateTrigger | Array<ValidateTrigger>;
     disabled?: boolean;
     novalidate?: boolean;
@@ -56,6 +60,8 @@ const props = withDefaults(defineProps<Props>(), {
     modelValue: undefined,
     initialValues: undefined,
     validate: undefined,
+    submit: undefined,
+    mapSubmitError: undefined,
     validateOn: 'submit',
     disabled: false,
     novalidate: true,
@@ -64,7 +70,17 @@ const props = withDefaults(defineProps<Props>(), {
     ariaLabelledby: undefined,
 });
 
-const emits = defineEmits(['update:modelValue', 'change', 'blur', 'validate', 'submit', 'invalidSubmit', 'reset']);
+const emits = defineEmits([
+    'update:modelValue',
+    'change',
+    'blur',
+    'validate',
+    'submit',
+    'submitSuccess',
+    'submitError',
+    'invalidSubmit',
+    'reset',
+]);
 
 const formRef = ref<HTMLFormElement | null>(null);
 const initialSnapshot = ref<FormValues>(cloneValue(mergeRecords(props.initialValues, props.modelValue)));
@@ -207,6 +223,25 @@ const submitForm = async (event?: Event) => {
         }
 
         emits('submit', snapshot, event);
+
+        if (!props.submit) {
+            emits('submitSuccess', snapshot, undefined, event);
+
+            return;
+        }
+
+        try {
+            const result = await props.submit(snapshot);
+
+            emits('submitSuccess', snapshot, result, event);
+        } catch (error: unknown) {
+            const mapped = props.mapSubmitError ? props.mapSubmitError(error, snapshot) : 'Submit failed';
+            const nextErrors = normalizeValidationResult(mapped);
+
+            errors.value = nextErrors;
+            emits('submitError', error, cloneValue(nextErrors), snapshot, event);
+            emits('invalidSubmit', cloneValue(nextErrors), snapshot, event);
+        }
     } finally {
         isSubmitting.value = false;
     }

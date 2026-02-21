@@ -89,6 +89,8 @@ export { default as VirtualScroller } from '@/package/components/virtual-scrolle
 export type { DataTableColumn, DataTableQuery, DataTableBulkAction } from '@/package/components/data-table.vue';
 export type {
     FormErrors,
+    FormSubmitErrorMapper,
+    FormSubmitHandler,
     FormTouched,
     FormValidateHandler,
     FormValidateResult,
