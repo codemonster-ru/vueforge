@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.85.0] - 2026-02-21
+
+- FormField hardening: improved slot-prop accessibility contract with `ariaInvalid` and `ariaRequired`.
+- Added FormField tests for `aria-describedby` wiring across hint/error/plain states and required semantics.
+- Added FormField docs do/don't examples for correct accessibility wiring.
+- Added input-family accessibility audit framework doc with shared keyboard and ARIA checklist template.
+
 ## [0.84.0] - 2026-02-21
 
 - Form DX baseline: added official async submit API (`submit`, `mapSubmitError`) with `submitSuccess` and `submitError` events.

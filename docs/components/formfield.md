@@ -16,7 +16,8 @@
 
 ## Slots
 
-- `default` - form control wrapper slot props: `{ id, describedBy, invalid, required }`
+- `default` - form control wrapper slot props:
+  `{ id, describedBy, invalid, required, ariaInvalid, ariaRequired }`
 - `label` (optional)
 - `hint` (optional)
 - `error` (optional)
@@ -25,8 +26,15 @@
 
 ```vue
 <FormField label="Email" hint="We never share it" :error="emailError">
-    <template #default="{ id, describedBy }">
-        <Input :id="id" v-model="email" :aria-describedby="describedBy" placeholder="name@example.com" />
+    <template #default="{ id, describedBy, ariaInvalid, ariaRequired }">
+        <Input
+            :id="id"
+            v-model="email"
+            :aria-describedby="describedBy"
+            :aria-invalid="ariaInvalid"
+            :aria-required="ariaRequired"
+            placeholder="name@example.com"
+        />
     </template>
 </FormField>
 ```
@@ -40,4 +48,31 @@ Customize these colors via `theme.overrides.components.formField.errorBorderColo
 
 ## Accessibility
 
-- Ensure keyboard access, visible focus state, and sufficient color contrast in usage contexts.
+- `FormField` wires `label for` and passes generated ids to controls through slot props.
+- Use `describedBy` on controls so hint/error text is announced by assistive technologies.
+- Error message region uses `role="alert"` and should contain short actionable text.
+
+## Do / Don't
+
+```vue
+<!-- Do -->
+<FormField label="Email" hint="Work email only" :error="errors.email" required>
+    <template #default="{ id, describedBy, ariaInvalid, ariaRequired }">
+        <Input
+            :id="id"
+            v-model="values.email"
+            :aria-describedby="describedBy"
+            :aria-invalid="ariaInvalid"
+            :aria-required="ariaRequired"
+        />
+    </template>
+</FormField>
+
+<!-- Don't -->
+<FormField label="Email" :error="errors.email">
+    <template #default="{ id }">
+        <Input :id="id" v-model="values.email" />
+        <!-- Missing aria-describedby and invalid/required aria mapping -->
+    </template>
+</FormField>
+```

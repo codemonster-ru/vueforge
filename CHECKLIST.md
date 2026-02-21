@@ -163,15 +163,15 @@ Execution dependencies:
 ### P0.12 `FormField` (existing hardening)
 
 - [x] `FormField` component is implemented
-- [ ] Validate aria-describedby wiring in all states
-- [ ] Ensure error/hint/required semantics are consistent
-- [ ] Add tests for slot props and accessibility
-- [ ] Add docs do/don't examples
+- [x] Validate aria-describedby wiring in all states
+- [x] Ensure error/hint/required semantics are consistent
+- [x] Add tests for slot props and accessibility
+- [x] Add docs do/don't examples
 
 ### P0.13 Input family (existing hardening)
 
 - [x] Input family baseline is implemented (`Input`, `Textarea`, `NumberInput`, `PasswordInput`, `SearchInput`, `MaskedInput`, `MentionInput`, `OtpInput`)
-- [ ] Input family audit framework is defined (shared keyboard + ARIA checklist)
+- [x] Input family audit framework is defined (shared keyboard + ARIA checklist)
 - [ ] `Input` keyboard/focus-visible/ARIA audit + tests
 - [ ] `Textarea` keyboard/focus-visible/ARIA audit + tests
 - [ ] `NumberInput` keyboard/focus-visible/ARIA audit + tests

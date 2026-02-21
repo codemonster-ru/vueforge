@@ -5,7 +5,14 @@
             <span v-if="required" class="vf-form-field__required" aria-hidden="true">*</span>
         </label>
         <div class="vf-form-field__control">
-            <slot :id="targetId" :described-by="describedBy" :invalid="hasError" :required="required" />
+            <slot
+                :id="targetId"
+                :described-by="describedBy"
+                :invalid="hasError"
+                :required="required"
+                :aria-invalid="hasError ? 'true' : undefined"
+                :aria-required="required ? 'true' : undefined"
+            />
         </div>
         <p v-if="hasHint" :id="hintId" class="vf-form-field__hint">
             <slot name="hint">{{ hint }}</slot>
@@ -117,7 +124,8 @@ const getClass = computed(() => {
     color: var(--vf-form-field-error-color);
 }
 
-.vf-form-field_invalid :is(
+.vf-form-field_invalid
+    :is(
         .vf-input,
         .vf-textarea,
         .vf-number-input,
@@ -141,7 +149,8 @@ const getClass = computed(() => {
     border-color: var(--vf-form-field-error-border-color);
 }
 
-.vf-form-field_invalid :is(
+.vf-form-field_invalid
+    :is(
         .vf-input,
         .vf-textarea,
         .vf-number-input,
@@ -159,7 +168,8 @@ const getClass = computed(() => {
         .vf-mention-input,
         .vf-treeselect
     ):focus-within,
-.vf-form-field_invalid :is(
+.vf-form-field_invalid
+    :is(
         .vf-select_open,
         .vf-autocomplete_open,
         .vf-combobox_open,
