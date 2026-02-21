@@ -27,7 +27,20 @@
 ```vue
 <Link href="https://example.com" target="_blank">External</Link>
 <Link to="/settings">Router link</Link>
+<Link href="https://example.com" disabled>Disabled external</Link>
 ```
+
+## External vs Internal Usage
+
+- External links:
+    - Use `href` (or `url`) for anchor mode.
+    - Add `target="_blank"` with `rel="noopener noreferrer"` when opening a new tab.
+- Internal links:
+    - Use `to` for router navigation (`router-link` mode).
+    - Prefer named routes or stable app paths.
+- Disabled links:
+    - Apply `disabled` for both anchor and router-link modes.
+    - Disabled anchors remove `href`, set `aria-disabled="true"`, and remove tab focus.
 
 ## Tokens
 
@@ -37,6 +50,7 @@ Override via `theme.overrides.components.link`:
 
 ## Accessibility
 
-- Disabled links set `aria-disabled` and remove keyboard tab focus (`tabindex=-1`).
+- Disabled links set `aria-disabled`, remove keyboard tab focus (`tabindex=-1`), and block Enter/Space activation.
+- Focus-visible state is styled for keyboard navigation consistency.
 - Router links expose active state via classes (`vf-link_active`, `vf-link_partially-active`).
 - Prefer clear link text for screen-reader readability.

@@ -33,13 +33,56 @@
 <Menu :items="[{ label: 'Home', to: '/' }, { separator: true }, { label: 'Docs', href: 'https://example.com' }]" />
 ```
 
+### Top-nav preset
+
+```vue
+<Menu
+    orientation="horizontal"
+    :items="[
+        { label: 'Dashboard', to: '/' },
+        {
+            label: 'Products',
+            items: [
+                { label: 'Catalog', to: '/products/catalog' },
+                { label: 'Pricing', to: '/products/pricing' },
+            ],
+        },
+        { label: 'Docs', href: 'https://example.com/docs' },
+    ]"
+/>
+```
+
+### Sidebar-nav preset
+
+```vue
+<Menu
+    orientation="vertical"
+    :items="[
+        { label: 'Overview', to: '/overview' },
+        {
+            label: 'Management',
+            items: [
+                { label: 'Users', to: '/management/users' },
+                { label: 'Roles', to: '/management/roles' },
+            ],
+        },
+        { separator: true },
+        { label: 'Settings', to: '/settings' },
+    ]"
+/>
+```
+
 ## Tokens
 
 Override via `theme.overrides.components.menu`.
 
 ## Accessibility
 
-- Root list uses `role="menu"`, items use `role="menuitem"`.
-- Parent items with submenus expose `aria-expanded`.
-- Keyboard support includes `Enter` and `Space` for parent item toggling.
-- Ensure menu labels are meaningful and disabled items communicate `aria-disabled`.
+- Root list uses `role="menu"` and `aria-orientation`.
+- Interactive items use `role="menuitem"`; separators use `role="separator"`.
+- Parent items expose `aria-haspopup="menu"`, `aria-expanded`, and `aria-controls`.
+- Active links expose `aria-current="page"`.
+- Keyboard support for submenu parents:
+    - `Enter` / `Space`: toggle submenu
+    - `ArrowRight` / `ArrowDown`: open submenu and move focus to first nested item
+    - `ArrowLeft` / `Escape`: close submenu

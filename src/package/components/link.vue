@@ -1,12 +1,13 @@
 <template>
     <a
         v-if="resolvedType === 'a'"
-        :href="resolvedHref"
+        :href="disabled ? undefined : resolvedHref"
         class="vf-link"
         :class="{ 'vf-link_active': getActive, 'vf-link_disabled': disabled }"
-        :aria-disabled="disabled"
+        :aria-disabled="disabled ? 'true' : undefined"
         :tabindex="disabled ? -1 : undefined"
         @click="onClick"
+        @keydown="onKeydown"
     >
         <template v-if="$slots.default">
             <slot />
@@ -21,11 +22,12 @@
         :to="routerLinkTo"
         class="vf-link"
         :class="{ 'vf-link_active': getActive }"
-        :aria-disabled="disabled"
+        :aria-disabled="disabled ? 'true' : undefined"
         :tabindex="disabled ? -1 : undefined"
         active-class="vf-link_partially-active"
         exact-active-class="vf-link_active"
         @click="onClick"
+        @keydown="onKeydown"
     >
         <template v-if="$slots.default">
             <slot />
@@ -128,6 +130,17 @@ const onClick = (event: MouseEvent) => {
     event.stopPropagation();
 };
 
+const onKeydown = (event: KeyboardEvent) => {
+    if (!props.disabled) {
+        return;
+    }
+
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        event.stopPropagation();
+    }
+};
+
 watch(isRouteActive, value => {
     if (value) {
         emits('active');
@@ -155,6 +168,12 @@ watch(isRouteActive, value => {
 
     &.vf-link_disabled {
         cursor: not-allowed;
+    }
+
+    &:focus-visible {
+        outline: none;
+        border-radius: var(--vf-radii-sm);
+        box-shadow: 0 0 0 2px var(--vf-primary-color);
     }
 }
 

@@ -921,9 +921,18 @@
                                 </template>
                             </Drawer>
                         </div>
-                        <div class="vf-home__card">
+                        <div class="vf-home__card vf-home__card_large">
                             <h3>Menu</h3>
-                            <Menu :items="menuItems" />
+                            <div class="vf-home__stack vf-home__menu-demo">
+                                <div class="vf-home__menu-block">
+                                    <p class="vf-home__muted">Top-nav (horizontal)</p>
+                                    <Menu orientation="horizontal" :items="menuTopItems" />
+                                </div>
+                                <div class="vf-home__menu-block">
+                                    <p class="vf-home__muted">Sidebar-nav (vertical)</p>
+                                    <Menu :items="menuSidebarItems" />
+                                </div>
+                            </div>
                         </div>
                         <div class="vf-home__card">
                             <h3>Dropdown</h3>
@@ -1595,6 +1604,29 @@ const tableRows = [
     { id: 3, name: 'Chen', role: 'Product', age: 31 },
 ];
 const menuItems = [{ label: 'Home', to: '/' }, { separator: true }, { label: 'Docs', href: 'https://example.com' }];
+const menuTopItems = [
+    { label: 'Dashboard', to: '/' },
+    {
+        label: 'Products',
+        items: [
+            { label: 'Catalog', to: '/products/catalog' },
+            { label: 'Pricing', to: '/products/pricing' },
+        ],
+    },
+    { label: 'Docs', href: 'https://example.com/docs' },
+];
+const menuSidebarItems = [
+    { label: 'Overview', to: '/overview' },
+    {
+        label: 'Management',
+        items: [
+            { label: 'Users', to: '/management/users' },
+            { label: 'Roles', to: '/management/roles' },
+        ],
+    },
+    { separator: true },
+    { label: 'Settings', to: '/settings' },
+];
 const contextMenuItems = [
     { label: 'Copy', command: () => (contextMenuAction.value = 'copy') },
     { label: 'Rename', command: () => (contextMenuAction.value = 'rename') },
@@ -1831,6 +1863,19 @@ body {
 
 .vf-home__stack > * {
     min-width: 0;
+}
+
+.vf-home__menu-demo {
+    gap: 1rem;
+}
+
+.vf-home__menu-block {
+    display: grid;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    border: 1px solid var(--vf-border-color);
+    border-radius: 8px;
+    background-color: color-mix(in srgb, var(--vf-bg-soft-color) 55%, transparent);
 }
 
 .vf-home__stack-inline {

@@ -101,19 +101,19 @@ Execution dependencies:
 ### P0.6 `Menu` (existing hardening)
 
 - [x] `Menu` component is implemented
-- [ ] Audit keyboard navigation for nested items
-- [ ] Ensure ARIA roles/states are complete
-- [ ] Add official presets/examples: top-nav and sidebar-nav
-- [ ] Add tests for keyboard and active-state behavior
-- [ ] Add a11y section in docs
+- [x] Audit keyboard navigation for nested items
+- [x] Ensure ARIA roles/states are complete
+- [x] Add official presets/examples: top-nav and sidebar-nav
+- [x] Add tests for keyboard and active-state behavior
+- [x] Add a11y section in docs
 
 ### P0.7 `Link` (existing hardening)
 
 - [x] `Link` component is implemented
-- [ ] Verify disabled/accessibility semantics for router and anchor modes
-- [ ] Add focus-visible consistency
-- [ ] Add tests for keyboard and aria-disabled behavior
-- [ ] Add docs notes for external/internal links
+- [x] Verify disabled/accessibility semantics for router and anchor modes
+- [x] Add focus-visible consistency
+- [x] Add tests for keyboard and aria-disabled behavior
+- [x] Add docs notes for external/internal links
 
 ### P0.8 `PageHeader` (existing hardening)
 

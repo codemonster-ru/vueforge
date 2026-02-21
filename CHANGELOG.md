@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.78.0] - 2026-02-21
+
+- Menu hardening: improved nested keyboard navigation (`ArrowRight`/`ArrowDown` open, `ArrowLeft`/`Escape` close).
+- Menu accessibility: added `aria-orientation`, `aria-haspopup`, `aria-controls`, and `aria-current` wiring.
+- Menu behavior: fixed parent active-state propagation for nested item activation.
+- Added Menu unit tests for keyboard and nested active-state behavior plus top-nav/sidebar-nav examples in docs and HomeView.
+- Link hardening: improved disabled semantics for anchor and router-link modes (`aria-disabled`, keyboard guard, no `href` when disabled).
+- Added focus-visible styling consistency for Link.
+- Added Link unit tests for keyboard and `aria-disabled` behavior plus docs notes for external/internal usage.
+
 ## [0.77.0] - 2026-02-21
 
 - Added Inline layout primitive with `gap`, `align`, `justify`, `wrap`, and `as` props.

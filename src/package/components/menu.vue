@@ -1,6 +1,10 @@
 <template>
     <div class="vf-menu" :class="`vf-menu_${orientation}`">
-        <ul class="vf-menu__list" role="menu">
+        <ul
+            class="vf-menu__list"
+            role="menu"
+            :aria-orientation="orientation === 'horizontal' ? 'horizontal' : 'vertical'"
+        >
             <li v-for="(item, index) in localItems" :key="getKey(item, index)" class="vf-menu__item" role="none">
                 <slot
                     v-if="$slots[getKey(item, index)]"
@@ -9,22 +13,26 @@
                 />
                 <hr v-else-if="item.separator" class="vf-menu__separator" role="separator" />
                 <template v-else-if="item.items && item.items.length">
-                    <div
+                    <button
                         class="vf-menu__parent"
+                        :id="getParentId(item, index)"
                         :class="{ 'vf-menu__parent_active': item.active }"
+                        type="button"
                         role="menuitem"
                         tabindex="0"
+                        aria-haspopup="menu"
                         :aria-expanded="item.subMenuVisible ? 'true' : 'false'"
+                        :aria-controls="getSubmenuId(item, index)"
                         @click="onClick(item)"
-                        @keydown.enter.prevent="onClick(item)"
-                        @keydown.space.prevent="onClick(item)"
+                        @keydown="onParentKeydown($event, item, index)"
                     >
                         <v-icon v-if="item.icon" :icon="item.icon" class="vf-menu__icon" />
                         {{ item.label }}
-                        <v-icon icon="chevronDown" />
-                    </div>
+                        <v-icon icon="chevronDown" class="vf-menu__chevron" />
+                    </button>
                     <VfMenu
                         v-if="item.items"
+                        :id="getSubmenuId(item, index)"
                         :items="item.items"
                         class="vf-menu__submenu"
                         :class="{ 'vf-menu__submenu_visible': item.subMenuVisible }"
@@ -41,6 +49,7 @@
                     :disabled="item.disabled"
                     role="menuitem"
                     :aria-disabled="item.disabled ? 'true' : 'false'"
+                    :aria-current="item.active ? 'page' : undefined"
                     @click="onClick(item)"
                     @active="onActive(item)"
                 >
@@ -55,7 +64,7 @@
 <script setup lang="ts">
 import { CmIcon as VIcon } from '@codemonster-ru/vueiconify';
 import Link from '@/package/components/link.vue';
-import { ref, watch } from 'vue';
+import { nextTick, ref, watch } from 'vue';
 
 interface Item {
     to?: string;
@@ -84,6 +93,9 @@ const getKey = (item: Item, index: number) => {
     const base = item.label ?? item.to ?? item.href ?? item.url ?? 'item';
     return `${base}_${index.toString()}`;
 };
+const toDomId = (value: string) => value.toLowerCase().replace(/[^a-z0-9_-]+/g, '-');
+const getParentId = (item: Item, index: number) => `vf-menu-parent-${toDomId(getKey(item, index))}`;
+const getSubmenuId = (item: Item, index: number) => `vf-menu-submenu-${toDomId(getKey(item, index))}`;
 const getType = (item: Item) => (item.to ? 'router-link' : 'a');
 const cloneItems = (source: Array<Item>): Array<Item> => {
     return source.map(item => {
@@ -107,18 +119,61 @@ const onClick = (item: Item) => {
         }
     }
 };
-const onActive = (item: Item) => {
-    for (const index in localItems.value) {
-        const loopItem = localItems.value[index];
+const findFirstFocusable = (containerId: string) => {
+    const submenu = typeof document !== 'undefined' ? document.getElementById(containerId) : null;
+    const candidate = submenu?.querySelector<HTMLElement>('[role="menuitem"]');
 
-        if (Object.prototype.hasOwnProperty.call(loopItem, 'items')) {
-            if (loopItem.items?.some(x => x === item)) {
-                loopItem.active = true;
-                loopItem.subMenuVisible = true;
-            } else {
-                loopItem.active = false;
-                loopItem.subMenuVisible = false;
-            }
+    if (candidate) {
+        candidate.focus();
+    }
+};
+const onParentKeydown = async (event: KeyboardEvent, item: Item, index: number) => {
+    if (!(item.items && item.items.length)) {
+        return;
+    }
+
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        onClick(item);
+
+        return;
+    }
+
+    if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
+        event.preventDefault();
+
+        if (!item.subMenuVisible) {
+            onClick(item);
+        }
+
+        await nextTick();
+        findFirstFocusable(getSubmenuId(item, index));
+
+        return;
+    }
+
+    if (event.key === 'ArrowLeft' || event.key === 'Escape') {
+        if (item.subMenuVisible) {
+            event.preventDefault();
+            item.subMenuVisible = false;
+        }
+    }
+};
+const itemIdentity = (item: Item) => `${item.label ?? ''}|${item.to ?? ''}|${item.href ?? ''}|${item.url ?? ''}`;
+const hasNestedMatch = (source: Item, target: Item): boolean => {
+    if (!(source.items && source.items.length)) {
+        return false;
+    }
+
+    return source.items.some(child => itemIdentity(child) === itemIdentity(target) || hasNestedMatch(child, target));
+};
+const onActive = (item: Item) => {
+    for (const loopItem of localItems.value) {
+        if (loopItem.items?.length) {
+            const active = hasNestedMatch(loopItem, item);
+
+            loopItem.active = active;
+            loopItem.subMenuVisible = active;
         }
     }
 
@@ -146,6 +201,7 @@ watch(
 
         > .vf-menu__item {
             align-items: center;
+            position: relative;
 
             &:not(:first-child) {
                 margin-left: var(--vf-menu-item-margin-left);
@@ -161,6 +217,41 @@ watch(
                 border-right: none;
                 border-left: var(--vf-menu-separator-thickness) solid var(--vf-menu-separator-color);
                 border-bottom: none;
+            }
+
+            > .vf-menu__submenu {
+                position: absolute;
+                top: calc(100% + var(--vf-menu-submenu-offset));
+                left: 0;
+                z-index: 2;
+                min-width: 12rem;
+                padding: 0.5rem;
+                border: var(--vf-border-width) solid var(--vf-border-color);
+                border-radius: var(--vf-radii-md);
+                background-color: var(--vf-bg-color);
+                box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+                margin: 0;
+                overflow: visible;
+                transition:
+                    opacity 0.14s ease,
+                    transform 0.14s ease,
+                    visibility 0.14s ease;
+            }
+
+            > .vf-menu__submenu.vf-menu__submenu_visible {
+                opacity: 1;
+                visibility: visible;
+                pointer-events: auto;
+                transform: translateY(0);
+                height: auto;
+            }
+
+            > .vf-menu__submenu:not(.vf-menu__submenu_visible) {
+                opacity: 0;
+                visibility: hidden;
+                pointer-events: none;
+                transform: translateY(-4px);
+                height: auto;
             }
         }
     }
@@ -226,6 +317,14 @@ watch(
     display: flex;
     align-items: center;
     justify-content: space-between;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    text-align: left;
     font-size: var(--vf-typography-font-size);
     line-height: var(--vf-typography-line-height);
 
@@ -242,14 +341,24 @@ watch(
     margin-right: var(--vf-menu-icon-gap);
 }
 
+.vf-menu__chevron {
+    margin-left: 0.375rem;
+}
+
 .vf-menu__submenu {
+    overflow: hidden;
+
     &.vf-menu__submenu_visible {
         margin-top: var(--vf-menu-submenu-offset);
         margin-left: var(--vf-menu-submenu-offset);
+        height: auto;
+        pointer-events: auto;
     }
 
     &:not(.vf-menu__submenu_visible) {
         height: 0;
+        margin: 0;
+        pointer-events: none;
     }
 }
 </style>
