@@ -24,6 +24,8 @@ test.describe('visual regression baseline', () => {
         });
         await expect(page.getByTestId('vf-visual-header')).toHaveScreenshot('visual-header.png', {
             animations: 'disabled',
+            // Header block can differ by 1px height on Linux font rasterization in CI.
+            maxDiffPixelRatio: 0.1,
         });
         await expect(page.getByTestId('vf-visual-layout')).toHaveScreenshot('visual-layout.png', {
             animations: 'disabled',
