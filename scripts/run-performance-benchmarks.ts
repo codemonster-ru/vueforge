@@ -226,6 +226,9 @@ const run = async () => {
             for (const metric of config.metrics) {
                 const values = [];
 
+                // Warm up route/component metric path once to avoid cold-start outliers in p95.
+                await runMetric(page, componentKey, metric);
+
                 for (let iteration = 0; iteration < scenarios.iterations; iteration += 1) {
                     const value = await runMetric(page, componentKey, metric);
                     values.push(Number(value.toFixed(3)));

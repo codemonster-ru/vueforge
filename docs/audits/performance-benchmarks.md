@@ -3,7 +3,7 @@
 VueForge benchmark scenarios and measurement runner are defined as:
 
 - scenarios: `scripts/benchmark-scenarios.json`
-- runner: `scripts/run-performance-benchmarks.mjs`
+- runner: `scripts/run-performance-benchmarks.ts`
 - output report: `benchmarks/latest.json`
 
 ## Run

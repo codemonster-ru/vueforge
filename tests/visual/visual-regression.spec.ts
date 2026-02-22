@@ -19,6 +19,8 @@ test.describe('visual regression baseline', () => {
         await expect(page).toHaveScreenshot('visual-page.png', {
             animations: 'disabled',
             fullPage: true,
+            // Full-page captures are sensitive to cross-platform font rasterization differences.
+            maxDiffPixelRatio: 0.015,
         });
         await expect(page.getByTestId('vf-visual-header')).toHaveScreenshot('visual-header.png', {
             animations: 'disabled',

@@ -52,11 +52,11 @@
         "test:ssr": "vitest run src/package/components/__tests__/ssr-hydration.test.ts",
         "test:visual": "playwright test",
         "test:visual:update": "playwright test --update-snapshots",
-        "benchmark:run": "node ./scripts/run-performance-benchmarks.mjs",
-        "verify:performance-report": "node ./scripts/verify-performance-report.mjs",
+        "benchmark:run": "node --import tsx ./scripts/run-performance-benchmarks.ts",
+        "verify:performance-report": "node --import tsx ./scripts/verify-performance-report.ts",
         "performance:check": "npm run benchmark:run && npm run verify:performance-report",
-        "verify:performance-budgets": "node ./scripts/verify-performance-budgets.mjs",
-        "verify:semver": "node ./scripts/verify-semver-checklist.mjs"
+        "verify:performance-budgets": "node --import tsx ./scripts/verify-performance-budgets.ts",
+        "verify:semver": "node --import tsx ./scripts/verify-semver-checklist.ts"
     },
     "peerDependencies": {
         "@codemonster-ru/vueiconify": "^0.7.0",

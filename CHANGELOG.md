@@ -2,8 +2,14 @@
 
 ## [0.91.0] - 2026-02-22
 
+- Semver checklist:
+    - [x] Semver impact classified (`patch`)
+    - [x] Breaking-change assessment completed (`no`)
+    - [x] Deprecations documented (N/A)
+    - [x] Migration notes added when required (N/A)
 - Testing:
     - Isolated `vitest` scope to `src/**/*.test.ts` so unit test runs no longer execute Playwright suites; visual checks remain under `npm run test:visual`.
+    - Stabilized full-page visual snapshot checks in CI by setting a controlled diff tolerance for cross-platform font rasterization variance.
 - Visual regression pipeline baseline:
     - Added Playwright-based visual regression pipeline with deterministic Chromium screenshot checks (`npm run test:visual`).
     - Added dedicated visual showcase route (`/visual-regression`) and snapshot update workflow (`npm run test:visual:update`).
@@ -35,6 +41,7 @@
     - Added budget validation command `npm run verify:performance-budgets`.
     - Added documentation for budget scope and semantics in `docs/audits/performance-budgets.md`.
     - Added benchmark scenario definitions (`scripts/benchmark-scenarios.json`) and Playwright-based measurement runner (`npm run benchmark:run`).
+    - Added a warmup pass in benchmark sampling to remove cold-start outliers from p95 gating and stabilize CI checks.
     - Added benchmark report output (`benchmarks/latest.json`) and benchmark usage documentation.
     - Added performance report threshold verifier (`npm run verify:performance-report`) and combined gate (`npm run performance:check`).
     - Added dedicated CI `performance-check` job and per-release performance gate in publish workflow.
@@ -43,6 +50,7 @@
     - Added live playground route for core components (`/playground`) with interactive props/state controls and real-time preview.
     - Added playground regression tests and documentation recipe for developer workflow.
     - Added core copy-paste cookbook with reusable layout, table, form, overlay, and command/notification snippets.
+    - Migrated automation scripts from `.mjs` to TypeScript (`scripts/*.ts`) and switched npm commands to `node --import tsx`.
 
 ## [0.90.0] - 2026-02-21
 
