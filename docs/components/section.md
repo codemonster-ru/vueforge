@@ -1,5 +1,10 @@
 # Section
 
+## Purpose
+
+- Define vertical page sections with consistent spacing and optional heading metadata.
+- Compose dashboards/settings pages into readable content blocks.
+
 ## Props
 
 - `as?: string` (default `section`)
@@ -52,6 +57,21 @@ Component tokens (override via `theme.overrides.components.section`):
 
 - Alternating page bands: alternate `background="surface"` and `background="muted"` between sections.
 - Hero section: `as="main"` with larger `padding-y` and nested `Container` for readable width.
+
+## Responsive
+
+- Verify section spacing scales correctly across breakpoints and density modes.
+- Ensure heading/subtitle wrapping does not break layout on small screens.
+
+## SSR/Hydration
+
+- Section is render-only and should hydrate without interactive deltas.
+- Confirm semantic tag output is identical between server and client.
+
+## Testing
+
+- Test spacing variants, heading slot rendering, and semantic tag output.
+- Add snapshot coverage for compact and comfortable spacing combinations.
 
 ## Accessibility
 

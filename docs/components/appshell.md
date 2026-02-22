@@ -1,4 +1,9 @@
-﻿# AppShell
+# AppShell
+
+## Purpose
+
+- Provide top-level application frame (header/sidebar/main regions) for SaaS pages.
+- Centralize shell composition and avoid one-off page chrome implementations.
 
 ## Props
 
@@ -12,7 +17,7 @@
 - `closeOnEsc?: boolean` (default `true`)
 - `toggleLabel?: string` (default `Toggle sidebar`)
 - `closeSidebarLabel?: string` (default `Close sidebar`)
-- `toggleIcon?: string` (default `☰`)
+- `toggleIcon?: string` (default `?`)
 - `mainAriaLabel?: string` (default `Main content`)
 
 ## Events
@@ -72,6 +77,10 @@
 </template>
 ```
 
+## Theming
+
+- Override via theme component overrides for each component documented on this page.
+
 ## Tokens
 
 Component tokens (override via `theme.overrides.components.appShell`):
@@ -83,6 +92,26 @@ Component tokens (override via `theme.overrides.components.appShell`):
 - `footerPadding`, `footerBorderColor`, `footerBackgroundColor`
 - `toggleSize`, `toggleBorderRadius`, `toggleBackgroundColor`, `toggleTextColor`, `toggleHoverBackgroundColor`
 - `overlayBackgroundColor`, `zIndex`
+
+## Recipes
+
+- Start with the examples above as baseline usage for this component.
+- Add product-specific variants (loading/error/dense/mobile) in consuming app docs when needed.
+
+## Responsive
+
+- Verify shell region behavior for desktop sidebar and mobile collapsed navigation.
+- Confirm content area remains scrollable and accessible with sticky regions.
+
+## SSR/Hydration
+
+- Ensure initial open/collapsed shell state is deterministic for SSR to prevent hydration mismatch.
+- Avoid client-only region insertion/removal before hydration completes.
+
+## Testing
+
+- Cover region slot rendering, shell state toggles, and layout token variants.
+- Add SSR smoke tests for default shell state and responsive visual regressions.
 
 ## Accessibility
 

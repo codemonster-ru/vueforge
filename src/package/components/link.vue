@@ -40,13 +40,15 @@
 
 <script setup lang="ts">
 import {
-    useRoute,
-    useRouter,
     RouteLocationAsRelativeGeneric,
     RouteLocationAsPathGeneric,
     RouteLocationRaw,
+    routeLocationKey,
+    routerKey,
+    Router,
+    RouteLocationNormalizedLoadedGeneric,
 } from 'vue-router';
-import { computed, ref, watch } from 'vue';
+import { computed, inject, ref, watch } from 'vue';
 
 interface Props {
     to?: string | RouteLocationAsRelativeGeneric | RouteLocationAsPathGeneric;
@@ -68,8 +70,8 @@ const props = withDefaults(defineProps<Props>(), {
     type: undefined,
     label: '',
 });
-const route = useRoute();
-const router = useRouter();
+const route = inject<RouteLocationNormalizedLoadedGeneric | null>(routeLocationKey, null);
+const router = inject<Router | null>(routerKey, null);
 const link = ref(null);
 const resolvedHref = computed(() => props.href ?? props.url);
 const resolvedType = computed(() => {
@@ -88,7 +90,7 @@ const routerLinkTo = computed<RouteLocationRaw>(() => {
     return props.to as RouteLocationRaw;
 });
 const resolvedTo = computed(() => {
-    if (!props.to) {
+    if (!props.to || !router) {
         return null;
     }
     return router.resolve(props.to);
@@ -100,6 +102,9 @@ const isRouteActive = computed(() => {
 
     const resolved = resolvedTo.value;
     if (!resolved) {
+        return false;
+    }
+    if (!route) {
         return false;
     }
 

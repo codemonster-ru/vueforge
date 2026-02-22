@@ -1,4 +1,9 @@
-﻿# NotificationCenter
+# NotificationCenter
+
+## Purpose
+
+Render and manage high-density operational data with scalable interaction patterns.
+Support filtering, navigation, and bulk workflows used in core SaaS backoffice screens.
 
 ## Props
 
@@ -42,6 +47,10 @@
 - Inbox workflow: use `readAll` and `clear` events to trigger API mutations and optimistic UI updates.
 - Non-blocking center: set `closeOnOverlay=false` for persistent side panel behavior during multitasking.
 
+## Theming
+
+- Override via theme component overrides for each component documented on this page.
+
 ## Tokens
 
 Component tokens (override via `theme.overrides.components.notificationCenter`):
@@ -57,6 +66,21 @@ Component tokens (override via `theme.overrides.components.notificationCenter`):
 - `avatarSize`, `avatarBackgroundColor`, `avatarTextColor`, `avatarFontSize`
 - `itemTitleFontSize`, `itemTitleFontWeight`, `itemMetaFontSize`, `itemMetaColor`
 - `emptyPadding`, `emptyColor`
+
+## Responsive
+
+Validate table/list density, horizontal overflow strategy, and virtualization behavior across breakpoints.
+Ensure row/item actions remain accessible and discoverable on touch devices.
+
+## SSR/Hydration
+
+Render initial viewport slice and structural wrappers deterministically to avoid hydration drift.
+Defer measurement-driven virtualization logic until client mount.
+
+## Testing
+
+Cover sorting/filtering/selection/navigation flows and large-dataset edge cases.
+Add performance-sensitive regression tests and ARIA verification for interactive data regions.
 
 ## Accessibility
 

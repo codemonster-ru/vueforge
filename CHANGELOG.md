@@ -1,5 +1,28 @@
 # Changelog
 
+## [0.91.1] - 2026-02-22
+
+- Semver checklist:
+    - [x] Semver impact classified (`patch`)
+    - [x] Breaking-change assessment completed (`no`)
+    - [x] Deprecations documented (N/A)
+    - [x] Migration notes added when required (N/A)
+    - [x] Catalog mapping sync completed (`yes`)
+- Core runtime fix (`Link`):
+    - Updated `Link` internals to use optional router injections (`routeLocationKey`/`routerKey`) instead of unconditional router hooks.
+    - Fixed non-router usage so rendering anchor-based links no longer depends on `vue-router` context.
+    - Active-route calculation now safely returns inactive state when router/route providers are absent.
+- Test updates:
+    - Removed obsolete `vue-router` hook mocks from `Link` unit tests and aligned tests with injection-based router handling.
+    - Eliminated Vue warning noise in unit test output for link/button scenarios without router providers.
+- Component docs expansion (full catalog pages):
+    - Standardized component pages with explicit quality sections: `Purpose`, `Responsive`, `SSR/Hydration`, and `Testing`.
+    - Expanded and normalized these sections across all component docs in `docs/components/*.md` so each page now documents behavior, adaptive constraints, SSR assumptions, and test expectations.
+    - Updated `docs/components/DOCS_TEMPLATE.md` to enforce the expanded structure for future components.
+- Planning and parity documentation sync:
+    - Added/updated parity governance docs: component catalog mapping, implemented/planned compliance matrices, rollout plan, and API package specs.
+    - Synced alias/canonical decisions and package ownership for overlap-prone items (including `Sidebar`, `Message`, `TreeView`, `ExpansionPanel`), and aligned rollout/API package tracks with those decisions.
+
 ## [0.91.0] - 2026-02-22
 
 - Semver checklist:
@@ -7,6 +30,7 @@
     - [x] Breaking-change assessment completed (`no`)
     - [x] Deprecations documented (N/A)
     - [x] Migration notes added when required (N/A)
+    - [x] Catalog mapping sync completed (`yes`)
 - Testing:
     - Isolated `vitest` scope to `src/**/*.test.ts` so unit test runs no longer execute Playwright suites; visual checks remain under `npm run test:visual`.
     - Stabilized full-page visual snapshot checks in CI by setting a controlled diff tolerance for cross-platform font rasterization variance.

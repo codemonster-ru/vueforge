@@ -1,4 +1,9 @@
-﻿# Card
+# Card
+
+## Purpose
+
+- Provide reusable content surface for dashboards, lists, and settings blocks.
+- Centralize elevation/border/padding behavior across the system.
 
 ## Props
 
@@ -40,6 +45,21 @@ Override via `theme.overrides.components.card`:
 - Information card with header/body/footer slots.
 - Section container card wrapping `PageHeader` and controls.
 - Lightweight tile cards in grid/list layouts.
+
+## Responsive
+
+- Validate internal spacing and slot layout under compact breakpoints.
+- Ensure media/header/footer sections reflow cleanly on small screens.
+
+## SSR/Hydration
+
+- Card markup is static and should hydrate without state divergence.
+- Confirm token-based visual variants render identically server/client.
+
+## Testing
+
+- Cover surface variants, slot combinations, and interactive card states if enabled.
+- Add visual regression tests for bordered/elevated styles.
 
 ## Accessibility
 

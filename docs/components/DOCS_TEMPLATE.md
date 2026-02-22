@@ -5,14 +5,18 @@ Use this structure for every component page in `docs/components`.
 ## Required Sections
 
 1. `# ComponentName`
-2. `## Props`
-3. `## Events`
-4. `## Slots`
-5. `## Examples`
-6. `## Theming`
-7. `## Tokens`
-8. `## Recipes`
-9. `## Accessibility` (required)
+2. `## Purpose`
+3. `## Props`
+4. `## Events`
+5. `## Slots`
+6. `## Examples`
+7. `## Theming`
+8. `## Tokens`
+9. `## Recipes`
+10. `## Accessibility` (required)
+11. `## Responsive`
+12. `## SSR/Hydration`
+13. `## Testing`
 
 ## Accessibility Section Rules
 
@@ -23,6 +27,8 @@ Use this structure for every component page in `docs/components`.
 
 ## Optional Sections
 
+- `## States`
+- `## Migration`
 - `## Interaction Contract`
 - `## Positioning and Z-Index Policy`
 - `## Usage Constraints`

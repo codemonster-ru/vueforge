@@ -17,6 +17,14 @@ For every new component or behavior update, include tests for:
     - empty/invalid values
     - disabled/readonly behavior
 
+Mandatory quality gates for new public components:
+
+- API contract documented (props/events/slots/defaults) and migration note added if behavior is breaking.
+- Responsive behavior validated on mobile/tablet/desktop breakpoints.
+- SSR/hydration behavior validated for dynamic/interactive paths.
+- Visual regression baseline added for critical states/variants.
+- Component row added to `docs/audits/component-compliance-matrix.md` with all gates set to `Yes` (or justified `N/A`) before merge.
+
 ## Overlay-Specific Minimums
 
 For `Modal`, `Drawer`, `Dropdown`, `Popover`, `Tooltip`, `ContextMenu`:
@@ -31,6 +39,13 @@ Before merge:
 
 - [ ] Added/updated unit tests for changed behavior
 - [ ] Added/updated docs for API/interaction changes
+- [ ] Checked component catalog parity impact (`docs/audits/component-catalog-mapping.md`) and updated status for new/changed components
+- [ ] Updated compliance rows for touched components in `docs/audits/component-compliance-matrix.md`
+- [ ] All gate columns for touched implemented components are `Yes` (or explicitly justified `N/A`) in `docs/audits/component-compliance-matrix.md`
+- [ ] For not-yet-implemented components, updated planning status in `docs/audits/planned-component-compliance-matrix.md`
+- [ ] Updated package-level API specs in `docs/audits/component-api-package-specs.md` for touched components (`props/events/slots/a11y/responsive/SSR/tokens/tests`)
+- [ ] Verified responsive behavior on mobile/tablet/desktop breakpoints and updated `Responsive` status in compliance matrix
+- [ ] Confirmed no functional duplicate component is introduced; if alias/equivalent is intentional, documented rationale in `docs/audits/component-catalog-mapping.md`
 - [ ] Ran `npm run lint`
 - [ ] Ran `npm run typecheck`
 - [ ] Ran targeted tests for changed components

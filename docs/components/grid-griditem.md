@@ -1,5 +1,14 @@
 # Grid / GridItem
 
+## Purpose
+
+- Build responsive two-dimensional layouts for cards, forms, and workspace shells.
+- Control placement with spans/start/end while keeping layout concerns separate from content components.
+
+## Props
+
+See Grid Props and GridItem Props below.
+
 ## Grid Props
 
 - `as?: string` (default `div`)
@@ -73,6 +82,21 @@ Component tokens (override via `theme.overrides.components.grid`):
     - sidebar item: `md span=3`
     - main item: `md span=9`
     - adjust dense mode via `gap`, `columnGap`, `rowGap`
+
+## Responsive
+
+- Verify breakpoint overrides (columns, gap, span, start, end) across mobile/tablet/desktop.
+- Check reflow behavior when content exceeds expected width.
+
+## SSR/Hydration
+
+- Grid uses deterministic style/class output and should not diverge at hydration.
+- Ensure breakpoint configuration does not rely on client-only measurements for initial render.
+
+## Testing
+
+- Cover base and breakpoint prop merging for Grid and GridItem.
+- Add regression tests for span/start/end combinations and overflow-safe layouts.
 
 ## Accessibility
 

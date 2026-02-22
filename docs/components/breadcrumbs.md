@@ -1,4 +1,9 @@
-﻿# Breadcrumbs
+# Breadcrumbs
+
+## Purpose
+
+- Expose hierarchical navigation context for deep SaaS routes.
+- Improve orientation and quick back-navigation inside multi-level workflows.
 
 ## Props
 
@@ -43,6 +48,21 @@ Component tokens (override via `theme.overrides.components.breadcrumbs`):
 - Application hierarchy: `Home / Section / Page` with last item active.
 - Product workspace: include entity type level (`Projects / Project A / Settings`).
 - Custom separator: provide `#separator` slot for icon-based separators.
+
+## Responsive
+
+- Validate truncation/collapse strategy for long breadcrumb chains on mobile.
+- Ensure separators and current-page item remain legible at small widths.
+
+## SSR/Hydration
+
+- Breadcrumb item order and current-page semantics must be deterministic in SSR.
+- Client should only enhance interaction, not rewrite structure at hydration.
+
+## Testing
+
+- Cover item rendering, current/disabled states, separators, and custom slot content.
+- Add tests for overflow behavior with long paths.
 
 ## Accessibility
 

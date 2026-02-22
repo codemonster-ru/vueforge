@@ -1,4 +1,9 @@
-﻿# PageHeader
+# PageHeader
+
+## Purpose
+
+- Standardize top-of-page heading area with title, subtitle, metadata, and action slots.
+- Keep dashboard/detail pages visually and structurally consistent.
 
 ## Props
 
@@ -61,6 +66,21 @@ Component tokens (override via `theme.overrides.components.pageHeader`):
 - Resource list header: breadcrumbs + title/subtitle + right-aligned primary actions.
 - Compact mobile header: `size="small"` and minimal action group.
 - Detail page header: title slot with custom heading level and meta badges.
+
+## Responsive
+
+- Verify heading/action layout stacks correctly on narrow breakpoints.
+- Ensure action groups wrap without overlapping titles.
+
+## SSR/Hydration
+
+- PageHeader is mostly static and should hydrate with identical content ordering.
+- Confirm optional slot regions do not cause conditional hydration drift.
+
+## Testing
+
+- Cover title/subtitle/metadata/action slots and density variants.
+- Add responsive tests for action wrapping and long-title overflow.
 
 ## Accessibility
 

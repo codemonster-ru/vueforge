@@ -1,4 +1,9 @@
-﻿# Calendar
+# Calendar
+
+## Purpose
+
+Provide date/time input primitives for scheduling, reporting, and range-based filtering.
+Support localized parsing/display while keeping predictable controlled value contracts.
 
 ## Props
 
@@ -29,6 +34,10 @@
 <Calendar v-model="selectedDateAlt" variant="outlined" :first-day-of-week="1" />
 ```
 
+## Theming
+
+- Override via theme component overrides for each component documented on this page.
+
 ## Tokens
 
 Component tokens (override via `theme.overrides.components.calendar`):
@@ -44,6 +53,26 @@ Component tokens (override via `theme.overrides.components.calendar`):
 - `dayHoverBackgroundColor`, `daySelectedBackgroundColor`, `daySelectedTextColor`, `dayMutedColor`, `dayTodayBorderColor`
 - `small.fontSize`, `small.padding`, `small.daySize`
 - `large.fontSize`, `large.padding`, `large.daySize`
+
+## Recipes
+
+- Start with the examples above as baseline usage for this component.
+- Add product-specific variants (loading/error/dense/mobile) in consuming app docs when needed.
+
+## Responsive
+
+Validate panel positioning, grid readability, and action controls on small screens.
+Ensure touch interactions for day/time selection remain accurate with adequate target size.
+
+## SSR/Hydration
+
+Render initial date/time value and panel-closed state consistently in SSR output.
+Run locale/timezone-sensitive formatting in a hydration-safe way to prevent mismatch.
+
+## Testing
+
+Cover parsing/formatting, keyboard navigation, min/max constraints, and range/time edge cases.
+Add tests for locale variants and ARIA semantics for calendar and listbox-like panels.
 
 ## Accessibility
 

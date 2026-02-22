@@ -1,4 +1,9 @@
-﻿# TreeSelect
+# TreeSelect
+
+## Purpose
+
+Enable fast option discovery and selection for forms, filters, and table toolbars.
+Cover both small curated lists and async/large datasets with consistent selection semantics.
 
 ## Props
 
@@ -104,6 +109,10 @@ setTimeout(() => {
 </template>
 ```
 
+## Theming
+
+- Override via theme component overrides for each component documented on this page.
+
 ## Tokens
 
 Component tokens (override via `theme.overrides.components.treeselect`):
@@ -120,6 +129,21 @@ Component tokens (override via `theme.overrides.components.treeselect`):
 - `clearSize`, `clearRadius`, `clearHoverBackgroundColor`
 - `small.fontSize`, `small.padding`
 - `large.fontSize`, `large.padding`
+
+## Responsive
+
+Verify popup width, option density, and chip/tag wrapping on mobile and tablet breakpoints.
+Ensure touch hit targets and scroll behavior remain stable in long option lists.
+
+## SSR/Hydration
+
+Render initial value and selected option state deterministically in SSR output.
+Defer async option fetching and client-only positioning logic until after hydration.
+
+## Testing
+
+Cover keyboard navigation, selection, clear/reset flows, and disabled/readonly states.
+Add tests for filtering/search behavior, async loading states, and ARIA combobox/listbox contracts.
 
 ## Accessibility
 

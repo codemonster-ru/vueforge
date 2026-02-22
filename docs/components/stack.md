@@ -1,5 +1,10 @@
 # Stack
 
+## Purpose
+
+- Compose vertical flows (forms, sidebars, settings groups) with consistent gaps and alignment.
+- Replace ad-hoc margin spacing with predictable layout primitives.
+
 ## Props
 
 - `as?: string` (default `div`)
@@ -48,6 +53,21 @@ Component tokens (override via `theme.overrides.components.stack`):
 
 - Vertical form layout: `gap="0.75rem"` and `as="section"` for grouped fields.
 - Card list: `gap="1rem"` with default `align="stretch"` for equal-width stacked cards.
+
+## Responsive
+
+- Verify gap and alignment behavior under compact mobile widths.
+- Ensure nested stacks preserve spacing without cumulative overflow.
+
+## SSR/Hydration
+
+- Stack is non-interactive and should hydrate to identical structure and styles.
+- Confirm token-driven spacing is stable between server and client.
+
+## Testing
+
+- Test direction/alignment/gap variants and nested stack composition.
+- Add viewport checks to ensure child content remains readable on small screens.
 
 ## Accessibility
 

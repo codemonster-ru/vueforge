@@ -1,4 +1,9 @@
-﻿# Tree
+# Tree
+
+## Purpose
+
+Render and manage high-density operational data with scalable interaction patterns.
+Support filtering, navigation, and bulk workflows used in core SaaS backoffice screens.
 
 ## Props
 
@@ -67,6 +72,10 @@ const items = [
 <Tree :items="largeTreeItems" :expanded-keys="['group-0', 'group-1', 'group-2']" aria-label="Project structure" />
 ```
 
+## Theming
+
+- Override via theme component overrides for each component documented on this page.
+
 ## Tokens
 
 Component tokens (override via `theme.overrides.components.tree`):
@@ -78,6 +87,21 @@ Component tokens (override via `theme.overrides.components.tree`):
 - `focusRingShadow`, `disabledOpacity`
 - `small.rowPadding`, `small.rowPaddingInline`, `small.rowFontSize`, `small.toggleSize`
 - `large.rowPadding`, `large.rowPaddingInline`, `large.rowFontSize`, `large.toggleSize`
+
+## Responsive
+
+Validate table/list density, horizontal overflow strategy, and virtualization behavior across breakpoints.
+Ensure row/item actions remain accessible and discoverable on touch devices.
+
+## SSR/Hydration
+
+Render initial viewport slice and structural wrappers deterministically to avoid hydration drift.
+Defer measurement-driven virtualization logic until client mount.
+
+## Testing
+
+Cover sorting/filtering/selection/navigation flows and large-dataset edge cases.
+Add performance-sensitive regression tests and ARIA verification for interactive data regions.
 
 ## Accessibility
 

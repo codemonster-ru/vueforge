@@ -1,4 +1,9 @@
-﻿# CommandPalette
+# CommandPalette
+
+## Purpose
+
+Provide advanced task-focused interactions for authoring, media/input control, and guided workflows.
+Enable product features that require richer interaction than basic form controls.
 
 ## Props
 
@@ -45,6 +50,10 @@
 - Admin shortcuts: attach `command` callbacks for direct side effects plus `select` event analytics.
 - Search-only mode: keep `filter=true`, feed dynamic `items` from server, and use `search` for debounced fetch.
 
+## Theming
+
+- Override via theme component overrides for each component documented on this page.
+
 ## Tokens
 
 Component tokens (override via `theme.overrides.components.commandPalette`):
@@ -64,6 +73,21 @@ Component tokens (override via `theme.overrides.components.commandPalette`):
 - `shortcutPadding`, `shortcutBorderRadius`, `shortcutBorderColor`
 - `shortcutBackgroundColor`, `shortcutTextColor`, `shortcutFontSize`
 - `emptyPadding`, `emptyColor`
+
+## Responsive
+
+Verify control affordances, panel sizing, and gesture/mouse interactions across device classes.
+Ensure compact layouts preserve clarity for actions, handles, and contextual hints.
+
+## SSR/Hydration
+
+Keep initial value and panel-closed/base state stable between server and client output.
+Hydrate client-only interaction engines (editor, drag, command layers) without DOM mismatch.
+
+## Testing
+
+Cover core interaction loops, boundary conditions, and value/state synchronization.
+Add accessibility tests for keyboard alternatives, labelling, and focus behavior.
 
 ## Accessibility
 

@@ -1,4 +1,9 @@
-﻿# Pagination
+# Pagination
+
+## Purpose
+
+Organize multi-section and multi-step workflows with explicit progression and navigation semantics.
+Support dense information architecture in settings, onboarding, and detail screens.
 
 ## Props
 
@@ -54,6 +59,21 @@ Component tokens (override via `theme.overrides.components.pagination`):
 - Standard list pagination with `totalItems` + `pageSize`.
 - API-driven pagination where page is synced to route/query state.
 - Dense table footer pagination using `size="small"`.
+
+## Responsive
+
+Validate tab/step headers for overflow, wrap, and scroll behavior on smaller viewports.
+Ensure active indicator and navigation controls remain clear and tappable on touch devices.
+
+## SSR/Hydration
+
+Preserve initially active section/step state and panel visibility across server and client render.
+Avoid hydration drift from client-only measurement used for indicator positioning.
+
+## Testing
+
+Cover controlled/uncontrolled active state, keyboard navigation, and disabled step/tab behavior.
+Add tests for deep-link/page-state sync when applicable and ARIA tab/step semantics.
 
 ## Accessibility
 

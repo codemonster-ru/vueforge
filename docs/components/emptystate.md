@@ -1,4 +1,9 @@
-﻿# EmptyState
+# EmptyState
+
+## Purpose
+
+- Communicate no-data/no-results/no-access scenarios with clear guidance and actions.
+- Standardize empty experiences across tables, dashboards, and detail views.
 
 ## Props
 
@@ -22,13 +27,17 @@
 ## Examples
 
 ```vue
-<EmptyState title="No projects yet" description="Create your first project to get started." icon="📂">
+<EmptyState title="No projects yet" description="Create your first project to get started." icon="??">
     <template #actions>
         <Button label="Create project" size="small" />
         <Button label="Import" size="small" severity="secondary" />
     </template>
 </EmptyState>
 ```
+
+## Theming
+
+- Override via theme component overrides for each component documented on this page.
 
 ## Tokens
 
@@ -43,34 +52,25 @@ Component tokens (override via `theme.overrides.components.emptyState`):
 - `small.padding`, `small.iconSize`, `small.titleFontSize`, `small.descriptionFontSize`
 - `large.padding`, `large.iconSize`, `large.titleFontSize`, `large.descriptionFontSize`
 
+## Recipes
 
-Component tokens (override via `theme.overrides.components.textarea`):
+- Start with the examples above as baseline usage for this component.
+- Add product-specific variants (loading/error/dense/mobile) in consuming app docs when needed.
 
-- `gap`, `fontSize`, `padding`
-- `borderRadius`, `borderColor`
-- `backgroundColor`, `textColor`, `placeholderColor`
-- `focusBorderColor`, `focusRingShadow`, `hoverBorderColor`
-- `disabledOpacity`
-- `minHeight`, `resize`
-- `small.fontSize`, `small.padding`
-- `large.fontSize`, `large.padding`
+## Responsive
 
+- Verify illustration/text/action layout remains readable on small screens.
+- Ensure call-to-action buttons wrap without breaking hierarchy.
 
-Component tokens (override via `theme.overrides.components.richTextEditor`):
+## SSR/Hydration
 
-- `gap`, `fontSize`, `padding`
-- `borderRadius`, `borderColor`
-- `backgroundColor`, `textColor`, `placeholderColor`
-- `focusBorderColor`, `focusRingShadow`, `hoverBorderColor`
-- `disabledOpacity`
-- `minHeight`, `resize`
-- `toolbarGap`, `toolbarPadding`, `toolbarBorderColor`, `toolbarBackgroundColor`
-- `toolbarButtonMinWidth`, `toolbarButtonPadding`, `toolbarButtonRadius`
-- `toolbarButtonBorderColor`, `toolbarButtonBackgroundColor`, `toolbarButtonTextColor`
-- `toolbarButtonHoverBackgroundColor`, `toolbarButtonActiveBackgroundColor`
-- `counterFontSize`, `counterColor`, `counterDangerColor`
-- `small.fontSize`, `small.padding`, `small.toolbarButtonPadding`
-- `large.fontSize`, `large.padding`, `large.toolbarButtonPadding`
+- Empty state content should be deterministic from server data state.
+- Avoid hydration mismatch between loading and empty branches.
+
+## Testing
+
+- Cover content variants (empty/filter/error-like messaging) and action slots.
+- Add tests for localization length expansion and responsive wrapping.
 
 ## Accessibility
 

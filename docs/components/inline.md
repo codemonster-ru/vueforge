@@ -1,5 +1,10 @@
 # Inline
 
+## Purpose
+
+- Arrange controls and metadata in horizontal flows with controlled wrap behavior.
+- Standardize toolbar and header micro-layout patterns.
+
 ## Props
 
 - `as?: string` (default `div`)
@@ -48,6 +53,21 @@ Component tokens (override via `theme.overrides.components.inline`):
 
 - Toolbar row: `wrap="nowrap"` with `justify="space-between"` for label/action alignment.
 - Tag cloud: default `wrap="wrap"` and small `gap` for compact chip collections.
+
+## Responsive
+
+- Validate wrap, alignment, and gap under narrow breakpoints.
+- Ensure touch-target spacing remains sufficient when rows wrap.
+
+## SSR/Hydration
+
+- Inline layout is static and should hydrate without DOM/state differences.
+- Verify server-rendered wrapping hints match client behavior.
+
+## Testing
+
+- Cover wrap/no-wrap modes, alignment options, and spacing variants.
+- Add responsive tests for multi-line wrapping with long labels.
 
 ## Accessibility
 

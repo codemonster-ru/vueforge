@@ -1,4 +1,9 @@
-﻿# DataTable
+# DataTable
+
+## Purpose
+
+Render and manage high-density operational data with scalable interaction patterns.
+Support filtering, navigation, and bulk workflows used in core SaaS backoffice screens.
 
 ## Props
 
@@ -233,6 +238,21 @@ Component tokens (override via `theme.overrides.components.datatable`):
 - Sticky header/columns for wide datasets.
 - Column-resize mode for dense/variable datasets.
 - Column reorder mode for user-customizable table layouts.
+
+## Responsive
+
+Validate table/list density, horizontal overflow strategy, and virtualization behavior across breakpoints.
+Ensure row/item actions remain accessible and discoverable on touch devices.
+
+## SSR/Hydration
+
+Render initial viewport slice and structural wrappers deterministically to avoid hydration drift.
+Defer measurement-driven virtualization logic until client mount.
+
+## Testing
+
+Cover sorting/filtering/selection/navigation flows and large-dataset edge cases.
+Add performance-sensitive regression tests and ARIA verification for interactive data regions.
 
 ## Accessibility
 

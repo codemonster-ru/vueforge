@@ -1,4 +1,9 @@
-﻿# Stepper
+# Stepper
+
+## Purpose
+
+Organize multi-section and multi-step workflows with explicit progression and navigation semantics.
+Support dense information architecture in settings, onboarding, and detail screens.
 
 ## Props
 
@@ -58,6 +63,10 @@
 />
 ```
 
+## Theming
+
+- Override via theme component overrides for each component documented on this page.
+
 ## Tokens
 
 Component tokens (override via `theme.overrides.components.stepper`):
@@ -72,6 +81,21 @@ Component tokens (override via `theme.overrides.components.stepper`):
 - `disabledOpacity`
 - `small.indicatorSize`, `small.indicatorFontSize`, `small.labelFontSize`, `small.descriptionFontSize`, `small.lineLength`, `small.itemGap`
 - `large.indicatorSize`, `large.indicatorFontSize`, `large.labelFontSize`, `large.descriptionFontSize`, `large.lineLength`, `large.itemGap`
+
+## Responsive
+
+Validate tab/step headers for overflow, wrap, and scroll behavior on smaller viewports.
+Ensure active indicator and navigation controls remain clear and tappable on touch devices.
+
+## SSR/Hydration
+
+Preserve initially active section/step state and panel visibility across server and client render.
+Avoid hydration drift from client-only measurement used for indicator positioning.
+
+## Testing
+
+Cover controlled/uncontrolled active state, keyboard navigation, and disabled step/tab behavior.
+Add tests for deep-link/page-state sync when applicable and ARIA tab/step semantics.
 
 ## Accessibility
 

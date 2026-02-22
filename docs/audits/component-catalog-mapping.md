@@ -1,0 +1,167 @@
+# Component Catalog Mapping
+
+Last updated: 2026-02-22
+
+Scope: parity, SaaS, layout, visualization, and catalog-delta coverage tracked in `CHECKLIST.md` (`P1.11`-`P1.16`).
+
+Status legend:
+
+- `Implemented`: exported from `src/index.ts` (or explicit functional equivalent).
+- `In Checklist`: explicitly tracked in roadmap checklist.
+- `Target Catalog`: appears in competitor catalogs (`Both`, `PrimeVue`, `Vuetify`, `No`).
+
+| Component             | Target Catalog | Implemented | In Checklist |
+| --------------------- | -------------- | ----------- | ------------ |
+| DialogService         | Both           | No          | Yes          |
+| ConfirmService        | Vuetify        | No          | Yes          |
+| ConfirmPopup          | Both           | No          | Yes          |
+| DynamicDialog         | Both           | No          | Yes          |
+| TreeTable             | Both           | No          | Yes          |
+| DataView              | Both           | No          | Yes          |
+| Listbox               | Both           | No          | Yes          |
+| MenuBar               | Both           | No          | Yes          |
+| MegaMenu              | Both           | No          | Yes          |
+| PanelMenu             | Both           | No          | Yes          |
+| TieredMenu            | Both           | No          | Yes          |
+| TabMenu               | Both           | No          | Yes          |
+| Carousel              | Both           | No          | Yes          |
+| SpeedDial             | Both           | No          | Yes          |
+| Chart                 | Both           | No          | Yes          |
+| Image                 | Both           | No          | Yes          |
+| Skeleton              | Both           | Yes         | Yes          |
+| OverlayPanel          | Both           | No          | Yes          |
+| PassThrough           | Both           | No          | Yes          |
+| Panel                 | Both           | No          | Yes          |
+| Fieldset              | Both           | No          | Yes          |
+| Toolbar               | Both           | No          | Yes          |
+| BlockUI               | Both           | No          | Yes          |
+| ScrollPanel           | Both           | No          | Yes          |
+| ScrollTop             | Both           | No          | Yes          |
+| PickList              | Both           | No          | Yes          |
+| OrderList             | Both           | No          | Yes          |
+| OrgChart              | Both           | No          | Yes          |
+| Icon                  | Vuetify        | No          | Yes          |
+| MemberPicker          | Vuetify        | No          | Yes          |
+| QueryBuilder          | Vuetify        | No          | Yes          |
+| AdvancedFilterPanel   | Vuetify        | No          | Yes          |
+| SavedViewsManager     | Vuetify        | No          | Yes          |
+| DataTableToolbar      | Vuetify        | No          | Yes          |
+| BulkActionBar         | Vuetify        | No          | Yes          |
+| ActivityFeed          | Vuetify        | No          | Yes          |
+| AuditLogViewer        | Vuetify        | No          | Yes          |
+| CommentThread         | Vuetify        | No          | Yes          |
+| PermissionMatrix      | Vuetify        | No          | Yes          |
+| KPIStatCard           | Vuetify        | No          | Yes          |
+| FileManager           | Vuetify        | No          | Yes          |
+| JSONViewer            | Vuetify        | No          | Yes          |
+| DiffViewer            | Vuetify        | No          | Yes          |
+| CodeEditor            | Vuetify        | No          | Yes          |
+| Scheduler             | Vuetify        | No          | Yes          |
+| BottomSheet           | Vuetify        | No          | Yes          |
+| InfiniteScroll        | Vuetify        | No          | Yes          |
+| OverlayBadge          | Both           | No          | Yes          |
+| InlineMessage         | Both           | No          | Yes          |
+| Message               | Both           | No          | Yes          |
+| Sidebar               | Both           | No          | Yes          |
+| TreeView              | Vuetify        | No          | Yes          |
+| ExpansionPanel        | Vuetify        | No          | Yes          |
+| Rating                | Both           | Yes         | Yes          |
+| Dock                  | Both           | No          | Yes          |
+| Galleria              | Both           | No          | Yes          |
+| Terminal              | Both           | No          | Yes          |
+| Inplace               | Both           | No          | Yes          |
+| CascadeSelect         | Both           | No          | Yes          |
+| VirtualScroller       | Both           | Yes         | Yes          |
+| ThemeProvider         | Vuetify        | No          | Yes          |
+| DefaultsProvider      | Vuetify        | No          | Yes          |
+| LocaleProvider        | Vuetify        | No          | Yes          |
+| NoSsr                 | Vuetify        | No          | Yes          |
+| MainLayoutRegion      | Vuetify        | No          | Yes          |
+| SystemBar             | Vuetify        | No          | Yes          |
+| BottomNavigation      | Vuetify        | No          | Yes          |
+| Banner                | Vuetify        | No          | Yes          |
+| Sheet                 | Vuetify        | No          | Yes          |
+| Window                | Vuetify        | No          | Yes          |
+| SlideGroup            | Vuetify        | No          | Yes          |
+| SnackbarQueue         | Vuetify        | No          | Yes          |
+| AvatarGroup           | PrimeVue       | No          | Yes          |
+| FloatLabel            | PrimeVue       | No          | Yes          |
+| IftaLabel             | PrimeVue       | No          | Yes          |
+| IconField             | PrimeVue       | No          | Yes          |
+| InputIcon             | PrimeVue       | No          | Yes          |
+| SelectionControl      | Vuetify        | No          | Yes          |
+| SelectionControlGroup | Vuetify        | No          | Yes          |
+| ToggleButton          | PrimeVue       | No          | Yes          |
+| Hover                 | Vuetify        | No          | Yes          |
+| Hotkey                | Vuetify        | No          | Yes          |
+| Kbd                   | Vuetify        | No          | Yes          |
+| CodeBlock             | Vuetify        | No          | Yes          |
+| Lazy                  | Vuetify        | No          | Yes          |
+| Parallax              | Vuetify        | No          | Yes          |
+| Validation            | Vuetify        | No          | Yes          |
+
+Notes:
+
+- Some `Vuetify` mappings are functional equivalents rather than one-to-one component names.
+- `TreeView` and `ExpansionPanel` are parity targets backed by `Tree` and `Accordion` hardening, not separate v1 rendering cores.
+- `Sidebar` and `Message` are alias-first scope items (`Drawer` and `InlineMessage`/`Alert`) and remain compatibility-focused in v1.
+- This file is the source of truth for parity scope decisions (`implemented` / `deferred` / `not planned`).
+- For future updates, re-run the same comparison workflow and update this table in the same PR as checklist changes.
+
+Maintenance cadence:
+
+- Run a full catalog sync at least once per month.
+- Run a catalog sync before each versioned release.
+- If target catalogs add new components, either add them to `CHECKLIST.md` or mark `not planned` with rationale in this file.
+
+Duplicate-prevention rules:
+
+- Prefer one canonical component per functional domain; avoid adding second components with equivalent behavior under different naming.
+- If an alias/equivalent is required for migration or ecosystem familiarity, document: canonical target, API differences, and deprecation/migration path.
+- Reject roadmap additions when behavior is already covered by an existing component unless there is a clear capability delta.
+
+Potential overlap pairs (initial triage):
+
+| Pair                                             | Recommended decision | Canonical target                                 | Criteria to keep both                                                                                             |
+| ------------------------------------------------ | -------------------- | ------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------- |
+| DialogService + DynamicDialog                    | Merge                | DialogService                                    | Keep both only if one is imperative API and another is compositional container with distinct lifecycle/contracts. |
+| ConfirmService + ConfirmPopup + ConfirmDialog    | Split                | ConfirmService + ConfirmPopup + ConfirmDialog    | Keep all three when UX intent differs: global blocking confirm vs anchor confirm vs modal confirm flow.           |
+| Menu + TieredMenu                                | Alias                | Menu                                             | Keep both only if TieredMenu enforces strictly hierarchical keyboard model different from generic Menu.           |
+| MenuBar + TabMenu                                | Split                | MenuBar + TabMenu                                | Keep both when one is command/navigation menu and another is route/section switcher with tab semantics.           |
+| PanelMenu + TreeView                             | Split                | PanelMenu + TreeView                             | Keep both when PanelMenu focuses on navigation disclosure and TreeView on generic hierarchy data interactions.    |
+| Select + Listbox                                 | Split                | Select + Listbox                                 | Keep both when Select is trigger+overlay control and Listbox is always-visible list control.                      |
+| Select + Dropdown                                | Alias                | Select                                           | Keep both only as naming alias for migration compatibility.                                                       |
+| SegmentedControl + ToggleButton                  | Split                | SegmentedControl + ToggleButton                  | Keep both when SegmentedControl is multi-option selection and ToggleButton is single binary action state.         |
+| Alert + InlineMessage + Message                  | Split                | Alert + InlineMessage                            | Keep third alias only for migration naming; avoid separate implementation if behavior is identical.               |
+| Toast + SnackbarQueue                            | Split                | Toast + SnackbarQueue                            | Keep both when queue orchestration is a separate policy layer, not a distinct visual component.                   |
+| Popover + OverlayPanel                           | Alias                | Popover                                          | Keep both only if OverlayPanel preserves legacy API contract with deprecation path.                               |
+| Drawer + Sidebar                                 | Alias                | Drawer                                           | Keep both only as temporary migration alias.                                                                      |
+| Card + Sheet + Panel                             | Split                | Card + Sheet + Panel                             | Keep all when semantics differ: content card vs neutral surface vs titled/collapsible panel container.            |
+| Image + Galleria                                 | Split                | Image + Galleria                                 | Keep both when Galleria provides gallery-specific navigation/thumb/preview orchestration.                         |
+| CodeBlock + CodeEditor + JSONViewer + DiffViewer | Split                | CodeBlock + CodeEditor + JSONViewer + DiffViewer | Keep all when each covers distinct read/write/structured/compare use cases.                                       |
+| AppBar + Toolbar                                 | Split                | AppBar + Toolbar                                 | Keep both when AppBar is shell-level layout region and Toolbar is local action container.                         |
+| BottomNavigation + TabMenu                       | Split                | BottomNavigation + TabMenu                       | Keep both when BottomNavigation is app-level nav pattern and TabMenu is in-page section navigation.               |
+| ScrollTop + SpeedDial/FAB                        | Split                | ScrollTop + SpeedDial                            | Keep both when one is utility action and another is multi-action launcher.                                        |
+
+Decision policy:
+
+- Resolve each overlap pair before implementation starts for either component.
+- Document final decision in PR description and keep this table updated.
+
+V1 alias-first decisions (scope reduction):
+
+| Alias name   | Canonical implementation for v1 | v1 action                                                                                 |
+| ------------ | ------------------------------- | ----------------------------------------------------------------------------------------- |
+| Dropdown     | Select                          | Do not implement as separate component in v1; provide compatibility alias only if needed. |
+| OverlayPanel | Popover                         | Do not implement separate rendering core in v1; map to Popover API subset.                |
+| Sidebar      | Drawer                          | Keep as naming alias only; avoid duplicate implementation track.                          |
+| Message      | InlineMessage/Alert             | Keep as docs-level naming guidance or lightweight alias, no separate behavior core.       |
+| TieredMenu   | Menu                            | Start as Menu preset/API mode; split later only if clear behavior delta appears.          |
+
+V1 split-required decisions (do not alias):
+
+- `ConfirmService` / `ConfirmPopup` / `ConfirmDialog`
+- `Select` / `Listbox`
+- `SegmentedControl` / `ToggleButton`
+- `AppBar` / `Toolbar`
+- `Image` / `Galleria`

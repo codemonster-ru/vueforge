@@ -1,4 +1,9 @@
-﻿# Menu
+# Menu
+
+## Purpose
+
+- Render navigation/action menus with keyboard-friendly item traversal.
+- Support app navigation and contextual command lists with a consistent API.
 
 ## Props
 
@@ -84,6 +89,21 @@
 
 - Top navigation: `orientation="horizontal"` with first-level product areas and dropdown children.
 - Sidebar navigation: `orientation="vertical"` with grouped sections and separators.
+
+## Responsive
+
+- Validate dense and touch-friendly row sizing for mobile/tablet.
+- Ensure long labels/icons truncate or wrap predictably without clipping.
+
+## SSR/Hydration
+
+- Keep item tree rendering stable across server/client, including active/disabled states.
+- Confirm focus/hover runtime states initialize client-side without markup drift.
+
+## Testing
+
+- Cover item rendering, active/disabled/selected states, and keyboard navigation.
+- Add regression tests for nested groups and icon/label alignment in narrow widths.
 
 ## Accessibility
 

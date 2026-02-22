@@ -33,6 +33,7 @@ const requiredPatterns = [
     /\[x\]\s+Breaking-change assessment completed\b/i,
     /\[x\]\s+Deprecations documented\b/i,
     /\[x\]\s+Migration notes added when required\b/i,
+    /\[x\]\s+Catalog mapping sync completed\b/i,
 ];
 
 for (const pattern of requiredPatterns) {

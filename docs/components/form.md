@@ -1,4 +1,9 @@
-﻿# Form
+# Form
+
+## Purpose
+
+Compose complete form workflows with predictable field state, validation, and submission behavior.
+Standardize selection controls and grouped input patterns used across product settings and onboarding.
 
 ## Props
 
@@ -162,6 +167,21 @@ const validateWithYup = async (values: Record<string, unknown>) => {
 Component tokens (override via `theme.overrides.components.form`):
 
 - `gap`, `textColor`, `disabledOpacity`
+
+## Responsive
+
+Verify label/control alignment, helper text, and error presentation on narrow layouts.
+Ensure grouped controls wrap cleanly and retain usable spacing for touch input.
+
+## SSR/Hydration
+
+Preserve initial form values, touched/error state defaults, and disabled/read-only semantics in SSR markup.
+Hydrate without mutating field structure before first interaction.
+
+## Testing
+
+Cover submission lifecycle (valid/invalid/async), reset flows, and field-level state propagation.
+Add tests for keyboard toggling, group navigation, and ARIA semantics for selection controls.
 
 ## Accessibility
 

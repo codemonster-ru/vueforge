@@ -1,4 +1,9 @@
-﻿# TagInput
+# TagInput
+
+## Purpose
+
+Enable fast option discovery and selection for forms, filters, and table toolbars.
+Cover both small curated lists and async/large datasets with consistent selection semantics.
 
 ## Props
 
@@ -43,6 +48,10 @@
 
 More recipes: [`Selection Patterns`](selection-patterns.md).
 
+## Theming
+
+- Override via theme component overrides for each component documented on this page.
+
 ## Tokens
 
 Component tokens (override via `theme.overrides.components.taginput`):
@@ -63,6 +72,26 @@ Component tokens (override via `theme.overrides.components.taginput`):
 - `clearSize`, `clearRadius`, `clearHoverBackgroundColor`
 - `small.fontSize`, `small.padding`, `small.chipPadding`, `small.chipFontSize`
 - `large.fontSize`, `large.padding`, `large.chipPadding`, `large.chipFontSize`
+
+## Recipes
+
+- Start with the examples above as baseline usage for this component.
+- Add product-specific variants (loading/error/dense/mobile) in consuming app docs when needed.
+
+## Responsive
+
+Verify popup width, option density, and chip/tag wrapping on mobile and tablet breakpoints.
+Ensure touch hit targets and scroll behavior remain stable in long option lists.
+
+## SSR/Hydration
+
+Render initial value and selected option state deterministically in SSR output.
+Defer async option fetching and client-only positioning logic until after hydration.
+
+## Testing
+
+Cover keyboard navigation, selection, clear/reset flows, and disabled/readonly states.
+Add tests for filtering/search behavior, async loading states, and ARIA combobox/listbox contracts.
 
 ## Accessibility
 

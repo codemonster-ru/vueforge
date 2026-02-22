@@ -1,21 +1,5 @@
 import { mount, RouterLinkStub } from '@vue/test-utils';
-import { vi } from 'vitest';
 import Link from '../link.vue';
-
-vi.mock('vue-router', () => ({
-    useRoute: () => ({
-        path: '/dashboard',
-        fullPath: '/dashboard',
-        matched: [{ name: 'dashboard' }],
-    }),
-    useRouter: () => ({
-        resolve: (to: unknown) => ({
-            name: typeof to === 'string' ? undefined : (to as { name?: string })?.name,
-            path: typeof to === 'string' ? to : '/resolved',
-            fullPath: typeof to === 'string' ? to : '/resolved',
-        }),
-    }),
-}));
 
 describe('Link', () => {
     const globalStubs = {

@@ -1,4 +1,9 @@
-﻿# Modal
+# Modal
+
+## Purpose
+
+Handle layered interactions (dialogs, overlays, contextual actions, and transient notifications) with consistent behavior.
+Centralize close policies, focus management, and stack/layer contracts for complex SaaS screens.
 
 ## Props
 
@@ -64,6 +69,21 @@ Component tokens (override via `theme.overrides.components.modal`):
 - Confirmation dialog: small modal with body text and cancel/confirm actions.
 - Form modal: medium modal with primary submit action and `lockScroll=true`.
 - Info modal: close-only flow with `showClose=true` and disabled overlay close if needed.
+
+## Responsive
+
+Verify overlay sizing, placement fallback, and viewport collision handling on mobile/tablet/desktop.
+Ensure gesture/touch close interactions and action buttons remain accessible on small screens.
+
+## SSR/Hydration
+
+Render closed/open initial state deterministically and keep portal/container structure hydration-safe.
+Initialize positioning/focus logic only after mount to avoid server-client markup drift.
+
+## Testing
+
+Cover open/close triggers, escape/outside click behavior, focus trap/restore, and stacking order.
+Add accessibility tests for ARIA roles, labelling, and keyboard navigation in layered UI.
 
 ## Accessibility
 
