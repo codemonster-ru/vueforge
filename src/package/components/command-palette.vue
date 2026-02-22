@@ -7,7 +7,7 @@
                 class="vf-command-palette__panel"
                 role="dialog"
                 aria-modal="true"
-                :aria-label="ariaLabel"
+                :aria-label="resolvedAriaLabel"
                 @keydown="onPanelKeydown"
             >
                 <div class="vf-command-palette__header">
@@ -16,7 +16,7 @@
                         class="vf-command-palette__input"
                         type="text"
                         :value="query"
-                        :placeholder="placeholder"
+                        :placeholder="resolvedPlaceholder"
                         @input="onInput"
                     />
                 </div>
@@ -55,7 +55,7 @@
                             </button>
                         </div>
                     </template>
-                    <div v-else class="vf-command-palette__empty">{{ emptyText }}</div>
+                    <div v-else class="vf-command-palette__empty">{{ resolvedEmptyText }}</div>
                 </div>
             </div>
         </div>
@@ -64,6 +64,7 @@
 
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { useLocaleText } from '@/package/config/locale-text';
 
 interface CommandPaletteItem {
     label: string;
@@ -103,9 +104,9 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
     modelValue: undefined,
     items: () => [],
-    placeholder: 'Type a command or search...',
-    emptyText: 'No commands found',
-    ariaLabel: 'Command palette',
+    placeholder: undefined,
+    emptyText: undefined,
+    ariaLabel: undefined,
     closeOnOverlay: true,
     closeOnEsc: true,
     closeOnSelect: true,
@@ -123,6 +124,10 @@ const open = ref(false);
 const query = ref('');
 const activeIndex = ref(-1);
 const previousActiveElement = ref<HTMLElement | null>(null);
+const localeText = useLocaleText();
+const resolvedEmptyText = computed(() => props.emptyText ?? localeText.commandPalette.emptyText);
+const resolvedPlaceholder = computed(() => props.placeholder ?? localeText.commandPalette.placeholder);
+const resolvedAriaLabel = computed(() => props.ariaLabel ?? localeText.commandPalette.ariaLabel);
 
 const isControlled = computed(() => props.modelValue !== undefined);
 
@@ -497,7 +502,7 @@ defineExpose({ open: openPalette, close: closePalette, toggle: togglePalette });
     border: none;
     border-radius: var(--vf-command-palette-item-border-radius);
     padding: var(--vf-command-palette-item-padding);
-    text-align: left;
+    text-align: start;
     background-color: transparent;
     color: var(--vf-command-palette-item-text-color);
     font: inherit;

@@ -40,7 +40,7 @@
             @keydown="onKeydown"
         />
         <div v-show="open" :id="panelId" class="vf-mention-input__panel" role="listbox">
-            <div v-if="loading" class="vf-mention-input__loading">{{ loadingText }}</div>
+            <div v-if="loading" class="vf-mention-input__loading">{{ resolvedLoadingText }}</div>
             <template v-else-if="visibleOptions.length">
                 <button
                     v-for="(option, index) in visibleOptions"
@@ -59,13 +59,14 @@
                     <span>{{ option.label }}</span>
                 </button>
             </template>
-            <div v-else class="vf-mention-input__empty">{{ emptyText }}</div>
+            <div v-else class="vf-mention-input__empty">{{ resolvedEmptyText }}</div>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
+import { useLocaleText } from '@/package/config/locale-text';
 
 type Size = 'small' | 'normal' | 'large';
 type Variant = 'filled' | 'outlined';
@@ -127,8 +128,8 @@ const props = withDefaults(defineProps<Props>(), {
     autocomplete: 'off',
     inputmode: 'text',
     loading: false,
-    loadingText: 'Loading...',
-    emptyText: 'No matches',
+    loadingText: undefined,
+    emptyText: undefined,
     minQueryLength: 1,
     maxSuggestions: 8,
     appendSpace: true,
@@ -147,6 +148,9 @@ const open = ref(false);
 const highlightedIndex = ref(-1);
 const panelId = `vf-mention-input-panel-${++mentionInputIdCounter}`;
 const activeMention = ref<ActiveMention | null>(null);
+const localeText = useLocaleText();
+const resolvedLoadingText = computed(() => props.loadingText ?? localeText.mentionInput.loadingText);
+const resolvedEmptyText = computed(() => props.emptyText ?? localeText.mentionInput.emptyText);
 
 const activeTrigger = computed(() => activeMention.value?.trigger ?? props.triggers[0] ?? '@');
 const normalizedSuggestions = computed(() => {

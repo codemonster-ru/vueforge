@@ -9,7 +9,7 @@
                 :apply-action="applyBulkAction"
             >
                 <div class="vf-datatable__bulk-default">
-                    <span class="vf-datatable__bulk-count">{{ selectedKeys.length }} selected</span>
+                    <span class="vf-datatable__bulk-count">{{ getSelectedCountLabel(selectedKeys.length) }}</span>
                     <button
                         v-for="action in bulkActions"
                         :key="action.value"
@@ -20,7 +20,9 @@
                     >
                         {{ action.label }}
                     </button>
-                    <button type="button" class="vf-datatable__bulk-clear" @click="clearSelection">Clear</button>
+                    <button type="button" class="vf-datatable__bulk-clear" @click="clearSelection">
+                        {{ resolvedClearSelectionLabel }}
+                    </button>
                 </div>
             </slot>
         </div>
@@ -37,7 +39,7 @@
                             type="checkbox"
                             class="vf-datatable__selection-control"
                             :checked="allVisibleSelected"
-                            :aria-label="selectAllAriaLabel"
+                            :aria-label="resolvedSelectAllAriaLabel"
                             @change="toggleSelectAll"
                         />
                     </th>
@@ -104,12 +106,12 @@
             <tbody class="vf-datatable__body">
                 <tr v-if="loading" class="vf-datatable__row vf-datatable__row_state">
                     <td class="vf-datatable__cell vf-datatable__cell_state" :colspan="stateColspan">
-                        <slot name="loading">{{ loadingText }}</slot>
+                        <slot name="loading">{{ resolvedLoadingText }}</slot>
                     </td>
                 </tr>
                 <tr v-else-if="!sortedRows.length" class="vf-datatable__row vf-datatable__row_state">
                     <td class="vf-datatable__cell vf-datatable__cell_state" :colspan="stateColspan">
-                        <slot name="empty">{{ emptyText }}</slot>
+                        <slot name="empty">{{ resolvedEmptyText }}</slot>
                     </td>
                 </tr>
                 <tr
@@ -158,6 +160,7 @@
 
 <script setup lang="ts">
 import { computed, onBeforeUnmount, ref, watch } from 'vue';
+import { useLocaleText } from '@/package/config/locale-text';
 
 type Size = 'small' | 'normal' | 'large';
 type Variant = 'filled' | 'outlined';
@@ -233,8 +236,8 @@ const props = withDefaults(defineProps<Props>(), {
     sortField: null,
     sortOrder: null,
     loading: false,
-    loadingText: 'Loading...',
-    emptyText: 'No data',
+    loadingText: undefined,
+    emptyText: undefined,
     striped: false,
     hover: true,
     size: 'normal',
@@ -248,8 +251,8 @@ const props = withDefaults(defineProps<Props>(), {
     selectionMode: null,
     selection: null,
     bulkActions: () => [],
-    selectAllAriaLabel: 'Select all rows',
-    selectRowAriaLabel: 'Select row',
+    selectAllAriaLabel: undefined,
+    selectRowAriaLabel: undefined,
     stickyHeader: false,
     columnResize: false,
     minColumnWidth: 80,
@@ -286,6 +289,14 @@ const resizedColumnWidths = ref<Record<string, number>>({});
 const internalColumnOrder = ref<Array<string>>([]);
 const draggingColumnField = ref<string | null>(null);
 let stopResizeListeners: (() => void) | null = null;
+const localeText = useLocaleText();
+const resolvedLoadingText = computed(() => props.loadingText ?? localeText.dataTable.loadingText);
+const resolvedEmptyText = computed(() => props.emptyText ?? localeText.dataTable.emptyText);
+const resolvedSelectedSuffix = computed(() => localeText.dataTable.selectedSuffix);
+const resolvedClearSelectionLabel = computed(() => localeText.dataTable.clearSelectionLabel);
+const resolvedSelectAllAriaLabel = computed(() => props.selectAllAriaLabel ?? localeText.dataTable.selectAllAriaLabel);
+const resolvedSelectRowAriaLabel = computed(() => props.selectRowAriaLabel ?? localeText.dataTable.selectRowAriaLabel);
+const getSelectedCountLabel = (count: number) => `${count.toString()} ${resolvedSelectedSuffix.value}`;
 
 watch(
     () => props.sortField,
@@ -529,7 +540,7 @@ const isRowSelected = (row: Record<string, unknown>, index: number) => {
 const getSelectRowAriaLabel = (row: Record<string, unknown>, index: number) => {
     const key = getRowKey(row, index);
 
-    return `${props.selectRowAriaLabel} ${String(key)}`;
+    return `${resolvedSelectRowAriaLabel.value} ${String(key)}`;
 };
 
 const toggleRowSelection = (row: Record<string, unknown>, index: number) => {
@@ -1026,7 +1037,7 @@ defineExpose({
 
 .vf-datatable__header,
 .vf-datatable__cell {
-    text-align: left;
+    text-align: start;
     padding: var(--vf-datatable-cell-padding);
 }
 
@@ -1065,14 +1076,14 @@ defineExpose({
 }
 
 .vf-datatable__header_resizable {
-    padding-right: 0.875rem;
+    padding-inline-end: 0.875rem;
 }
 
 .vf-datatable__reorder-handle {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    margin-right: 0.375rem;
+    margin-inline-end: 0.375rem;
     color: var(--vf-datatable-header-text-color);
     cursor: grab;
     user-select: none;
@@ -1097,7 +1108,7 @@ defineExpose({
 .vf-datatable__resize-handle {
     position: absolute;
     top: 0;
-    right: -0.25rem;
+    inset-inline-end: -0.25rem;
     width: 0.5rem;
     height: 100%;
     cursor: col-resize;
@@ -1149,7 +1160,7 @@ defineExpose({
 }
 
 .vf-datatable__cell_left {
-    text-align: left;
+    text-align: start;
 }
 
 .vf-datatable__cell_center {
@@ -1157,7 +1168,7 @@ defineExpose({
 }
 
 .vf-datatable__cell_right {
-    text-align: right;
+    text-align: end;
 }
 
 .vf-datatable_outlined {

@@ -6,7 +6,7 @@ on:
     pull_request:
 
 jobs:
-    test:
+    core:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
@@ -19,3 +19,36 @@ jobs:
             - run: npm run verify:semver
             - run: npm run test
             - run: npm run build
+
+    ssr-hydration:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+            - run: npm ci
+            - run: npm run test:ssr
+
+    visual-regression:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+            - run: npm ci
+            - run: npx playwright install --with-deps chromium
+            - run: npm run test:visual
+
+    performance-check:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+            - run: npm ci
+            - run: npx playwright install --with-deps chromium
+            - run: npm run verify:performance-budgets
+            - run: npm run performance:check

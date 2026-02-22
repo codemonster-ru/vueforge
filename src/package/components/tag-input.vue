@@ -7,7 +7,7 @@
                     class="vf-tag-input__tag-remove"
                     type="button"
                     :disabled="disabled || readonly"
-                    :aria-label="`Remove ${getTagLabel(tag)}`"
+                    :aria-label="`${resolvedRemoveTagAriaLabelPrefix} ${getTagLabel(tag)}`"
                     @click.stop="removeTagByIndex(index)"
                 >
                     &times;
@@ -42,7 +42,7 @@
             v-if="clearable && selectedValues.length > 0 && !disabled && !readonly"
             class="vf-tag-input__clear"
             type="button"
-            aria-label="Clear tags"
+            :aria-label="resolvedClearTagsAriaLabel"
             @click.stop="clearTags"
         >
             &#10005;
@@ -67,7 +67,7 @@
                 role="listbox"
                 :data-placement="currentPlacement"
             >
-                <div v-if="loading" class="vf-tag-input__loading">{{ loadingText }}</div>
+                <div v-if="loading" class="vf-tag-input__loading">{{ resolvedLoadingText }}</div>
                 <template v-else-if="filteredOptions.length > 0">
                     <button
                         v-for="(option, index) in filteredOptions"
@@ -87,7 +87,7 @@
                         {{ option.label }}
                     </button>
                 </template>
-                <div v-else class="vf-tag-input__empty">{{ emptyText }}</div>
+                <div v-else class="vf-tag-input__empty">{{ resolvedEmptyText }}</div>
             </div>
         </Teleport>
     </div>
@@ -96,6 +96,7 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { autoUpdate, computePosition, flip, offset } from '@codemonster-ru/floater.js';
+import { useLocaleText } from '@/package/config/locale-text';
 
 type Size = 'small' | 'normal' | 'large';
 type Variant = 'filled' | 'outlined';
@@ -145,8 +146,8 @@ const props = withDefaults(defineProps<Props>(), {
     disabled: false,
     readonly: false,
     loading: false,
-    loadingText: 'Loading...',
-    emptyText: 'No results',
+    loadingText: undefined,
+    emptyText: undefined,
     filter: true,
     allowCustom: true,
     maxTags: undefined,
@@ -171,6 +172,11 @@ const basePlacement = ref<'bottom' | 'top'>('bottom');
 const currentPlacement = ref<'bottom' | 'top'>('bottom');
 const panelId = `vf-tag-input-panel-${++tagInputIdCounter}`;
 let floater: FloaterInstance = null;
+const localeText = useLocaleText();
+const resolvedLoadingText = computed(() => props.loadingText ?? localeText.tagInput.loadingText);
+const resolvedEmptyText = computed(() => props.emptyText ?? localeText.tagInput.emptyText);
+const resolvedClearTagsAriaLabel = computed(() => localeText.tagInput.clearTagsAriaLabel);
+const resolvedRemoveTagAriaLabelPrefix = computed(() => localeText.tagInput.removeTagAriaLabelPrefix);
 
 const selectedValues = computed<Array<OptionValue>>(() => {
     return Array.isArray(props.modelValue) ? props.modelValue : [];
@@ -737,7 +743,7 @@ onBeforeUnmount(() => {
 
 .vf-tag-input__option {
     width: 100%;
-    text-align: left;
+    text-align: start;
     border: none;
     background: transparent;
     padding: var(--vf-taginput-option-padding);

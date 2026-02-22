@@ -26,7 +26,7 @@
             v-if="clearable && hasValue && !disabled && !readonly"
             class="vf-treeselect__clear"
             type="button"
-            aria-label="Clear selection"
+            :aria-label="resolvedClearSelectionAriaLabel"
             @click.stop="clearSelection"
         >
             &#10005;
@@ -45,14 +45,14 @@
                         class="vf-treeselect__search-control"
                         type="text"
                         :value="query"
-                        :placeholder="searchPlaceholder"
+                        :placeholder="resolvedSearchPlaceholder"
                         :readonly="readonly"
                         @input="onSearchInput"
                         @keydown.down.prevent="focusFirstTreeItem"
                         @keydown.esc.prevent="close"
                     />
                 </div>
-                <div v-if="loading" class="vf-treeselect__loading">{{ loadingText }}</div>
+                <div v-if="loading" class="vf-treeselect__loading">{{ resolvedLoadingText }}</div>
                 <Tree
                     v-else-if="filteredItems.length > 0"
                     class="vf-treeselect__tree"
@@ -75,7 +75,7 @@
                         <slot name="label" v-bind="slotProps" />
                     </template>
                 </Tree>
-                <div v-else class="vf-treeselect__empty">{{ emptyText }}</div>
+                <div v-else class="vf-treeselect__empty">{{ resolvedEmptyText }}</div>
             </div>
         </Teleport>
     </div>
@@ -85,6 +85,7 @@
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { autoUpdate, computePosition, flip, offset } from '@codemonster-ru/floater.js';
 import Tree, { type TreeItem, type TreeValue } from './tree.vue';
+import { useLocaleText } from '@/package/config/locale-text';
 
 type Size = 'small' | 'normal' | 'large';
 type Variant = 'filled' | 'outlined';
@@ -132,10 +133,10 @@ const props = withDefaults(defineProps<Props>(), {
     disabled: false,
     readonly: false,
     loading: false,
-    loadingText: 'Loading...',
-    emptyText: 'No results',
+    loadingText: undefined,
+    emptyText: undefined,
     placeholder: '',
-    searchPlaceholder: 'Search...',
+    searchPlaceholder: undefined,
     filter: true,
     clearable: false,
     variant: 'filled',
@@ -157,6 +158,11 @@ const basePlacement = ref<'bottom' | 'top'>('bottom');
 const currentPlacement = ref<'bottom' | 'top'>('bottom');
 const panelId = `vf-treeselect-panel-${++treeSelectIdCounter}`;
 let floater: FloaterInstance = null;
+const localeText = useLocaleText();
+const resolvedLoadingText = computed(() => props.loadingText ?? localeText.treeSelect.loadingText);
+const resolvedEmptyText = computed(() => props.emptyText ?? localeText.treeSelect.emptyText);
+const resolvedSearchPlaceholder = computed(() => props.searchPlaceholder ?? localeText.treeSelect.searchPlaceholder);
+const resolvedClearSelectionAriaLabel = computed(() => localeText.treeSelect.clearSelectionAriaLabel);
 
 const toArrayValue = (value: TreeModelValue) => {
     if (Array.isArray(value)) {

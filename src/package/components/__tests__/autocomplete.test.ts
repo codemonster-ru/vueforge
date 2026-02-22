@@ -1,6 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { nextTick } from 'vue';
 import Autocomplete from '../autocomplete.vue';
+import { setLocaleText } from '@/package/config/locale-text';
 
 const options = [
     { label: 'United States', value: 'us' },
@@ -20,6 +21,10 @@ const mountAutocomplete = (props: Record<string, unknown> = {}) => {
 };
 
 describe('Autocomplete', () => {
+    afterEach(() => {
+        setLocaleText();
+    });
+
     it('filters options and emits search', async () => {
         const wrapper = mountAutocomplete();
         const input = wrapper.find('input');
@@ -78,5 +83,35 @@ describe('Autocomplete', () => {
         expect(wrapper.emitted('search')).toBeFalsy();
         expect(wrapper.find('.vf-autocomplete').classes()).not.toContain('vf-autocomplete_open');
         expect(wrapper.find('.vf-autocomplete__chevron').attributes('disabled')).toBeDefined();
+    });
+
+    it('uses global locale loading and empty labels by default and keeps prop override priority', async () => {
+        setLocaleText({
+            autocomplete: {
+                loadingText: 'Buscando...',
+                emptyText: 'Sin resultados',
+            },
+        });
+
+        const loadingWrapper = mountAutocomplete({ loading: true });
+        const loadingInput = loadingWrapper.find('input');
+        await loadingInput.trigger('focus');
+        await nextTick();
+        expect(loadingWrapper.text()).toContain('Buscando...');
+
+        const emptyWrapper = mountAutocomplete({ options: [] });
+        const emptyInput = emptyWrapper.find('input');
+        await emptyInput.trigger('focus');
+        await nextTick();
+        expect(emptyWrapper.text()).toContain('Sin resultados');
+
+        const overrideWrapper = mountAutocomplete({
+            options: [],
+            emptyText: 'Custom empty',
+        });
+        const overrideInput = overrideWrapper.find('input');
+        await overrideInput.trigger('focus');
+        await nextTick();
+        expect(overrideWrapper.text()).toContain('Custom empty');
     });
 });

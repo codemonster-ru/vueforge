@@ -1,5 +1,6 @@
 import { mount } from '@vue/test-utils';
 import DataTable from '../data-table.vue';
+import { setLocaleText } from '@/package/config/locale-text';
 
 describe('DataTable', () => {
     const columns = [
@@ -12,6 +13,11 @@ describe('DataTable', () => {
         { id: 2, name: 'Bob', role: 'Design', age: 34 },
         { id: 3, name: 'Chen', role: 'Product', age: 31 },
     ];
+
+    afterEach(() => {
+        setLocaleText();
+        document.documentElement.removeAttribute('dir');
+    });
 
     it('emits sort updates and sorts rows when header is clicked', async () => {
         const wrapper = mount(DataTable, {
@@ -48,6 +54,40 @@ describe('DataTable', () => {
         });
 
         expect(wrapper.text()).toContain('No data');
+    });
+
+    it('uses global locale text defaults when state labels are not provided', () => {
+        setLocaleText({
+            dataTable: {
+                loadingText: 'Cargando...',
+                emptyText: 'Sin datos',
+                selectAllAriaLabel: 'Seleccionar todas las filas',
+                selectRowAriaLabel: 'Seleccionar fila',
+            },
+        });
+
+        const loadingWrapper = mount(DataTable, {
+            props: {
+                columns,
+                rows,
+                selectionMode: 'multiple',
+                loading: true,
+            },
+        });
+
+        expect(loadingWrapper.text()).toContain('Cargando...');
+        expect(loadingWrapper.find('.vf-datatable__selection-control').attributes('aria-label')).toBe(
+            'Seleccionar todas las filas',
+        );
+
+        const emptyWrapper = mount(DataTable, {
+            props: {
+                columns,
+                rows: [],
+            },
+        });
+
+        expect(emptyWrapper.text()).toContain('Sin datos');
     });
 
     it('does not perform local sorting in server mode and emits request payload', async () => {
@@ -254,5 +294,25 @@ describe('DataTable', () => {
             toField: 'name',
             order: ['age', 'name', 'role'],
         });
+    });
+
+    it('keeps sorting and selection behavior in RTL document direction', async () => {
+        document.documentElement.setAttribute('dir', 'rtl');
+
+        const wrapper = mount(DataTable, {
+            props: {
+                columns,
+                rows,
+                sortable: true,
+                selectionMode: 'single',
+            },
+        });
+
+        const ageHeader = wrapper.findAll('.vf-datatable__sort-button').find(button => button.text().includes('Age'));
+        await ageHeader?.trigger('click');
+        await wrapper.find('.vf-datatable__selection-control').trigger('change');
+
+        expect(wrapper.emitted('update:sortField')?.[0]).toEqual(['age']);
+        expect(wrapper.emitted('update:selection')?.[0]).toEqual([1]);
     });
 });

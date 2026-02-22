@@ -1,6 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { nextTick } from 'vue';
 import NotificationCenter from '../notification-center.vue';
+import { setLocaleText } from '@/package/config/locale-text';
 
 const items = [
     { id: 1, title: 'Build completed', message: 'CI passed', read: false },
@@ -22,6 +23,11 @@ const mountCenter = (options: Parameters<typeof mount>[1] = {}) =>
     });
 
 describe('NotificationCenter', () => {
+    afterEach(() => {
+        setLocaleText();
+        document.documentElement.removeAttribute('dir');
+    });
+
     it('renders notifications list', async () => {
         const wrapper = mountCenter();
 
@@ -92,5 +98,50 @@ describe('NotificationCenter', () => {
         await wrapper.find('.vf-notification-center__overlay').trigger('click');
 
         expect(wrapper.emitted('update:modelValue')).toBeUndefined();
+    });
+
+    it('uses global locale labels when props are not provided', async () => {
+        setLocaleText({
+            notificationCenter: {
+                title: 'Benachrichtigungen',
+                emptyText: 'Keine Benachrichtigungen',
+                markAllLabel: 'Alle als gelesen markieren',
+                clearLabel: 'Leeren',
+                closeLabel: 'Benachrichtigungen schliessen',
+                readLabel: 'Als gelesen markieren',
+                unreadLabel: 'Als ungelesen markieren',
+            },
+        });
+
+        const wrapper = mountCenter({
+            props: {
+                modelValue: true,
+                items: [{ id: 1, title: 'Alert', message: 'Test', read: false }],
+            },
+        });
+
+        await nextTick();
+        expect(wrapper.find('.vf-notification-center__title').text()).toBe('Benachrichtigungen');
+        expect(wrapper.findAll('.vf-notification-center__action')[0].text()).toContain('Alle als gelesen markieren');
+        expect(wrapper.findAll('.vf-notification-center__action')[1].text()).toContain('Leeren');
+        expect(wrapper.find('.vf-notification-center__close').attributes('aria-label')).toBe(
+            'Benachrichtigungen schliessen',
+        );
+        expect(wrapper.find('.vf-notification-center__toggle').text()).toContain('Als gelesen markieren');
+    });
+
+    it('keeps close interaction in RTL document direction', async () => {
+        document.documentElement.setAttribute('dir', 'rtl');
+        const wrapper = mountCenter({
+            props: {
+                modelValue: true,
+                items,
+            },
+        });
+
+        await nextTick();
+        await wrapper.find('.vf-notification-center__close').trigger('click');
+
+        expect(wrapper.emitted('update:modelValue')?.at(-1)).toEqual([false]);
     });
 });

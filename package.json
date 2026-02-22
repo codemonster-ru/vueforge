@@ -1,6 +1,6 @@
 {
     "name": "@codemonster-ru/vueforge",
-    "version": "0.90.0",
+    "version": "0.91.0",
     "description": "Open source UI components for Vue.js.",
     "license": "MIT",
     "author": "Kirill Kolesnikov",
@@ -49,6 +49,13 @@
         "lint": "node --import tsx ./node_modules/eslint/bin/eslint.js . --ext .ts,.vue --config eslint.config.ts",
         "typecheck": "vue-tsc --noEmit",
         "test": "vitest run",
+        "test:ssr": "vitest run src/package/components/__tests__/ssr-hydration.test.ts",
+        "test:visual": "playwright test",
+        "test:visual:update": "playwright test --update-snapshots",
+        "benchmark:run": "node ./scripts/run-performance-benchmarks.mjs",
+        "verify:performance-report": "node ./scripts/verify-performance-report.mjs",
+        "performance:check": "npm run benchmark:run && npm run verify:performance-report",
+        "verify:performance-budgets": "node ./scripts/verify-performance-budgets.mjs",
         "verify:semver": "node ./scripts/verify-semver-checklist.mjs"
     },
     "peerDependencies": {
@@ -61,6 +68,7 @@
         "@typescript-eslint/eslint-plugin": "^8.54.0",
         "@vitejs/plugin-vue": "^5.0.5",
         "@vue/eslint-config-typescript": "^14.6.0",
+        "@vue/server-renderer": "^3.4.31",
         "@vue/test-utils": "^2.4.6",
         "eslint": "^9.39.2",
         "eslint-config-prettier": "^9.1.0",
@@ -69,6 +77,7 @@
         "jiti": "^2.4.2",
         "jsdom": "^24.0.0",
         "pinia": "^2.2.4",
+        "@playwright/test": "^1.52.0",
         "prettier": "^3.3.2",
         "sass": "^1.77.8",
         "tsx": "^4.20.5",

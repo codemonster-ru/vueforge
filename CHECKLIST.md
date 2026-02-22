@@ -367,30 +367,30 @@ Execution dependencies:
 
 ### P1.7 Visual and runtime quality pipeline
 
-- [ ] Add visual regression testing pipeline
-- [ ] Add SSR/hydration checks
-- [ ] Add CI jobs for both
-- [ ] Add regression triage playbook
+- [x] Add visual regression testing pipeline
+- [x] Add SSR/hydration checks
+- [x] Add CI jobs for both
+- [x] Add regression triage playbook
 
 ### P1.8 i18n and RTL baseline
 
-- [ ] Add global locale text API (empty/loading/default labels)
-- [ ] Localize built-in component strings
-- [ ] Add RTL support for critical components
-- [ ] Add regression tests for RTL
-- [ ] Add i18n/RTL documentation
+- [x] Add global locale text API (empty/loading/default labels)
+- [x] Localize built-in component strings
+- [x] Add RTL support for critical components
+- [x] Add regression tests for RTL
+- [x] Add i18n/RTL documentation
 
 ### P1.9 Performance baseline for heavy components
 
-- [ ] Define performance budgets for `DataTable`, `Tree`, `VirtualScroller`, and key overlays
-- [ ] Add benchmark scenarios and measurement scripts
-- [ ] Add CI/per-release performance checks
-- [ ] Document performance guidance and limits
+- [x] Define performance budgets for `DataTable`, `Tree`, `VirtualScroller`, and key overlays
+- [x] Add benchmark scenarios and measurement scripts
+- [x] Add CI/per-release performance checks
+- [x] Document performance guidance and limits
 
 ### P1.10 Developer experience
 
-- [ ] Add live playground for core components
-- [ ] Add cookbook of copy-paste core recipes
+- [x] Add live playground for core components
+- [x] Add cookbook of copy-paste core recipes
 
 ## P2 (Scaling and Adoption)
 

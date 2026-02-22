@@ -1,0 +1,47 @@
+{
+    "version": 1,
+    "environment": {
+        "browser": "chromium",
+        "cpuThrottling": "4x",
+        "network": "no-throttle",
+        "device": "desktop-1280x720"
+    },
+    "components": {
+        "DataTable": {
+            "scenario": "1000 rows x 12 columns, client mode",
+            "budgets": {
+                "initialRenderP95Ms": 1200,
+                "sortInteractionP95Ms": 900,
+                "selectionToggleP95Ms": 250,
+                "columnResizeP95Ms": 250
+            }
+        },
+        "Tree": {
+            "scenario": "2000 nodes, 3 levels, 400 expanded nodes",
+            "budgets": {
+                "initialRenderP95Ms": 1200,
+                "expandCollapseP95Ms": 400,
+                "keyboardNavP95Ms": 150,
+                "selectionToggleP95Ms": 180
+            }
+        },
+        "VirtualScroller": {
+            "scenario": "10000 items, itemHeight=36, overscan=4",
+            "budgets": {
+                "initialRenderP95Ms": 1300,
+                "scrollUpdateP95Ms": 200,
+                "rangeChangeEmitP95Ms": 220,
+                "reachEndEmitP95Ms": 220
+            }
+        },
+        "Overlays": {
+            "scenario": "Modal, Drawer, Dropdown, Popover, Tooltip, ContextMenu, CommandPalette, NotificationCenter",
+            "budgets": {
+                "openP95Ms": 180,
+                "closeP95Ms": 220,
+                "positionUpdateP95Ms": 120,
+                "focusTransferP95Ms": 180
+            }
+        }
+    }
+}

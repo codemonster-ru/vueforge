@@ -7,12 +7,12 @@
                 class="vf-notification-center__panel"
                 role="dialog"
                 aria-modal="true"
-                :aria-label="title"
+                :aria-label="resolvedTitle"
                 tabindex="-1"
             >
                 <header class="vf-notification-center__header">
                     <div class="vf-notification-center__title-wrap">
-                        <h3 class="vf-notification-center__title">{{ title }}</h3>
+                        <h3 class="vf-notification-center__title">{{ resolvedTitle }}</h3>
                         <span v-if="unreadCount > 0" class="vf-notification-center__badge">{{ unreadCount }}</span>
                     </div>
                     <div class="vf-notification-center__header-actions">
@@ -22,7 +22,7 @@
                             :disabled="!hasUnread"
                             @click="markAllAsRead"
                         >
-                            {{ markAllLabel }}
+                            {{ resolvedMarkAllLabel }}
                         </button>
                         <button
                             type="button"
@@ -30,12 +30,12 @@
                             :disabled="!localItems.length"
                             @click="clearAll"
                         >
-                            {{ clearLabel }}
+                            {{ resolvedClearLabel }}
                         </button>
                         <button
                             type="button"
                             class="vf-notification-center__close"
-                            :aria-label="closeLabel"
+                            :aria-label="resolvedCloseLabel"
                             @click="close"
                         >
                             &times;
@@ -73,12 +73,12 @@
                                 </button>
                             </slot>
                             <button type="button" class="vf-notification-center__toggle" @click="toggleRead(item.id)">
-                                {{ item.read ? unreadLabel : readLabel }}
+                                {{ item.read ? resolvedUnreadLabel : resolvedReadLabel }}
                             </button>
                         </li>
                     </ul>
                     <p v-else class="vf-notification-center__empty">
-                        <slot name="empty">{{ emptyText }}</slot>
+                        <slot name="empty">{{ resolvedEmptyText }}</slot>
                     </p>
                 </div>
             </section>
@@ -88,6 +88,7 @@
 
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue';
+import { useLocaleText } from '@/package/config/locale-text';
 
 type NotificationSeverity = 'neutral' | 'info' | 'success' | 'warn' | 'danger';
 
@@ -119,20 +120,28 @@ const emits = defineEmits(['update:modelValue', 'update:items', 'open', 'close',
 const props = withDefaults(defineProps<Props>(), {
     modelValue: false,
     items: () => [],
-    title: 'Notifications',
-    emptyText: 'No notifications',
+    title: undefined,
+    emptyText: undefined,
     closeOnOverlay: true,
     closeOnEsc: true,
-    markAllLabel: 'Mark all as read',
-    clearLabel: 'Clear',
-    closeLabel: 'Close notifications',
-    readLabel: 'Mark as read',
-    unreadLabel: 'Mark as unread',
+    markAllLabel: undefined,
+    clearLabel: undefined,
+    closeLabel: undefined,
+    readLabel: undefined,
+    unreadLabel: undefined,
 });
 
 const panel = ref<HTMLElement | null>(null);
 const localItems = ref<Array<NotificationCenterItem>>([]);
 const previousActiveElement = ref<HTMLElement | null>(null);
+const localeText = useLocaleText();
+const resolvedEmptyText = computed(() => props.emptyText ?? localeText.notificationCenter.emptyText);
+const resolvedTitle = computed(() => props.title ?? localeText.notificationCenter.title);
+const resolvedMarkAllLabel = computed(() => props.markAllLabel ?? localeText.notificationCenter.markAllLabel);
+const resolvedClearLabel = computed(() => props.clearLabel ?? localeText.notificationCenter.clearLabel);
+const resolvedCloseLabel = computed(() => props.closeLabel ?? localeText.notificationCenter.closeLabel);
+const resolvedReadLabel = computed(() => props.readLabel ?? localeText.notificationCenter.readLabel);
+const resolvedUnreadLabel = computed(() => props.unreadLabel ?? localeText.notificationCenter.unreadLabel);
 
 const unreadCount = computed(() => localItems.value.filter(item => !item.read).length);
 const hasUnread = computed(() => unreadCount.value > 0);
@@ -275,7 +284,7 @@ const clearAll = () => {
 .vf-notification-center__panel {
     position: absolute;
     top: var(--vf-notification-center-top);
-    right: var(--vf-notification-center-right);
+    inset-inline-end: var(--vf-notification-center-right);
     width: var(--vf-notification-center-width);
     max-width: var(--vf-notification-center-max-width);
     max-height: var(--vf-notification-center-max-height);
@@ -386,7 +395,7 @@ const clearAll = () => {
     align-items: flex-start;
     border: none;
     background: transparent;
-    text-align: left;
+    text-align: start;
     color: inherit;
     padding: 0;
     cursor: pointer;

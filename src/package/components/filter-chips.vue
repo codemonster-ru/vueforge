@@ -23,16 +23,17 @@
             class="vf-filter-chips__clear"
             type="button"
             :disabled="disabled"
-            :aria-label="clearLabel || 'Clear filters'"
+            :aria-label="resolvedClearLabel"
             @click="clearSelection"
         >
-            {{ clearText }}
+            {{ resolvedClearText }}
         </button>
     </div>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import { useLocaleText } from '@/package/config/locale-text';
 
 type FilterValue = string | number;
 type FilterModel = FilterValue | Array<FilterValue> | null;
@@ -69,7 +70,7 @@ const props = withDefaults(defineProps<Props>(), {
     multiple: true,
     allowEmpty: true,
     clearable: false,
-    clearText: 'Clear',
+    clearText: undefined,
     clearLabel: '',
     disabled: false,
     wrap: true,
@@ -90,6 +91,9 @@ const selectedValues = computed(() => {
 
     return [props.modelValue];
 });
+const localeText = useLocaleText();
+const resolvedClearText = computed(() => props.clearText ?? localeText.filterChips.clearText);
+const resolvedClearLabel = computed(() => props.clearLabel || localeText.filterChips.clearLabel);
 
 const hasSelection = computed(() => selectedValues.value.length > 0);
 

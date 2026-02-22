@@ -1,5 +1,49 @@
 # Changelog
 
+## [0.91.0] - 2026-02-22
+
+- Testing:
+    - Isolated `vitest` scope to `src/**/*.test.ts` so unit test runs no longer execute Playwright suites; visual checks remain under `npm run test:visual`.
+- Visual regression pipeline baseline:
+    - Added Playwright-based visual regression pipeline with deterministic Chromium screenshot checks (`npm run test:visual`).
+    - Added dedicated visual showcase route (`/visual-regression`) and snapshot update workflow (`npm run test:visual:update`).
+    - Added contributor guidance for visual baseline updates and regression triage.
+- SSR/hydration baseline checks:
+    - Added dedicated SSR/hydration regression test (`npm run test:ssr`) using `@vue/server-renderer`.
+    - Added baseline coverage for server render output and client hydration mismatch detection on representative core components.
+    - Added contributor guide for SSR/hydration check scope and usage.
+- Runtime-quality CI coverage:
+    - Added dedicated CI jobs for SSR/hydration checks and visual regression checks.
+    - CI now executes `npm run test:ssr` and `npm run test:visual` as independent quality gates.
+- Regression triage playbook:
+    - Added a shared regression triage playbook for `core`, `ssr-hydration`, and `visual-regression` CI failures.
+    - Documented classification, decision rules, flake handling, and required PR reporting checklist.
+    - Linked playbook from testing, visual regression, and SSR/hydration contributor guides.
+- Locale text runtime API baseline:
+    - Added global locale text runtime API (`setLocaleText`, `updateLocaleText`, `getLocaleText`) and plugin option support (`localeText`).
+    - Wired locale-text fallbacks for component empty/loading/default state labels (`DataTable`, `Autocomplete`, `Combobox`, `MultiSelect`, `TagInput`, `TreeSelect`, `MentionInput`, `CommandPalette`, `NotificationCenter`, `VirtualScroller`).
+    - Localized built-in component strings for placeholders, action labels, and accessibility labels in core data/command/selection components.
+    - Added locale-text runtime tests, component fallback tests, and setup guide documentation.
+- RTL support baseline for critical components:
+    - Updated critical data/selection/command styles to use logical CSS alignment and spacing (`text-align: start/end`, `margin-inline-*`, `padding-inline-*`, `inset-inline-*`).
+    - Added RTL-safe positioning updates for `NotificationCenter` and `VirtualScroller` panel/content layout.
+    - Added RTL interaction smoke coverage for `DataTable`, `CommandPalette`, and `NotificationCenter`.
+    - Added dedicated RTL regression suite covering `DataTable`, `MultiSelect`, `TagInput`, `CommandPalette`, `NotificationCenter`, and `VirtualScroller`.
+    - Added i18n/RTL setup documentation with plugin/runtime locale examples, RTL enablement, and verification workflow.
+- Performance baseline budgets:
+    - Added baseline performance budget definitions for `DataTable`, `Tree`, `VirtualScroller`, and key overlays in `scripts/performance-budgets.json`.
+    - Added budget validation command `npm run verify:performance-budgets`.
+    - Added documentation for budget scope and semantics in `docs/audits/performance-budgets.md`.
+    - Added benchmark scenario definitions (`scripts/benchmark-scenarios.json`) and Playwright-based measurement runner (`npm run benchmark:run`).
+    - Added benchmark report output (`benchmarks/latest.json`) and benchmark usage documentation.
+    - Added performance report threshold verifier (`npm run verify:performance-report`) and combined gate (`npm run performance:check`).
+    - Added dedicated CI `performance-check` job and per-release performance gate in publish workflow.
+    - Added performance guidance and practical limits documentation for heavy components and overlay flows.
+- Developer experience:
+    - Added live playground route for core components (`/playground`) with interactive props/state controls and real-time preview.
+    - Added playground regression tests and documentation recipe for developer workflow.
+    - Added core copy-paste cookbook with reusable layout, table, form, overlay, and command/notification snippets.
+
 ## [0.90.0] - 2026-02-21
 
 - Semver checklist:

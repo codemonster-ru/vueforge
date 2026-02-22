@@ -34,6 +34,7 @@ export default defineConfig(({ mode }) => {
         test: {
             globals: true,
             environment: 'jsdom',
+            include: ['src/**/*.test.ts'],
         },
         build: {
             emptyOutDir: true,

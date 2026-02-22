@@ -29,7 +29,7 @@
                         class="vf-multiselect__chip-remove"
                         role="button"
                         tabindex="-1"
-                        aria-label="Remove item"
+                        :aria-label="resolvedRemoveItemAriaLabel"
                         @mousedown.prevent.stop
                         @click.stop="removeOption(option.value)"
                     >
@@ -43,7 +43,7 @@
             v-if="clearable && selectedValues.length > 0 && !disabled && !readonly"
             class="vf-multiselect__clear"
             type="button"
-            aria-label="Clear selection"
+            :aria-label="resolvedClearSelectionAriaLabel"
             @click.stop="clearSelection"
         >
             &#10005;
@@ -64,7 +64,7 @@
                         class="vf-multiselect__search-control"
                         type="text"
                         :value="query"
-                        :placeholder="searchPlaceholder"
+                        :placeholder="resolvedSearchPlaceholder"
                         :readonly="readonly"
                         @input="onSearchInput"
                         @keydown.down.prevent="onArrowDown"
@@ -73,7 +73,7 @@
                         @keydown.esc.prevent="close"
                     />
                 </div>
-                <div v-if="loading" class="vf-multiselect__loading">{{ loadingText }}</div>
+                <div v-if="loading" class="vf-multiselect__loading">{{ resolvedLoadingText }}</div>
                 <template v-else-if="filteredOptions.length > 0">
                     <button
                         v-for="(option, index) in filteredOptions"
@@ -97,7 +97,7 @@
                         >
                     </button>
                 </template>
-                <div v-else class="vf-multiselect__empty">{{ emptyText }}</div>
+                <div v-else class="vf-multiselect__empty">{{ resolvedEmptyText }}</div>
             </div>
         </Teleport>
     </div>
@@ -106,6 +106,7 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { autoUpdate, computePosition, flip, offset } from '@codemonster-ru/floater.js';
+import { useLocaleText } from '@/package/config/locale-text';
 
 type Size = 'small' | 'normal' | 'large';
 type Variant = 'filled' | 'outlined';
@@ -144,12 +145,12 @@ const props = withDefaults(defineProps<Props>(), {
     optionLabel: 'label',
     optionValue: 'value',
     placeholder: '',
-    searchPlaceholder: 'Search...',
+    searchPlaceholder: undefined,
     disabled: false,
     readonly: false,
     loading: false,
-    loadingText: 'Loading...',
-    emptyText: 'No results',
+    loadingText: undefined,
+    emptyText: undefined,
     filter: true,
     clearable: false,
     variant: 'filled',
@@ -172,6 +173,12 @@ const basePlacement = ref<'bottom' | 'top'>('bottom');
 const currentPlacement = ref<'bottom' | 'top'>('bottom');
 const panelId = `vf-multiselect-panel-${++multiSelectIdCounter}`;
 let floater: FloaterInstance = null;
+const localeText = useLocaleText();
+const resolvedLoadingText = computed(() => props.loadingText ?? localeText.multiSelect.loadingText);
+const resolvedEmptyText = computed(() => props.emptyText ?? localeText.multiSelect.emptyText);
+const resolvedSearchPlaceholder = computed(() => props.searchPlaceholder ?? localeText.multiSelect.searchPlaceholder);
+const resolvedClearSelectionAriaLabel = computed(() => localeText.multiSelect.clearSelectionAriaLabel);
+const resolvedRemoveItemAriaLabel = computed(() => localeText.multiSelect.removeItemAriaLabel);
 
 const normalizedOptions = computed(() => {
     return props.options.map(option => {
@@ -566,7 +573,7 @@ onBeforeUnmount(() => {
 .vf-multiselect__label {
     flex: 1 1 auto;
     min-width: 0;
-    text-align: left;
+    text-align: start;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -629,7 +636,7 @@ onBeforeUnmount(() => {
     flex: 0 0 auto;
     width: var(--vf-multiselect-clear-size);
     height: var(--vf-multiselect-clear-size);
-    margin-right: 0.35rem;
+    margin-inline-end: 0.35rem;
     padding: 0;
     border: none;
     border-radius: var(--vf-multiselect-clear-radius);
@@ -679,7 +686,7 @@ onBeforeUnmount(() => {
 
 .vf-multiselect__option {
     width: 100%;
-    text-align: left;
+    text-align: start;
     border: none;
     background: transparent;
     padding: var(--vf-multiselect-option-padding);

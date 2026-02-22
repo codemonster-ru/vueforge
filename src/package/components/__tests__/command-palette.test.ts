@@ -2,6 +2,7 @@ import { mount } from '@vue/test-utils';
 import { nextTick } from 'vue';
 import { vi } from 'vitest';
 import CommandPalette from '../command-palette.vue';
+import { setLocaleText } from '@/package/config/locale-text';
 
 vi.mock('@codemonster-ru/vueiconify', () => ({
     CmIcon: {
@@ -31,6 +32,11 @@ const mountCommandPalette = (options: Parameters<typeof mount>[1] = {}) => {
 };
 
 describe('CommandPalette', () => {
+    afterEach(() => {
+        setLocaleText();
+        document.documentElement.removeAttribute('dir');
+    });
+
     it('opens with Ctrl/Cmd+K shortcut', async () => {
         const wrapper = mountCommandPalette();
 
@@ -148,5 +154,44 @@ describe('CommandPalette', () => {
 
         const selected = wrapper.emitted('select')?.[0]?.[0] as { value?: string } | undefined;
         expect(selected?.value).toBe('publish');
+    });
+
+    it('uses global locale strings for placeholder and empty state by default', async () => {
+        setLocaleText({
+            commandPalette: {
+                placeholder: 'Tapez une commande...',
+                emptyText: 'Aucune commande',
+                ariaLabel: 'Palette de commandes',
+            },
+        });
+
+        const wrapper = mountCommandPalette({
+            props: {
+                modelValue: true,
+                items: [],
+            },
+        });
+
+        await nextTick();
+        expect(wrapper.find('.vf-command-palette__input').attributes('placeholder')).toBe('Tapez une commande...');
+        expect(wrapper.find('.vf-command-palette__empty').text()).toContain('Aucune commande');
+        expect(wrapper.find('.vf-command-palette__panel').attributes('aria-label')).toBe('Palette de commandes');
+    });
+
+    it('keeps keyboard open/select flow in RTL document direction', async () => {
+        document.documentElement.setAttribute('dir', 'rtl');
+        const command = vi.fn();
+        const wrapper = mountCommandPalette({
+            props: {
+                items: [{ label: 'Publish', value: 'publish', command }],
+            },
+        });
+
+        document.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', ctrlKey: true, bubbles: true }));
+        await nextTick();
+        await wrapper.find('.vf-command-palette__panel').trigger('keydown', { key: 'Enter' });
+
+        expect(command).toHaveBeenCalledTimes(1);
+        expect(wrapper.emitted('select')?.length).toBe(1);
     });
 });

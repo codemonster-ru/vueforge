@@ -111,6 +111,9 @@ export {
     setDateTimeLocale,
     updateDateTimeLocale,
     getDateTimeLocale,
+    setLocaleText,
+    updateLocaleText,
+    getLocaleText,
     setDensityPreset,
     getDensityPreset,
     setReducedMotion,
@@ -119,6 +122,6 @@ export {
     applyUiPreferences,
 } from '@/package/config/index';
 export type { ThemeTokens, ThemeOptions, ThemePreset } from '@/package/config/theme-core';
-export type { DateTimeLocaleOptions, DensityPreset } from '@/package/config/index';
+export type { DateTimeLocaleOptions, DensityPreset, LocaleTextOptions } from '@/package/config/index';
 // themes
 export { default as DefaultTheme } from '@/package/themes/default';

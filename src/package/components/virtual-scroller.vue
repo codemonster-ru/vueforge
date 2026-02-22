@@ -4,11 +4,11 @@
         :class="rootClass"
         :style="viewportStyle"
         role="list"
-        :aria-label="ariaLabel || undefined"
+        :aria-label="resolvedAriaLabel || undefined"
         @scroll="onScroll"
     >
         <div v-if="!itemsCount" class="vf-virtual-scroller__empty">
-            <slot name="empty">{{ emptyText }}</slot>
+            <slot name="empty">{{ resolvedEmptyText }}</slot>
         </div>
         <template v-else-if="virtual">
             <div class="vf-virtual-scroller__spacer" :style="spacerStyle">
@@ -45,6 +45,7 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
+import { useLocaleText } from '@/package/config/locale-text';
 
 interface Props {
     items?: Array<unknown>;
@@ -68,14 +69,17 @@ const props = withDefaults(defineProps<Props>(), {
     overscan: 4,
     keyField: 'id',
     virtual: true,
-    ariaLabel: 'Virtual list',
-    emptyText: 'No items',
+    ariaLabel: undefined,
+    emptyText: undefined,
 });
 
 const viewport = ref<HTMLElement | null>(null);
 const scrollTop = ref(0);
 const lastRange = ref({ start: -1, end: -1 });
 const endNotified = ref(false);
+const localeText = useLocaleText();
+const resolvedAriaLabel = computed(() => props.ariaLabel ?? localeText.virtualScroller.ariaLabel);
+const resolvedEmptyText = computed(() => props.emptyText ?? localeText.virtualScroller.emptyText);
 
 const normalizedItems = computed(() => props.items ?? []);
 const itemsCount = computed(() => normalizedItems.value.length);
@@ -243,7 +247,7 @@ watch(
 .vf-virtual-scroller__content {
     position: absolute;
     top: 0;
-    left: 0;
+    inset-inline-start: 0;
     width: 100%;
 }
 

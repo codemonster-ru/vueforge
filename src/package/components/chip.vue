@@ -20,7 +20,7 @@
             type="button"
             class="vf-chip__close"
             :disabled="disabled"
-            :aria-label="closeLabel || 'Remove'"
+            :aria-label="resolvedCloseLabel"
             @click="onClose"
         >
             <slot name="close">&times;</slot>
@@ -31,6 +31,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { CmIcon as VIcon } from '@codemonster-ru/vueiconify';
+import { useLocaleText } from '@/package/config/locale-text';
 
 type ChipVariant = 'solid' | 'soft' | 'outline';
 type ChipSize = 'small' | 'normal' | 'large';
@@ -60,6 +61,8 @@ const props = withDefaults(defineProps<Props>(), {
     ariaLabel: '',
     closeLabel: '',
 });
+const localeText = useLocaleText();
+const resolvedCloseLabel = computed(() => props.closeLabel || localeText.chip.closeLabel);
 
 const getClass = computed(() => {
     const classes = [`vf-chip_size-${props.size}`];

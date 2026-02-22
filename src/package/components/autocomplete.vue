@@ -46,7 +46,7 @@
                 role="listbox"
                 :data-placement="currentPlacement"
             >
-                <div v-if="loading" class="vf-autocomplete__loading">{{ loadingText }}</div>
+                <div v-if="loading" class="vf-autocomplete__loading">{{ resolvedLoadingText }}</div>
                 <template v-else-if="filteredOptions.length > 0">
                     <button
                         v-for="(option, index) in filteredOptions"
@@ -68,7 +68,7 @@
                         {{ option.label }}
                     </button>
                 </template>
-                <div v-else class="vf-autocomplete__empty">{{ emptyText }}</div>
+                <div v-else class="vf-autocomplete__empty">{{ resolvedEmptyText }}</div>
             </div>
         </Teleport>
     </div>
@@ -77,6 +77,7 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { autoUpdate, computePosition, flip, offset } from '@codemonster-ru/floater.js';
+import { useLocaleText } from '@/package/config/locale-text';
 
 type Size = 'small' | 'normal' | 'large';
 type Variant = 'filled' | 'outlined';
@@ -119,8 +120,8 @@ const props = withDefaults(defineProps<Props>(), {
     disabled: false,
     readonly: false,
     loading: false,
-    loadingText: 'Loading...',
-    emptyText: 'No results',
+    loadingText: undefined,
+    emptyText: undefined,
     filter: true,
     ariaLabel: 'Autocomplete input',
     ariaLabelledby: undefined,
@@ -144,6 +145,9 @@ const basePlacement = ref<'bottom' | 'top'>('bottom');
 const currentPlacement = ref<'bottom' | 'top'>('bottom');
 const panelId = `vf-autocomplete-panel-${++autocompleteIdCounter}`;
 let floater: FloaterInstance = null;
+const localeText = useLocaleText();
+const resolvedLoadingText = computed(() => props.loadingText ?? localeText.autocomplete.loadingText);
+const resolvedEmptyText = computed(() => props.emptyText ?? localeText.autocomplete.emptyText);
 
 const normalizedOptions = computed(() => {
     return props.options.map(option => {
@@ -517,7 +521,7 @@ onBeforeUnmount(() => {
 
 .vf-autocomplete__option {
     width: 100%;
-    text-align: left;
+    text-align: start;
     border: none;
     background: transparent;
     padding: var(--vf-autocomplete-option-padding);
