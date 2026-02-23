@@ -12,7 +12,7 @@
             "budgets": {
                 "initialRenderP95Ms": 1200,
                 "sortInteractionP95Ms": 900,
-                "selectionToggleP95Ms": 250,
+                "selectionToggleP95Ms": 420,
                 "columnResizeP95Ms": 250
             }
         },

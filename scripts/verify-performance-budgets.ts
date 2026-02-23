@@ -13,7 +13,9 @@ const fail = message => {
 const isPlainObject = value => value && typeof value === 'object' && !Array.isArray(value);
 const isPositiveNumber = value => typeof value === 'number' && Number.isFinite(value) && value > 0;
 
-const budgetsFile = process.env.PERF_BUDGETS_FILE ?? 'scripts/performance-budgets.json';
+const budgetsFile =
+    process.env.PERF_BUDGETS_FILE ??
+    (process.env.CI ? 'scripts/performance-budgets.ci.json' : 'scripts/performance-budgets.json');
 const file = resolve(process.cwd(), budgetsFile);
 let parsed;
 

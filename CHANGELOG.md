@@ -14,8 +14,10 @@
 - Performance check stabilization in CI:
     - Added dedicated CI performance budget profile `scripts/performance-budgets.ci.json` for noisy shared-runner conditions.
     - Added `PERF_BUDGETS_FILE` support to performance scripts (`run-performance-benchmarks`, `verify-performance-budgets`, `verify-performance-report`) and wired it in CI.
+    - Added automatic CI fallback for performance scripts: when `CI=true` and `PERF_BUDGETS_FILE` is not set, scripts now use `scripts/performance-budgets.ci.json`.
     - Kept strict default local budgets in `scripts/performance-budgets.json` for developer-side regression control.
     - Calibrated additional flaky CI thresholds for shared runners: `VirtualScroller.reachEndEmitP95Ms` and `Tree.selectionToggleP95Ms`.
+    - Calibrated flaky CI threshold for `DataTable.selectionToggleP95Ms`.
 - Lint stability fix:
     - Refactored `OverlayPanel` popover ref typing to a named type alias to prevent formatter-induced indentation lint failures in CI.
 - Core runtime fix (`Link`):
