@@ -69,4 +69,46 @@ describe('FilterChips', () => {
         expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([[]]);
         expect(wrapper.emitted('clear')?.length).toBe(1);
     });
+
+    it('sets aria-pressed for selected and unselected chips', () => {
+        const wrapper = mount(FilterChips, {
+            props: {
+                modelValue: ['open'],
+                options,
+            },
+        });
+
+        expect(wrapper.find('[data-value="open"]').attributes('aria-pressed')).toBe('true');
+        expect(wrapper.find('[data-value="progress"]').attributes('aria-pressed')).toBe('false');
+    });
+
+    it('does not emit changes when option is disabled', async () => {
+        const wrapper = mount(FilterChips, {
+            props: {
+                modelValue: ['open'],
+                options: [
+                    { label: 'Open', value: 'open' },
+                    { label: 'Blocked', value: 'blocked', disabled: true },
+                ],
+            },
+        });
+
+        await wrapper.find('[data-value="blocked"]').trigger('click');
+
+        expect(wrapper.emitted('update:modelValue')).toBeUndefined();
+        expect(wrapper.emitted('change')).toBeUndefined();
+    });
+
+    it('uses clearLabel for clear button aria-label', () => {
+        const wrapper = mount(FilterChips, {
+            props: {
+                modelValue: ['open'],
+                options,
+                clearable: true,
+                clearLabel: 'Clear active filters',
+            },
+        });
+
+        expect(wrapper.find('.vf-filter-chips__clear').attributes('aria-label')).toBe('Clear active filters');
+    });
 });

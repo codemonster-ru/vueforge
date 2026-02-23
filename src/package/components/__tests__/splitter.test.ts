@@ -101,4 +101,25 @@ describe('Splitter', () => {
         expect(wrapper.find('.vf-splitter').classes()).toContain('vf-splitter_vertical');
         expect(wrapper.findAll('.vf-splitter__gutter')).toHaveLength(2);
     });
+
+    it('applies panel size/minSize styles and disabled class via SplitterPanel context', async () => {
+        const wrapper = mount({
+            components: { Splitter, SplitterPanel },
+            template: `
+                <Splitter :model-value="[40, 60]" :min-sizes="[20, 20]" disabled direction="vertical">
+                    <SplitterPanel :size="40" :min-size="20">Top</SplitterPanel>
+                    <SplitterPanel :size="60" :min-size="20">Bottom</SplitterPanel>
+                </Splitter>
+            `,
+        });
+        await nextTick();
+
+        const panels = wrapper.findAll('.vf-splitter__panel');
+        const firstStyle = panels[0].attributes('style');
+
+        expect(panels[0].classes()).toContain('vf-splitter__panel_vertical');
+        expect(panels[0].classes()).toContain('vf-splitter__panel_disabled');
+        expect(firstStyle).toContain('flex: 0 0 40%;');
+        expect(firstStyle).toContain('min-height: 20%;');
+    });
 });

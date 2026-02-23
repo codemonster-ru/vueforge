@@ -1,5 +1,11 @@
 <template>
-    <div :class="getClass" role="group" :aria-disabled="disabled ? 'true' : undefined">
+    <div
+        :class="getClass"
+        role="group"
+        :aria-disabled="disabled ? 'true' : undefined"
+        :aria-label="ariaLabel || undefined"
+        :aria-labelledby="ariaLabelledby || undefined"
+    >
         <slot />
     </div>
 </template>
@@ -14,12 +20,16 @@ interface Props {
     size?: Size;
     variant?: Variant;
     disabled?: boolean;
+    ariaLabel?: string;
+    ariaLabelledby?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
     size: 'normal',
     variant: 'filled',
     disabled: false,
+    ariaLabel: '',
+    ariaLabelledby: '',
 });
 
 const getClass = computed(() => {

@@ -1,6 +1,6 @@
 # Planned Component Compliance Matrix
 
-Last updated: 2026-02-22
+Last updated: 2026-02-23
 
 Purpose: track quality-gate readiness for planned (not yet implemented) components from the catalog mapping.
 
@@ -19,18 +19,13 @@ Gate columns include `Responsive` to enforce mobile/tablet/desktop behavior plan
 | BottomNavigation      | Vuetify        | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
 | BottomSheet           | Vuetify        | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
 | BulkActionBar         | Vuetify        | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
-| Carousel              | Both           | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
 | CascadeSelect         | Both           | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
-| Chart                 | Both           | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
 | CodeBlock             | Vuetify        | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
 | CodeEditor            | Vuetify        | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
 | CommentThread         | Vuetify        | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
 | ConfirmPopup          | Both           | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
-| ConfirmService        | Vuetify        | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
 | DataTableToolbar      | Vuetify        | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
-| DataView              | Both           | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
 | DefaultsProvider      | Vuetify        | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
-| DialogService         | Both           | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
 | DiffViewer            | Vuetify        | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
 | Dock                  | Both           | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
 | DynamicDialog         | Both           | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
@@ -44,7 +39,6 @@ Gate columns include `Responsive` to enforce mobile/tablet/desktop behavior plan
 | Icon                  | Vuetify        | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
 | IconField             | PrimeVue       | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
 | IftaLabel             | PrimeVue       | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
-| Image                 | Both           | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
 | InfiniteScroll        | Vuetify        | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
 | InlineMessage         | Both           | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
 | Inplace               | Both           | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
@@ -53,20 +47,15 @@ Gate columns include `Responsive` to enforce mobile/tablet/desktop behavior plan
 | Kbd                   | Vuetify        | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
 | KPIStatCard           | Vuetify        | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
 | Lazy                  | Vuetify        | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
-| Listbox               | Both           | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
 | LocaleProvider        | Vuetify        | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
 | MainLayoutRegion      | Vuetify        | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
-| MegaMenu              | Both           | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
 | MemberPicker          | Vuetify        | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
 | Message               | Both           | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
-| MenuBar               | Both           | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
 | NoSsr                 | Vuetify        | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
 | OrderList             | Both           | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
 | OrgChart              | Both           | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
 | OverlayBadge          | Both           | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
-| OverlayPanel          | Both           | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
 | Panel                 | Both           | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
-| PanelMenu             | Both           | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
 | Parallax              | Vuetify        | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
 | PassThrough           | Both           | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
 | PermissionMatrix      | Vuetify        | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
@@ -82,7 +71,6 @@ Gate columns include `Responsive` to enforce mobile/tablet/desktop behavior plan
 | Sidebar               | Both           | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
 | SlideGroup            | Vuetify        | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
 | SnackbarQueue         | Vuetify        | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
-| SpeedDial             | Both           | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
 | SystemBar             | Vuetify        | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
 | TabMenu               | Both           | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
 | Terminal              | Both           | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
@@ -90,7 +78,6 @@ Gate columns include `Responsive` to enforce mobile/tablet/desktop behavior plan
 | TieredMenu            | Both           | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
 | ToggleButton          | PrimeVue       | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
 | Toolbar               | Both           | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
-| TreeTable             | Both           | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
 | TreeView              | Vuetify        | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
 | Validation            | Vuetify        | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
 | Window                | Vuetify        | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |

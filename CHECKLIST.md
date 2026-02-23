@@ -329,34 +329,34 @@ Goal: ensure every currently exported public component is explicitly tracked in 
 
 Hardening gate (mandatory for each implemented component):
 
-- [ ] API contract is documented and consistent (props/events/slots/defaults + migration note if behavior changes).
-- [ ] Tests are complete for render, interaction, edge cases, and regression-sensitive paths.
-- [ ] Accessibility contracts are verified (keyboard, ARIA, focus management where applicable).
-- [ ] Responsive behavior is verified on mobile/tablet/desktop breakpoints, including touch and overflow handling.
-- [ ] SSR/hydration behavior is verified for interactive/dynamic rendering paths.
-- [ ] Visual regression coverage exists for critical variants/states.
-- [ ] Docs include API reference and at least one production-style recipe.
-- [ ] Component row in `docs/audits/component-compliance-matrix.md` is updated.
+- [x] API contract is documented and consistent (props/events/slots/defaults + migration note if behavior changes).
+- [x] Tests are complete for render, interaction, edge cases, and regression-sensitive paths.
+- [x] Accessibility contracts are verified (keyboard, ARIA, focus management where applicable).
+- [x] Responsive behavior is verified on mobile/tablet/desktop breakpoints, including touch and overflow handling.
+- [x] SSR/hydration behavior is verified for interactive/dynamic rendering paths.
+- [x] Visual regression coverage exists for critical variants/states.
+- [x] Docs include API reference and at least one production-style recipe.
+- [x] Component row in `docs/audits/component-compliance-matrix.md` is updated.
 
 Completion gate for `P0.28`:
 
-- [ ] `docs/audits/component-compliance-matrix.md` has no `No` values for implemented components (only `Yes` or justified `N/A`).
-- [ ] Every currently exported public component from `src/index.ts` is present in checklist scope and compliance matrix.
+- [x] `docs/audits/component-compliance-matrix.md` has no `No` values for implemented components (only `Yes` or justified `N/A`).
+- [x] Every currently exported public component from `src/index.ts` is present in checklist scope and compliance matrix.
 
 Policy for all future components:
 
-- [ ] No new public component can be marked complete unless all quality gates are `Yes` (or justified `N/A`) in the compliance matrix.
+- [x] No new public component can be marked complete unless all quality gates are `Yes` (or justified `N/A`) in the compliance matrix.
 
 Backfill execution waves for implemented components:
 
-- [ ] Wave 1: backfill compliance gates for P0 first-slice components and shared layout primitives.
-- [ ] Wave 2: backfill compliance gates for input/selection/date-time families and overlays.
-- [ ] Wave 3: backfill compliance gates for advanced/data-heavy and DX components (`DataTable`, `Tree`, `VirtualScroller`, `KanbanBoard`, `CommandPalette`, `NotificationCenter`).
-- [ ] Wave 4: close remaining implemented components and reach fully green compliance matrix.
+- [x] Wave 1: backfill compliance gates for P0 first-slice components and shared layout primitives.
+- [x] Wave 2: backfill compliance gates for input/selection/date-time families and overlays.
+- [x] Wave 3: backfill compliance gates for advanced/data-heavy and DX components (`DataTable`, `Tree`, `VirtualScroller`, `KanbanBoard`, `CommandPalette`, `NotificationCenter`).
+- [x] Wave 4: close remaining implemented components and reach fully green compliance matrix.
 - [x] Create full rollout plan for all implemented and planned components: `docs/audits/component-rollout-plan.md`.
 - [x] Create API package specification document for all implemented/planned rollout packages: `docs/audits/component-api-package-specs.md`.
-- [ ] Execute rollout packages and keep `component-compliance` / `planned-component-compliance` matrices synchronized.
-- [ ] Enforce per-package API spec completion (`props/events/slots/a11y/responsive/SSR/tokens/tests`) before package closeout.
+- [x] Execute rollout packages and keep `component-compliance` / `planned-component-compliance` matrices synchronized.
+- [x] Enforce per-package API spec completion (`props/events/slots/a11y/responsive/SSR/tokens/tests`) before package closeout.
 
 Wave 1 execution plan (PR packages):
 
@@ -365,33 +365,33 @@ Wave 1 execution plan (PR packages):
 - [x] `W1-PR3` Navigation shell: `Menu`, `Link`, `Breadcrumbs`, `PageHeader`.
 - [x] `W1-PR4` Surface baseline: `Card`, `Divider`, `EmptyState`, `Skeleton`.
 - [x] `W1-PR5` Controls baseline: `Button`, `ButtonGroup`, `SegmentedControl`, `Spinner`, `Progress`.
-- [ ] `W1-PR6` Wave closeout: resolve open QA findings, sync compliance matrix rows, and mark Wave 1 done.
+- [x] `W1-PR6` Wave closeout: resolve open QA findings, sync compliance matrix rows, and mark Wave 1 done.
 
 Wave 1 package gate (applies to each `W1-PR*`):
 
-- [ ] All touched component rows are `Yes`/justified `N/A` across `DoD`, `Tests`, `A11y`, `SSR/Hydration`, `Responsive`, `Visual`, `Docs`, `Catalog`.
-- [ ] `npm run lint`, `npm run typecheck`, targeted `npm run test`, `npm run test:ssr`, and `npm run test:visual` are green.
-- [ ] At least one production-style docs recipe is updated/added for touched component group.
+- [x] All touched component rows are `Yes`/justified `N/A` across `DoD`, `Tests`, `A11y`, `SSR/Hydration`, `Responsive`, `Visual`, `Docs`, `Catalog`.
+- [x] `npm run lint`, `npm run typecheck`, targeted `npm run test`, `npm run test:ssr`, and `npm run test:visual` are green.
+- [x] At least one production-style docs recipe is updated/added for touched component group.
 
-- [ ] `AccordionItem` hardening baseline (API, tests, a11y/docs confirmation)
-- [ ] `ColorPicker` hardening baseline (API, tests, a11y/docs confirmation)
-- [ ] `ConfirmDialog` hardening baseline (API, tests, a11y/docs confirmation)
-- [ ] `EmptyState` hardening baseline (API, tests, a11y/docs confirmation)
-- [ ] `FilterChips` hardening baseline (API, tests, a11y/docs confirmation)
-- [ ] `GridItem` hardening baseline (API, tests, a11y/docs confirmation)
-- [ ] `InlineEdit` hardening baseline (API, tests, a11y/docs confirmation)
-- [ ] `InputAddon` hardening baseline (API, tests, a11y/docs confirmation)
-- [ ] `InputGroup` hardening baseline (API, tests, a11y/docs confirmation)
-- [ ] `RadioButton` hardening baseline (API, tests, a11y/docs confirmation)
-- [ ] `RadioGroup` hardening baseline (API, tests, a11y/docs confirmation)
-- [ ] `SegmentedControl` hardening baseline (API, tests, a11y/docs confirmation)
-- [ ] `Slider` hardening baseline (API, tests, a11y/docs confirmation)
-- [ ] `Spinner` hardening baseline (API, tests, a11y/docs confirmation)
-- [ ] `SplitButton` hardening baseline (API, tests, a11y/docs confirmation)
-- [ ] `SplitterPanel` hardening baseline (API, tests, a11y/docs confirmation)
-- [ ] `TabPanel` hardening baseline (API, tests, a11y/docs confirmation)
-- [ ] `ToastContainer` hardening baseline (API, tests, a11y/docs confirmation)
-- [ ] `WizardStep` hardening baseline (API, tests, a11y/docs confirmation)
+- [x] `AccordionItem` hardening baseline (API, tests, a11y/docs confirmation)
+- [x] `ColorPicker` hardening baseline (API, tests, a11y/docs confirmation)
+- [x] `ConfirmDialog` hardening baseline (API, tests, a11y/docs confirmation)
+- [x] `EmptyState` hardening baseline (API, tests, a11y/docs confirmation)
+- [x] `FilterChips` hardening baseline (API, tests, a11y/docs confirmation)
+- [x] `GridItem` hardening baseline (API, tests, a11y/docs confirmation)
+- [x] `InlineEdit` hardening baseline (API, tests, a11y/docs confirmation)
+- [x] `InputAddon` hardening baseline (API, tests, a11y/docs confirmation)
+- [x] `InputGroup` hardening baseline (API, tests, a11y/docs confirmation)
+- [x] `RadioButton` hardening baseline (API, tests, a11y/docs confirmation)
+- [x] `RadioGroup` hardening baseline (API, tests, a11y/docs confirmation)
+- [x] `SegmentedControl` hardening baseline (API, tests, a11y/docs confirmation)
+- [x] `Slider` hardening baseline (API, tests, a11y/docs confirmation)
+- [x] `Spinner` hardening baseline (API, tests, a11y/docs confirmation)
+- [x] `SplitButton` hardening baseline (API, tests, a11y/docs confirmation)
+- [x] `SplitterPanel` hardening baseline (API, tests, a11y/docs confirmation)
+- [x] `TabPanel` hardening baseline (API, tests, a11y/docs confirmation)
+- [x] `ToastContainer` hardening baseline (API, tests, a11y/docs confirmation)
+- [x] `WizardStep` hardening baseline (API, tests, a11y/docs confirmation)
 
 ## P1 (Advanced Competitiveness)
 
@@ -476,28 +476,28 @@ Exit criteria:
 
 #### Must-have parity (build most business UIs without external UI kits)
 
-- [ ] `DialogService` and `ConfirmService` APIs (programmatic open/close + promise flow)
-- [ ] `TreeTable` component (hierarchical rows + expand/collapse + selection)
-- [ ] `DataView` component (list/grid renderer with pagination/sorting handoff)
-- [ ] `Listbox` component parity (single/multi select, keyboard-first navigation, grouped options)
-- [ ] `MenuBar` component (horizontal app navigation with nested items)
-- [ ] `MegaMenu` component (multi-column navigation content)
-- [ ] `PanelMenu` component (accordion-style navigation tree)
-- [ ] `Carousel` component (keyboard + swipe + autoplay controls)
-- [ ] `SpeedDial` / floating action menu pattern
-- [ ] `Chart` wrapper component (official adapter around a stable chart engine)
-- [ ] `Image` component with preview/lightbox mode
-- [ ] `Skeleton` advanced presets parity (table/list/form presets)
-- [ ] `OverlayPanel` v1 alias parity (`Popover`-backed API subset with compatibility mapping)
-- [ ] Pass-through/unstyled customization API (class/style slots and render hooks without forking components)
+- [x] `DialogService` and `ConfirmService` APIs (programmatic open/close + promise flow)
+- [x] `TreeTable` component (hierarchical rows + expand/collapse + selection)
+- [x] `DataView` component (list/grid renderer with pagination/sorting handoff)
+- [x] `Listbox` component parity (single/multi select, keyboard-first navigation, grouped options)
+- [x] `MenuBar` component (horizontal app navigation with nested items)
+- [x] `MegaMenu` component (multi-column navigation content)
+- [x] `PanelMenu` component (accordion-style navigation tree)
+- [x] `Carousel` component (keyboard + swipe + autoplay controls)
+- [x] `SpeedDial` / floating action menu pattern
+- [x] `Chart` wrapper component (official adapter around a stable chart engine)
+- [x] `Image` component with preview/lightbox mode
+- [x] `Skeleton` advanced presets parity (table/list/form presets)
+- [x] `OverlayPanel` v1 alias parity (`Popover`-backed API subset with compatibility mapping)
+- [x] Pass-through/unstyled customization API (class/style slots and render hooks without forking components)
 
 Must-have acceptance criteria (applies to each item):
 
-- [ ] Keyboard and ARIA contracts documented and covered by regression tests.
-- [ ] SSR/hydration behavior verified where interaction is dynamic.
-- [ ] Responsive behavior verified across mobile/tablet/desktop breakpoints (including touch targets and overflow handling).
-- [ ] Theming tokens are exposed and documented.
-- [ ] At least one production-style docs recipe is added.
+- [x] Keyboard and ARIA contracts documented and covered by regression tests.
+- [x] SSR/hydration behavior verified where interaction is dynamic.
+- [x] Responsive behavior verified across mobile/tablet/desktop breakpoints (including touch targets and overflow handling).
+- [x] Theming tokens are exposed and documented.
+- [x] At least one production-style docs recipe is added.
 
 #### High-leverage parity (commonly requested after core launch)
 

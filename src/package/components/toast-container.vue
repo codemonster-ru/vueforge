@@ -1,6 +1,6 @@
 <template>
     <Teleport to="body">
-        <div class="vf-toast-container" :class="positionClass" role="region" aria-live="polite">
+        <div class="vf-toast-container" :class="positionClass" role="region" aria-live="polite" :aria-label="ariaLabel">
             <slot />
         </div>
     </Teleport>
@@ -13,13 +13,16 @@ type ToastPosition = 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left';
 
 interface Props {
     position?: ToastPosition;
+    ariaLabel?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
     position: 'top-right',
+    ariaLabel: 'Notifications',
 });
 
 const positionClass = computed(() => `vf-toast-container_${props.position}`);
+const ariaLabel = computed(() => props.ariaLabel || undefined);
 </script>
 
 <style lang="scss">

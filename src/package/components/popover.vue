@@ -59,7 +59,7 @@ type FloaterInstance = {
     destroy: () => void;
 } | null;
 
-interface Props {
+export interface PopoverProps {
     modelValue?: boolean;
     placement?: Placement;
     offset?: number;
@@ -69,7 +69,7 @@ interface Props {
 }
 
 const emits = defineEmits(['update:modelValue', 'open', 'close', 'click', 'onClick']);
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<PopoverProps>(), {
     modelValue: undefined,
     placement: 'bottom',
     offset: 8,

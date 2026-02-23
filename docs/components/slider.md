@@ -17,6 +17,9 @@ Enable product features that require richer interaction than basic form controls
 - `variant?: 'filled' | 'outlined'` (default `filled`)
 - `showValue?: boolean` (default `false`)
 - `marks?: Array<{ value: number; label?: string }>`
+- `ariaLabel?: string` (default `Slider`)
+- `ariaLabelStart?: string` (default `Start value`, range mode)
+- `ariaLabelEnd?: string` (default `End value`, range mode)
 
 ## Events
 
@@ -77,4 +80,6 @@ Add accessibility tests for keyboard alternatives, labelling, and focus behavior
 
 ## Accessibility
 
-- Ensure keyboard access, visible focus state, and sufficient color contrast in usage contexts.
+- Uses native `input[type="range"]` semantics for keyboard and assistive technology support.
+- Provide explicit labels via `ariaLabel` (single) or `ariaLabelStart`/`ariaLabelEnd` (range).
+- Keep thumb/track/focus styles with sufficient contrast in custom themes.

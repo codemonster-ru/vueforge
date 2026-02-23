@@ -1,6 +1,6 @@
 # Component API Package Specs
 
-Last updated: 2026-02-22
+Last updated: 2026-02-23
 
 Purpose: define API specifications for all rollout packages (implemented and planned) so implementation follows explicit contracts instead of ad-hoc decisions.
 
@@ -141,23 +141,71 @@ For each planned component:
 
 - Reconcile all remaining implemented components and reach full green matrix.
 
+#### W4-PR3 Service APIs
+
+- `DialogService` + `ConfirmService` -> `docs/components/dialogservice-confirmservice.md`
+
+#### W4-PR4 Tree/data parity baseline
+
+- `TreeTable` -> `docs/components/treetable.md`
+
+#### W4-PR5 Data presentation parity baseline
+
+- `DataView` -> `docs/components/dataview.md`
+
+#### W4-PR6 Selection parity baseline
+
+- `Listbox` -> `docs/components/listbox.md`
+
+#### W4-PR7 Navigation parity baseline
+
+- `MenuBar` -> `docs/components/menubar.md`
+
+#### W4-PR8 Navigation expansion baseline
+
+- `MegaMenu` -> `docs/components/megamenu.md`
+
+#### W4-PR9 Navigation tree baseline
+
+- `PanelMenu` -> `docs/components/panelmenu.md`
+
+#### W4-PR10 Media parity baseline
+
+- `Carousel` -> `docs/components/carousel.md`
+
+#### W4-PR11 Floating action parity baseline
+
+- `SpeedDial` -> `docs/components/speeddial.md`
+
+#### W4-PR12 Visualization wrapper baseline
+
+- `Chart` -> `docs/components/chart.md`
+
+#### W4-PR13 Media preview baseline
+
+- `Image` -> `docs/components/image.md`
+
+#### W4-PR14 Overlay alias parity baseline
+
+- `OverlayPanel` -> `docs/components/overlaypanel.md`
+
 ## Planned Package API Specs
 
 For each package below, create detailed API entries per component using the mandatory schema above before implementation starts.
 
 ### Track A
 
-- `P-PR1`: `DialogService`, `ConfirmService`, `ConfirmPopup`, `DynamicDialog`, `OverlayPanel`, `Sidebar`
-- `P-PR2`: `MenuBar`, `MegaMenu`, `PanelMenu`, `TieredMenu`, `TabMenu`, `BottomNavigation`, `SystemBar`
+- `P-PR1`: `ConfirmPopup`, `DynamicDialog`, `Sidebar`
+- `P-PR2`: `TieredMenu`, `TabMenu`, `BottomNavigation`, `SystemBar`
 
 ### Track B
 
-- `P-PR3`: `DataView`, `Listbox`, `TreeTable`, `CascadeSelect`
+- `P-PR3`: `CascadeSelect`
 - `P-PR4`: `PickList`, `OrderList`, `Panel`, `Fieldset`, `Toolbar`, `BlockUI`, `ScrollPanel`, `ScrollTop`
 
 ### Track C
 
-- `P-PR5`: `Chart`, `Image`, `Galleria`, `Dock`, `Terminal`, `Inplace`, `OverlayBadge`, `InlineMessage`, `Message`, `Carousel`, `SpeedDial`, `OrgChart`
+- `P-PR5`: `Galleria`, `Dock`, `Terminal`, `Inplace`, `OverlayBadge`, `InlineMessage`, `Message`, `OrgChart`
 - `P-PR6`: `BarChart`, `LineChart`, `AreaChart`, `PieChart`, `DonutChart`, `ScatterChart`, `BubbleChart`, `Histogram`, `Heatmap`, `RadarChart`, `FunnelChart`, `TreemapChart`, `GaugeChart`, `CandlestickChart`, `Sparkline`, `ComposableChart`, `TimeSeriesPanel`, `GeoMap`, `NetworkGraph`, `SankeyDiagram`, `BoxPlot`, `ErrorBar`
 
 ### Track D

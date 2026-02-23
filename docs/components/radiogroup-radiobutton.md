@@ -14,6 +14,8 @@ Props (RadioGroup):
 - `disabled?: boolean`
 - `variant?: 'filled' | 'outlined'` (default `filled`)
 - `direction?: 'vertical' | 'horizontal'` (default `vertical`)
+- `ariaLabel?: string`
+- `ariaLabelledby?: string`
 
 Props (RadioButton):
 
@@ -29,11 +31,13 @@ Props (RadioButton):
 
 ## Events
 
-- This component does not emit component-specific events.
+- `RadioGroup`: `update:modelValue`, `change`
+- `RadioButton`: `update:modelValue` (standalone mode), `change`
 
 ## Slots
 
-- This component does not expose named slots.
+- `RadioGroup`: default slot for `RadioButton` items
+- `RadioButton`: default slot for label content
 
 ## Examples
 
@@ -74,4 +78,6 @@ Add tests for keyboard toggling, group navigation, and ARIA semantics for select
 
 ## Accessibility
 
-- Ensure keyboard access, visible focus state, and sufficient color contrast in usage contexts.
+- `RadioGroup` uses `role="radiogroup"` and supports group labels via `ariaLabel`/`ariaLabelledby`.
+- Native radio inputs preserve expected keyboard behavior and checked-state semantics.
+- Keep visible focus styles and contrast for radio indicator and label text.

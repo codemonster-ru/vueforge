@@ -12,6 +12,8 @@ Props (Tabs):
 - `modelValue?: string | number` (v-model)
 - `disabled?: boolean`
 - `orientation?: 'horizontal' | 'vertical'` (default `horizontal`)
+- `ariaLabel?: string`
+- `ariaLabelledby?: string`
 
 Props (Tab):
 
@@ -29,11 +31,15 @@ Props (TabPanel):
 
 ## Events
 
-- This component does not emit component-specific events.
+- `Tabs`: `update:modelValue`, `change`
+- `Tab`: `change`
+- `TabPanel`: no emitted events
 
 ## Slots
 
-- This component does not expose named slots.
+- `Tabs`: named slots `tabs` and `panels`
+- `Tab`: default slot for tab label
+- `TabPanel`: default slot for panel content
 
 ## Examples
 

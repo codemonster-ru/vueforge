@@ -88,4 +88,6 @@ Add performance-sensitive regression tests and ARIA verification for interactive
 
 ## Accessibility
 
-- Ensure keyboard access, visible focus state, and sufficient color contrast in usage contexts.
+- Chip buttons expose toggle state via `aria-pressed` and are grouped with `role="group"` + label (`ariaLabel`/`ariaLabelledby`).
+- Use meaningful `clearLabel` text for screen readers when `clearable` is enabled.
+- Ensure active/hover/focus visual states and count badges keep sufficient contrast.

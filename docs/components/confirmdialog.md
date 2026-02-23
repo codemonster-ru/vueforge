@@ -80,4 +80,6 @@ Add accessibility tests for ARIA roles, labelling, and keyboard navigation in la
 
 ## Accessibility
 
-- Ensure keyboard access, visible focus state, and sufficient color contrast in usage contexts.
+- Inherits modal dialog semantics (`role="dialog"`, `aria-modal="true"`) and labelled/description wiring from `Modal`.
+- Supports `Escape` close behavior (configurable via `closeOnEsc`) and overlay-close policy via `closeOnOverlay`.
+- Keep action buttons keyboard reachable and provide explicit, descriptive confirm/cancel labels for destructive flows.

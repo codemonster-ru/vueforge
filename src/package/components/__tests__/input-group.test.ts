@@ -37,6 +37,17 @@ describe('InputGroup', () => {
         expect(children[1].className).toContain('vf-input');
         expect(children[2].className).toContain('vf-button');
     });
+
+    it('supports group labelling via aria props', () => {
+        const wrapper = mount(InputGroup, {
+            props: {
+                ariaLabel: 'Price editor',
+            },
+        });
+
+        expect(wrapper.attributes('role')).toBe('group');
+        expect(wrapper.attributes('aria-label')).toBe('Price editor');
+    });
 });
 
 describe('InputAddon', () => {
@@ -57,6 +68,7 @@ describe('InputAddon', () => {
 
         expect(defaultWrapper.element.tagName).toBe('SPAN');
         expect(defaultWrapper.classes()).toContain('vf-input-group__addon');
+        expect(defaultWrapper.text()).toBe('USD');
         expect(asDivWrapper.element.tagName).toBe('DIV');
     });
 });

@@ -31,11 +31,13 @@ Events (`Splitter`):
 
 ## Events
 
-- This component does not emit component-specific events.
+- `Splitter`: `update:modelValue`, `change`
+- `SplitterPanel`: no emitted events
 
 ## Slots
 
-- This component does not expose named slots.
+- `Splitter`: default slot for `SplitterPanel` children
+- `SplitterPanel`: default slot for panel content
 
 ## Examples
 
@@ -82,4 +84,6 @@ Add accessibility tests for keyboard alternatives, labelling, and focus behavior
 
 ## Accessibility
 
-- Ensure keyboard access, visible focus state, and sufficient color contrast in usage contexts.
+- Gutters expose `role="separator"` with orientation and current value metadata.
+- Keyboard resizing is supported on focused gutter (`Arrow` keys, `Home`, `End`).
+- Ensure handle contrast and focus styles remain visible in custom themes.

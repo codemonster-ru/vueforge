@@ -23,6 +23,7 @@ Enable product features that require richer interaction than basic form controls
 - `closeOnEsc?: boolean` (default `true`)
 - `matchTriggerWidth?: boolean` (default `true`)
 - `toggleAriaLabel?: string` (default `Toggle actions`)
+- `ariaLabel?: string` (default `Split button`)
 
 `SplitButtonItem` supports:
 
@@ -92,4 +93,6 @@ Add accessibility tests for keyboard alternatives, labelling, and focus behavior
 
 ## Accessibility
 
-- Ensure keyboard access, visible focus state, and sufficient color contrast in usage contexts.
+- Wrapper exposes `role="group"` with configurable `ariaLabel` to describe combined primary/toggle actions.
+- Use `toggleAriaLabel` to clearly describe the secondary menu action for screen readers.
+- Keep primary action and menu toggle both reachable with keyboard and visually distinct in focus state.

@@ -11,6 +11,11 @@
 - `height?: string | number`
 - `variant?: 'text' | 'rect' | 'circle'` (default `text`)
 - `animated?: boolean` (default `true`)
+- `preset?: 'none' | 'table' | 'list' | 'form'` (default `none`)
+- `tableRows?: number` (default `4`)
+- `tableColumns?: number` (default `4`)
+- `listRows?: number` (default `4`)
+- `formRows?: number` (default `4`)
 
 ## Events
 
@@ -26,6 +31,9 @@
 <Skeleton width="240px" height="14px" />
 <Skeleton width="180px" height="14px" />
 <Skeleton variant="circle" width="48" />
+<Skeleton preset="table" :table-rows="5" :table-columns="4" />
+<Skeleton preset="list" :list-rows="6" />
+<Skeleton preset="form" :form-rows="4" />
 ```
 
 ## Theming
@@ -35,10 +43,12 @@
 ## Tokens
 
 - Use `theme.overrides.components` to customize this component where token support is available.
+- Preset-specific sizing tokens are exposed through `theme.overrides.components.skeleton`.
 
 ## Recipes
 
 - Start with the examples above as baseline usage for this component.
+- Use `preset="table"` for data grids, `preset="list"` for feed/card lists, and `preset="form"` for detail/edit skeleton screens.
 - Add product-specific variants (loading/error/dense/mobile) in consuming app docs when needed.
 
 ## Responsive
@@ -54,6 +64,7 @@
 ## Testing
 
 - Cover shape/animation variants and accessibility expectations for loading semantics.
+- Cover preset rendering contracts (`table`, `list`, `form`) with row/column count checks.
 - Add visual regression tests for common list/card/table skeleton patterns.
 
 ## Accessibility

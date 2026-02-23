@@ -27,8 +27,7 @@ Support dense information architecture in settings, onboarding, and detail scree
 
 ## Slots
 
-- `indicator` - slot props: `{ step, index, status, active, completed, upcoming, error }`
-- `step` - slot props: `{ step, index, status, active, completed, upcoming, error }`
+- This component does not expose named slots.
 
 ## Examples
 

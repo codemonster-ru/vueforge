@@ -6,4 +6,13 @@ export default {
     backgroundColor: 'var(--vf-gutter-color)',
     shimmerColor: 'var(--vf-bg-color)',
     animationDuration: '2s',
+    presetGap: '0.65rem',
+    presetTableHeaderHeight: '1rem',
+    presetTableRowHeight: '0.9rem',
+    presetListAvatarSize: '2.5rem',
+    presetListLineHeight: '0.8rem',
+    presetListSecondaryWidth: '70%',
+    presetFormLabelWidth: '35%',
+    presetFormLabelHeight: '0.8rem',
+    presetFormFieldHeight: '2.4rem',
 };

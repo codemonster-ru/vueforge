@@ -8,12 +8,16 @@ export { default as GridItem } from '@/package/components/grid-item.vue';
 export { default as Stack } from '@/package/components/stack.vue';
 export { default as Inline } from '@/package/components/inline.vue';
 export { default as Menu } from '@/package/components/menu.vue';
+export { default as MenuBar } from '@/package/components/menu-bar.vue';
+export { default as MegaMenu } from '@/package/components/mega-menu.vue';
+export { default as PanelMenu } from '@/package/components/panel-menu.vue';
 export { default as Button } from '@/package/components/button.vue';
 export { default as ButtonGroup } from '@/package/components/button-group.vue';
 export { default as Input } from '@/package/components/input.vue';
 export { default as InputGroup } from '@/package/components/input-group.vue';
 export { default as InputAddon } from '@/package/components/input-addon.vue';
 export { default as InlineEdit } from '@/package/components/inline-edit.vue';
+export { default as Image } from '@/package/components/image.vue';
 export { default as SearchInput } from '@/package/components/search-input.vue';
 export { default as MentionInput } from '@/package/components/mention-input.vue';
 export { default as PasswordInput } from '@/package/components/password-input.vue';
@@ -30,6 +34,7 @@ export { default as Select } from '@/package/components/select.vue';
 export { default as Autocomplete } from '@/package/components/autocomplete.vue';
 export { default as Combobox } from '@/package/components/combobox.vue';
 export { default as MultiSelect } from '@/package/components/multi-select.vue';
+export { default as Listbox } from '@/package/components/listbox.vue';
 export { default as TagInput } from '@/package/components/tag-input.vue';
 export { default as DatePicker } from '@/package/components/datepicker.vue';
 export { default as DateRangePicker } from '@/package/components/date-range-picker.vue';
@@ -56,6 +61,7 @@ export { default as Modal } from '@/package/components/modal.vue';
 export { default as ConfirmDialog } from '@/package/components/confirm-dialog.vue';
 export { default as Drawer } from '@/package/components/drawer.vue';
 export { default as Dropdown } from '@/package/components/dropdown.vue';
+export { default as OverlayPanel } from '@/package/components/overlay-panel.vue';
 export { default as SplitButton } from '@/package/components/split-button.vue';
 export { default as ContextMenu } from '@/package/components/context-menu.vue';
 export { default as CommandPalette } from '@/package/components/command-palette.vue';
@@ -72,6 +78,10 @@ export { default as FilterChips } from '@/package/components/filter-chips.vue';
 export { default as Avatar } from '@/package/components/avatar.vue';
 export { default as Spinner } from '@/package/components/spinner.vue';
 export { default as DataTable } from '@/package/components/data-table.vue';
+export { default as DataView } from '@/package/components/data-view.vue';
+export { default as Carousel } from '@/package/components/carousel.vue';
+export { default as SpeedDial } from '@/package/components/speed-dial.vue';
+export { default as Chart } from '@/package/components/chart.vue';
 export { default as Slider } from '@/package/components/slider.vue';
 export { default as Splitter } from '@/package/components/splitter.vue';
 export { default as SplitterPanel } from '@/package/components/splitter-panel.vue';
@@ -81,6 +91,7 @@ export { default as WizardStep } from '@/package/components/wizard-step.vue';
 export { default as Timeline } from '@/package/components/timeline.vue';
 export { default as Rating } from '@/package/components/rating.vue';
 export { default as Tree } from '@/package/components/tree.vue';
+export { default as TreeTable } from '@/package/components/tree-table.vue';
 export { default as TreeSelect } from '@/package/components/tree-select.vue';
 export { default as Breadcrumbs } from '@/package/components/breadcrumbs.vue';
 export { default as Divider } from '@/package/components/divider.vue';
@@ -97,11 +108,39 @@ export type {
     FormValues,
 } from '@/package/components/form.vue';
 export type { TreeItem, TreeValue } from '@/package/components/tree.vue';
+export type { TreeTableColumn, TreeTableNode, TreeTableValue } from '@/package/components/tree-table.vue';
+export type { ListboxOption, ListboxOptionGroup, ListboxValue } from '@/package/components/listbox.vue';
+export type { MegaMenuItem, MegaMenuLink, MegaMenuSection } from '@/package/components/mega-menu.vue';
+export type { PanelMenuItem } from '@/package/components/panel-menu.vue';
+export type { SpeedDialAction } from '@/package/components/speed-dial.vue';
+export { createChartJsAdapter } from '@/package/components/chart-adapter';
+export type {
+    ChartAdapter,
+    ChartAdapterInstance,
+    ChartConfig,
+    ChartData,
+    ChartType,
+} from '@/package/components/chart-adapter';
 export type { TimelineItem } from '@/package/components/timeline.vue';
 export type { TourStep } from '@/package/components/tour.vue';
 export type { WizardStepItem } from '@/package/components/wizard.vue';
 export type { NotificationCenterItem } from '@/package/components/notification-center.vue';
 export type { KanbanBoardItem, KanbanColumn } from '@/package/components/kanban-board.vue';
+// services
+export { createDialogService, dialogService } from '@/package/services/dialog-service';
+export type {
+    DialogService,
+    DialogServiceEntry,
+    DialogServiceHandle,
+    DialogServiceOpenOptions,
+} from '@/package/services/dialog-service';
+export { createConfirmService, confirmService } from '@/package/services/confirm-service';
+export type {
+    ConfirmService,
+    ConfirmServiceEntry,
+    ConfirmServiceHandle,
+    ConfirmServiceOptions,
+} from '@/package/services/confirm-service';
 // config
 export {
     default as VueForge,
@@ -120,8 +159,16 @@ export {
     getReducedMotion,
     getUiPreferences,
     applyUiPreferences,
+    resolvePassThrough,
+    withPartClass,
 } from '@/package/config/index';
 export type { ThemeTokens, ThemeOptions, ThemePreset } from '@/package/config/theme-core';
 export type { DateTimeLocaleOptions, DensityPreset, LocaleTextOptions } from '@/package/config/index';
+export type {
+    PassThroughAttrs,
+    PassThroughEntry,
+    PassThroughOptions,
+    PassThroughResolverContext,
+} from '@/package/config/index';
 // themes
 export { default as DefaultTheme } from '@/package/themes/default';

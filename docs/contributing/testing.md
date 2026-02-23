@@ -24,6 +24,7 @@ Mandatory quality gates for new public components:
 - SSR/hydration behavior validated for dynamic/interactive paths.
 - Visual regression baseline added for critical states/variants.
 - Component row added to `docs/audits/component-compliance-matrix.md` with all gates set to `Yes` (or justified `N/A`) before merge.
+- Package-level API spec entry in `docs/audits/component-api-package-specs.md` must be complete (`props/events/slots/a11y/responsive/SSR/tokens/tests`) before package closeout.
 
 ## Overlay-Specific Minimums
 

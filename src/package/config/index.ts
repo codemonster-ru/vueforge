@@ -12,6 +12,7 @@ import {
     setDensityPreset,
     setReducedMotion,
 } from './ui-preferences';
+import { resolvePassThrough, withPartClass } from './pass-through';
 
 type VueForgeOptions = {
     theme?: ThemeOptions | ThemePreset;
@@ -36,6 +37,13 @@ export type { DateTimeLocaleOptions };
 export type { LocaleTextOptions };
 export { setDensityPreset, getDensityPreset, setReducedMotion, getReducedMotion, getUiPreferences, applyUiPreferences };
 export type { DensityPreset };
+export { resolvePassThrough, withPartClass };
+export type {
+    PassThroughAttrs,
+    PassThroughEntry,
+    PassThroughOptions,
+    PassThroughResolverContext,
+} from './pass-through';
 
 // noinspection JSUnusedGlobalSymbols
 export default {

@@ -23,4 +23,37 @@ describe('Skeleton', () => {
 
         expect(wrapper.classes()).not.toContain('vf-skeleton_animated');
     });
+
+    it('renders table preset with rows and columns', () => {
+        const wrapper = mount(Skeleton, {
+            props: {
+                preset: 'table',
+                tableRows: 3,
+                tableColumns: 5,
+            },
+        });
+
+        expect(wrapper.classes()).toContain('vf-skeleton-preset');
+        expect(wrapper.classes()).toContain('vf-skeleton-preset_table');
+        expect(wrapper.findAll('.vf-skeleton-preset__table-row')).toHaveLength(3);
+        expect(wrapper.findAll('.vf-skeleton-preset__table-header .vf-skeleton__block')).toHaveLength(5);
+    });
+
+    it('renders list and form presets', () => {
+        const list = mount(Skeleton, {
+            props: {
+                preset: 'list',
+                listRows: 2,
+            },
+        });
+        const form = mount(Skeleton, {
+            props: {
+                preset: 'form',
+                formRows: 3,
+            },
+        });
+
+        expect(list.findAll('.vf-skeleton-preset__list-row')).toHaveLength(2);
+        expect(form.findAll('.vf-skeleton-preset__form-row')).toHaveLength(3);
+    });
 });

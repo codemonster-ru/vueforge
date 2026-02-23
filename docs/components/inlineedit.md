@@ -80,4 +80,6 @@ Add accessibility checks and visual/SSR assertions where behavior is dynamic.
 
 ## Accessibility
 
-- Ensure keyboard access, visible focus state, and sufficient color contrast in usage contexts.
+- Editing flow supports keyboard-first interactions: `Enter` to save and `Escape` to cancel.
+- Keep `editLabel`/`saveLabel`/`cancelLabel` explicit for screen-reader clarity in contextual inline actions.
+- In `readonly` mode, editing controls are hidden and value remains non-interactive.

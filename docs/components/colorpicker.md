@@ -78,4 +78,7 @@ Add accessibility tests for keyboard alternatives, labelling, and focus behavior
 
 ## Accessibility
 
-- Ensure keyboard access, visible focus state, and sufficient color contrast in usage contexts.
+- Control uses `aria-expanded`, `aria-controls`, and `aria-haspopup="dialog"` when toggling the panel.
+- Panel supports `Escape` to close and keeps focus behavior predictable for keyboard users.
+- `readonly` keeps the control focusable but blocks panel opening and value changes (`aria-disabled="true"`).
+- Ensure sufficient contrast for swatch/preset borders and visible focus styles in custom themes.

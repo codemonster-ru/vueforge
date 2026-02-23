@@ -112,4 +112,37 @@ describe('Wizard', () => {
 
         wrapper.unmount();
     });
+
+    it('wires step tab/panel semantics and toggles aria-hidden for WizardStep', async () => {
+        const wrapper = createWrapper({
+            data() {
+                return {
+                    step: 'account',
+                    steps: [
+                        { value: 'account', title: 'Account' },
+                        { value: 'plan', title: 'Plan' },
+                        { value: 'confirm', title: 'Confirm' },
+                    ],
+                    linear: false,
+                    validateStep: undefined,
+                };
+            },
+        });
+
+        const tabs = wrapper.findAll('.vf-wizard__step[role="tab"]');
+        const panels = wrapper.findAll('.vf-wizard-step[role="tabpanel"]');
+
+        expect(tabs).toHaveLength(3);
+        expect(panels).toHaveLength(3);
+        expect(tabs[0].attributes('aria-controls')).toBe(panels[0].attributes('id'));
+        expect(panels[0].attributes('aria-labelledby')).toBe(tabs[0].attributes('id'));
+        expect(panels[0].attributes('aria-hidden')).toBe('false');
+        expect(panels[1].attributes('aria-hidden')).toBe('true');
+
+        await tabs[1].trigger('click');
+        await nextTick();
+
+        expect(panels[0].attributes('aria-hidden')).toBe('true');
+        expect(panels[1].attributes('aria-hidden')).toBe('false');
+    });
 });

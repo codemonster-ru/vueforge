@@ -1,10 +1,14 @@
 <template>
-    <div ref="root" :class="getClass">
+    <div ref="root" :class="getClass" @keydown.esc.stop.prevent="onEscape">
         <button
+            ref="control"
             class="vf-color-picker__control"
             type="button"
             :disabled="disabled"
             :aria-expanded="open"
+            :aria-controls="panelId"
+            :aria-disabled="readonly ? 'true' : undefined"
+            aria-haspopup="dialog"
             :aria-label="ariaLabel"
             @click="togglePanel"
         >
@@ -12,9 +16,22 @@
             <span class="vf-color-picker__value">{{ displayValue }}</span>
             <span class="vf-color-picker__chevron">▾</span>
         </button>
-        <div v-if="open" class="vf-color-picker__panel">
+        <div
+            v-if="open"
+            :id="panelId"
+            class="vf-color-picker__panel"
+            role="dialog"
+            aria-modal="false"
+            :aria-label="ariaLabel"
+        >
             <div class="vf-color-picker__row">
-                <input class="vf-color-picker__native" type="color" :value="hexColor" @input="onColorInput" />
+                <input
+                    class="vf-color-picker__native"
+                    type="color"
+                    :disabled="disabled || readonly"
+                    :value="hexColor"
+                    @input="onColorInput"
+                />
             </div>
             <div v-if="alpha" class="vf-color-picker__row">
                 <input
@@ -23,6 +40,7 @@
                     min="0"
                     max="100"
                     step="1"
+                    :disabled="disabled || readonly"
                     :value="alphaPercent"
                     @input="onAlphaInput"
                 />
@@ -33,6 +51,8 @@
                     class="vf-color-picker__text"
                     type="text"
                     :placeholder="placeholder"
+                    :readonly="readonly"
+                    :disabled="disabled"
                     :value="displayValue"
                     @change="onTextChange"
                 />
@@ -43,6 +63,7 @@
                     :key="`${preset}-${index}`"
                     class="vf-color-picker__preset"
                     type="button"
+                    :disabled="disabled || readonly"
                     :style="{ backgroundColor: parseColor(preset).preview }"
                     @click="onPresetClick(preset)"
                 />
@@ -80,6 +101,8 @@ interface ParsedColor {
     preview: string;
 }
 
+let colorPickerIdCounter = 0;
+
 const emits = defineEmits(['update:modelValue', 'change', 'open', 'close']);
 const props = withDefaults(defineProps<Props>(), {
     modelValue: '#3b82f6',
@@ -95,9 +118,12 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const root = ref<HTMLElement | null>(null);
+const control = ref<HTMLButtonElement | null>(null);
 const open = ref(false);
 const hexColor = ref('#3b82f6');
 const alphaPercent = ref(100);
+const uid = ++colorPickerIdCounter;
+const panelId = `vf-color-picker-panel-${uid}`;
 
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
 const toHex = (value: number) => clamp(Math.round(value), 0, 255).toString(16).padStart(2, '0');
@@ -306,6 +332,15 @@ watch(
     { immediate: true },
 );
 
+watch(
+    () => [props.disabled, props.readonly] as const,
+    ([isDisabled, isReadonly]) => {
+        if (isDisabled || isReadonly) {
+            closePanel();
+        }
+    },
+);
+
 const previewColor = computed(() => {
     const parsed = parseColor(hexColor.value);
 
@@ -435,6 +470,15 @@ const onDocumentClick = (event: MouseEvent) => {
     }
 
     closePanel();
+};
+
+const onEscape = () => {
+    if (!open.value) {
+        return;
+    }
+
+    closePanel();
+    control.value?.focus();
 };
 
 onMounted(() => {

@@ -45,11 +45,13 @@ Events (`Wizard`):
 
 ## Events
 
-- This component does not emit component-specific events.
+- `Wizard`: `update:modelValue`, `change`, `next`, `prev`, `complete`, `invalidStep`
+- `WizardStep`: no emitted events
 
 ## Slots
 
-- This component does not expose named slots.
+- `Wizard`: `default`, `indicator`, `actions`
+- `WizardStep`: default slot for step content
 
 ## Examples
 

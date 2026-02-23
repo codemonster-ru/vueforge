@@ -28,4 +28,23 @@ describe('Alert', () => {
 
         expect(wrapper.isVisible()).toBe(false);
     });
+
+    it('exposes alert semantics and close control label', () => {
+        const wrapper = mount(Alert, {
+            props: {
+                modelValue: true,
+                closable: true,
+                title: 'Attention',
+                message: 'Check this setting',
+                severity: 'warn',
+            },
+        });
+
+        const root = wrapper.get('.vf-alert');
+        const close = wrapper.get('.vf-alert__close');
+
+        expect(root.attributes('role')).toBe('alert');
+        expect(root.attributes('data-severity')).toBe('warn');
+        expect(close.attributes('aria-label')).toBe('Close');
+    });
 });

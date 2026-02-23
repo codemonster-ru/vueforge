@@ -85,4 +85,41 @@ describe('SplitButton', () => {
 
         wrapper.unmount();
     });
+
+    it('applies toggle aria label and group label', () => {
+        const wrapper = mountSplitButton({
+            props: {
+                toggleAriaLabel: 'Open save actions',
+                ariaLabel: 'Save actions',
+            },
+        });
+
+        expect(wrapper.attributes('role')).toBe('group');
+        expect(wrapper.attributes('aria-label')).toBe('Save actions');
+        expect(wrapper.find('.vf-splitbutton__toggle').attributes('aria-label')).toBe('Open save actions');
+
+        wrapper.unmount();
+    });
+
+    it('does not emit primary click when disabled or loading', async () => {
+        const disabledWrapper = mountSplitButton({
+            props: {
+                disabled: true,
+            },
+        });
+
+        await disabledWrapper.find('.vf-splitbutton__main').trigger('click');
+        expect(disabledWrapper.emitted('click')).toBeUndefined();
+        disabledWrapper.unmount();
+
+        const loadingWrapper = mountSplitButton({
+            props: {
+                loading: true,
+            },
+        });
+
+        await loadingWrapper.find('.vf-splitbutton__main').trigger('click');
+        expect(loadingWrapper.emitted('click')).toBeUndefined();
+        loadingWrapper.unmount();
+    });
 });

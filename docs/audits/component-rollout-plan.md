@@ -1,6 +1,6 @@
 # Component Rollout Plan
 
-Last updated: 2026-02-22
+Last updated: 2026-02-23
 
 Purpose: execute full quality hardening and implementation coverage for all component scope (implemented and planned) with PR-sized batches.
 
@@ -14,8 +14,19 @@ Quality gate for every package:
 
 Wave 1 status:
 
-- Completed: `W1-PR1`, `W1-PR2`, `W1-PR3`, `W1-PR4`, `W1-PR5`.
-- Remaining closeout: `W1-PR6`.
+- Completed: `W1-PR1`, `W1-PR2`, `W1-PR3`, `W1-PR4`, `W1-PR5`, `W1-PR6`.
+
+Wave 2 status:
+
+- Completed: `W2-PR1`, `W2-PR2`, `W2-PR3`, `W2-PR4`, `W2-PR5`, `W2-PR6`, `W2-PR7`, `W2-PR8`.
+
+Wave 3 status:
+
+- Completed: `W3-PR1`, `W3-PR2`, `W3-PR3`.
+
+Wave 4 status:
+
+- Completed: `W4-PR1`, `W4-PR2`, `W4-PR3`, `W4-PR4`, `W4-PR5`, `W4-PR6`, `W4-PR7`, `W4-PR8`, `W4-PR9`, `W4-PR10`, `W4-PR11`, `W4-PR12`, `W4-PR13`, `W4-PR14`.
 
 Wave 2 packages (forms, input families, date/time, overlays):
 
@@ -38,22 +49,34 @@ Wave 4 packages (remaining implemented coverage closure):
 
 - `W4-PR1` Remaining implemented components reconciliation and matrix closure.
 - `W4-PR2` Final green pass: matrix-wide validation, docs consistency pass, and checklist closure.
+- `W4-PR3` Service parity baseline: `DialogService`, `ConfirmService`.
+- `W4-PR4` Tree/data parity baseline: `TreeTable`.
+- `W4-PR5` Data presentation parity baseline: `DataView`.
+- `W4-PR6` Selection parity baseline: `Listbox`.
+- `W4-PR7` Navigation parity baseline: `MenuBar`.
+- `W4-PR8` Navigation expansion baseline: `MegaMenu`.
+- `W4-PR9` Navigation tree baseline: `PanelMenu`.
+- `W4-PR10` Media parity baseline: `Carousel`.
+- `W4-PR11` Floating action parity baseline: `SpeedDial`.
+- `W4-PR12` Visualization wrapper baseline: `Chart`.
+- `W4-PR13` Media preview baseline: `Image`.
+- `W4-PR14` Overlay alias parity baseline: `OverlayPanel`.
 
 ## Planned Components Implementation Tracks
 
 Track A (services, overlays, menu/navigation parity):
 
-- `P-PR1`: `DialogService`, `ConfirmService`, `ConfirmPopup`, `DynamicDialog`, `OverlayPanel`, `Sidebar`.
-- `P-PR2`: `MenuBar`, `MegaMenu`, `PanelMenu`, `TieredMenu`, `TabMenu`, `BottomNavigation`, `SystemBar`.
+- `P-PR1`: `ConfirmPopup`, `DynamicDialog`, `Sidebar`.
+- `P-PR2`: `TieredMenu`, `TabMenu`, `BottomNavigation`, `SystemBar`.
 
 Track B (selection/data-view and table parity):
 
-- `P-PR3`: `DataView`, `Listbox`, `TreeTable`, `CascadeSelect`.
+- `P-PR3`: `CascadeSelect`.
 - `P-PR4`: `PickList`, `OrderList`, `Panel`, `Fieldset`, `Toolbar`, `BlockUI`, `ScrollPanel`, `ScrollTop`.
 
 Track C (media and visualization):
 
-- `P-PR5`: `Chart`, `Image`, `Galleria`, `Dock`, `Terminal`, `Inplace`, `OverlayBadge`, `InlineMessage`, `Message`, `Carousel`, `SpeedDial`, `OrgChart`.
+- `P-PR5`: `Galleria`, `Dock`, `Terminal`, `Inplace`, `OverlayBadge`, `InlineMessage`, `Message`, `OrgChart`.
 - `P-PR6`: visualization expansions from checklist (`BarChart`, `LineChart`, `AreaChart`, `PieChart`, `DonutChart`, `ScatterChart`, `BubbleChart`, `Histogram`, `Heatmap`, `RadarChart`, `FunnelChart`, `TreemapChart`, `GaugeChart`, `CandlestickChart`, `Sparkline`, `ComposableChart`, `TimeSeriesPanel`, `GeoMap`, `NetworkGraph`, `SankeyDiagram`, `BoxPlot`, `ErrorBar`).
 
 Track D (SaaS workflow components):

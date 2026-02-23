@@ -47,4 +47,60 @@ describe('ColorPicker', () => {
         expect(wrapper.emitted('open')).toBeTruthy();
         expect(wrapper.emitted('close')).toBeTruthy();
     });
+
+    it('links control and panel via aria attributes', async () => {
+        const wrapper = mount(ColorPicker, {
+            props: {
+                modelValue: '#112233',
+            },
+        });
+
+        const control = wrapper.get('.vf-color-picker__control');
+
+        expect(control.attributes('aria-expanded')).toBe('false');
+
+        await control.trigger('click');
+
+        const panel = wrapper.get('.vf-color-picker__panel');
+
+        expect(control.attributes('aria-expanded')).toBe('true');
+        expect(control.attributes('aria-controls')).toBe(panel.attributes('id'));
+        expect(panel.attributes('role')).toBe('dialog');
+    });
+
+    it('does not open when readonly', async () => {
+        const wrapper = mount(ColorPicker, {
+            props: {
+                modelValue: '#112233',
+                readonly: true,
+            },
+        });
+
+        const control = wrapper.get('.vf-color-picker__control');
+        await control.trigger('click');
+
+        expect(wrapper.find('.vf-color-picker__panel').exists()).toBe(false);
+        expect(wrapper.emitted('open')).toBeFalsy();
+        expect(control.attributes('aria-disabled')).toBe('true');
+    });
+
+    it('closes panel on escape key', async () => {
+        const wrapper = mount(ColorPicker, {
+            attachTo: document.body,
+            props: {
+                modelValue: '#112233',
+            },
+        });
+
+        await wrapper.get('.vf-color-picker__control').trigger('click');
+        expect(wrapper.find('.vf-color-picker__panel').exists()).toBe(true);
+
+        await wrapper.get('.vf-color-picker__text').trigger('keydown', { key: 'Escape' });
+        await nextTick();
+
+        expect(wrapper.find('.vf-color-picker__panel').exists()).toBe(false);
+        expect(wrapper.emitted('close')).toBeTruthy();
+
+        wrapper.unmount();
+    });
 });

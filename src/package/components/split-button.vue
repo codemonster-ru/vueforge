@@ -1,5 +1,5 @@
 <template>
-    <div class="vf-splitbutton" :class="getClass">
+    <div class="vf-splitbutton" :class="getClass" role="group" :aria-label="ariaLabel">
         <Button
             v-if="$slots.default"
             class="vf-splitbutton__main"
@@ -102,6 +102,7 @@ interface Props {
     closeOnEsc?: boolean;
     matchTriggerWidth?: boolean;
     toggleAriaLabel?: string;
+    ariaLabel?: string;
 }
 
 type DropdownExposed = {
@@ -127,6 +128,7 @@ const props = withDefaults(defineProps<Props>(), {
     closeOnEsc: true,
     matchTriggerWidth: true,
     toggleAriaLabel: 'Toggle actions',
+    ariaLabel: 'Split button',
 });
 
 const emits = defineEmits(['click', 'update:modelValue', 'open', 'close', 'select']);

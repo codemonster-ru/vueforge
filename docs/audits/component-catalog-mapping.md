@@ -1,6 +1,6 @@
 # Component Catalog Mapping
 
-Last updated: 2026-02-22
+Last updated: 2026-02-23
 
 Scope: parity, SaaS, layout, visualization, and catalog-delta coverage tracked in `CHECKLIST.md` (`P1.11`-`P1.16`).
 
@@ -12,24 +12,24 @@ Status legend:
 
 | Component             | Target Catalog | Implemented | In Checklist |
 | --------------------- | -------------- | ----------- | ------------ |
-| DialogService         | Both           | No          | Yes          |
-| ConfirmService        | Vuetify        | No          | Yes          |
+| DialogService         | Both           | Yes         | Yes          |
+| ConfirmService        | Vuetify        | Yes         | Yes          |
 | ConfirmPopup          | Both           | No          | Yes          |
 | DynamicDialog         | Both           | No          | Yes          |
-| TreeTable             | Both           | No          | Yes          |
-| DataView              | Both           | No          | Yes          |
-| Listbox               | Both           | No          | Yes          |
-| MenuBar               | Both           | No          | Yes          |
-| MegaMenu              | Both           | No          | Yes          |
-| PanelMenu             | Both           | No          | Yes          |
+| TreeTable             | Both           | Yes         | Yes          |
+| DataView              | Both           | Yes         | Yes          |
+| Listbox               | Both           | Yes         | Yes          |
+| MenuBar               | Both           | Yes         | Yes          |
+| MegaMenu              | Both           | Yes         | Yes          |
+| PanelMenu             | Both           | Yes         | Yes          |
 | TieredMenu            | Both           | No          | Yes          |
 | TabMenu               | Both           | No          | Yes          |
-| Carousel              | Both           | No          | Yes          |
-| SpeedDial             | Both           | No          | Yes          |
-| Chart                 | Both           | No          | Yes          |
-| Image                 | Both           | No          | Yes          |
+| Carousel              | Both           | Yes         | Yes          |
+| SpeedDial             | Both           | Yes         | Yes          |
+| Chart                 | Both           | Yes         | Yes          |
+| Image                 | Both           | Yes         | Yes          |
 | Skeleton              | Both           | Yes         | Yes          |
-| OverlayPanel          | Both           | No          | Yes          |
+| OverlayPanel          | Both           | Yes         | Yes          |
 | PassThrough           | Both           | No          | Yes          |
 | Panel                 | Both           | No          | Yes          |
 | Fieldset              | Both           | No          | Yes          |

@@ -1,9 +1,9 @@
 # Changelog
 
-## [0.91.1] - 2026-02-22
+## [0.92.0] - 2026-02-23
 
 - Semver checklist:
-    - [x] Semver impact classified (`patch`)
+    - [x] Semver impact classified (`minor`)
     - [x] Breaking-change assessment completed (`no`)
     - [x] Deprecations documented (N/A)
     - [x] Migration notes added when required (N/A)
@@ -22,6 +22,81 @@
 - Planning and parity documentation sync:
     - Added/updated parity governance docs: component catalog mapping, implemented/planned compliance matrices, rollout plan, and API package specs.
     - Synced alias/canonical decisions and package ownership for overlap-prone items (including `Sidebar`, `Message`, `TreeView`, `ExpansionPanel`), and aligned rollout/API package tracks with those decisions.
+- Programmatic service APIs baseline:
+    - Added `DialogService` and `ConfirmService` exports with imperative open/close methods and promise-based resolution flow.
+    - Added service-level unit tests covering stack/queue behavior and close/confirm/cancel resolution semantics.
+    - Added API docs for service usage and synchronized checklist/catalog/compliance/rollout docs for transition from planned to implemented status.
+- `TreeTable` baseline:
+    - Added `TreeTable` component with hierarchical row rendering, controlled expand/collapse, and single/multiple selection flows.
+    - Added keyboard treegrid contracts (`Arrow`, `Home`/`End`, `Enter`/`Space`) and ARIA row state semantics for expanded/selected levels.
+    - Added default theme tokens, API docs, and compliance/planned matrix sync to transition `TreeTable` from planned to implemented.
+- `DataView` baseline:
+    - Added `DataView` component with list/grid rendering modes, local pagination, and sorting support.
+    - Added server handoff events (`request`) for sort/page query orchestration in app-level data fetching flows.
+    - Added default theme tokens, API docs, and compliance/planned matrix sync to transition `DataView` from planned to implemented.
+- `Listbox` baseline:
+    - Added `Listbox` component with always-visible single/multi selection modes and grouped options support.
+    - Added keyboard-first navigation (`ArrowUp`/`ArrowDown`, `Home`/`End`, `Enter`/`Space`) and `listbox/option` ARIA semantics.
+    - Added default theme tokens, API docs, and compliance/planned matrix sync to transition `Listbox` from planned to implemented.
+- `MenuBar` baseline:
+    - Added `MenuBar` component as horizontal app-level navigation wrapper over `Menu` with nested item support.
+    - Added dedicated `nav` landmark semantics and event forwarding for active route/section changes.
+    - Added default theme tokens, API docs, and compliance/planned matrix sync to transition `MenuBar` from planned to implemented.
+- `MegaMenu` baseline:
+    - Added `MegaMenu` component with top-level triggers and multi-column section panels for richer navigation content.
+    - Added baseline keyboard support (`Enter`/`Space`, `ArrowLeft`/`ArrowRight`, `Escape`) and ARIA menubar/menu semantics.
+    - Added default theme tokens, API docs, and compliance/planned matrix sync to transition `MegaMenu` from planned to implemented.
+- `PanelMenu` baseline:
+    - Added `PanelMenu` component for accordion-style hierarchical navigation with controlled `expandedKeys`.
+    - Added nested tree/group semantics and keyboard toggle support (`Enter`/`Space`) for section triggers.
+    - Added default theme tokens, API docs, and compliance/planned matrix sync to transition `PanelMenu` from planned to implemented.
+- `Carousel` baseline:
+    - Added `Carousel` component with controlled slide index (`v-model`) and optional looped autoplay behavior.
+    - Added keyboard (`ArrowLeft`/`ArrowRight`/`Home`/`End`) and touch-swipe navigation contracts with change-source events.
+    - Added default theme tokens, API docs, and compliance/planned matrix sync to transition `Carousel` from planned to implemented.
+- `SpeedDial` baseline:
+    - Added `SpeedDial` component for floating quick actions with controlled open state (`v-model`) and directional action layout.
+    - Added keyboard contracts (`Enter`/`Space`/`Escape`, `Arrow`, `Home`/`End`), menu semantics, and outside-click close behavior.
+    - Added default theme tokens, API docs, and compliance/planned matrix sync to transition `SpeedDial` from planned to implemented.
+- `Chart` wrapper baseline:
+    - Added `Chart` component with adapter-based lifecycle (`mount`/`update`/`destroy`) and built-in loading/empty states.
+    - Added official `createChartJsAdapter` helper for stable `Chart.js` integration without hardwiring runtime dependency in core.
+    - Added default theme tokens, API docs, and compliance/planned matrix sync to transition `Chart` from planned to implemented.
+- `Image` baseline:
+    - Added `Image` component with optional preview/lightbox mode and controlled visibility (`v-model`).
+    - Added close contracts for overlay, `Escape`, and close button with focus restore semantics.
+    - Added default theme tokens, API docs, and compliance/planned matrix sync to transition `Image` from planned to implemented.
+- `Skeleton` advanced presets:
+    - Added preset rendering modes for common loading layouts: `table`, `list`, and `form`.
+    - Added configurable row/column controls for presets and new theme tokens for preset sizing/gaps.
+    - Expanded unit tests and component docs to cover preset behavior and usage guidance.
+- `OverlayPanel` alias baseline:
+    - Added `OverlayPanel` component as a `Popover`-backed compatibility alias with mapped API (`dismissable`, `closeOnEscape`, `showCloseIcon`).
+    - Added `show`/`hide`/`toggle` expose methods and legacy show/hide event aliases (`show`/`onShow`, `hide`/`onHide`).
+    - Added docs, tests, theme alias mapping, and compliance/planned matrix sync for planned-to-implemented transition.
+- Pass-through / unstyled customization baseline:
+    - Added shared pass-through utility contracts (`PassThroughOptions`, part resolver helpers) with public exports.
+    - Added `pt` and `unstyled` support for `Carousel`, `Chart`, `Image`, `SpeedDial`, and `OverlayPanel`.
+    - Added documentation guide for part-level attrs/class/style customization and unstyled usage patterns.
+- Must-have parity accessibility regression gate:
+    - Added consolidated keyboard/ARIA regression suite for must-have parity components.
+    - Added `docs/accessibility/must-have-parity-a11y-regression.md` with per-component contract and test mapping.
+    - Marked `P1.11` acceptance criterion for keyboard/ARIA documentation + regression coverage as complete.
+- Must-have parity SSR/hydration gate:
+    - Expanded SSR/hydration checks with must-have parity fixture coverage for interactive components.
+    - Added `docs/audits/must-have-parity-ssr-hydration.md` with verification scope and suite mapping.
+    - Marked `P1.11` acceptance criterion for dynamic SSR/hydration verification as complete.
+- Must-have parity responsive gate:
+    - Added consolidated responsive regression suite for must-have parity components (touch flows, layout adaptation, overflow wrappers).
+    - Added `docs/audits/must-have-parity-responsive-checks.md` with component-level responsive verification mapping.
+    - Marked `P1.11` acceptance criterion for responsive behavior verification as complete.
+- Must-have parity theming token gate:
+    - Added `docs/audits/must-have-parity-theming-tokens.md` to map must-have components to runtime token keys and docs coverage.
+    - Confirmed theme schema/default mappings and documented token sections for must-have parity components.
+    - Marked `P1.11` acceptance criterion for theming-token exposure/documentation as complete.
+- Must-have parity recipe gate:
+    - Added production-style recipe `docs/recipes/must-have-ops-workspace.md` combining `MenuBar`, `DataView`, `TreeTable`, `Image`, `OverlayPanel`, `SpeedDial`, and `Carousel`.
+    - Linked recipe from docs index and marked `P1.11` acceptance criterion for production-style docs recipe as complete.
 
 ## [0.91.0] - 2026-02-22
 

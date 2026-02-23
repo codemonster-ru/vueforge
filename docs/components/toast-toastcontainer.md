@@ -19,6 +19,7 @@ Props (Toast):
 Props (ToastContainer):
 
 - `position?: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left'` (default `top-right`)
+- `ariaLabel?: string` (default `Notifications`)
 
 ## Props
 
@@ -26,11 +27,13 @@ Props (ToastContainer):
 
 ## Events
 
-- This component does not emit component-specific events.
+- `Toast`: `update:modelValue`, `open`, `close`
+- `ToastContainer`: no emitted events
 
 ## Slots
 
-- This component does not expose named slots.
+- `Toast`: `default` (message body), `close` (close control content)
+- `ToastContainer`: default slot for stacked `Toast` items
 
 ## Examples
 
@@ -79,6 +82,7 @@ Add accessibility tests for ARIA roles, labelling, and keyboard navigation in la
 ## Accessibility
 
 - Toast uses `role="status"` with `aria-live="polite"` for non-blocking announcements.
+- `ToastContainer` uses a live region (`role="region"`, `aria-live="polite"`) and supports `ariaLabel`.
 - Close control is a native button with accessible label (`Close toast`).
 - Keep toasts brief and actionable; avoid long interactive content in toast body.
 

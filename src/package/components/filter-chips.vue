@@ -11,6 +11,7 @@
             class="vf-filter-chips__chip"
             type="button"
             :class="{ 'is-active': isSelected(option.value) }"
+            :aria-pressed="isSelected(option.value) ? 'true' : 'false'"
             :disabled="disabled || option.disabled"
             :data-value="String(option.value)"
             @click="toggleOption(option.value, $event)"

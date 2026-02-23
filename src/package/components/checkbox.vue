@@ -1,10 +1,28 @@
 <template>
     <label :class="getClass">
         <input
+            :id="id"
             class="vf-checkbox__control"
+            :name="name"
             type="checkbox"
             :checked="modelValue"
             :disabled="disabled"
+            :required="required"
+            :aria-label="ariaLabel"
+            :aria-labelledby="ariaLabelledby"
+            :aria-describedby="ariaDescribedby"
+            :aria-invalid="
+                ariaInvalid === true || ariaInvalid === 'true' ? 'true' : ariaInvalid === 'false' ? 'false' : undefined
+            "
+            :aria-required="
+                required
+                    ? 'true'
+                    : ariaRequired === true || ariaRequired === 'true'
+                      ? 'true'
+                      : ariaRequired === 'false'
+                        ? 'false'
+                        : undefined
+            "
             @change="onChange"
         />
         <span class="vf-checkbox__box"></span>
@@ -24,6 +42,14 @@ interface Props {
     label?: string;
     disabled?: boolean;
     variant?: Variant;
+    id?: string;
+    name?: string;
+    required?: boolean;
+    ariaLabel?: string;
+    ariaLabelledby?: string;
+    ariaDescribedby?: string;
+    ariaInvalid?: boolean | 'true' | 'false';
+    ariaRequired?: boolean | 'true' | 'false';
 }
 
 const emits = defineEmits(['update:modelValue', 'change']);
@@ -32,6 +58,14 @@ const props = withDefaults(defineProps<Props>(), {
     label: '',
     disabled: false,
     variant: 'filled',
+    id: undefined,
+    name: undefined,
+    required: false,
+    ariaLabel: undefined,
+    ariaLabelledby: undefined,
+    ariaDescribedby: undefined,
+    ariaInvalid: undefined,
+    ariaRequired: undefined,
 });
 
 const getClass = computed(() => {

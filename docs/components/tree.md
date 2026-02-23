@@ -29,7 +29,7 @@ Support filtering, navigation, and bulk workflows used in core SaaS backoffice s
 
 ## Slots
 
-- This component does not expose named slots.
+- `label` - custom node label template with slot props: `{ node, level, selected, expanded, disabled }`
 
 ## Examples
 

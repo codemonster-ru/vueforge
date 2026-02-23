@@ -2,6 +2,7 @@ import base from './base';
 import button from './components/button';
 import buttonGroup from './components/button-group';
 import card from './components/card';
+import chart from './components/chart';
 import container from './components/container';
 import grid from './components/grid';
 import section from './components/section';
@@ -10,6 +11,7 @@ import inlineComponent from './components/inline';
 import input from './components/input';
 import inputGroup from './components/input-group';
 import inlineEdit from './components/inline-edit';
+import image from './components/image';
 import searchInput from './components/search-input';
 import mentionInput from './components/mention-input';
 import passwordInput from './components/password-input';
@@ -27,6 +29,9 @@ import breadcrumbs from './components/breadcrumbs';
 import divider from './components/divider';
 import pageHeader from './components/page-header';
 import menu from './components/menu';
+import menubar from './components/menubar';
+import megamenu from './components/megamenu';
+import panelmenu from './components/panelmenu';
 import modal from './components/modal';
 import confirmDialog from './components/confirm-dialog';
 import drawer from './components/drawer';
@@ -42,6 +47,7 @@ import select from './components/select';
 import autocomplete from './components/autocomplete';
 import combobox from './components/combobox';
 import multiselect from './components/multiselect';
+import listbox from './components/listbox';
 import taginput from './components/taginput';
 import datepicker from './components/datepicker';
 import daterangepicker from './components/daterangepicker';
@@ -59,6 +65,9 @@ import tooltip from './components/tooltip';
 import tour from './components/tour';
 import skeleton from './components/skeleton';
 import datatable from './components/datatable';
+import dataview from './components/dataview';
+import carousel from './components/carousel';
+import speeddial from './components/speeddial';
 import toast from './components/toast';
 import alert from './components/alert';
 import emptyState from './components/empty-state';
@@ -76,6 +85,7 @@ import timeline from './components/timeline';
 import rating from './components/rating';
 import tree from './components/tree';
 import treeselect from './components/treeselect';
+import treetable from './components/treetable';
 import virtualScroller from './components/virtual-scroller';
 
 export default {
@@ -85,6 +95,7 @@ export default {
         button,
         buttonGroup,
         card,
+        chart,
         container,
         grid,
         section,
@@ -93,6 +104,7 @@ export default {
         input,
         inputGroup,
         inlineEdit,
+        image,
         searchInput,
         mentionInput,
         passwordInput,
@@ -110,10 +122,14 @@ export default {
         divider,
         pageHeader,
         menu,
+        menubar,
+        megamenu,
+        panelmenu,
         modal,
         confirmDialog,
         drawer,
         popover,
+        overlaypanel: popover,
         dropdown,
         splitbutton,
         contextMenu,
@@ -125,6 +141,7 @@ export default {
         autocomplete,
         combobox,
         multiselect,
+        listbox,
         taginput,
         datepicker,
         daterangepicker,
@@ -142,6 +159,9 @@ export default {
         tour,
         skeleton,
         datatable,
+        dataview,
+        carousel,
+        speeddial,
         toast,
         alert,
         emptyState,
@@ -159,6 +179,7 @@ export default {
         rating,
         tree,
         treeselect,
+        treetable,
         virtualScroller,
     },
 };

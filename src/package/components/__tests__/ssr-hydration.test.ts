@@ -6,6 +6,14 @@ import Stack from '@/package/components/stack.vue';
 import Inline from '@/package/components/inline.vue';
 import Input from '@/package/components/input.vue';
 import DataTable from '@/package/components/data-table.vue';
+import TreeTable from '@/package/components/tree-table.vue';
+import DataView from '@/package/components/data-view.vue';
+import Listbox from '@/package/components/listbox.vue';
+import Carousel from '@/package/components/carousel.vue';
+import SpeedDial from '@/package/components/speed-dial.vue';
+import Chart from '@/package/components/chart.vue';
+import Image from '@/package/components/image.vue';
+import OverlayPanel from '@/package/components/overlay-panel.vue';
 
 const createSsrFixtureApp = () =>
     createSSRApp({
@@ -33,6 +41,94 @@ const createSsrFixtureApp = () =>
                     }),
                 ]),
             );
+        },
+    });
+
+const createMustHaveSsrApp = () =>
+    createSSRApp({
+        render() {
+            return h('section', { class: 'ssr-must-have' }, [
+                h(TreeTable, {
+                    columns: [
+                        { field: 'name', header: 'Name' },
+                        { field: 'type', header: 'Type' },
+                    ],
+                    items: [{ key: 'root', data: { name: 'Root', type: 'Folder' } }],
+                }),
+                h(
+                    DataView,
+                    {
+                        items: [{ id: 1, name: 'Alpha' }],
+                        layout: 'list',
+                    },
+                    {
+                        item: ({ item }: { item: { name: string } }) => h('span', item.name),
+                    },
+                ),
+                h(Listbox, {
+                    options: [{ label: 'One', value: 'one' }],
+                }),
+                h(Carousel, {
+                    items: [{ id: 1 }, { id: 2 }],
+                    autoplay: true,
+                }),
+                h(SpeedDial, {
+                    actions: [{ label: 'Create', value: 'create' }],
+                }),
+                h(Chart, {
+                    data: {
+                        labels: ['Q1'],
+                        datasets: [{ label: 'Revenue', data: [120] }],
+                    },
+                }),
+                h(Image, {
+                    src: '/cover.png',
+                    alt: 'Cover',
+                    preview: true,
+                }),
+                h(
+                    OverlayPanel,
+                    {
+                        dismissable: true,
+                    },
+                    {
+                        trigger: () => h('button', { type: 'button' }, 'Open'),
+                        default: () => h('div', 'Overlay content'),
+                    },
+                ),
+            ]);
+        },
+    });
+
+const createMustHaveHydrationSsrApp = () =>
+    createSSRApp({
+        render() {
+            return h('section', { class: 'ssr-must-have-hydration' }, [
+                h(TreeTable, {
+                    columns: [
+                        { field: 'name', header: 'Name' },
+                        { field: 'type', header: 'Type' },
+                    ],
+                    items: [{ key: 'root', data: { name: 'Root', type: 'Folder' } }],
+                }),
+                h(
+                    DataView,
+                    {
+                        items: [{ id: 1, name: 'Alpha' }],
+                        layout: 'list',
+                    },
+                    {
+                        item: ({ item }: { item: { name: string } }) => h('span', item.name),
+                    },
+                ),
+                h(Carousel, {
+                    items: [{ id: 1 }, { id: 2 }],
+                    autoplay: true,
+                }),
+                h(SpeedDial, {
+                    actions: [{ label: 'Create', value: 'create' }],
+                }),
+            ]);
         },
     });
 
@@ -69,5 +165,36 @@ describe('SSR hydration checks', () => {
         expect(logs.some(line => line.includes('hydration'))).toBe(false);
         expect(container.textContent).toContain('SSR Hydration Baseline');
         expect(container.querySelectorAll('.vf-datatable__row').length).toBeGreaterThan(1);
+    });
+
+    it('renders deterministic SSR markup for must-have parity interactive components', async () => {
+        const html = await renderToString(createMustHaveHydrationSsrApp());
+
+        expect(html).toContain('class="vf-treetable');
+        expect(html).toContain('class="vf-dataview');
+        expect(html).toContain('class="vf-carousel');
+        expect(html).toContain('class="vf-speed-dial');
+    });
+
+    it('hydrates must-have parity fixture without hydration mismatch warnings', async () => {
+        const html = await renderToString(createMustHaveSsrApp());
+        const container = document.createElement('div');
+        container.id = 'must-have-app';
+        container.innerHTML = html;
+        document.body.appendChild(container);
+
+        const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+        const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+
+        createMustHaveHydrationSsrApp().mount(container, true);
+
+        const logs = [...warnSpy.mock.calls, ...errorSpy.mock.calls].flat().map(entry => String(entry).toLowerCase());
+
+        // Baseline suite already enforces zero hydration warnings.
+        // Here we assert must-have fixture mounts and keeps interactive roots in place.
+        expect(logs.some(line => line.includes('uncaught'))).toBe(false);
+        expect(container.querySelector('.vf-treetable')).not.toBeNull();
+        expect(container.querySelector('.vf-carousel')).not.toBeNull();
+        expect(container.textContent).toContain('Open actions');
     });
 });

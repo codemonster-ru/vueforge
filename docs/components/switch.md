@@ -10,6 +10,14 @@ Standardize selection controls and grouped input patterns used across product se
 - `modelValue?: boolean` (v-model, default `false`)
 - `label?: string`
 - `disabled?: boolean` (default `false`)
+- `id?: string`
+- `name?: string`
+- `required?: boolean` (default `false`)
+- `ariaLabel?: string`
+- `ariaLabelledby?: string`
+- `ariaDescribedby?: string`
+- `ariaInvalid?: boolean | 'true' | 'false'`
+- `ariaRequired?: boolean | 'true' | 'false'` (defaults to `'true'` when `required`)
 
 ## Events
 
@@ -56,4 +64,6 @@ Add tests for keyboard toggling, group navigation, and ARIA semantics for select
 
 ## Accessibility
 
-- Ensure keyboard access, visible focus state, and sufficient color contrast in usage contexts.
+- Uses native `input[type="checkbox"]` semantics for keyboard and assistive technologies.
+- Provide accessible naming via visible label text or `ariaLabel`/`ariaLabelledby`.
+- Use `ariaDescribedby` for hint/error linkage and `ariaInvalid`/`ariaRequired` for state semantics.

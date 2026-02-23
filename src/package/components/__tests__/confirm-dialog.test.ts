@@ -25,6 +25,20 @@ const mountConfirmDialog = (options: Parameters<typeof mount>[1] = {}) => {
 };
 
 describe('ConfirmDialog', () => {
+    it('emits open when visible', async () => {
+        const wrapper = mountConfirmDialog({
+            props: {
+                modelValue: true,
+            },
+        });
+
+        await nextTick();
+
+        expect(wrapper.emitted('open')?.length).toBe(1);
+
+        wrapper.unmount();
+    });
+
     it('emits confirm and closes by default', async () => {
         const wrapper = mountConfirmDialog({
             props: {
@@ -39,6 +53,23 @@ describe('ConfirmDialog', () => {
 
         expect(wrapper.emitted('confirm')?.length).toBe(1);
         expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([false]);
+
+        wrapper.unmount();
+    });
+
+    it('does not emit confirm while loading', async () => {
+        const wrapper = mountConfirmDialog({
+            props: {
+                modelValue: true,
+                loading: true,
+            },
+        });
+
+        await nextTick();
+        await wrapper.find('.vf-confirm-dialog__confirm').trigger('click');
+
+        expect(wrapper.emitted('confirm')).toBeUndefined();
+        expect(wrapper.emitted('update:modelValue')).toBeUndefined();
 
         wrapper.unmount();
     });
@@ -87,6 +118,24 @@ describe('ConfirmDialog', () => {
         await nextTick();
         await nextTick();
         await wrapper.find('.vf-modal__overlay').trigger('click');
+
+        expect(wrapper.emitted('cancel')?.length).toBe(1);
+        expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([false]);
+
+        wrapper.unmount();
+    });
+
+    it('emits cancel on escape keydown', async () => {
+        const wrapper = mountConfirmDialog({
+            props: {
+                modelValue: true,
+                closeOnEsc: true,
+            },
+        });
+
+        await nextTick();
+        document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+        await nextTick();
 
         expect(wrapper.emitted('cancel')?.length).toBe(1);
         expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([false]);

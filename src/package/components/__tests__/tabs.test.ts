@@ -110,4 +110,36 @@ describe('Tabs', () => {
         await list.trigger('keydown', { key: 'End' });
         expect(wrapper.vm.value).toBe('c');
     });
+
+    it('wires tab and tabpanel semantics and hides inactive panel', () => {
+        const wrapper = mount({
+            components: { Tabs, Tab, TabPanel },
+            template: `
+                <Tabs v-model="value">
+                    <template #tabs>
+                        <Tab value="a">A</Tab>
+                        <Tab value="b">B</Tab>
+                    </template>
+                    <template #panels>
+                        <TabPanel value="a">A panel</TabPanel>
+                        <TabPanel value="b">B panel</TabPanel>
+                    </template>
+                </Tabs>
+            `,
+            data() {
+                return { value: 'a' };
+            },
+        });
+
+        const tabs = wrapper.findAll('[role="tab"]');
+        const panels = wrapper.findAll('[role="tabpanel"]');
+
+        expect(tabs).toHaveLength(2);
+        expect(panels).toHaveLength(2);
+        expect(tabs[0].attributes('aria-controls')).toBe(panels[0].attributes('id'));
+        expect(panels[0].attributes('aria-labelledby')).toBe(tabs[0].attributes('id'));
+        expect(panels[0].attributes('tabindex')).toBe('0');
+        expect(panels[0].isVisible()).toBe(true);
+        expect(panels[1].isVisible()).toBe(false);
+    });
 });

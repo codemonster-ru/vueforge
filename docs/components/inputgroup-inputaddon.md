@@ -12,6 +12,8 @@ Props (`InputGroup`):
 - `size?: 'small' | 'normal' | 'large'` (default `normal`)
 - `variant?: 'filled' | 'outlined'` (default `filled`)
 - `disabled?: boolean` (default `false`)
+- `ariaLabel?: string`
+- `ariaLabelledby?: string`
 
 Props (`InputAddon`):
 
@@ -76,4 +78,5 @@ Add tests for keyboard toggling, group navigation, and ARIA semantics for select
 
 ## Accessibility
 
-- Ensure keyboard access, visible focus state, and sufficient color contrast in usage contexts.
+- `InputGroup` exposes `role="group"` and supports group labelling via `ariaLabel`/`ariaLabelledby`.
+- Use `InputAddon` for contextual text/symbols; keep interactive actions as focusable controls inside the group.
