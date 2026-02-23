@@ -68,6 +68,12 @@ interface Props {
     unstyled?: boolean;
 }
 
+type OverlayPanelRef = {
+    show: () => void;
+    hide: () => void;
+    toggle: () => void;
+};
+
 const props = withDefaults(defineProps<Props>(), {
     modelValue: undefined,
     placement: 'bottom',
@@ -83,11 +89,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emits = defineEmits(['update:modelValue', 'show', 'hide', 'onShow', 'onHide', 'click', 'onClick']);
 
-const popoverRef = ref<{
-    show: () => void;
-    hide: () => void;
-    toggle: () => void;
-} | null>(null);
+const popoverRef = ref<OverlayPanelRef | null>(null);
 
 const ptContext = computed(() => ({
     disabled: props.disabled,
