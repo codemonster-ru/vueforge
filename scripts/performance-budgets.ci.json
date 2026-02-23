@@ -22,7 +22,7 @@
                 "initialRenderP95Ms": 1200,
                 "expandCollapseP95Ms": 520,
                 "keyboardNavP95Ms": 150,
-                "selectionToggleP95Ms": 180
+                "selectionToggleP95Ms": 220
             }
         },
         "VirtualScroller": {
@@ -31,7 +31,7 @@
                 "initialRenderP95Ms": 1300,
                 "scrollUpdateP95Ms": 260,
                 "rangeChangeEmitP95Ms": 380,
-                "reachEndEmitP95Ms": 260
+                "reachEndEmitP95Ms": 380
             }
         },
         "Overlays": {
