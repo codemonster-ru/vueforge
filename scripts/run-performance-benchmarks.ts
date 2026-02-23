@@ -6,10 +6,12 @@ import { setTimeout as wait } from 'node:timers/promises';
 import { request } from 'node:http';
 import { chromium } from '@playwright/test';
 
+const budgetsFile = process.env.PERF_BUDGETS_FILE ?? 'scripts/performance-budgets.json';
+
 const loadJson = relativePath => JSON.parse(readFileSync(resolve(process.cwd(), relativePath), 'utf8'));
 
 const scenarios = loadJson('scripts/benchmark-scenarios.json');
-const budgets = loadJson('scripts/performance-budgets.json');
+const budgets = loadJson(budgetsFile);
 
 const p95 = values => {
     const sorted = [...values].sort((a, b) => a - b);

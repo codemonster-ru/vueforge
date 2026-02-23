@@ -8,6 +8,15 @@
     - [x] Deprecations documented (N/A)
     - [x] Migration notes added when required (N/A)
     - [x] Catalog mapping sync completed (`yes`)
+- CI pipeline reliability/performance updates:
+    - Added npm cache in GitHub Actions jobs and Playwright browser cache (`~/.cache/ms-playwright`) for `visual-regression` and `performance-check`.
+    - Switched Playwright installation in CI from `npx playwright install --with-deps chromium` to `npx playwright install chromium` to reduce setup time.
+- Performance check stabilization in CI:
+    - Added dedicated CI performance budget profile `scripts/performance-budgets.ci.json` for noisy shared-runner conditions.
+    - Added `PERF_BUDGETS_FILE` support to performance scripts (`run-performance-benchmarks`, `verify-performance-budgets`, `verify-performance-report`) and wired it in CI.
+    - Kept strict default local budgets in `scripts/performance-budgets.json` for developer-side regression control.
+- Lint stability fix:
+    - Refactored `OverlayPanel` popover ref typing to a named type alias to prevent formatter-induced indentation lint failures in CI.
 - Core runtime fix (`Link`):
     - Updated `Link` internals to use optional router injections (`routeLocationKey`/`routerKey`) instead of unconditional router hooks.
     - Fixed non-router usage so rendering anchor-based links no longer depends on `vue-router` context.

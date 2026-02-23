@@ -13,6 +13,7 @@ jobs:
             - uses: actions/setup-node@v4
               with:
                   node-version: 20
+                  cache: npm
             - run: npm ci
             - run: npm run lint
             - run: npm run typecheck
@@ -27,28 +28,44 @@ jobs:
             - uses: actions/setup-node@v4
               with:
                   node-version: 20
+                  cache: npm
             - run: npm ci
             - run: npm run test:ssr
 
     visual-regression:
         runs-on: ubuntu-latest
+        env:
+            PLAYWRIGHT_BROWSERS_PATH: ~/.cache/ms-playwright
         steps:
             - uses: actions/checkout@v4
             - uses: actions/setup-node@v4
               with:
                   node-version: 20
+                  cache: npm
             - run: npm ci
-            - run: npx playwright install --with-deps chromium
+            - uses: actions/cache@v4
+              with:
+                  path: ~/.cache/ms-playwright
+                  key: ${{ runner.os }}-playwright-${{ hashFiles('package-lock.json') }}
+            - run: npx playwright install chromium
             - run: npm run test:visual
 
     performance-check:
         runs-on: ubuntu-latest
+        env:
+            PLAYWRIGHT_BROWSERS_PATH: ~/.cache/ms-playwright
+            PERF_BUDGETS_FILE: scripts/performance-budgets.ci.json
         steps:
             - uses: actions/checkout@v4
             - uses: actions/setup-node@v4
               with:
                   node-version: 20
+                  cache: npm
             - run: npm ci
-            - run: npx playwright install --with-deps chromium
+            - uses: actions/cache@v4
+              with:
+                  path: ~/.cache/ms-playwright
+                  key: ${{ runner.os }}-playwright-${{ hashFiles('package-lock.json') }}
+            - run: npx playwright install chromium
             - run: npm run verify:performance-budgets
             - run: npm run performance:check

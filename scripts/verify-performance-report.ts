@@ -4,7 +4,8 @@ import process from 'node:process';
 
 const readJson = relativePath => JSON.parse(readFileSync(resolve(process.cwd(), relativePath), 'utf8'));
 
-const budgets = readJson('scripts/performance-budgets.json');
+const budgetsFile = process.env.PERF_BUDGETS_FILE ?? 'scripts/performance-budgets.json';
+const budgets = readJson(budgetsFile);
 const report = readJson('benchmarks/latest.json');
 
 const errors = [];

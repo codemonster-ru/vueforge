@@ -13,13 +13,14 @@ const fail = message => {
 const isPlainObject = value => value && typeof value === 'object' && !Array.isArray(value);
 const isPositiveNumber = value => typeof value === 'number' && Number.isFinite(value) && value > 0;
 
-const file = resolve(process.cwd(), 'scripts/performance-budgets.json');
+const budgetsFile = process.env.PERF_BUDGETS_FILE ?? 'scripts/performance-budgets.json';
+const file = resolve(process.cwd(), budgetsFile);
 let parsed;
 
 try {
     parsed = JSON.parse(readFileSync(file, 'utf8'));
 } catch (error) {
-    fail(`Failed to read or parse scripts/performance-budgets.json: ${String(error)}`);
+    fail(`Failed to read or parse ${budgetsFile}: ${String(error)}`);
 }
 
 if (!isPlainObject(parsed)) {
