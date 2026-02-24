@@ -501,80 +501,37 @@ Must-have acceptance criteria (applies to each item):
 
 #### High-leverage parity (commonly requested after core launch)
 
-- [ ] `TreeTable` advanced mode (lazy loading + server handoff + column resize/reorder)
-- [ ] `DataTable` parity expansion (`row group`, `row expansion`, `column visibility manager`)
-- [ ] `Panel` / `Fieldset` / `Toolbar` parity set (layout actions, toggle/collapse patterns, grouped controls)
-- [ ] `BlockUI` / loading overlay component
-- [ ] `ScrollPanel` and `ScrollTop` utilities
-- [ ] `PickList` / `OrderList` parity (transfer, reorder, keyboard and drag/drop coverage)
-- [ ] `Splitter` parity hardening (nested panels + persistence + keyboard edge cases)
-- [ ] `FileUpload` advanced mode (chunking/resume + retry + signed URL flows)
-- [ ] `Editor` hardening (`RichTextEditor` security + paste sanitization profiles)
-- [ ] `OrgChart` component
-- [ ] Virtualized `Select`/`Autocomplete` parity for large datasets (windowing + async loading UX)
-- [ ] `Image` advanced mode (preview group, zoom steps, keyboard nav, download/alt guidance)
-- [ ] `Chart` adapter hardening (peer dependency policy, SSR-safe lazy mount, resize handling)
-- [ ] `Icon` system parity (official icon package strategy, tree-shaking, size/color/theming contracts)
-- [ ] `MenuBar`/`MegaMenu`/`PanelMenu` routing parity (router integration, active state sync, lazy child loading)
-- [ ] Headless parity matrix for key components (documented slot/part API coverage and tested contracts)
+- [x] `TreeTable` advanced mode (lazy loading + server handoff + column resize/reorder)
+- [x] `DataTable` parity expansion (`row group`, `row expansion`, `column visibility manager`)
+- [x] `Panel` / `Fieldset` / `Toolbar` parity set (layout actions, toggle/collapse patterns, grouped controls)
+- [x] `BlockUI` / loading overlay component
+- [x] `ScrollPanel` and `ScrollTop` utilities
+- [x] `PickList` / `OrderList` parity (transfer, reorder, keyboard and drag/drop coverage)
+- [x] `Splitter` parity hardening (nested panels + persistence + keyboard edge cases)
+- [x] `FileUpload` advanced mode (chunking/resume + retry + signed URL flows)
+- [x] `Editor` hardening (`RichTextEditor` security + paste sanitization profiles)
+- [x] `OrgChart` component
+- [x] Virtualized `Select`/`Autocomplete` parity for large datasets (windowing + async loading UX)
+- [x] `Image` advanced mode (preview group, zoom steps, keyboard nav, download/alt guidance)
+- [x] `Chart` adapter hardening (peer dependency policy, SSR-safe lazy mount, resize handling)
+- [x] `Icon` system parity (official icon package strategy, tree-shaking, size/color/theming contracts)
+- [x] `MenuBar`/`MegaMenu`/`PanelMenu` routing parity (router integration, active state sync, lazy child loading)
+- [x] Headless parity matrix for key components (documented slot/part API coverage and tested contracts)
 
 #### Nice-to-have parity (post-adoption expansion)
 
-- [ ] `Dock` / app launcher navigation pattern
-- [ ] `Galleria` / gallery-focused media component
-- [ ] `Knob` / radial input
-- [ ] `Terminal` / command log display component
-- [ ] `Inplace` display-edit pattern parity checks
+- [x] `Dock` / app launcher navigation pattern
+- [x] `Galleria` / gallery-focused media component
+- [x] `Knob` / radial input
+- [x] `Terminal` / command log display component
+- [x] `Inplace` display-edit pattern parity checks
 
 #### ICP-driven optional parity (enable based on target product segments)
 
-- [ ] `Autocomplete` advanced parity (multi-value chips + grouped options + async grouping)
-- [ ] `Message` / inline status-message component parity and guidance vs `Alert`
-- [ ] `Sidebar` alias parity (`Drawer`-backed compatibility API + migration guidance)
-- [ ] Headless/unstyled track hardening (unstyled docs recipes + slot/part coverage matrix)
-
-### P1.12 Competitive parity scorecard
-
-Goal: measure practical competitiveness vs established Vue UI libraries with explicit scoring instead of binary "has component / no component".
-
-Scoring model:
-
-- Each tracked component gets 6 dimensions scored 0-2.
-- `0` = missing, `1` = partial, `2` = parity-ready.
-- Maximum per component: `12` points.
-
-Dimensions (per component):
-
-- Feature surface parity (core scenarios and key variants).
-- API depth parity (props/events/slots and controlled patterns).
-- A11y parity (keyboard + ARIA + focus behavior).
-- Responsive parity (mobile/tablet/desktop behavior and touch interaction quality).
-- Quality parity (tests, SSR/hydration checks, performance guardrails where relevant).
-- Documentation parity (API docs + production recipe + migration notes if needed).
-
-Library-level targets:
-
-- [ ] `>= 90%` score for `Must-have parity` set.
-- [ ] `>= 85%` score for `High-leverage parity` set.
-- [ ] No `Must-have parity` component with `A11y parity` score below `2`.
-- [ ] No `Must-have parity` component with `Responsive parity` score below `2`.
-- [ ] No `Must-have parity` component with `Documentation parity` score below `2`.
-- [ ] Bundle-size and runtime performance regressions are tracked per release.
-
-Release gates by maturity:
-
-- [ ] "Competitive Beta": `Must-have >= 90%` and all safety gates in `P2.4` complete.
-- [ ] "v1 Competitive": `Must-have >= 95%` and `High-leverage >= 90%`.
-- [ ] "v1 Competitive+" (optional): ICP-driven optional set reaches `>= 80%` for target segment.
-
-Parity scope governance:
-
-- [x] Create initial component catalog mapping for target libraries: `docs/audits/component-catalog-mapping.md`.
-- [ ] Maintain component catalog mapping each release: `implemented` / `deferred` / `not planned` with rationale.
-- [x] Create component compliance matrix for all public components: `docs/audits/component-compliance-matrix.md`.
-- [ ] Maintain component compliance matrix in every PR for touched components.
-- [x] Create planned component compliance matrix for not-yet-implemented scope: `docs/audits/planned-component-compliance-matrix.md`.
-- [ ] Maintain planned component compliance matrix and enforce transition `Planned -> Implemented` on release.
+- [x] `Autocomplete` advanced parity (multi-value chips + grouped options + async grouping)
+- [x] `Message` / inline status-message component parity and guidance vs `Alert`
+- [x] `Sidebar` alias parity (`Drawer`-backed compatibility API + migration guidance)
+- [x] Headless/unstyled track hardening (unstyled docs recipes + slot/part coverage matrix)
 
 ### P1.13 SaaS application component coverage
 
@@ -813,3 +770,46 @@ Catalog delta acceptance criteria:
 - [ ] Define sanitization/escaping recommendations and boundaries
 - [ ] Add tests for critical unsafe-input scenarios
 - [ ] Document secure usage patterns for consumers
+
+### P2.5 Competitive parity scorecard
+
+Goal: measure practical competitiveness vs established Vue UI libraries with explicit scoring instead of binary "has component / no component".
+
+Scoring model:
+
+- Each tracked component gets 6 dimensions scored 0-2.
+- `0` = missing, `1` = partial, `2` = parity-ready.
+- Maximum per component: `12` points.
+
+Dimensions (per component):
+
+- Feature surface parity (core scenarios and key variants).
+- API depth parity (props/events/slots and controlled patterns).
+- A11y parity (keyboard + ARIA + focus behavior).
+- Responsive parity (mobile/tablet/desktop behavior and touch interaction quality).
+- Quality parity (tests, SSR/hydration checks, performance guardrails where relevant).
+- Documentation parity (API docs + production recipe + migration notes if needed).
+
+Library-level targets:
+
+- [ ] `>= 90%` score for `Must-have parity` set.
+- [ ] `>= 85%` score for `High-leverage parity` set.
+- [ ] No `Must-have parity` component with `A11y parity` score below `2`.
+- [ ] No `Must-have parity` component with `Responsive parity` score below `2`.
+- [ ] No `Must-have parity` component with `Documentation parity` score below `2`.
+- [ ] Bundle-size and runtime performance regressions are tracked per release.
+
+Release gates by maturity:
+
+- [ ] "Competitive Beta": `Must-have >= 90%` and all safety gates in `P2.4` complete.
+- [ ] "v1 Competitive": `Must-have >= 95%` and `High-leverage >= 90%`.
+- [ ] "v1 Competitive+" (optional): ICP-driven optional set reaches `>= 80%` for target segment.
+
+Parity scope governance:
+
+- [x] Create initial component catalog mapping for target libraries: `docs/audits/component-catalog-mapping.md`.
+- [ ] Maintain component catalog mapping each release: `implemented` / `deferred` / `not planned` with rationale.
+- [x] Create component compliance matrix for all public components: `docs/audits/component-compliance-matrix.md`.
+- [ ] Maintain component compliance matrix in every PR for touched components.
+- [x] Create planned component compliance matrix for not-yet-implemented scope: `docs/audits/planned-component-compliance-matrix.md`.
+- [ ] Maintain planned component compliance matrix and enforce transition `Planned -> Implemented` on release.

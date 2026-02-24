@@ -18,6 +18,14 @@ Cover both small curated lists and async/large datasets with consistent selectio
 - `clearLabel?: string` (default `Clear selection`)
 - `ariaLabel?: string` (default `Select option`)
 - `panelAriaLabel?: string` (default `Options`)
+- `loading?: boolean` (default `false`)
+- `loadingText?: string` (default locale `common.loadingText`)
+- `emptyText?: string` (default locale `common.emptyText`)
+- `virtual?: boolean` (default `false`)
+- `virtualItemHeight?: number` (default `36`)
+- `virtualOverscan?: number` (default `4`)
+- `virtualThreshold?: number` (default `100`)
+- `loadMoreOffset?: number` (default `3`)
 - `variant?: 'filled' | 'outlined'` (default `filled`)
 - `size?: 'small' | 'normal' | 'large'` (default `normal`)
 
@@ -27,6 +35,7 @@ Cover both small curated lists and async/large datasets with consistent selectio
 - `change`
 - `focus`
 - `blur`
+- `loadMore` (`{ visibleEndIndex, total }`)
 
 ## Slots
 
@@ -66,7 +75,7 @@ Defer async option fetching and client-only positioning logic until after hydrat
 ## Testing
 
 Cover keyboard navigation, selection, clear/reset flows, and disabled/readonly states.
-Add tests for filtering/search behavior, async loading states, and ARIA combobox/listbox contracts.
+Add tests for async loading/empty states, virtualized rendering windows, `loadMore` handoff, and ARIA listbox contracts.
 
 ## Accessibility
 

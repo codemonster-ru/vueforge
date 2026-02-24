@@ -4,14 +4,28 @@
             <thead class="vf-treetable__head">
                 <tr class="vf-treetable__row vf-treetable__row_header" role="row">
                     <th
-                        v-for="(column, index) in columns"
+                        v-for="(column, index) in orderedColumns"
                         :key="column.field"
                         class="vf-treetable__header"
-                        :class="`vf-treetable__header_${column.align ?? 'left'}`"
-                        :style="column.width ? { width: column.width } : undefined"
+                        :class="getHeaderClass(column)"
+                        :style="getColumnStyle(column)"
                         scope="col"
                         role="columnheader"
+                        @dragover.prevent
+                        @drop.prevent="onHeaderDrop(column.field)"
                     >
+                        <span
+                            v-if="columnReorder"
+                            class="vf-treetable__reorder-handle"
+                            role="button"
+                            tabindex="0"
+                            aria-label="Reorder column"
+                            draggable="true"
+                            @dragstart="onColumnDragStart(column.field)"
+                            @dragend="onColumnDragEnd"
+                        >
+                            ::
+                        </span>
                         <slot
                             v-if="$slots[`header-${column.field}`]"
                             :name="`header-${column.field}`"
@@ -19,12 +33,23 @@
                         />
                         <template v-else>{{ column.header ?? column.field }}</template>
                         <span v-if="index === 0" class="vf-treetable__sr-only">Hierarchy column</span>
+                        <span
+                            v-if="isColumnResizable(column)"
+                            class="vf-treetable__resize-handle"
+                            role="separator"
+                            aria-orientation="vertical"
+                            :aria-label="`Resize ${column.header ?? column.field} column`"
+                            @mousedown="startColumnResize($event, column)"
+                        />
                     </th>
                 </tr>
             </thead>
             <tbody class="vf-treetable__body">
                 <tr v-if="!visibleRows.length" class="vf-treetable__row vf-treetable__row_state" role="row">
-                    <td class="vf-treetable__cell vf-treetable__cell_state" :colspan="Math.max(1, columns.length)">
+                    <td
+                        class="vf-treetable__cell vf-treetable__cell_state"
+                        :colspan="Math.max(1, orderedColumns.length)"
+                    >
                         <slot name="empty">{{ emptyText }}</slot>
                     </td>
                 </tr>
@@ -44,10 +69,11 @@
                     @keydown="onRowKeydown(entry, index, $event)"
                 >
                     <td
-                        v-for="(column, columnIndex) in columns"
+                        v-for="(column, columnIndex) in orderedColumns"
                         :key="column.field"
                         class="vf-treetable__cell"
                         :class="`vf-treetable__cell_${column.align ?? 'left'}`"
+                        :style="getColumnStyle(column)"
                         role="gridcell"
                     >
                         <div v-if="columnIndex === 0" class="vf-treetable__cell-tree">
@@ -99,19 +125,22 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { computed, onBeforeUnmount, ref, watch } from 'vue';
 
 type Align = 'left' | 'center' | 'right';
 type Size = 'small' | 'normal' | 'large';
 type Variant = 'filled' | 'outlined';
 export type TreeTableValue = string | number;
 type ModelValue = TreeTableValue | Array<TreeTableValue> | undefined;
+type TreeTableRequestReason = 'expand' | 'collapse' | 'lazy-load';
 
 export interface TreeTableColumn {
     field: string;
     header?: string;
     width?: string;
+    minWidth?: string;
     align?: Align;
+    resizable?: boolean;
     formatter?: (node: TreeTableNode, value: unknown, column: TreeTableColumn) => string | number;
 }
 
@@ -119,6 +148,8 @@ export interface TreeTableNode {
     key: TreeTableValue;
     label?: string;
     disabled?: boolean;
+    leaf?: boolean;
+    hasChildren?: boolean;
     data?: Record<string, unknown>;
     children?: Array<TreeTableNode>;
 }
@@ -144,6 +175,13 @@ interface Props {
     hover?: boolean;
     size?: Size;
     variant?: Variant;
+    lazy?: boolean;
+    loadingKeys?: Array<TreeTableValue>;
+    server?: boolean;
+    columnResize?: boolean;
+    minColumnWidth?: number;
+    columnReorder?: boolean;
+    columnOrder?: Array<string>;
     ariaLabel?: string;
     emptyText?: string;
     expandLabel?: string;
@@ -163,15 +201,38 @@ const props = withDefaults(defineProps<Props>(), {
     hover: true,
     size: 'normal',
     variant: 'filled',
+    lazy: false,
+    loadingKeys: () => [],
+    server: false,
+    columnResize: false,
+    minColumnWidth: 80,
+    columnReorder: false,
+    columnOrder: () => [],
     ariaLabel: 'Tree table',
     emptyText: 'No data',
     expandLabel: 'Expand row',
     collapseLabel: 'Collapse row',
 });
 
-const emits = defineEmits(['update:modelValue', 'change', 'update:expandedKeys', 'toggle', 'rowClick']);
+const emits = defineEmits([
+    'update:modelValue',
+    'change',
+    'update:expandedKeys',
+    'toggle',
+    'rowClick',
+    'lazyLoad',
+    'request',
+    'columnResize',
+    'update:columnOrder',
+    'columnReorder',
+]);
 
 const focusedKey = ref<TreeTableValue | null>(null);
+const resizedColumnWidths = ref<Record<string, number>>({});
+const internalColumnOrder = ref<Array<string>>([]);
+const draggingColumnField = ref<string | null>(null);
+const requestedLazyKeys = ref(new Set<TreeTableValue>());
+let stopResizeListeners: (() => void) | null = null;
 
 const normalizeModelValue = (value: ModelValue) => {
     if (Array.isArray(value)) {
@@ -188,6 +249,45 @@ const normalizeModelValue = (value: ModelValue) => {
 const selectedValues = computed(() => normalizeModelValue(props.modelValue));
 const selectedSet = computed(() => new Set(selectedValues.value));
 const expandedSet = computed(() => new Set(props.expandedKeys));
+const loadingSet = computed(() => new Set(props.loadingKeys));
+
+const normalizeColumnOrder = (fields: Array<string>, preferred?: Array<string>) => {
+    const allowed = new Set(fields);
+    const normalized: Array<string> = [];
+
+    (preferred ?? []).forEach(field => {
+        if (allowed.has(field) && !normalized.includes(field)) {
+            normalized.push(field);
+        }
+    });
+
+    fields.forEach(field => {
+        if (!normalized.includes(field)) {
+            normalized.push(field);
+        }
+    });
+
+    return normalized;
+};
+
+watch(
+    () => [props.columns, props.columnOrder] as const,
+    ([columns, externalOrder]) => {
+        const fields = (columns ?? []).map(column => column.field);
+        const preferred = externalOrder && externalOrder.length ? externalOrder : internalColumnOrder.value;
+
+        internalColumnOrder.value = normalizeColumnOrder(fields, preferred);
+    },
+    { deep: true, immediate: true },
+);
+
+const orderedColumns = computed(() => {
+    const byField = new Map(props.columns.map(column => [column.field, column]));
+
+    return internalColumnOrder.value
+        .map(field => byField.get(field))
+        .filter((column): column is TreeTableColumn => Boolean(column));
+});
 
 const flattenNodes = (
     nodes: Array<TreeTableNode>,
@@ -196,7 +296,7 @@ const flattenNodes = (
 ): Array<FlattenedNode> => {
     return nodes.flatMap(node => {
         const children = node.children ?? [];
-        const hasChildren = children.length > 0;
+        const hasChildren = node.hasChildren === true || children.length > 0;
         const expanded = hasChildren && expandedSet.value.has(node.key);
         const current: FlattenedNode = {
             node,
@@ -253,6 +353,9 @@ watch(
 
 const isNodeDisabled = (node: TreeTableNode) => props.disabled || !!node.disabled;
 const isSelected = (key: TreeTableValue) => selectedSet.value.has(key);
+const isNodeLoading = (key: TreeTableValue) => loadingSet.value.has(key);
+const canNodeExpand = (node: TreeTableNode) =>
+    node.hasChildren === true || (node.children?.length ?? 0) > 0 || (props.lazy && !node.leaf);
 
 const getRowClass = (entry: FlattenedNode, index: number) => {
     const classes = [];
@@ -289,7 +392,7 @@ const formatCellValue = (node: TreeTableNode, column: TreeTableColumn) => {
 };
 
 const setExpanded = (node: TreeTableNode, expanded: boolean, event: Event) => {
-    if (isNodeDisabled(node) || !(node.children?.length ?? 0)) {
+    if (isNodeDisabled(node) || !canNodeExpand(node)) {
         return;
     }
 
@@ -303,6 +406,52 @@ const setExpanded = (node: TreeTableNode, expanded: boolean, event: Event) => {
     const next = expanded ? [...current, node.key] : current.filter(value => value !== node.key);
     emits('update:expandedKeys', next);
     emits('toggle', node.key, expanded, node, event);
+
+    if (!expanded) {
+        requestedLazyKeys.value.delete(node.key);
+        if (props.server) {
+            emits('request', {
+                reason: 'collapse' as TreeTableRequestReason,
+                key: node.key,
+                node,
+                expandedKeys: next,
+            });
+        }
+
+        return;
+    }
+
+    const shouldLazyLoad =
+        props.lazy &&
+        !node.leaf &&
+        (node.children?.length ?? 0) === 0 &&
+        !requestedLazyKeys.value.has(node.key) &&
+        !isNodeLoading(node.key);
+
+    if (shouldLazyLoad) {
+        requestedLazyKeys.value.add(node.key);
+        emits('lazyLoad', { key: node.key, node });
+
+        if (props.server) {
+            emits('request', {
+                reason: 'lazy-load' as TreeTableRequestReason,
+                key: node.key,
+                node,
+                expandedKeys: next,
+            });
+        }
+
+        return;
+    }
+
+    if (props.server) {
+        emits('request', {
+            reason: 'expand' as TreeTableRequestReason,
+            key: node.key,
+            node,
+            expandedKeys: next,
+        });
+    }
 };
 
 const toggleNode = (node: TreeTableNode, event: Event) => {
@@ -361,6 +510,193 @@ const getParentIndex = (entry: FlattenedNode) => {
 
     return visibleRows.value.findIndex(candidate => candidate.node.key === entry.parentKey);
 };
+
+const parsePixelWidth = (value?: string) => {
+    if (!value || !value.endsWith('px')) {
+        return null;
+    }
+
+    const parsed = Number.parseFloat(value);
+
+    return Number.isFinite(parsed) ? parsed : null;
+};
+
+const getResolvedColumnWidth = (column: TreeTableColumn) => {
+    const resized = resizedColumnWidths.value[column.field];
+    if (Number.isFinite(resized)) {
+        return resized;
+    }
+
+    const fromWidth = parsePixelWidth(column.width);
+    if (fromWidth != null) {
+        return fromWidth;
+    }
+
+    return parsePixelWidth(column.minWidth);
+};
+
+const getResolvedMinColumnWidth = (column: TreeTableColumn) => {
+    const columnMin = parsePixelWidth(column.minWidth);
+    const propMin = Number.isFinite(props.minColumnWidth) ? props.minColumnWidth : 80;
+
+    return Math.max(24, columnMin ?? propMin);
+};
+
+const isColumnResizable = (column: TreeTableColumn) => {
+    if (column.resizable === false) {
+        return false;
+    }
+
+    if (column.resizable === true) {
+        return true;
+    }
+
+    return props.columnResize;
+};
+
+const getHeaderClass = (column: TreeTableColumn) => {
+    const classes = [`vf-treetable__header_${column.align ?? 'left'}`];
+
+    if (isColumnResizable(column)) {
+        classes.push('vf-treetable__header_resizable');
+    }
+
+    return classes;
+};
+
+const getColumnStyle = (column: TreeTableColumn) => {
+    const styles: Record<string, string> = {};
+    const resolvedWidth = getResolvedColumnWidth(column);
+
+    if (resolvedWidth != null) {
+        styles.width = `${resolvedWidth}px`;
+    } else if (column.width) {
+        styles.width = column.width;
+    }
+
+    if (column.minWidth) {
+        styles.minWidth = column.minWidth;
+    }
+
+    return styles;
+};
+
+const stopColumnResize = () => {
+    if (stopResizeListeners) {
+        stopResizeListeners();
+        stopResizeListeners = null;
+    }
+};
+
+const startColumnResize = (event: MouseEvent, column: TreeTableColumn) => {
+    if (!isColumnResizable(column) || event.button !== 0) {
+        return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    const headerElement = (event.currentTarget as HTMLElement | null)?.closest('th');
+    const measuredWidth = headerElement?.getBoundingClientRect().width;
+    const fallbackWidth = getResolvedColumnWidth(column) ?? getResolvedMinColumnWidth(column);
+    const startWidth =
+        Number.isFinite(measuredWidth) && (measuredWidth ?? 0) > 0 ? (measuredWidth as number) : fallbackWidth;
+    const startX = event.clientX;
+    const minWidth = getResolvedMinColumnWidth(column);
+
+    const onMouseMove = (moveEvent: MouseEvent) => {
+        const nextWidth = Math.max(minWidth, Math.round(startWidth + (moveEvent.clientX - startX)));
+        resizedColumnWidths.value = {
+            ...resizedColumnWidths.value,
+            [column.field]: nextWidth,
+        };
+    };
+
+    const onMouseUp = () => {
+        const finalWidth = resizedColumnWidths.value[column.field] ?? startWidth;
+        emits('columnResize', {
+            field: column.field,
+            width: `${Math.round(finalWidth)}px`,
+            widthPx: Math.round(finalWidth),
+        });
+        stopColumnResize();
+    };
+
+    window.addEventListener('mousemove', onMouseMove);
+    window.addEventListener('mouseup', onMouseUp);
+    stopResizeListeners = () => {
+        window.removeEventListener('mousemove', onMouseMove);
+        window.removeEventListener('mouseup', onMouseUp);
+    };
+};
+
+const emitColumnOrder = (nextOrder: Array<string>, fromField: string, toField: string) => {
+    internalColumnOrder.value = nextOrder;
+    emits('update:columnOrder', [...nextOrder]);
+    emits('columnReorder', {
+        fromField,
+        toField,
+        order: [...nextOrder],
+    });
+};
+
+const onColumnDragStart = (field: string) => {
+    if (!props.columnReorder) {
+        return;
+    }
+
+    draggingColumnField.value = field;
+};
+
+const onColumnDragEnd = () => {
+    draggingColumnField.value = null;
+};
+
+const onHeaderDrop = (targetField: string) => {
+    if (!props.columnReorder || !draggingColumnField.value) {
+        return;
+    }
+
+    const fromField = draggingColumnField.value;
+    draggingColumnField.value = null;
+
+    if (fromField === targetField) {
+        return;
+    }
+
+    const nextOrder = [...internalColumnOrder.value];
+    const fromIndex = nextOrder.indexOf(fromField);
+    const toIndex = nextOrder.indexOf(targetField);
+
+    if (fromIndex === -1 || toIndex === -1) {
+        return;
+    }
+
+    nextOrder.splice(fromIndex, 1);
+    nextOrder.splice(toIndex, 0, fromField);
+    emitColumnOrder(nextOrder, fromField, targetField);
+};
+
+watch(
+    () => props.columns.map(column => column.field),
+    fields => {
+        const allowed = new Set(fields);
+        const next: Record<string, number> = {};
+
+        Object.entries(resizedColumnWidths.value).forEach(([field, width]) => {
+            if (allowed.has(field)) {
+                next[field] = width;
+            }
+        });
+
+        resizedColumnWidths.value = next;
+    },
+    { immediate: true },
+);
+
+onBeforeUnmount(() => {
+    stopColumnResize();
+});
 
 const onRowKeydown = (entry: FlattenedNode, index: number, event: KeyboardEvent) => {
     switch (event.key) {
@@ -427,6 +763,7 @@ const onRowKeydown = (entry: FlattenedNode, index: number, event: KeyboardEvent)
 }
 
 .vf-treetable__header {
+    position: relative;
     padding: var(--vf-treetable-cell-padding);
     border-bottom: var(--vf-border-width) solid var(--vf-treetable-header-border-color);
     background-color: var(--vf-treetable-header-background-color);
@@ -443,6 +780,33 @@ const onRowKeydown = (entry: FlattenedNode, index: number, event: KeyboardEvent)
 .vf-treetable__header_right,
 .vf-treetable__cell_right {
     text-align: right;
+}
+
+.vf-treetable__header_resizable {
+    padding-right: 0.8rem;
+}
+
+.vf-treetable__reorder-handle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 0.35rem;
+    color: var(--vf-treetable-toggle-text-color);
+    cursor: grab;
+    user-select: none;
+}
+
+.vf-treetable__reorder-handle:active {
+    cursor: grabbing;
+}
+
+.vf-treetable__resize-handle {
+    position: absolute;
+    top: 0;
+    right: -2px;
+    width: 8px;
+    height: 100%;
+    cursor: col-resize;
 }
 
 .vf-treetable__cell {

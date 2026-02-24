@@ -39,22 +39,33 @@
                 role="listbox"
                 :data-placement="currentPlacement"
                 :aria-label="panelAriaLabel"
+                @scroll.passive="onPanelScroll"
             >
-                <button
-                    v-for="(option, index) in normalizedOptions"
-                    :id="getOptionId(index)"
-                    :key="option.value"
-                    class="vf-select__option"
-                    :class="{ 'is-active': isActive(option), 'is-disabled': option.disabled }"
-                    type="button"
-                    role="option"
-                    :disabled="option.disabled"
-                    :aria-selected="isActive(option)"
-                    @keydown="onOptionKeydown($event, index)"
-                    @click="selectOption(option)"
-                >
-                    {{ option.label }}
-                </button>
+                <div v-if="loading" class="vf-select__loading">{{ resolvedLoadingText }}</div>
+                <template v-else-if="normalizedOptions.length > 0">
+                    <div class="vf-select__virtual-spacer" :style="virtualSpacerStyle">
+                        <button
+                            v-for="renderedOption in renderedOptions"
+                            :id="getOptionId(renderedOption.index)"
+                            :key="renderedOption.option.value"
+                            class="vf-select__option"
+                            :class="{
+                                'is-active': isActive(renderedOption.option),
+                                'is-disabled': renderedOption.option.disabled,
+                                'is-focused': renderedOption.index === focusedIndex,
+                            }"
+                            type="button"
+                            role="option"
+                            :disabled="renderedOption.option.disabled"
+                            :aria-selected="isActive(renderedOption.option)"
+                            @mouseenter="onOptionMouseenter(renderedOption.index)"
+                            @click="selectOption(renderedOption.option)"
+                        >
+                            {{ renderedOption.option.label }}
+                        </button>
+                    </div>
+                </template>
+                <div v-else class="vf-select__empty">{{ resolvedEmptyText }}</div>
             </div>
         </Teleport>
     </div>
@@ -63,6 +74,7 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { autoUpdate, computePosition, flip, offset } from '@codemonster-ru/floater.js';
+import { useLocaleText } from '@/package/config/locale-text';
 
 type Size = 'small' | 'normal' | 'large';
 type Variant = 'filled' | 'outlined';
@@ -87,11 +99,19 @@ interface Props {
     clearLabel?: string;
     ariaLabel?: string;
     panelAriaLabel?: string;
+    loading?: boolean;
+    loadingText?: string;
+    emptyText?: string;
+    virtual?: boolean;
+    virtualItemHeight?: number;
+    virtualOverscan?: number;
+    virtualThreshold?: number;
+    loadMoreOffset?: number;
     variant?: Variant;
     size?: Size;
 }
 
-const emits = defineEmits(['update:modelValue', 'change', 'focus', 'blur']);
+const emits = defineEmits(['update:modelValue', 'change', 'focus', 'blur', 'loadMore']);
 const props = withDefaults(defineProps<Props>(), {
     modelValue: undefined,
     options: () => [],
@@ -104,6 +124,14 @@ const props = withDefaults(defineProps<Props>(), {
     clearLabel: 'Clear selection',
     ariaLabel: 'Select option',
     panelAriaLabel: 'Options',
+    loading: false,
+    loadingText: undefined,
+    emptyText: undefined,
+    virtual: false,
+    virtualItemHeight: 36,
+    virtualOverscan: 4,
+    virtualThreshold: 100,
+    loadMoreOffset: 3,
     variant: 'filled',
     size: 'normal',
 });
@@ -118,10 +146,14 @@ const trigger = ref<HTMLButtonElement | null>(null);
 const panel = ref<HTMLElement | null>(null);
 const open = ref(false);
 const focusedIndex = ref(-1);
+const panelScrollTop = ref(0);
+const panelViewportHeight = ref(0);
 const basePlacement = ref<'bottom' | 'top'>('bottom');
 const currentPlacement = ref<'bottom' | 'top'>('bottom');
 const panelId = `vf-select-panel-${++selectIdCounter}`;
 let floater: FloaterInstance = null;
+const localeText = useLocaleText();
+const lastLoadMoreTotal = ref(-1);
 
 const normalizedOptions = computed(() => {
     return props.options.map(option => {
@@ -139,6 +171,53 @@ const selectedLabel = computed(() => selectedOption.value?.label ?? '');
 const showClear = computed(
     () => props.clearable && props.modelValue !== undefined && !props.disabled && !props.readonly,
 );
+const resolvedLoadingText = computed(() => props.loadingText ?? localeText.common.loadingText);
+const resolvedEmptyText = computed(() => props.emptyText ?? localeText.common.emptyText);
+const shouldUseVirtual = computed(() => props.virtual && normalizedOptions.value.length >= props.virtualThreshold);
+const virtualRange = computed(() => {
+    const total = normalizedOptions.value.length;
+
+    if (!shouldUseVirtual.value || total === 0) {
+        return {
+            start: 0,
+            end: total,
+        };
+    }
+
+    const itemHeight = Math.max(1, props.virtualItemHeight);
+    const viewport = Math.max(itemHeight, panelViewportHeight.value);
+    const visibleCount = Math.max(1, Math.ceil(viewport / itemHeight));
+    const start = Math.max(0, Math.floor(panelScrollTop.value / itemHeight) - props.virtualOverscan);
+    const end = Math.min(total, start + visibleCount + props.virtualOverscan * 2);
+
+    return {
+        start,
+        end,
+    };
+});
+const renderedOptions = computed(() => {
+    const { start, end } = virtualRange.value;
+    const options = normalizedOptions.value.slice(start, end);
+
+    return options.map((option, localIndex) => ({
+        option,
+        index: start + localIndex,
+    }));
+});
+const virtualSpacerStyle = computed(() => {
+    if (!shouldUseVirtual.value) {
+        return undefined;
+    }
+
+    const total = normalizedOptions.value.length;
+    const { start, end } = virtualRange.value;
+    const itemHeight = Math.max(1, props.virtualItemHeight);
+
+    return {
+        paddingTop: `${start * itemHeight}px`,
+        paddingBottom: `${Math.max(0, total - end) * itemHeight}px`,
+    };
+});
 const activeDescendantId = computed(() => {
     if (!open.value || focusedIndex.value < 0 || focusedIndex.value >= normalizedOptions.value.length) {
         return undefined;
@@ -180,7 +259,7 @@ const focusOption = (index: number) => {
     }
 
     focusedIndex.value = index;
-    panel.value?.querySelectorAll<HTMLButtonElement>('.vf-select__option')[index]?.focus();
+    ensureOptionVisible(index);
 };
 const moveFocus = (step: 1 | -1) => {
     if (!normalizedOptions.value.length) {
@@ -227,6 +306,7 @@ const onBlur = (event: FocusEvent) => emits('blur', event);
 const close = () => {
     open.value = false;
     focusedIndex.value = -1;
+    panelScrollTop.value = 0;
     basePlacement.value = 'bottom';
     currentPlacement.value = 'bottom';
 };
@@ -238,6 +318,7 @@ const toggle = () => {
     open.value = !open.value;
 
     if (open.value) {
+        focusedIndex.value = firstEnabledIndex();
         basePlacement.value = 'bottom';
         currentPlacement.value = 'bottom';
     }
@@ -269,6 +350,31 @@ const onTriggerKeydown = (event: KeyboardEvent) => {
         return;
     }
 
+    if (open.value && event.key === 'ArrowDown') {
+        event.preventDefault();
+        moveFocus(1);
+
+        return;
+    }
+
+    if (open.value && event.key === 'ArrowUp') {
+        event.preventDefault();
+        moveFocus(-1);
+
+        return;
+    }
+
+    if (open.value && (event.key === 'Enter' || event.key === ' ')) {
+        event.preventDefault();
+        const option = normalizedOptions.value[focusedIndex.value];
+
+        if (option) {
+            selectOption(option);
+        }
+
+        return;
+    }
+
     if (event.key === 'ArrowDown') {
         event.preventDefault();
         void openAndFocus('first');
@@ -295,42 +401,8 @@ const onTriggerKeydown = (event: KeyboardEvent) => {
         close();
     }
 };
-const onOptionKeydown = (event: KeyboardEvent, index: number) => {
-    if (!open.value) {
-        return;
-    }
-
-    if (event.key === 'ArrowDown') {
-        event.preventDefault();
-        moveFocus(1);
-
-        return;
-    }
-
-    if (event.key === 'ArrowUp') {
-        event.preventDefault();
-        moveFocus(-1);
-
-        return;
-    }
-
-    if (event.key === 'Enter' || event.key === ' ') {
-        event.preventDefault();
-        const option = normalizedOptions.value[index];
-
-        if (option) {
-            selectOption(option);
-            trigger.value?.focus();
-        }
-
-        return;
-    }
-
-    if (event.key === 'Escape') {
-        event.preventDefault();
-        close();
-        trigger.value?.focus();
-    }
+const onOptionMouseenter = (index: number) => {
+    focusedIndex.value = index;
 };
 
 const onDocumentClick = (event: MouseEvent) => {
@@ -372,6 +444,8 @@ const mountFloater = () => {
     };
     const update = async () => {
         await applyPosition();
+        syncPanelMetrics();
+        maybeEmitLoadMore();
     };
 
     const cleanup = autoUpdate(reference, () => {
@@ -396,6 +470,83 @@ const mountFloater = () => {
     void floater.update();
 };
 
+const syncPanelMetrics = () => {
+    panelViewportHeight.value = panel.value?.clientHeight ?? 0;
+    panelScrollTop.value = panel.value?.scrollTop ?? 0;
+};
+
+const getLastVisibleIndex = () => {
+    const total = normalizedOptions.value.length;
+
+    if (total === 0) {
+        return -1;
+    }
+
+    if (!shouldUseVirtual.value) {
+        return total - 1;
+    }
+
+    const itemHeight = Math.max(1, props.virtualItemHeight);
+    const viewport = Math.max(itemHeight, panelViewportHeight.value);
+    const visibleCount = Math.max(1, Math.ceil(viewport / itemHeight));
+
+    return Math.min(
+        total - 1,
+        Math.floor(panelScrollTop.value / itemHeight) + visibleCount + props.virtualOverscan - 1,
+    );
+};
+
+const maybeEmitLoadMore = () => {
+    if (props.loading) {
+        return;
+    }
+
+    const total = normalizedOptions.value.length;
+    if (total === 0) {
+        return;
+    }
+
+    const lastVisible = getLastVisibleIndex();
+    if (lastVisible < total - 1 - props.loadMoreOffset) {
+        return;
+    }
+
+    if (lastLoadMoreTotal.value === total) {
+        return;
+    }
+
+    lastLoadMoreTotal.value = total;
+    emits('loadMore', {
+        visibleEndIndex: lastVisible,
+        total,
+    });
+};
+
+const onPanelScroll = () => {
+    syncPanelMetrics();
+    maybeEmitLoadMore();
+};
+
+const ensureOptionVisible = (index: number) => {
+    if (!open.value || !shouldUseVirtual.value || !panel.value) {
+        return;
+    }
+
+    const itemHeight = Math.max(1, props.virtualItemHeight);
+    const itemTop = index * itemHeight;
+    const itemBottom = itemTop + itemHeight;
+    const viewportTop = panel.value.scrollTop;
+    const viewportBottom = viewportTop + panel.value.clientHeight;
+
+    if (itemTop < viewportTop) {
+        panel.value.scrollTop = itemTop;
+    } else if (itemBottom > viewportBottom) {
+        panel.value.scrollTop = Math.max(0, itemBottom - panel.value.clientHeight);
+    }
+
+    syncPanelMetrics();
+};
+
 watch(open, async value => {
     if (!value) {
         if (floater) {
@@ -407,6 +558,7 @@ watch(open, async value => {
     }
 
     await nextTick();
+    syncPanelMetrics();
 
     if (!floater) {
         mountFloater();
@@ -421,6 +573,14 @@ watch(
         focusedIndex.value = selectedIndex >= 0 ? selectedIndex : -1;
     },
     { immediate: true },
+);
+watch(
+    () => normalizedOptions.value.length,
+    () => {
+        lastLoadMoreTotal.value = -1;
+        syncPanelMetrics();
+        maybeEmitLoadMore();
+    },
 );
 watch(
     () => props.options,
@@ -558,9 +718,23 @@ onBeforeUnmount(() => {
     color: var(--vf-select-option-active-text-color);
 }
 
+.vf-select__option.is-focused:not(.is-disabled) {
+    background-color: var(--vf-select-option-hover-background-color);
+}
+
 .vf-select__option.is-disabled {
     opacity: 0.6;
     cursor: not-allowed;
+}
+
+.vf-select__virtual-spacer {
+    display: grid;
+}
+
+.vf-select__loading,
+.vf-select__empty {
+    padding: var(--vf-select-option-padding);
+    color: var(--vf-secondary-text-color);
 }
 
 .vf-select_open {

@@ -36,6 +36,17 @@ Support filtering, navigation, and bulk workflows used in core SaaS backoffice s
 - `minColumnWidth?: number` (default `80`) - minimum width in pixels for resized columns
 - `columnReorder?: boolean` (default `false`) - enables drag-and-drop column reordering
 - `columnOrder?: Array<string>` (default `[]`) - controlled ordered list of column fields
+- `rowGroupBy?: string | ((row, index) => string | number | null | undefined)` - enables row grouping by field/computed key
+- `rowGroupLabel?: string` (default `Group`) - fallback group label for empty keys
+- `rowExpansion?: boolean` (default `false`) - enables expandable detail rows
+- `expandedRows?: Array<string | number>` (default `[]`) - controlled expanded row keys
+- `rowExpandable?: (row, index) => boolean` - controls which rows can expand
+- `expandOnRowClick?: boolean` (default `false`) - toggles row expansion on row click
+- `expandRowAriaLabel?: string` (default `Expand row`)
+- `collapseRowAriaLabel?: string` (default `Collapse row`)
+- `visibleColumns?: Array<string>` (default `[]`) - controlled visible column fields (`[]` means all)
+- `columnVisibilityManager?: boolean` (default `false`) - built-in column visibility UI
+- `columnVisibilityLabel?: string` (default `Columns`) - label for visibility manager toggle
 
 ## Events
 
@@ -55,6 +66,11 @@ Support filtering, navigation, and bulk workflows used in core SaaS backoffice s
 - `columnResize` - payload: `{ field, width, widthPx }`
 - `update:columnOrder`
 - `columnReorder` - payload: `{ fromField, toField, order }`
+- `update:expandedRows`
+- `rowExpand` - payload: `(row, index, event?)`
+- `rowCollapse` - payload: `(row, index, event?)`
+- `update:visibleColumns`
+- `columnVisibilityChange` - payload: `Array<string>`
 
 ## Slots
 
@@ -63,6 +79,8 @@ Support filtering, navigation, and bulk workflows used in core SaaS backoffice s
 - `empty`
 - `loading`
 - `bulk-actions` - slot props: `{ selectedKeys, selectedRows, clearSelection, applyAction }`
+- `group-header` - slot props: `{ group, rows }`
+- `row-expansion` - slot props: `{ row, index }`
 
 ## Examples
 
@@ -211,6 +229,38 @@ const order = ref(['name', 'role', 'age']);
 </template>
 ```
 
+### Row grouping and row expansion
+
+```vue
+<DataTable
+    row-expansion
+    row-group-by="team"
+    :expanded-rows="expandedRows"
+    :columns="columns"
+    :rows="rows"
+    @update:expanded-rows="expandedRows = $event"
+>
+    <template #group-header="{ group, rows: groupRows }">
+        <strong>{{ group }}</strong> ({{ groupRows.length }})
+    </template>
+    <template #row-expansion="{ row }">
+        <div>Details for {{ row.name }}</div>
+    </template>
+</DataTable>
+```
+
+### Column visibility manager
+
+```vue
+<DataTable
+    column-visibility-manager
+    :visible-columns="visibleColumns"
+    :columns="columns"
+    :rows="rows"
+    @update:visible-columns="visibleColumns = $event"
+/>
+```
+
 ## Theming
 
 - Override via `theme.overrides.components.datatable`.
@@ -238,6 +288,9 @@ Component tokens (override via `theme.overrides.components.datatable`):
 - Sticky header/columns for wide datasets.
 - Column-resize mode for dense/variable datasets.
 - Column reorder mode for user-customizable table layouts.
+- Row grouping for team/status segmented datasets.
+- Row expansion for master-detail tables.
+- Built-in column visibility manager for per-user table views.
 
 ## Responsive
 
@@ -252,6 +305,7 @@ Defer measurement-driven virtualization logic until client mount.
 ## Testing
 
 Cover sorting/filtering/selection/navigation flows and large-dataset edge cases.
+Cover row grouping/expansion and column visibility state management.
 Add performance-sensitive regression tests and ARIA verification for interactive data regions.
 
 ## Accessibility

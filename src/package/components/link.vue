@@ -50,7 +50,7 @@ import {
 } from 'vue-router';
 import { computed, inject, ref, watch } from 'vue';
 
-interface Props {
+export interface Props {
     to?: string | RouteLocationAsRelativeGeneric | RouteLocationAsPathGeneric;
     href?: string;
     url?: string;

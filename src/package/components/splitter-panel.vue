@@ -1,5 +1,5 @@
 <template>
-    <div :class="getClass" :style="panelStyle">
+    <div :id="panelId" :class="getClass" :style="panelStyle">
         <slot />
     </div>
 </template>

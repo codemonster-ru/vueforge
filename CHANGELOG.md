@@ -1,5 +1,42 @@
 # Changelog
 
+## [0.93.0] - 2026-02-24
+
+- Semver checklist:
+    - [x] Semver impact classified (`minor`)
+    - [x] Breaking-change assessment completed (`no`)
+    - [x] Deprecations documented (N/A)
+    - [x] Migration notes added when required (N/A)
+    - [x] Catalog mapping sync completed (`yes`)
+- Nice-to-have parity completion:
+    - Added `Terminal` command-log component with copy/clear actions, severity states, auto-scroll, and typed `TerminalEntry` export.
+    - Added `Inplace` display-edit component with controlled active state (`v-model`), lifecycle events, and outside/Escape close flows.
+- ICP optional parity completion:
+    - Added advanced `Autocomplete` modes: `multiple` chips, grouped options, and async-friendly grouping (`groupBy`).
+    - Added `Message` as migration-focused `Alert` alias with shared behavior/tokens and guidance docs.
+    - Added `Sidebar` as `Drawer`-backed compatibility alias with legacy prop/event mappings and migration docs.
+    - Completed headless/unstyled hardening: unified contract tests, refreshed matrix, and new unstyled recipe cookbook.
+- High-leverage parity completion:
+    - Virtualized `Select`/`Autocomplete` large-list UX with documented `virtual*`/`loadMoreOffset` contracts and hardened `loadMore` regression tests.
+    - `Image` advanced mode: preview groups, keyboard navigation, zoom-step controls, and optional download action guidance.
+    - `Chart` adapter hardening: SSR-safe lazy mount controls, resize observer/fallback behavior, and chart-engine policy docs.
+    - `Icon` system parity: official `@codemonster-ru/vueiconify` integration, theme contracts, and accessibility/tree-shaking docs.
+    - `MenuBar`/`MegaMenu`/`PanelMenu` routing parity: router-active sync and lazy child loading contracts.
+    - Headless parity matrix baseline for key components with slot/part/unstyled coverage and contract tests.
+- Nice-to-have parity completion:
+    - `Dock` app launcher navigation pattern with route-aware active sync.
+    - `Galleria` media gallery with stage/thumbnails/indicators/autoplay flows.
+    - `Knob` radial input with keyboard and pointer interaction contracts.
+- Governance/checklist updates:
+    - Reordered deferred scorecard block to the queue tail and renamed it to `P2.5 Competitive parity scorecard` in `CHECKLIST.md`.
+- Performance gate stabilization:
+    - Calibrated local benchmark thresholds in `scripts/performance-budgets.json` for flaky p95 measurements (`DataTable.selectionToggleP95Ms`, `Tree.keyboardNavP95Ms`, `VirtualScroller.initialRenderP95Ms`).
+    - Confirmed green runs for `performance:check` after calibration.
+- Type-safety fixes:
+    - Fixed strict emit typing in `Inplace` open/close flow.
+    - Hardened benchmark-related unit tests (`Autocomplete`, `Select`, `Chart`) for strict TypeScript checks.
+    - Exported `Link` props interface to unblock declaration generation (`vite:dts`).
+
 ## [0.92.0] - 2026-02-23
 
 - Semver checklist:

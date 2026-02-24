@@ -1,0 +1,17 @@
+export default {
+    borderColor: 'var(--vf-border-color)',
+    borderRadius: 'var(--vf-radii-md)',
+    backgroundColor: 'var(--vf-controls-background-color)',
+    textColor: 'var(--vf-text-color)',
+    padding: '0.25rem',
+    contentPadding: '0.25rem',
+    actionsGap: '0.5rem',
+    buttonPadding: '0.25rem 0.6rem',
+    buttonRadius: 'var(--vf-radii-sm)',
+    buttonBorderColor: 'var(--vf-border-color)',
+    buttonBackgroundColor: 'var(--vf-controls-background-color)',
+    buttonTextColor: 'var(--vf-text-color)',
+    buttonHoverBackgroundColor: 'rgba(var(--vf-blue-600-rgb), 0.08)',
+    focusRingShadow: 'var(--vf-states-focus-ring-shadow)',
+    disabledOpacity: 'var(--vf-states-disabled-opacity)',
+};

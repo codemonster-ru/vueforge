@@ -40,9 +40,11 @@
                                 >
                                     <a
                                         class="vf-megamenu__link"
-                                        :href="link.to ?? link.href ?? '#'"
+                                        :class="{ 'is-active': isLinkActive(link), 'is-disabled': link.disabled }"
+                                        :href="getLinkHref(link)"
                                         :aria-disabled="link.disabled ? 'true' : undefined"
-                                        @click.prevent="onLinkClick(link, $event)"
+                                        :aria-current="isLinkActive(link) ? 'page' : undefined"
+                                        @click="onLinkClick(link, $event)"
                                     >
                                         {{ link.label }}
                                     </a>
@@ -57,13 +59,25 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { computed, inject, ref, watch } from 'vue';
+import {
+    type RouteLocationAsPathGeneric,
+    type RouteLocationAsRelativeGeneric,
+    type RouteLocationNormalizedLoadedGeneric,
+    routeLocationKey,
+    routerKey,
+    type Router,
+} from 'vue-router';
 
 export interface MegaMenuLink {
     label: string;
-    to?: string;
+    to?: string | RouteLocationAsRelativeGeneric | RouteLocationAsPathGeneric;
     href?: string;
+    url?: string;
     disabled?: boolean;
+    active?: boolean;
+    exact?: boolean;
+    command?: () => void;
 }
 
 export interface MegaMenuSection {
@@ -72,10 +86,13 @@ export interface MegaMenuSection {
 }
 
 export interface MegaMenuItem {
+    key?: string;
     label: string;
     disabled?: boolean;
     sections?: Array<MegaMenuSection>;
     items?: Array<MegaMenuLink>;
+    lazy?: boolean;
+    loading?: boolean;
 }
 
 interface Props {
@@ -83,6 +100,7 @@ interface Props {
     modelValue?: number | null;
     disabled?: boolean;
     ariaLabel?: string;
+    syncActiveFromRoute?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -90,9 +108,12 @@ const props = withDefaults(defineProps<Props>(), {
     modelValue: null,
     disabled: false,
     ariaLabel: 'Mega menu',
+    syncActiveFromRoute: true,
 });
 
-const emits = defineEmits(['update:modelValue', 'open', 'close', 'linkClick']);
+const emits = defineEmits(['update:modelValue', 'open', 'close', 'linkClick', 'navigate', 'lazyLoad']);
+const route = inject<RouteLocationNormalizedLoadedGeneric | null>(routeLocationKey, null);
+const router = inject<Router | null>(routerKey, null);
 
 const internalActiveIndex = ref<number | null>(props.modelValue);
 
@@ -107,6 +128,78 @@ const activeIndex = computed(() => internalActiveIndex.value);
 
 const getTriggerId = (index: number) => `vf-megamenu-trigger-${index}`;
 const getPanelId = (index: number) => `vf-megamenu-panel-${index}`;
+const resolveToPath = (to: MegaMenuLink['to']) => {
+    if (!to || !router) {
+        return null;
+    }
+
+    const resolved = router.resolve(to);
+    return resolved.path;
+};
+const isLinkActive = (link: MegaMenuLink) => {
+    if (typeof link.active === 'boolean') {
+        return link.active;
+    }
+
+    if (!route) {
+        return false;
+    }
+
+    if (link.to && router) {
+        const path = resolveToPath(link.to);
+        if (!path) {
+            return false;
+        }
+
+        if (link.exact) {
+            return route.path === path;
+        }
+
+        return route.path === path || route.path.startsWith(`${path}/`);
+    }
+
+    const href = link.href ?? link.url;
+    if (!href || href.startsWith('http://') || href.startsWith('https://')) {
+        return false;
+    }
+
+    if (link.exact) {
+        return route.path === href;
+    }
+
+    return route.path === href || route.path.startsWith(`${href}/`);
+};
+const getLinkHref = (link: MegaMenuLink) => {
+    if (link.href || link.url) {
+        return link.href ?? link.url ?? '#';
+    }
+
+    if (link.to && router) {
+        return router.resolve(link.to).href;
+    }
+
+    if (typeof link.to === 'string') {
+        return link.to;
+    }
+
+    return '#';
+};
+const findActiveRootIndex = () => {
+    if (!props.syncActiveFromRoute) {
+        return null;
+    }
+
+    for (let index = 0; index < props.items.length; index += 1) {
+        const sections = getSections(props.items[index]);
+        const hasActive = sections.some(section => section.items.some(link => isLinkActive(link)));
+
+        if (hasActive) {
+            return index;
+        }
+    }
+
+    return null;
+};
 
 const getSections = (item: MegaMenuItem): Array<MegaMenuSection> => {
     if (item.sections?.length) {
@@ -121,9 +214,21 @@ const getSections = (item: MegaMenuItem): Array<MegaMenuSection> => {
 };
 
 const open = (index: number) => {
+    if (index < 0 || index >= props.items.length) {
+        return;
+    }
+
     internalActiveIndex.value = index;
     emits('update:modelValue', index);
     emits('open', index);
+
+    const item = props.items[index];
+    if (item.lazy && getSections(item).length === 0) {
+        emits('lazyLoad', {
+            index,
+            item,
+        });
+    }
 };
 
 const close = () => {
@@ -180,13 +285,52 @@ const onTriggerKeydown = (event: KeyboardEvent, index: number) => {
 };
 
 const onLinkClick = (link: MegaMenuLink, event: MouseEvent) => {
+    event.preventDefault();
+
     if (link.disabled) {
         return;
+    }
+
+    if (typeof link.command === 'function') {
+        link.command();
+    }
+
+    if (link.to && router) {
+        event.preventDefault();
+        void router.push(link.to);
+        emits('navigate', {
+            to: link.to,
+            href: getLinkHref(link),
+            link,
+        });
     }
 
     emits('linkClick', link, event);
     close();
 };
+
+watch(
+    () => props.items,
+    () => {
+        if (props.modelValue != null) {
+            return;
+        }
+
+        internalActiveIndex.value = findActiveRootIndex();
+    },
+    { deep: true, immediate: true },
+);
+
+watch(
+    () => route?.path,
+    () => {
+        if (props.modelValue != null) {
+            return;
+        }
+
+        internalActiveIndex.value = findActiveRootIndex();
+    },
+);
 </script>
 
 <style lang="scss">
@@ -261,5 +405,14 @@ const onLinkClick = (link: MegaMenuLink, event: MouseEvent) => {
 
 .vf-megamenu__link:hover {
     color: var(--vf-megamenu-link-hover-color);
+}
+
+.vf-megamenu__link.is-active {
+    color: var(--vf-link-active-color);
+}
+
+.vf-megamenu__link.is-disabled {
+    pointer-events: none;
+    opacity: 0.6;
 }
 </style>

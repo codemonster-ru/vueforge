@@ -1,4 +1,6 @@
 import { mount } from '@vue/test-utils';
+import { routeLocationKey, routerKey } from 'vue-router';
+import { vi } from 'vitest';
 import MegaMenu from '../mega-menu.vue';
 
 describe('MegaMenu', () => {
@@ -77,5 +79,72 @@ describe('MegaMenu', () => {
 
         expect(wrapper.emitted('linkClick')?.length).toBe(1);
         expect(wrapper.emitted('update:modelValue')?.at(-1)).toEqual([null]);
+    });
+
+    it('integrates with router navigation for `to` links', async () => {
+        const push = vi.fn();
+        const wrapper = mount(MegaMenu, {
+            props: {
+                items: [
+                    {
+                        label: 'Docs',
+                        items: [{ label: 'Guides', to: '/guides' }],
+                    },
+                ],
+                modelValue: 0,
+            },
+            global: {
+                provide: {
+                    [routerKey as symbol]: {
+                        push,
+                        resolve: (to: string) => ({ path: to, href: to }),
+                    },
+                    [routeLocationKey as symbol]: {
+                        path: '/home',
+                    },
+                },
+            },
+        });
+
+        await wrapper.find('.vf-megamenu__link').trigger('click');
+
+        expect(push).toHaveBeenCalledWith('/guides');
+        expect(wrapper.emitted('navigate')?.[0]?.[0]).toMatchObject({ to: '/guides' });
+    });
+
+    it('syncs active root item from current route', () => {
+        const wrapper = mount(MegaMenu, {
+            props: {
+                items,
+            },
+            global: {
+                provide: {
+                    [routerKey as symbol]: {
+                        push: vi.fn(),
+                        resolve: (to: string) => ({ path: to, href: to }),
+                    },
+                    [routeLocationKey as symbol]: {
+                        path: '/guides',
+                    },
+                },
+            },
+        });
+
+        expect(wrapper.findAll('.vf-megamenu__trigger')[1].attributes('aria-expanded')).toBe('true');
+        expect(wrapper.find('.vf-megamenu__link.is-active').exists()).toBe(true);
+    });
+
+    it('emits lazyLoad when opening lazy root without loaded sections', async () => {
+        const wrapper = mount(MegaMenu, {
+            props: {
+                items: [{ label: 'Catalog', lazy: true }],
+            },
+        });
+
+        await wrapper.find('.vf-megamenu__trigger').trigger('click');
+
+        expect(wrapper.emitted('lazyLoad')?.[0]?.[0]).toMatchObject({
+            index: 0,
+        });
     });
 });

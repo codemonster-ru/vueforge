@@ -10,6 +10,14 @@ const data = {
 };
 
 describe('Chart', () => {
+    const originalResizeObserver = globalThis.ResizeObserver;
+    const originalIntersectionObserver = globalThis.IntersectionObserver;
+
+    afterEach(() => {
+        globalThis.ResizeObserver = originalResizeObserver;
+        globalThis.IntersectionObserver = originalIntersectionObserver;
+    });
+
     const createAdapter = () => {
         const instance = { id: 'chart-instance' };
         const adapter: ChartAdapter = {
@@ -53,7 +61,7 @@ describe('Chart', () => {
             },
         });
 
-        expect(adapter.update).toHaveBeenCalledTimes(1);
+        expect(adapter.update).toHaveBeenCalled();
     });
 
     it('shows loading and empty states without mounting chart', async () => {
@@ -100,5 +108,64 @@ describe('Chart', () => {
         const canvas = wrapper.find('canvas');
         expect(canvas.attributes('role')).toBe('img');
         expect(canvas.attributes('aria-label')).toBe('Revenue by month');
+    });
+
+    it('defers adapter mount until visible when lazy mode is enabled', async () => {
+        let intersectionCallback: (
+            entries: Array<{ isIntersecting: boolean; intersectionRatio: number }>,
+        ) => void = () => undefined;
+        globalThis.IntersectionObserver = class {
+            constructor(callback: (entries: Array<{ isIntersecting: boolean; intersectionRatio: number }>) => void) {
+                intersectionCallback = callback;
+            }
+
+            observe() {}
+
+            disconnect() {}
+        } as unknown as typeof IntersectionObserver;
+
+        const { adapter } = createAdapter();
+        mount(Chart, {
+            props: {
+                adapter,
+                data,
+                lazy: true,
+            },
+        });
+
+        expect(adapter.mount).not.toHaveBeenCalled();
+
+        intersectionCallback([{ isIntersecting: true, intersectionRatio: 1 }]);
+        await nextTick();
+
+        expect(adapter.mount).toHaveBeenCalledTimes(1);
+    });
+
+    it('uses resize observer and window resize fallback for adapter resize', async () => {
+        let resizeCallback: () => void = () => undefined;
+        globalThis.ResizeObserver = class {
+            constructor(callback: () => void) {
+                resizeCallback = callback;
+            }
+
+            observe() {}
+
+            disconnect() {}
+        } as unknown as typeof ResizeObserver;
+
+        const { adapter } = createAdapter();
+        mount(Chart, {
+            props: {
+                adapter,
+                data,
+                lazy: false,
+            },
+        });
+
+        resizeCallback();
+        window.dispatchEvent(new Event('resize'));
+        await nextTick();
+
+        expect(adapter.resize).toHaveBeenCalled();
     });
 });

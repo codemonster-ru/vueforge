@@ -34,18 +34,47 @@ import { ref, watch } from 'vue';
 const query = ref('');
 const loading = ref(false);
 const options = ref<Array<{ label: string; value: string }>>([]);
+const page = ref(1);
+const hasMore = ref(true);
+
+const fetchPage = async (value: string, nextPage: number) => {
+    loading.value = true;
+
+    try {
+        const response = await fetch(`/api/countries?q=${encodeURIComponent(value)}&page=${nextPage}&limit=100`);
+        const payload = await response.json();
+        options.value = nextPage === 1 ? payload.items : [...options.value, ...payload.items];
+        hasMore.value = payload.hasMore;
+        page.value = nextPage;
+    } finally {
+        loading.value = false;
+    }
+};
 
 watch(query, async value => {
-    loading.value = true;
-    // Example: fetch only the first page for current query.
-    const response = await fetch(`/api/countries?q=${encodeURIComponent(value)}&limit=50`);
-    options.value = await response.json();
-    loading.value = false;
+    await fetchPage(value, 1);
 });
+
+const onLoadMore = async () => {
+    if (!hasMore.value || loading.value) {
+        return;
+    }
+
+    await fetchPage(query.value, page.value + 1);
+};
 </script>
 
 <template>
-    <Autocomplete :options="options" :loading="loading" placeholder="Search country" @search="query = $event" />
+    <Autocomplete
+        :options="options"
+        :loading="loading"
+        :virtual="true"
+        :virtual-threshold="100"
+        :virtual-item-height="36"
+        placeholder="Search country"
+        @search="query = $event"
+        @load-more="onLoadMore"
+    />
 </template>
 ```
 

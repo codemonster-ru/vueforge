@@ -20,6 +20,8 @@ Enable product features that require richer interaction than basic form controls
 - `toolbar?: Array<'bold' | 'italic' | 'underline' | 'link' | 'bulletList' | 'orderedList' | 'code'>`
 - `toolbarLabel?: string` (default `Text formatting toolbar`)
 - `ariaLabel?: string` (default `Rich text editor`)
+- `sanitizeOnPaste?: boolean` (default `true`)
+- `sanitizationProfile?: 'none' | 'basic' | 'strict'` (default `basic`)
 
 ## Events
 
@@ -29,6 +31,7 @@ Enable product features that require richer interaction than basic form controls
 - `focus`
 - `blur`
 - `action` (payload: `action`, `nextValue`)
+- `pasteSanitized` (payload: `{ profile, changed, format }`)
 
 ## Slots
 
@@ -45,6 +48,16 @@ Enable product features that require richer interaction than basic form controls
     :toolbar="['bold', 'italic', 'link', 'bulletList', 'code']"
 />
 ```
+
+```vue
+<RichTextEditor v-model="htmlBody" format="html" sanitization-profile="strict" :sanitize-on-paste="true" />
+```
+
+Paste sanitization profiles:
+
+- `none`: do not alter pasted content.
+- `basic`: remove dangerous tags/attributes (`script`, inline event handlers, `javascript:`/`data:` URLs).
+- `strict`: `basic` + allowlist-based html reduction for safer rendered output.
 
 ## Theming
 
@@ -77,3 +90,4 @@ Add accessibility tests for keyboard alternatives, labelling, and focus behavior
 ## Accessibility
 
 - Ensure keyboard access, visible focus state, and sufficient color contrast in usage contexts.
+- Paste handling keeps caret position and emits updates consistently for assistive tech state tracking.

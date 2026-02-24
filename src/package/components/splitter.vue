@@ -9,8 +9,12 @@
             :style="getGutterStyle(index)"
             role="separator"
             :aria-orientation="separatorOrientation"
+            :aria-valuemin="Math.round(getGutterAriaMin(index))"
+            :aria-valuemax="Math.round(getGutterAriaMax(index))"
             :aria-valuenow="Math.round(sizes[index] ?? 0)"
-            tabindex="0"
+            :aria-disabled="props.disabled ? 'true' : undefined"
+            :aria-controls="getGutterAriaControls(index)"
+            :tabindex="props.disabled ? -1 : 0"
             @mousedown.prevent="onGutterMouseDown($event, index)"
             @keydown="onGutterKeydown($event, index)"
         >
@@ -29,6 +33,8 @@ interface Props {
     direction?: SplitterDirection;
     gutterSize?: number | string;
     disabled?: boolean;
+    persistence?: 'none' | 'local' | 'session';
+    persistenceKey?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -37,6 +43,8 @@ const props = withDefaults(defineProps<Props>(), {
     direction: 'horizontal',
     gutterSize: 8,
     disabled: false,
+    persistence: 'none',
+    persistenceKey: '',
 });
 const emits = defineEmits(['update:modelValue', 'change']);
 
@@ -140,6 +148,69 @@ const applyMinSizes = (inputSizes: Array<number>, minSizes: Array<number>) => {
     return rounded;
 };
 
+const getStorage = (): Storage | null => {
+    if (typeof window === 'undefined') {
+        return null;
+    }
+
+    if (props.persistence === 'local') {
+        return window.localStorage;
+    }
+    if (props.persistence === 'session') {
+        return window.sessionStorage;
+    }
+
+    return null;
+};
+
+const getResolvedPersistenceKey = () => {
+    if (!props.persistenceKey) {
+        return '';
+    }
+
+    return `vf-splitter:${props.persistenceKey}`;
+};
+
+const readPersistedSizes = (count: number) => {
+    const storage = getStorage();
+    const key = getResolvedPersistenceKey();
+
+    if (!storage || !key || count <= 0) {
+        return null;
+    }
+
+    try {
+        const raw = storage.getItem(key);
+        if (!raw) {
+            return null;
+        }
+
+        const parsed = JSON.parse(raw);
+        if (!Array.isArray(parsed) || parsed.length !== count || !parsed.every(isPositiveNumber)) {
+            return null;
+        }
+
+        return normalizeTo100(parsed as Array<number>);
+    } catch {
+        return null;
+    }
+};
+
+const persistSizes = (nextSizes: Array<number>) => {
+    const storage = getStorage();
+    const key = getResolvedPersistenceKey();
+
+    if (!storage || !key || !nextSizes.length) {
+        return;
+    }
+
+    try {
+        storage.setItem(key, JSON.stringify(nextSizes.map(size => roundTo(size, 6))));
+    } catch {
+        // ignore persistence errors (quota/private mode)
+    }
+};
+
 const getInitialSizes = (count: number) => {
     if (!count) {
         return [];
@@ -149,6 +220,11 @@ const getInitialSizes = (count: number) => {
 
     if (external.length === count && external.every(isPositiveNumber)) {
         return normalizeTo100(external);
+    }
+
+    const persisted = readPersistedSizes(count);
+    if (persisted) {
+        return persisted;
     }
 
     const panelSizes = panels.value.map(panel => panel.size);
@@ -260,6 +336,23 @@ const getGutterStyle = (index: number) => {
         width: resolvedGutterSize.value,
     };
 };
+const getGutterAriaControls = (index: number) => {
+    const first = panels.value[index]?.id;
+    const second = panels.value[index + 1]?.id;
+
+    return [first, second].filter(Boolean).join(' ') || undefined;
+};
+const getGutterAriaMin = (index: number) => {
+    const mins = getMinSizes();
+
+    return mins[index] ?? 0;
+};
+const getGutterAriaMax = (index: number) => {
+    const mins = getMinSizes();
+    const pairTotal = (sizes.value[index] ?? 0) + (sizes.value[index + 1] ?? 0);
+
+    return Math.max(getGutterAriaMin(index), pairTotal - (mins[index + 1] ?? 0));
+};
 
 const applyResizeDelta = (index: number, deltaPercent: number, emitUpdate = true) => {
     const current = [...sizes.value];
@@ -281,6 +374,7 @@ const applyResizeDelta = (index: number, deltaPercent: number, emitUpdate = true
     const normalized = applyMinSizes(normalizeTo100(current), mins);
 
     sizes.value = normalized;
+    persistSizes(normalized);
 
     if (emitUpdate) {
         emits('update:modelValue', [...normalized]);
@@ -326,6 +420,7 @@ const onGutterMouseDown = (event: MouseEvent, index: number) => {
         return;
     }
 
+    event.stopPropagation();
     dragIndex.value = index;
     startPoint = props.direction === 'vertical' ? event.clientY : event.clientX;
     startSizes = [sizes.value[index] ?? 0, sizes.value[index + 1] ?? 0];
@@ -338,15 +433,15 @@ const onGutterKeydown = (event: KeyboardEvent, index: number) => {
         return;
     }
 
-    const isHorizontal = props.direction === 'horizontal';
-    const decrementKey = isHorizontal ? 'ArrowLeft' : 'ArrowUp';
-    const incrementKey = isHorizontal ? 'ArrowRight' : 'ArrowDown';
+    const decrementKeys = props.direction === 'horizontal' ? ['ArrowLeft', 'ArrowUp'] : ['ArrowUp', 'ArrowLeft'];
+    const incrementKeys = props.direction === 'horizontal' ? ['ArrowRight', 'ArrowDown'] : ['ArrowDown', 'ArrowRight'];
 
-    if (![decrementKey, incrementKey, 'Home', 'End'].includes(event.key)) {
+    if (![...decrementKeys, ...incrementKeys, 'Home', 'End', 'PageUp', 'PageDown'].includes(event.key)) {
         return;
     }
 
     event.preventDefault();
+    event.stopPropagation();
 
     if (event.key === 'Home') {
         const mins = getMinSizes();
@@ -361,9 +456,14 @@ const onGutterKeydown = (event: KeyboardEvent, index: number) => {
         const target = total - (mins[index + 1] ?? 0);
 
         applyResizeDelta(index, target - current);
+    } else if (event.key === 'PageUp' || event.key === 'PageDown') {
+        const step = event.shiftKey ? 25 : 10;
+        const delta = event.key === 'PageDown' ? step : -step;
+
+        applyResizeDelta(index, delta);
     } else {
         const step = event.shiftKey ? 5 : 2;
-        const delta = event.key === incrementKey ? step : -step;
+        const delta = incrementKeys.includes(event.key) ? step : -step;
 
         applyResizeDelta(index, delta);
     }
@@ -412,7 +512,10 @@ watch(
 watch(
     () => props.minSizes,
     () => {
-        sizes.value = applyMinSizes(normalizeTo100(sizes.value), getMinSizes());
+        const next = applyMinSizes(normalizeTo100(sizes.value), getMinSizes());
+
+        sizes.value = next;
+        persistSizes(next);
     },
     { deep: true },
 );

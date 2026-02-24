@@ -1,5 +1,30 @@
 <template>
     <div :class="getClass">
+        <div v-if="columnVisibilityManager" class="vf-datatable__column-visibility">
+            <button
+                type="button"
+                class="vf-datatable__column-visibility-toggle"
+                :aria-expanded="columnVisibilityOpen"
+                @click="columnVisibilityOpen = !columnVisibilityOpen"
+            >
+                {{ resolvedColumnVisibilityLabel }}
+            </button>
+            <div v-if="columnVisibilityOpen" class="vf-datatable__column-visibility-panel">
+                <label
+                    v-for="column in props.columns"
+                    :key="column.field"
+                    class="vf-datatable__column-visibility-option"
+                >
+                    <input
+                        type="checkbox"
+                        :checked="isColumnVisible(column.field)"
+                        :disabled="!isColumnVisible(column.field) && orderedColumns.length <= 1"
+                        @change="toggleColumnVisibility(column.field)"
+                    />
+                    <span>{{ column.header ?? column.field }}</span>
+                </label>
+            </div>
+        </div>
         <div v-if="showBulkActions" class="vf-datatable__bulk">
             <slot
                 name="bulk-actions"
@@ -29,6 +54,12 @@
         <table class="vf-datatable__table" :aria-label="ariaLabel">
             <thead v-if="showHeader" class="vf-datatable__head">
                 <tr class="vf-datatable__row">
+                    <th
+                        v-if="rowExpansion"
+                        class="vf-datatable__header vf-datatable__header_expansion"
+                        scope="col"
+                        aria-label="Row expansion controls"
+                    />
                     <th
                         v-if="hasSelectionColumn"
                         class="vf-datatable__header vf-datatable__header_selection"
@@ -114,45 +145,77 @@
                         <slot name="empty">{{ resolvedEmptyText }}</slot>
                     </td>
                 </tr>
-                <tr
-                    v-for="(row, rowIndex) in sortedRows"
-                    v-else
-                    :key="getRowKey(row, rowIndex)"
-                    class="vf-datatable__row"
-                    :class="getRowClass(rowIndex)"
-                    @click="onRowClick(row, rowIndex, $event)"
-                >
-                    <td v-if="hasSelectionColumn" class="vf-datatable__cell vf-datatable__cell_selection">
-                        <input
-                            :type="selectionMode === 'multiple' ? 'checkbox' : 'radio'"
-                            name="vf-datatable-selection"
-                            class="vf-datatable__selection-control"
-                            :checked="isRowSelected(row, rowIndex)"
-                            :aria-label="getSelectRowAriaLabel(row, rowIndex)"
-                            @click.stop
-                            @change="toggleRowSelection(row, rowIndex)"
-                        />
-                    </td>
-                    <td
-                        v-for="column in orderedColumns"
-                        :key="column.field"
-                        class="vf-datatable__cell"
-                        :class="getCellClass(column)"
-                        :style="getColumnStyle(column)"
+                <template v-for="entry in renderedRows" v-else :key="entry.key">
+                    <tr
+                        v-if="entry.type === 'group'"
+                        class="vf-datatable__row vf-datatable__row_group"
+                        :data-group-key="entry.groupKey"
                     >
-                        <slot
-                            v-if="$slots[`cell-${column.field}`]"
-                            :name="`cell-${column.field}`"
-                            :row="row"
-                            :column="column"
-                            :value="getCellValue(row, column)"
-                            :index="rowIndex"
-                        />
-                        <template v-else>
-                            {{ formatCellValue(row, column) }}
-                        </template>
-                    </td>
-                </tr>
+                        <td class="vf-datatable__cell vf-datatable__cell_group" :colspan="stateColspan">
+                            <slot name="group-header" :group="entry.groupKey" :rows="entry.rows">
+                                {{ entry.groupKey }}
+                            </slot>
+                        </td>
+                    </tr>
+                    <tr
+                        v-else
+                        class="vf-datatable__row"
+                        :class="getRowClass(entry.rowIndex)"
+                        @click="onRowClick(entry.row, entry.rowIndex, $event)"
+                    >
+                        <td v-if="rowExpansion" class="vf-datatable__cell vf-datatable__cell_expansion">
+                            <button
+                                v-if="isRowExpandable(entry.row, entry.rowIndex)"
+                                type="button"
+                                class="vf-datatable__expand-toggle"
+                                :aria-expanded="isRowExpanded(entry.row, entry.rowIndex)"
+                                :aria-label="getExpandRowAriaLabel(entry.row, entry.rowIndex)"
+                                @click.stop="toggleRowExpansion(entry.row, entry.rowIndex, $event)"
+                            >
+                                {{ isRowExpanded(entry.row, entry.rowIndex) ? '\u2212' : '+' }}
+                            </button>
+                        </td>
+                        <td v-if="hasSelectionColumn" class="vf-datatable__cell vf-datatable__cell_selection">
+                            <input
+                                :type="selectionMode === 'multiple' ? 'checkbox' : 'radio'"
+                                name="vf-datatable-selection"
+                                class="vf-datatable__selection-control"
+                                :checked="isRowSelected(entry.row, entry.rowIndex)"
+                                :aria-label="getSelectRowAriaLabel(entry.row, entry.rowIndex)"
+                                @click.stop
+                                @change="toggleRowSelection(entry.row, entry.rowIndex)"
+                            />
+                        </td>
+                        <td
+                            v-for="column in orderedColumns"
+                            :key="column.field"
+                            class="vf-datatable__cell"
+                            :class="getCellClass(column)"
+                            :style="getColumnStyle(column)"
+                        >
+                            <slot
+                                v-if="$slots[`cell-${column.field}`]"
+                                :name="`cell-${column.field}`"
+                                :row="entry.row"
+                                :column="column"
+                                :value="getCellValue(entry.row, column)"
+                                :index="entry.rowIndex"
+                            />
+                            <template v-else>
+                                {{ formatCellValue(entry.row, column) }}
+                            </template>
+                        </td>
+                    </tr>
+                    <tr
+                        v-if="entry.type === 'row' && rowExpansion && isRowExpanded(entry.row, entry.rowIndex)"
+                        :key="`${entry.key}__expanded`"
+                        class="vf-datatable__row vf-datatable__row_expanded"
+                    >
+                        <td class="vf-datatable__cell vf-datatable__cell_expanded" :colspan="stateColspan">
+                            <slot name="row-expansion" :row="entry.row" :index="entry.rowIndex" />
+                        </td>
+                    </tr>
+                </template>
             </tbody>
         </table>
     </div>
@@ -169,6 +232,7 @@ type SortOrder = 'asc' | 'desc' | null;
 type DataTableFilters = Record<string, unknown>;
 type DataTableSelectionMode = 'single' | 'multiple' | null;
 type DataTableRowKey = string | number;
+type DataTableGroupKey = string | number;
 
 export interface DataTableColumn {
     field: string;
@@ -226,6 +290,17 @@ interface Props {
     minColumnWidth?: number;
     columnReorder?: boolean;
     columnOrder?: Array<string>;
+    rowGroupBy?: string | ((row: Record<string, unknown>, index: number) => DataTableGroupKey | null | undefined);
+    rowGroupLabel?: string;
+    rowExpansion?: boolean;
+    expandedRows?: Array<DataTableRowKey>;
+    rowExpandable?: (row: Record<string, unknown>, index: number) => boolean;
+    expandOnRowClick?: boolean;
+    expandRowAriaLabel?: string;
+    collapseRowAriaLabel?: string;
+    visibleColumns?: Array<string>;
+    columnVisibilityManager?: boolean;
+    columnVisibilityLabel?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -258,6 +333,17 @@ const props = withDefaults(defineProps<Props>(), {
     minColumnWidth: 80,
     columnReorder: false,
     columnOrder: () => [],
+    rowGroupBy: undefined,
+    rowGroupLabel: 'Group',
+    rowExpansion: false,
+    expandedRows: () => [],
+    rowExpandable: undefined,
+    expandOnRowClick: false,
+    expandRowAriaLabel: 'Expand row',
+    collapseRowAriaLabel: 'Collapse row',
+    visibleColumns: () => [],
+    columnVisibilityManager: false,
+    columnVisibilityLabel: 'Columns',
 });
 
 const emits = defineEmits([
@@ -277,6 +363,11 @@ const emits = defineEmits([
     'columnResize',
     'update:columnOrder',
     'columnReorder',
+    'update:expandedRows',
+    'rowExpand',
+    'rowCollapse',
+    'update:visibleColumns',
+    'columnVisibilityChange',
 ]);
 
 const internalSortField = ref<string | null>(props.sortField ?? null);
@@ -285,9 +376,12 @@ const internalPage = ref<number>(Math.max(1, props.page ?? 1));
 const internalPageSize = ref<number>(Math.max(1, props.pageSize ?? 10));
 const internalFilters = ref<DataTableFilters>({ ...(props.filters ?? {}) });
 const internalSelection = ref<DataTableRowKey | Array<DataTableRowKey> | null>(props.selection ?? null);
+const internalExpandedRows = ref<Array<DataTableRowKey>>([...(props.expandedRows ?? [])]);
 const resizedColumnWidths = ref<Record<string, number>>({});
 const internalColumnOrder = ref<Array<string>>([]);
+const internalVisibleColumns = ref<Array<string>>([]);
 const draggingColumnField = ref<string | null>(null);
+const columnVisibilityOpen = ref(false);
 let stopResizeListeners: (() => void) | null = null;
 const localeText = useLocaleText();
 const resolvedLoadingText = computed(() => props.loadingText ?? localeText.dataTable.loadingText);
@@ -296,6 +390,7 @@ const resolvedSelectedSuffix = computed(() => localeText.dataTable.selectedSuffi
 const resolvedClearSelectionLabel = computed(() => localeText.dataTable.clearSelectionLabel);
 const resolvedSelectAllAriaLabel = computed(() => props.selectAllAriaLabel ?? localeText.dataTable.selectAllAriaLabel);
 const resolvedSelectRowAriaLabel = computed(() => props.selectRowAriaLabel ?? localeText.dataTable.selectRowAriaLabel);
+const resolvedColumnVisibilityLabel = computed(() => props.columnVisibilityLabel);
 const getSelectedCountLabel = (count: number) => `${count.toString()} ${resolvedSelectedSuffix.value}`;
 
 watch(
@@ -337,12 +432,20 @@ watch(
     { deep: true },
 );
 watch(
-    () => [props.columns, props.columnOrder] as const,
-    ([columns, externalOrder]) => {
+    () => props.expandedRows,
+    value => {
+        internalExpandedRows.value = [...(value ?? [])];
+    },
+    { deep: true },
+);
+watch(
+    () => [props.columns, props.columnOrder, props.visibleColumns] as const,
+    ([columns, externalOrder, externalVisibleColumns]) => {
         const fields = (columns ?? []).map(column => column.field);
         const preferred = externalOrder && externalOrder.length ? externalOrder : internalColumnOrder.value;
 
         internalColumnOrder.value = normalizeColumnOrder(fields, preferred);
+        internalVisibleColumns.value = normalizeVisibleColumns(fields, externalVisibleColumns);
     },
     { deep: true, immediate: true },
 );
@@ -353,7 +456,10 @@ const effectivePage = computed(() => internalPage.value);
 const effectivePageSize = computed(() => internalPageSize.value);
 const effectiveFilters = computed(() => internalFilters.value);
 const hasSelectionColumn = computed(() => props.selectionMode === 'single' || props.selectionMode === 'multiple');
-const stateColspan = computed(() => Math.max(1, props.columns.length + (hasSelectionColumn.value ? 1 : 0)));
+const hasExpansionColumn = computed(() => props.rowExpansion);
+const stateColspan = computed(() =>
+    Math.max(1, orderedColumns.value.length + (hasSelectionColumn.value ? 1 : 0) + (hasExpansionColumn.value ? 1 : 0)),
+);
 const selectedKeys = computed<Array<DataTableRowKey>>(() => {
     if (props.selectionMode === 'single') {
         return internalSelection.value == null ? [] : [internalSelection.value as DataTableRowKey];
@@ -401,14 +507,31 @@ function normalizeColumnOrder(fields: Array<string>, preferred?: Array<string>) 
 
     return normalized;
 }
+function normalizeVisibleColumns(fields: Array<string>, preferred?: Array<string>) {
+    const allowed = new Set(fields);
+    const base = preferred && preferred.length ? preferred : fields;
+    const normalized = base.filter(field => allowed.has(field));
 
-const orderedColumns = computed(() => {
+    if (!normalized.length) {
+        return [...fields];
+    }
+
+    return normalized;
+}
+
+const orderedColumnsAll = computed(() => {
     const byField = new Map(props.columns.map(column => [column.field, column]));
 
     return internalColumnOrder.value
         .map(field => byField.get(field))
         .filter((column): column is DataTableColumn => Boolean(column));
 });
+const orderedColumns = computed(() => {
+    const visible = new Set(internalVisibleColumns.value);
+
+    return orderedColumnsAll.value.filter(column => visible.has(column.field));
+});
+const expandedRowsSet = computed(() => new Set(internalExpandedRows.value));
 const showBulkActions = computed(() => {
     if (props.selectionMode !== 'multiple' || selectedKeys.value.length === 0) {
         return false;
@@ -469,6 +592,76 @@ const sortedRows = computed(() => {
 
         return sortOrder === 'asc' ? result : -result;
     });
+});
+type RenderedGroupRow = {
+    type: 'group';
+    key: string;
+    groupKey: string;
+    rows: Array<Record<string, unknown>>;
+};
+type RenderedDataRow = {
+    type: 'row';
+    key: string;
+    row: Record<string, unknown>;
+    rowIndex: number;
+    groupKey: string | null;
+};
+const renderedRows = computed<Array<RenderedGroupRow | RenderedDataRow>>(() => {
+    const rows = sortedRows.value;
+    if (!props.rowGroupBy) {
+        return rows.map((row, rowIndex) => ({
+            type: 'row',
+            key: `row-${String(getRowKey(row, rowIndex))}`,
+            row,
+            rowIndex,
+            groupKey: null,
+        }));
+    }
+
+    const resolveGroup = (row: Record<string, unknown>, index: number): string => {
+        const value = (() => {
+            if (typeof props.rowGroupBy === 'function') {
+                return props.rowGroupBy(row, index);
+            }
+
+            const groupField = props.rowGroupBy;
+
+            return groupField ? (row?.[groupField] as unknown) : undefined;
+        })();
+        const normalized = value == null ? '' : String(value);
+
+        return normalized || props.rowGroupLabel;
+    };
+
+    const result: Array<RenderedGroupRow | RenderedDataRow> = [];
+    let currentGroupKey: string | null = null;
+    let currentGroupRows: Array<Record<string, unknown>> = [];
+
+    rows.forEach((row, rowIndex) => {
+        const groupKey = resolveGroup(row, rowIndex);
+
+        if (groupKey !== currentGroupKey) {
+            currentGroupKey = groupKey;
+            currentGroupRows = [];
+            result.push({
+                type: 'group',
+                key: `group-${groupKey}-${rowIndex}`,
+                groupKey,
+                rows: currentGroupRows,
+            });
+        }
+
+        currentGroupRows.push(row);
+        result.push({
+            type: 'row',
+            key: `row-${String(getRowKey(row, rowIndex))}`,
+            row,
+            rowIndex,
+            groupKey,
+        });
+    });
+
+    return result;
 });
 
 const getRequestPayload = (): DataTableQuery => ({
@@ -541,6 +734,49 @@ const getSelectRowAriaLabel = (row: Record<string, unknown>, index: number) => {
     const key = getRowKey(row, index);
 
     return `${resolvedSelectRowAriaLabel.value} ${String(key)}`;
+};
+const getExpandRowAriaLabel = (row: Record<string, unknown>, index: number) => {
+    return isRowExpanded(row, index) ? props.collapseRowAriaLabel : props.expandRowAriaLabel;
+};
+const isRowExpandable = (row: Record<string, unknown>, index: number) => {
+    if (!props.rowExpansion) {
+        return false;
+    }
+
+    if (typeof props.rowExpandable === 'function') {
+        return props.rowExpandable(row, index);
+    }
+
+    return true;
+};
+const isRowExpanded = (row: Record<string, unknown>, index: number) => {
+    const key = getRowKey(row, index);
+
+    return expandedRowsSet.value.has(key);
+};
+const toggleRowExpansion = (row: Record<string, unknown>, index: number, event?: Event) => {
+    if (!isRowExpandable(row, index)) {
+        return;
+    }
+
+    const key = getRowKey(row, index);
+    const next = [...internalExpandedRows.value];
+    const exists = next.includes(key);
+
+    if (exists) {
+        const filtered = next.filter(value => value !== key);
+
+        internalExpandedRows.value = filtered;
+        emits('update:expandedRows', filtered);
+        emits('rowCollapse', row, index, event);
+
+        return;
+    }
+
+    const expanded = [...next, key];
+    internalExpandedRows.value = expanded;
+    emits('update:expandedRows', expanded);
+    emits('rowExpand', row, index, event);
 };
 
 const toggleRowSelection = (row: Record<string, unknown>, index: number) => {
@@ -762,6 +998,31 @@ const onHeaderDrop = (targetField: string) => {
     nextOrder.splice(toIndex, 0, fromField);
     emitColumnOrder(nextOrder, fromField, targetField);
 };
+const isColumnVisible = (field: string) => internalVisibleColumns.value.includes(field);
+const setVisibleColumns = (value: Array<string>) => {
+    const fields = props.columns.map(column => column.field);
+    const nextVisibleColumns = normalizeVisibleColumns(fields, value);
+
+    internalVisibleColumns.value = nextVisibleColumns;
+    emits('update:visibleColumns', [...nextVisibleColumns]);
+    emits('columnVisibilityChange', [...nextVisibleColumns]);
+};
+const toggleColumnVisibility = (field: string) => {
+    const next = [...internalVisibleColumns.value];
+    const index = next.indexOf(field);
+
+    if (index >= 0) {
+        if (next.length <= 1) {
+            return;
+        }
+
+        next.splice(index, 1);
+    } else {
+        next.push(field);
+    }
+
+    setVisibleColumns(next);
+};
 
 const startColumnResize = (event: MouseEvent, column: DataTableColumn) => {
     if (!isColumnResizable(column) || event.button !== 0) {
@@ -907,6 +1168,10 @@ onBeforeUnmount(() => {
 });
 
 const onRowClick = (row: Record<string, unknown>, index: number, event: Event) => {
+    if (props.expandOnRowClick && isRowExpandable(row, index)) {
+        toggleRowExpansion(row, index, event);
+    }
+
     emits('rowClick', row, index, event);
 };
 
@@ -976,6 +1241,10 @@ defineExpose({
     applyBulkAction,
     setColumnOrder,
     getColumnOrder: () => [...internalColumnOrder.value],
+    setVisibleColumns,
+    getVisibleColumns: () => [...internalVisibleColumns.value],
+    toggleRowExpansion,
+    getExpandedRows: () => [...internalExpandedRows.value],
 });
 </script>
 
@@ -992,6 +1261,44 @@ defineExpose({
     padding: 0.75rem;
     border-bottom: var(--vf-border-width) solid var(--vf-datatable-row-border-color);
     background-color: var(--vf-datatable-header-background-color);
+}
+
+.vf-datatable__column-visibility {
+    position: relative;
+    padding: 0.75rem;
+    border-bottom: var(--vf-border-width) solid var(--vf-datatable-row-border-color);
+    background-color: var(--vf-datatable-background-color);
+}
+
+.vf-datatable__column-visibility-toggle {
+    border: var(--vf-border-width) solid var(--vf-datatable-header-border-color);
+    background-color: var(--vf-datatable-background-color);
+    border-radius: var(--vf-radii-sm);
+    color: inherit;
+    cursor: pointer;
+    font: inherit;
+    padding: 0.25rem 0.5rem;
+}
+
+.vf-datatable__column-visibility-panel {
+    position: absolute;
+    z-index: 3;
+    margin-top: 0.5rem;
+    min-width: 12rem;
+    border: var(--vf-border-width) solid var(--vf-datatable-header-border-color);
+    border-radius: var(--vf-radii-sm);
+    background-color: var(--vf-datatable-background-color);
+    box-shadow: var(--vf-elevation-md);
+    padding: 0.5rem;
+    display: grid;
+    gap: 0.35rem;
+}
+
+.vf-datatable__column-visibility-option {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    cursor: pointer;
 }
 
 .vf-datatable__bulk-default {
@@ -1042,13 +1349,27 @@ defineExpose({
 }
 
 .vf-datatable__header_selection,
-.vf-datatable__cell_selection {
+.vf-datatable__cell_selection,
+.vf-datatable__header_expansion,
+.vf-datatable__cell_expansion {
     width: 2.25rem;
     text-align: center;
 }
 
 .vf-datatable__selection-control {
     cursor: pointer;
+}
+
+.vf-datatable__expand-toggle {
+    border: var(--vf-border-width) solid var(--vf-datatable-header-border-color);
+    background-color: var(--vf-datatable-background-color);
+    border-radius: var(--vf-radii-sm);
+    color: inherit;
+    cursor: pointer;
+    font: inherit;
+    width: 1.35rem;
+    height: 1.35rem;
+    line-height: 1;
 }
 
 .vf-datatable__header {
@@ -1145,6 +1466,18 @@ defineExpose({
     text-align: center;
     padding: var(--vf-datatable-state-padding);
     color: var(--vf-datatable-state-text-color);
+}
+
+.vf-datatable__row_group {
+    background-color: var(--vf-datatable-header-background-color);
+}
+
+.vf-datatable__cell_group {
+    font-weight: 600;
+}
+
+.vf-datatable__cell_expanded {
+    background-color: var(--vf-datatable-header-background-color);
 }
 
 .vf-datatable__row_state {

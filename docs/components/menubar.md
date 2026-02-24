@@ -10,6 +10,7 @@ Provide horizontal app-level navigation with nested sections, backed by the `Men
 - `ariaLabel?: string` (default `Main navigation`)
 
 `MenuBarItem` supports the same shape as `Menu` items (`label`, `to`/`href`, `items`, `active`, `disabled`, `separator`, `command`).
+Route-aware item activation is inherited from `Menu` + `Link` contracts for `to` links.
 
 ## Events
 
@@ -57,6 +58,7 @@ Provide horizontal app-level navigation with nested sections, backed by the `Men
 
 - Renders semantic `nav` landmark with configurable `aria-label`.
 - Nested interaction semantics are provided by `Menu` (`role="menu"`, `role="menuitem"`, submenu `aria-expanded` and keyboard navigation).
+- Active route state for nested `to` links is synchronized via internal `Link` route matching.
 
 ## Responsive
 
@@ -69,4 +71,4 @@ Provide horizontal app-level navigation with nested sections, backed by the `Men
 
 ## Testing
 
-- Cover nav landmark rendering, horizontal menu orientation, and forwarding of active navigation events.
+- Cover nav landmark rendering, horizontal menu orientation, forwarding of active navigation events, and route-active sync for nested links.

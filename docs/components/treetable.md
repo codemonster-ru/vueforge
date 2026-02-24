@@ -18,6 +18,13 @@ Render hierarchical datasets in a table-like layout with expandable branches and
 - `hover?: boolean` (default `true`) - hover row highlighting.
 - `size?: 'small' | 'normal' | 'large'` (default `normal`).
 - `variant?: 'filled' | 'outlined'` (default `filled`).
+- `lazy?: boolean` (default `false`) - enables lazy branch loading flow for nodes marked `hasChildren`.
+- `loadingKeys?: Array<string | number>` - branch keys currently loading (used to suppress duplicate lazy requests).
+- `server?: boolean` (default `false`) - emit request payloads for branch expand/collapse/lazy handoff.
+- `columnResize?: boolean` (default `false`) - enables drag resize handles for columns.
+- `minColumnWidth?: number` (default `80`) - minimum column width in pixels when resizing.
+- `columnReorder?: boolean` (default `false`) - enables drag/drop column reordering.
+- `columnOrder?: string[]` - controlled visual order of columns by `field`.
 - `ariaLabel?: string` (default `Tree table`).
 - `emptyText?: string` (default `No data`).
 - `expandLabel?: string` (default `Expand row`).
@@ -30,6 +37,11 @@ Render hierarchical datasets in a table-like layout with expandable branches and
 - `update:expandedKeys`
 - `toggle`
 - `rowClick`
+- `lazyLoad` - emitted on first lazy expand for a node without loaded children (`{ key, node }`).
+- `request` - server handoff payload (`{ reason: 'expand' | 'collapse' | 'lazy-load', key, node, expandedKeys }`).
+- `columnResize` - emitted after drag resize (`{ field, width, widthPx }`).
+- `update:columnOrder`
+- `columnReorder` - emitted after drag reorder (`{ fromField, toField, order }`).
 
 ## Slots
 
@@ -60,6 +72,23 @@ Render hierarchical datasets in a table-like layout with expandable branches and
 </TreeTable>
 ```
 
+```vue
+<TreeTable
+    v-model:expandedKeys="expanded"
+    :items="serverTree"
+    :columns="columns"
+    :loading-keys="loadingKeys"
+    :column-order="columnOrder"
+    lazy
+    server
+    column-resize
+    column-reorder
+    @lazy-load="onLazyLoad"
+    @request="onTreeRequest"
+    @update:columnOrder="columnOrder = $event"
+/>
+```
+
 ## Theming
 
 - Override via `theme.overrides.components.treetable`.
@@ -81,6 +110,8 @@ Component tokens:
 
 - Use `expandOnClick` for touch-first experiences where tiny toggle controls are less reliable.
 - Keep the first column as semantic hierarchy label and use secondary columns for status/metadata.
+- For server trees, mark expandable stubs with `hasChildren: true`, set `lazy`, and populate `children` after `lazyLoad`.
+- Persist `columnOrder` and `columnResize` payloads in user preferences for stable table layouts.
 
 ## Accessibility
 
@@ -101,3 +132,4 @@ Component tokens:
 ## Testing
 
 - Cover expand/collapse emissions, selection modes, keyboard treegrid navigation, and row ARIA state attributes.
+- Cover lazy/server handoff events and column resize/reorder interactions.

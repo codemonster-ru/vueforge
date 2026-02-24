@@ -18,6 +18,13 @@ Enable product features that require richer interaction than basic form controls
 - `buttonLabel?: string` (default `Browse`)
 - `size?: 'small' | 'normal' | 'large'` (default `normal`)
 - `variant?: 'filled' | 'outlined'` (default `filled`)
+- `advanced?: boolean` (default `false`) - enables upload pipeline with chunk/retry/status UI
+- `autoUpload?: boolean` (default `false`) - starts upload automatically after file selection
+- `chunkSize?: number` (default `5_000_000`) - chunk size in bytes for advanced mode
+- `maxRetries?: number` (default `2`) - retries per failed chunk
+- `uploadButtonLabel?: string` (default `Upload`)
+- `signedUrlResolver?: (chunkContext) => Promise<{ url: string; method?: string; headers?: Record<string, string> } | null>`
+- `uploadRequest?: (chunkContext) => Promise<void>` - custom transport for chunk upload
 
 ## Events
 
@@ -26,6 +33,11 @@ Enable product features that require richer interaction than basic form controls
 - `reject` (payload: `Array<{ file: File; reason: 'maxSize' | 'maxFiles'; maxSize?: number; maxFiles?: number }>` )
 - `focus`
 - `blur`
+- `uploadStart` (payload: `file`, `{ key, totalChunks, totalBytes }`)
+- `uploadProgress` (payload: `file`, `{ key, uploadedBytes, totalBytes, progress, chunkIndex, totalChunks }`)
+- `uploadSuccess` (payload: `file`, `{ key, uploadedBytes, totalBytes, retries }`)
+- `uploadError` (payload: `file`, `{ key, error, chunkIndex, retries }`)
+- `uploadComplete` (payload: `{ total, success, failed }`)
 
 ## Slots
 
@@ -36,6 +48,25 @@ Enable product features that require richer interaction than basic form controls
 ```vue
 <FileUpload v-model="attachments" multiple :max-files="5" :max-size="10_000_000" />
 ```
+
+```vue
+<FileUpload
+    v-model="attachments"
+    multiple
+    advanced
+    :chunk-size="4_000_000"
+    :max-retries="3"
+    :signed-url-resolver="resolveSignedUrl"
+    :upload-request="uploadChunk"
+    upload-button-label="Start upload"
+/>
+```
+
+Advanced flow notes:
+
+- Chunking is enabled when `advanced=true`.
+- Resume is chunk-based: retry continues from the last failed chunk, not from byte zero.
+- Signed URL flow is supported by `signedUrlResolver` returning per-chunk request details.
 
 ## Theming
 

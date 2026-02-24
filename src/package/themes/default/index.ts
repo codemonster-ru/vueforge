@@ -2,6 +2,9 @@ import base from './base';
 import button from './components/button';
 import buttonGroup from './components/button-group';
 import card from './components/card';
+import panel from './components/panel';
+import fieldset from './components/fieldset';
+import toolbar from './components/toolbar';
 import chart from './components/chart';
 import container from './components/container';
 import grid from './components/grid';
@@ -11,7 +14,9 @@ import inlineComponent from './components/inline';
 import input from './components/input';
 import inputGroup from './components/input-group';
 import inlineEdit from './components/inline-edit';
+import inplace from './components/inplace';
 import image from './components/image';
+import icon from './components/icon';
 import searchInput from './components/search-input';
 import mentionInput from './components/mention-input';
 import passwordInput from './components/password-input';
@@ -27,6 +32,10 @@ import fileUpload from './components/file-upload';
 import link from './components/link';
 import breadcrumbs from './components/breadcrumbs';
 import divider from './components/divider';
+import dock from './components/dock';
+import galleria from './components/galleria';
+import knob from './components/knob';
+import terminal from './components/terminal';
 import pageHeader from './components/page-header';
 import menu from './components/menu';
 import menubar from './components/menubar';
@@ -42,12 +51,15 @@ import contextMenu from './components/context-menu';
 import commandPalette from './components/command-palette';
 import notificationCenter from './components/notification-center';
 import appShell from './components/app-shell';
+import blockui from './components/block-ui';
 import kanbanBoard from './components/kanban-board';
 import select from './components/select';
 import autocomplete from './components/autocomplete';
 import combobox from './components/combobox';
 import multiselect from './components/multiselect';
 import listbox from './components/listbox';
+import picklist from './components/picklist';
+import orderlist from './components/orderlist';
 import taginput from './components/taginput';
 import datepicker from './components/datepicker';
 import daterangepicker from './components/daterangepicker';
@@ -77,6 +89,8 @@ import chip from './components/chip';
 import filterChips from './components/filter-chips';
 import avatar from './components/avatar';
 import spinner from './components/spinner';
+import scrollpanel from './components/scrollpanel';
+import scrolltop from './components/scrolltop';
 import slider from './components/slider';
 import splitter from './components/splitter';
 import stepper from './components/stepper';
@@ -84,6 +98,7 @@ import wizard from './components/wizard';
 import timeline from './components/timeline';
 import rating from './components/rating';
 import tree from './components/tree';
+import orgchart from './components/orgchart';
 import treeselect from './components/treeselect';
 import treetable from './components/treetable';
 import virtualScroller from './components/virtual-scroller';
@@ -95,6 +110,9 @@ export default {
         button,
         buttonGroup,
         card,
+        panel,
+        fieldset,
+        toolbar,
         chart,
         container,
         grid,
@@ -104,7 +122,9 @@ export default {
         input,
         inputGroup,
         inlineEdit,
+        inplace,
         image,
+        icon,
         searchInput,
         mentionInput,
         passwordInput,
@@ -120,6 +140,10 @@ export default {
         link,
         breadcrumbs,
         divider,
+        dock,
+        galleria,
+        knob,
+        terminal,
         pageHeader,
         menu,
         menubar,
@@ -128,6 +152,7 @@ export default {
         modal,
         confirmDialog,
         drawer,
+        sidebar: drawer,
         popover,
         overlaypanel: popover,
         dropdown,
@@ -136,12 +161,15 @@ export default {
         commandPalette,
         notificationCenter,
         appShell,
+        blockui,
         kanbanBoard,
         select,
         autocomplete,
         combobox,
         multiselect,
         listbox,
+        picklist,
+        orderlist,
         taginput,
         datepicker,
         daterangepicker,
@@ -164,6 +192,7 @@ export default {
         speeddial,
         toast,
         alert,
+        message: alert,
         emptyState,
         progress,
         badge,
@@ -171,6 +200,8 @@ export default {
         filterChips,
         avatar,
         spinner,
+        scrollpanel,
+        scrolltop,
         slider,
         splitter,
         stepper,
@@ -178,6 +209,7 @@ export default {
         timeline,
         rating,
         tree,
+        orgchart,
         treeselect,
         treetable,
         virtualScroller,

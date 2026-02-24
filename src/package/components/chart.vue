@@ -1,5 +1,5 @@
 <template>
-    <div v-bind="rootAttrs">
+    <div ref="rootRef" v-bind="rootAttrs">
         <div v-if="loading" v-bind="stateAttrs">
             <slot name="loading">{{ loadingText }}</slot>
         </div>
@@ -35,6 +35,9 @@ interface Props {
     loadingText?: string;
     emptyText?: string;
     ariaLabel?: string;
+    lazy?: boolean;
+    lazyRootMargin?: string;
+    lazyThreshold?: number;
     pt?: PassThroughOptions;
     unstyled?: boolean;
 }
@@ -50,6 +53,9 @@ const props = withDefaults(defineProps<Props>(), {
     loadingText: 'Loading chart...',
     emptyText: 'No chart data',
     ariaLabel: 'Chart',
+    lazy: true,
+    lazyRootMargin: '200px',
+    lazyThreshold: 0,
     pt: undefined,
     unstyled: false,
 });
@@ -65,8 +71,11 @@ defineSlots<{
 }>();
 
 const canvasRef = ref<HTMLCanvasElement | null>(null);
+const rootRef = ref<HTMLElement | null>(null);
 const chartInstance = ref<ChartAdapterInstance | null>(null);
 const resizeObserver = ref<ResizeObserver | null>(null);
+const intersectionObserver = ref<IntersectionObserver | null>(null);
+const isVisible = ref(false);
 
 const chartConfig = computed<ChartConfig>(() => ({
     type: props.type,
@@ -116,7 +125,7 @@ const destroyChart = () => {
 };
 
 const mountChart = () => {
-    if (!props.adapter || props.loading || isEmpty.value || !canvasRef.value) {
+    if (!props.adapter || props.loading || isEmpty.value || !canvasRef.value || (props.lazy && !isVisible.value)) {
         destroyChart();
 
         return;
@@ -143,28 +152,80 @@ const mountChart = () => {
     }
 };
 
+const resizeChart = () => {
+    if (!chartInstance.value || !props.adapter?.resize) {
+        return;
+    }
+
+    props.adapter.resize(chartInstance.value);
+};
+
+const setupIntersectionObserver = () => {
+    intersectionObserver.value?.disconnect();
+    intersectionObserver.value = null;
+
+    if (!props.lazy) {
+        isVisible.value = true;
+
+        return;
+    }
+
+    const target = rootRef.value ?? canvasRef.value;
+    if (!target || typeof IntersectionObserver === 'undefined') {
+        isVisible.value = true;
+
+        return;
+    }
+
+    isVisible.value = false;
+    intersectionObserver.value = new IntersectionObserver(
+        entries => {
+            if (!entries.some(entry => entry.isIntersecting || entry.intersectionRatio > 0)) {
+                return;
+            }
+
+            isVisible.value = true;
+            intersectionObserver.value?.disconnect();
+            intersectionObserver.value = null;
+            mountChart();
+        },
+        {
+            root: null,
+            rootMargin: props.lazyRootMargin,
+            threshold: props.lazyThreshold,
+        },
+    );
+
+    intersectionObserver.value.observe(target);
+};
+
+const onWindowResize = () => {
+    resizeChart();
+};
+
 onMounted(() => {
+    setupIntersectionObserver();
     mountChart();
 
     if (typeof ResizeObserver !== 'undefined') {
         resizeObserver.value = new ResizeObserver(() => {
-            if (!chartInstance.value || !props.adapter?.resize) {
-                return;
-            }
-
-            props.adapter.resize(chartInstance.value);
+            resizeChart();
         });
 
         nextTick(() => {
-            if (canvasRef.value) {
-                resizeObserver.value?.observe(canvasRef.value);
+            if (rootRef.value) {
+                resizeObserver.value?.observe(rootRef.value);
             }
         });
+    }
+
+    if (typeof window !== 'undefined') {
+        window.addEventListener('resize', onWindowResize, false);
     }
 });
 
 watch(
-    () => [props.type, props.loading, props.adapter] as const,
+    () => [props.type, props.loading, props.adapter, props.lazy, isVisible.value] as const,
     () => {
         mountChart();
     },
@@ -186,18 +247,26 @@ watch(
     { deep: true },
 );
 
+watch(
+    () => [props.lazy, props.lazyRootMargin, props.lazyThreshold] as const,
+    () => {
+        setupIntersectionObserver();
+        mountChart();
+    },
+);
+
 onBeforeUnmount(() => {
+    intersectionObserver.value?.disconnect();
     resizeObserver.value?.disconnect();
+    if (typeof window !== 'undefined') {
+        window.removeEventListener('resize', onWindowResize, false);
+    }
     destroyChart();
 });
 
 defineExpose({
     resize: () => {
-        if (!chartInstance.value || !props.adapter?.resize) {
-            return;
-        }
-
-        props.adapter.resize(chartInstance.value);
+        resizeChart();
     },
     refresh: mountChart,
 });

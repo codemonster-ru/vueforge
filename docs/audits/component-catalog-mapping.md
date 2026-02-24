@@ -1,6 +1,6 @@
 # Component Catalog Mapping
 
-Last updated: 2026-02-23
+Last updated: 2026-02-24
 
 Scope: parity, SaaS, layout, visualization, and catalog-delta coverage tracked in `CHECKLIST.md` (`P1.11`-`P1.16`).
 
@@ -31,16 +31,16 @@ Status legend:
 | Skeleton              | Both           | Yes         | Yes          |
 | OverlayPanel          | Both           | Yes         | Yes          |
 | PassThrough           | Both           | No          | Yes          |
-| Panel                 | Both           | No          | Yes          |
-| Fieldset              | Both           | No          | Yes          |
-| Toolbar               | Both           | No          | Yes          |
-| BlockUI               | Both           | No          | Yes          |
-| ScrollPanel           | Both           | No          | Yes          |
-| ScrollTop             | Both           | No          | Yes          |
-| PickList              | Both           | No          | Yes          |
-| OrderList             | Both           | No          | Yes          |
-| OrgChart              | Both           | No          | Yes          |
-| Icon                  | Vuetify        | No          | Yes          |
+| Panel                 | Both           | Yes         | Yes          |
+| Fieldset              | Both           | Yes         | Yes          |
+| Toolbar               | Both           | Yes         | Yes          |
+| BlockUI               | Both           | Yes         | Yes          |
+| ScrollPanel           | Both           | Yes         | Yes          |
+| ScrollTop             | Both           | Yes         | Yes          |
+| PickList              | Both           | Yes         | Yes          |
+| OrderList             | Both           | Yes         | Yes          |
+| OrgChart              | Both           | Yes         | Yes          |
+| Icon                  | Vuetify        | Yes         | Yes          |
 | MemberPicker          | Vuetify        | No          | Yes          |
 | QueryBuilder          | Vuetify        | No          | Yes          |
 | AdvancedFilterPanel   | Vuetify        | No          | Yes          |
@@ -61,15 +61,16 @@ Status legend:
 | InfiniteScroll        | Vuetify        | No          | Yes          |
 | OverlayBadge          | Both           | No          | Yes          |
 | InlineMessage         | Both           | No          | Yes          |
-| Message               | Both           | No          | Yes          |
-| Sidebar               | Both           | No          | Yes          |
+| Message               | Both           | Yes         | Yes          |
+| Sidebar               | Both           | Yes         | Yes          |
 | TreeView              | Vuetify        | No          | Yes          |
 | ExpansionPanel        | Vuetify        | No          | Yes          |
 | Rating                | Both           | Yes         | Yes          |
-| Dock                  | Both           | No          | Yes          |
-| Galleria              | Both           | No          | Yes          |
-| Terminal              | Both           | No          | Yes          |
-| Inplace               | Both           | No          | Yes          |
+| Dock                  | Both           | Yes         | Yes          |
+| Galleria              | Both           | Yes         | Yes          |
+| Knob                  | Both           | Yes         | Yes          |
+| Terminal              | Both           | Yes         | Yes          |
+| Inplace               | Both           | Yes         | Yes          |
 | CascadeSelect         | Both           | No          | Yes          |
 | VirtualScroller       | Both           | Yes         | Yes          |
 | ThemeProvider         | Vuetify        | No          | Yes          |

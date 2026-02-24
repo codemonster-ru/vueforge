@@ -26,6 +26,7 @@
             @change="onChange"
             @focus="onFocus"
             @blur="onBlur"
+            @paste="onPaste"
         />
         <div v-if="showCounter" class="vf-rich-text-editor__counter" :class="{ 'is-limit': isCounterLimitReached }">
             {{ currentLength }} / {{ maxLength }}
@@ -39,6 +40,7 @@ import { computed, ref } from 'vue';
 type Size = 'small' | 'normal' | 'large';
 type Variant = 'filled' | 'outlined';
 type Format = 'markdown' | 'html';
+type SanitizationProfile = 'none' | 'basic' | 'strict';
 export type RichTextEditorAction = 'bold' | 'italic' | 'underline' | 'link' | 'bulletList' | 'orderedList' | 'code';
 
 interface Props {
@@ -55,6 +57,8 @@ interface Props {
     toolbar?: Array<RichTextEditorAction>;
     toolbarLabel?: string;
     ariaLabel?: string;
+    sanitizeOnPaste?: boolean;
+    sanitizationProfile?: SanitizationProfile;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -71,9 +75,11 @@ const props = withDefaults(defineProps<Props>(), {
     toolbar: () => ['bold', 'italic', 'underline', 'link', 'bulletList', 'orderedList', 'code'],
     toolbarLabel: 'Text formatting toolbar',
     ariaLabel: 'Rich text editor',
+    sanitizeOnPaste: true,
+    sanitizationProfile: 'basic',
 });
 
-const emits = defineEmits(['update:modelValue', 'input', 'change', 'focus', 'blur', 'action']);
+const emits = defineEmits(['update:modelValue', 'input', 'change', 'focus', 'blur', 'action', 'pasteSanitized']);
 const control = ref<HTMLTextAreaElement | null>(null);
 
 const getClass = computed(() => {
@@ -122,6 +128,71 @@ const clampValue = (value: string) => {
     }
 
     return value.slice(0, props.maxLength);
+};
+
+const escapeHtml = (value: string) =>
+    value
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#39;');
+
+const sanitizeHtml = (value: string, profile: SanitizationProfile) => {
+    if (profile === 'none') {
+        return value;
+    }
+
+    let next = value;
+
+    next = next.replace(/<\s*(script|style|iframe|object|embed|meta|link)\b[^>]*>[\s\S]*?<\s*\/\s*\1\s*>/gi, '');
+    next = next.replace(/\son[a-z]+\s*=\s*(['"]).*?\1/gi, '');
+    next = next.replace(/\son[a-z]+\s*=\s*[^\s>]+/gi, '');
+    next = next.replace(/\s(href|src)\s*=\s*(['"])\s*(javascript:|data:).*?\2/gi, ' $1="#"');
+    next = next.replace(/\s(href|src)\s*=\s*(javascript:|data:)[^\s>]*/gi, ' $1="#"');
+
+    if (profile === 'strict') {
+        const allowed = ['strong', 'em', 'u', 'a', 'ul', 'ol', 'li', 'code', 'pre', 'br', 'p'];
+
+        next = next.replace(/<\/?([a-z0-9-]+)\b[^>]*>/gi, (tag, rawName: string) => {
+            const name = rawName.toLowerCase();
+
+            if (!allowed.includes(name)) {
+                return '';
+            }
+
+            if (!tag.startsWith('</')) {
+                if (name === 'a') {
+                    const hrefMatch = tag.match(/\shref\s*=\s*(['"])(.*?)\1/i);
+                    const href = hrefMatch?.[2] ?? '#';
+
+                    return `<a href="${escapeHtml(href)}">`;
+                }
+
+                return `<${name}>`;
+            }
+
+            return `</${name}>`;
+        });
+    }
+
+    return next;
+};
+
+const sanitizePastedValue = (value: string, hasHtmlSource: boolean) => {
+    if (!props.sanitizeOnPaste || props.sanitizationProfile === 'none') {
+        return value;
+    }
+
+    if (props.format === 'html') {
+        return sanitizeHtml(value, props.sanitizationProfile);
+    }
+
+    if (hasHtmlSource) {
+        return value.replace(/<[^>]+>/g, '');
+    }
+
+    return value;
 };
 
 const buildMarkdownValue = (action: RichTextEditorAction, value: string) => {
@@ -226,6 +297,40 @@ const onInput = (event: Event) => {
 const onChange = (event: Event) => emits('change', event);
 const onFocus = (event: FocusEvent) => emits('focus', event);
 const onBlur = (event: FocusEvent) => emits('blur', event);
+
+const onPaste = (event: ClipboardEvent) => {
+    if (props.disabled || props.readonly || !control.value) {
+        return;
+    }
+
+    const clipboardData = event.clipboardData;
+    if (!clipboardData) {
+        return;
+    }
+
+    const htmlValue = clipboardData.getData('text/html');
+    const plainValue = clipboardData.getData('text/plain');
+    const hasHtmlSource = Boolean(htmlValue);
+    const rawValue = props.format === 'html' && htmlValue ? htmlValue : plainValue;
+    const sanitized = sanitizePastedValue(rawValue, hasHtmlSource);
+    const target = control.value;
+    const start = target.selectionStart ?? target.value.length;
+    const end = target.selectionEnd ?? start;
+    const nextValue = clampValue(`${target.value.slice(0, start)}${sanitized}${target.value.slice(end)}`);
+    const caret = Math.min(start + sanitized.length, nextValue.length);
+
+    event.preventDefault();
+    target.value = nextValue;
+    target.setSelectionRange(caret, caret);
+
+    emits('update:modelValue', nextValue);
+    emits('input', event);
+    emits('pasteSanitized', {
+        profile: props.sanitizationProfile,
+        changed: rawValue !== sanitized,
+        format: props.format,
+    });
+};
 </script>
 
 <style lang="scss">

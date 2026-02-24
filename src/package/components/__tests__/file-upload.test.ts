@@ -65,4 +65,97 @@ describe('FileUpload', () => {
 
         expect(wrapper.emitted('update:modelValue')?.[0]?.[0]).toEqual([]);
     });
+
+    it('uploads in chunks and emits progress/success in advanced mode', async () => {
+        const file = createFile('chunked.bin', 12);
+        const uploadRequest = vi.fn(async () => undefined);
+        const wrapper = mount(FileUpload, {
+            props: {
+                multiple: true,
+                modelValue: [file],
+                advanced: true,
+                chunkSize: 5,
+                uploadRequest,
+            },
+        });
+
+        await wrapper.find('.vf-file-upload__actions .vf-file-upload__button').trigger('click');
+        await wrapper.vm.$nextTick();
+
+        expect(uploadRequest).toHaveBeenCalledTimes(3);
+        expect(wrapper.emitted('uploadProgress')?.length).toBe(3);
+        expect(wrapper.emitted('uploadSuccess')?.length).toBe(1);
+        expect(wrapper.emitted('uploadComplete')?.[0]?.[0]).toEqual({
+            total: 1,
+            success: 1,
+            failed: 0,
+        });
+    });
+
+    it('retries failed chunk upload and resumes from failed chunk', async () => {
+        const file = createFile('retry.bin', 12);
+        let calls = 0;
+        const uploadRequest = vi.fn(async (context: { chunkIndex: number }) => {
+            calls += 1;
+
+            if (calls === 2) {
+                throw new Error(`fail-chunk-${context.chunkIndex.toString()}`);
+            }
+        });
+
+        const wrapper = mount(FileUpload, {
+            props: {
+                multiple: true,
+                modelValue: [file],
+                advanced: true,
+                chunkSize: 5,
+                maxRetries: 0,
+                uploadRequest,
+            },
+        });
+
+        await wrapper.find('.vf-file-upload__actions .vf-file-upload__button').trigger('click');
+        await wrapper.vm.$nextTick();
+
+        expect(wrapper.emitted('uploadError')?.length).toBe(1);
+        expect(wrapper.find('.vf-file-upload__retry').exists()).toBe(true);
+
+        await wrapper.find('.vf-file-upload__retry').trigger('click');
+        await wrapper.vm.$nextTick();
+
+        expect(uploadRequest).toHaveBeenCalledTimes(4);
+        expect(wrapper.emitted('uploadSuccess')?.length).toBe(1);
+    });
+
+    it('uses signed URL resolver in advanced mode', async () => {
+        const file = createFile('signed.bin', 10);
+        const signedUrlResolver = vi.fn(async (context: { chunkIndex: number }) => ({
+            url: `https://upload.local/chunk/${context.chunkIndex.toString()}`,
+            method: 'PUT',
+            headers: { 'x-test': '1' },
+        }));
+        const uploadRequest = vi.fn(async () => undefined);
+
+        const wrapper = mount(FileUpload, {
+            props: {
+                multiple: true,
+                modelValue: [file],
+                advanced: true,
+                chunkSize: 4,
+                signedUrlResolver,
+                uploadRequest,
+            },
+        });
+
+        await wrapper.find('.vf-file-upload__actions .vf-file-upload__button').trigger('click');
+        await wrapper.vm.$nextTick();
+        await Promise.resolve();
+
+        expect(signedUrlResolver.mock.calls.length).toBeGreaterThanOrEqual(2);
+        expect(uploadRequest.mock.calls.length).toBe(signedUrlResolver.mock.calls.length);
+        const firstCall = (
+            uploadRequest as unknown as { mock: { calls: Array<Array<{ signedRequest?: { url: string } }>> } }
+        ).mock.calls[0]?.[0];
+        expect(firstCall?.signedRequest?.url).toContain('/chunk/0');
+    });
 });

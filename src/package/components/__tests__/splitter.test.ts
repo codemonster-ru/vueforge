@@ -17,6 +17,10 @@ const createRect = (width: number, height: number): DOMRect =>
     }) as DOMRect;
 
 describe('Splitter', () => {
+    beforeEach(() => {
+        window.localStorage.clear();
+    });
+
     it('resizes panels with mouse drag and updates v-model', async () => {
         const wrapper = mount({
             components: { Splitter, SplitterPanel },
@@ -85,6 +89,40 @@ describe('Splitter', () => {
         expect(updated[0]).toBeGreaterThan(50);
     });
 
+    it('handles keyboard edge cases (Home/End/PageUp/PageDown)', async () => {
+        const wrapper = mount({
+            components: { Splitter, SplitterPanel },
+            template: `
+                <Splitter v-model="sizes" :min-sizes="[20, 20]">
+                    <SplitterPanel>One</SplitterPanel>
+                    <SplitterPanel>Two</SplitterPanel>
+                </Splitter>
+            `,
+            data() {
+                return {
+                    sizes: [70, 30],
+                };
+            },
+        });
+        await nextTick();
+
+        const splitterComponent = wrapper.findComponent(Splitter);
+        const gutter = wrapper.find('.vf-splitter__gutter');
+
+        await gutter.trigger('keydown', { key: 'Home' });
+        await gutter.trigger('keydown', { key: 'End' });
+        await gutter.trigger('keydown', { key: 'PageUp' });
+        await gutter.trigger('keydown', { key: 'PageDown', shiftKey: true });
+
+        const emitted = splitterComponent.emitted('update:modelValue') ?? [];
+        const first = emitted[0]?.[0] as Array<number>;
+        const second = emitted[1]?.[0] as Array<number>;
+
+        expect(first[0]).toBe(20);
+        expect(second[0]).toBe(80);
+        expect(emitted.length).toBeGreaterThanOrEqual(4);
+    });
+
     it('renders multiple separators for multiple panels', async () => {
         const wrapper = mount({
             components: { Splitter, SplitterPanel },
@@ -121,5 +159,81 @@ describe('Splitter', () => {
         expect(panels[0].classes()).toContain('vf-splitter__panel_disabled');
         expect(firstStyle).toContain('flex: 0 0 40%;');
         expect(firstStyle).toContain('min-height: 20%;');
+
+        const gutter = wrapper.find('.vf-splitter__gutter');
+        expect(gutter.attributes('aria-disabled')).toBe('true');
+        expect(gutter.attributes('tabindex')).toBe('-1');
+    });
+
+    it('persists sizes and restores them when persistence is enabled', async () => {
+        const storageKey = 'splitter-layout';
+
+        const firstMount = mount({
+            components: { Splitter, SplitterPanel },
+            template: `
+                <Splitter persistence="local" persistence-key="splitter-layout">
+                    <SplitterPanel>Left</SplitterPanel>
+                    <SplitterPanel>Right</SplitterPanel>
+                </Splitter>
+            `,
+        });
+        await nextTick();
+
+        const firstGutter = firstMount.find('.vf-splitter__gutter');
+        await firstGutter.trigger('keydown', { key: 'ArrowRight' });
+        firstMount.unmount();
+
+        const persisted = window.localStorage.getItem(`vf-splitter:${storageKey}`);
+        expect(persisted).toBeTruthy();
+
+        const secondMount = mount({
+            components: { Splitter, SplitterPanel },
+            template: `
+                <Splitter persistence="local" persistence-key="splitter-layout">
+                    <SplitterPanel>Left</SplitterPanel>
+                    <SplitterPanel>Right</SplitterPanel>
+                </Splitter>
+            `,
+        });
+        await nextTick();
+
+        const firstPanelStyle = secondMount.findAll('.vf-splitter__panel')[0].attributes('style');
+        expect(firstPanelStyle).not.toContain('flex: 0 0 50%;');
+    });
+
+    it('supports nested splitters without leaking keyboard events to parent splitter', async () => {
+        const wrapper = mount({
+            components: { Splitter, SplitterPanel },
+            template: `
+                <Splitter v-model="outerSizes">
+                    <SplitterPanel>
+                        <Splitter v-model="innerSizes" direction="vertical">
+                            <SplitterPanel>Top</SplitterPanel>
+                            <SplitterPanel>Bottom</SplitterPanel>
+                        </Splitter>
+                    </SplitterPanel>
+                    <SplitterPanel>Side</SplitterPanel>
+                </Splitter>
+            `,
+            data() {
+                return {
+                    outerSizes: [50, 50],
+                    innerSizes: [50, 50],
+                };
+            },
+        });
+        await nextTick();
+
+        const splitters = wrapper.findAllComponents(Splitter);
+        expect(splitters).toHaveLength(2);
+
+        const outerSplitter = splitters[0];
+        const innerSplitter = splitters[1];
+        const innerGutter = innerSplitter.find('.vf-splitter__gutter');
+
+        await innerGutter.trigger('keydown', { key: 'ArrowDown' });
+
+        expect(innerSplitter.emitted('update:modelValue')).toBeTruthy();
+        expect(outerSplitter.emitted('update:modelValue')).toBeFalsy();
     });
 });

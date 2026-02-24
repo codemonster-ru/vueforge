@@ -1,6 +1,6 @@
 {
     "name": "@codemonster-ru/vueforge",
-    "version": "0.92.0",
+    "version": "0.93.0",
     "description": "Open source UI components for Vue.js.",
     "license": "MIT",
     "author": "Kirill Kolesnikov",
@@ -60,8 +60,14 @@
     },
     "peerDependencies": {
         "@codemonster-ru/vueiconify": "^0.7.0",
+        "chart.js": "^4.0.0",
         "vue": "^3.0.0",
         "vue-router": "^4.4.5"
+    },
+    "peerDependenciesMeta": {
+        "chart.js": {
+            "optional": true
+        }
     },
     "devDependencies": {
         "@types/node": "^20.14.10",

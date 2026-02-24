@@ -10,6 +10,7 @@
             :id="triggerId"
             type="button"
             class="vf-panelmenu-node__trigger"
+            :class="{ 'is-active': isNodeActive }"
             :disabled="resolvedDisabled"
             :aria-controls="panelId"
             :aria-expanded="expanded"
@@ -18,17 +19,24 @@
             @keydown.space.prevent="emitToggle"
         >
             <span>{{ item.label }}</span>
-            <span class="vf-panelmenu-node__chevron" aria-hidden="true">{{ expanded ? '−' : '+' }}</span>
+            <span v-if="item.loading" class="vf-panelmenu-node__loading" aria-hidden="true">...</span>
+            <span class="vf-panelmenu-node__chevron" aria-hidden="true">{{ expanded ? '-' : '+' }}</span>
         </button>
-        <a
+        <Link
             v-else
             class="vf-panelmenu-node__link"
-            :href="item.to ?? item.href ?? '#'"
-            :aria-disabled="resolvedDisabled ? 'true' : undefined"
-            @click.prevent="emitItemClick"
+            :class="{ 'is-active': isNodeActive }"
+            :to="item.to"
+            :href="item.href ?? item.url"
+            :active="item.active"
+            :disabled="resolvedDisabled"
+            role="treeitem"
+            :aria-current="isNodeActive ? 'page' : undefined"
+            @click="emitItemClick"
+            @active="emitActive"
         >
             {{ item.label }}
-        </a>
+        </Link>
 
         <ul
             v-if="hasChildren && expanded"
@@ -54,6 +62,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import type { PanelMenuItem } from './panel-menu.vue';
+import Link from './link.vue';
 
 interface Props {
     item: PanelMenuItem;
@@ -69,9 +78,10 @@ const props = withDefaults(defineProps<Props>(), {
 const emits = defineEmits(['toggle', 'itemClick']);
 
 const nodeKey = computed(() => props.item.key ?? props.item.label);
-const hasChildren = computed(() => !!props.item.items?.length);
+const hasChildren = computed(() => Boolean(props.item.lazy) || !!props.item.items?.length);
 const expanded = computed(() => props.expandedKeys.has(nodeKey.value));
 const resolvedDisabled = computed(() => props.disabled || !!props.item.disabled);
+const isNodeActive = computed(() => Boolean(props.item.active) || expanded.value);
 const triggerId = computed(() => `vf-panelmenu-trigger-${nodeKey.value.toLowerCase().replace(/[^a-z0-9_-]+/g, '-')}`);
 const panelId = computed(() => `vf-panelmenu-panel-${nodeKey.value.toLowerCase().replace(/[^a-z0-9_-]+/g, '-')}`);
 
@@ -88,9 +98,14 @@ const emitItemClick = (event: Event) => {
         return;
     }
 
+    if (!props.item.to && event instanceof MouseEvent) {
+        event.preventDefault();
+    }
+
     emits('itemClick', props.item, event);
 };
 
+const emitActive = () => emits('itemClick', props.item, new Event('active'));
 const onToggle = (key: string, event: Event) => emits('toggle', key, event);
 const onItemClick = (item: PanelMenuItem, event: Event) => emits('itemClick', item, event);
 </script>
@@ -114,6 +129,17 @@ const onItemClick = (item: PanelMenuItem, event: Event) => emits('itemClick', it
 .vf-panelmenu-node__trigger:hover,
 .vf-panelmenu-node__link:hover {
     background: var(--vf-panelmenu-item-hover-background-color);
+}
+
+.vf-panelmenu-node__trigger.is-active,
+.vf-panelmenu-node__link.is-active {
+    color: var(--vf-link-active-color);
+    background: var(--vf-panelmenu-item-hover-background-color);
+}
+
+.vf-panelmenu-node__loading {
+    margin-left: auto;
+    margin-right: 0.25rem;
 }
 
 .vf-panelmenu-node__group {

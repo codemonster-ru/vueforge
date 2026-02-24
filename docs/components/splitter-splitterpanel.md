@@ -14,6 +14,8 @@ Props (`Splitter`):
 - `direction?: 'horizontal' | 'vertical'` (default `horizontal`)
 - `gutterSize?: number | string` (default `8`)
 - `disabled?: boolean` (default `false`)
+- `persistence?: 'none' | 'local' | 'session'` (default `none`)
+- `persistenceKey?: string` (used when `persistence` is enabled)
 
 Props (`SplitterPanel`):
 
@@ -45,6 +47,24 @@ Events (`Splitter`):
 <Splitter v-model="splitSizes" :min-sizes="[20, 20]" style="height: 280px">
     <SplitterPanel>Navigation</SplitterPanel>
     <SplitterPanel>Content</SplitterPanel>
+</Splitter>
+```
+
+```vue
+<Splitter
+    direction="horizontal"
+    persistence="local"
+    persistence-key="workspace-layout"
+    :min-sizes="[20, 20]"
+    style="height: 360px"
+>
+    <SplitterPanel>
+        <Splitter direction="vertical" :min-sizes="[30, 20]">
+            <SplitterPanel>Explorer</SplitterPanel>
+            <SplitterPanel>Inspector</SplitterPanel>
+        </Splitter>
+    </SplitterPanel>
+    <SplitterPanel>Editor</SplitterPanel>
 </Splitter>
 ```
 
@@ -85,5 +105,5 @@ Add accessibility tests for keyboard alternatives, labelling, and focus behavior
 ## Accessibility
 
 - Gutters expose `role="separator"` with orientation and current value metadata.
-- Keyboard resizing is supported on focused gutter (`Arrow` keys, `Home`, `End`).
+- Keyboard resizing is supported on focused gutter (`Arrow` keys, `Home`, `End`, `PageUp`, `PageDown`).
 - Ensure handle contrast and focus styles remain visible in custom themes.

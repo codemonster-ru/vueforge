@@ -16,6 +16,9 @@ Provide an adapter-based chart wrapper with a stable VueForge API and an officia
 - `loadingText?: string` (default `Loading chart...`)
 - `emptyText?: string` (default `No chart data`)
 - `ariaLabel?: string` (default `Chart`)
+- `lazy?: boolean` (default `true`) - defer adapter mount until component enters viewport.
+- `lazyRootMargin?: string` (default `200px`) - pre-mount offset for lazy intersection checks.
+- `lazyThreshold?: number` (default `0`) - intersection ratio threshold for lazy mount trigger.
 - `pt?: PassThroughOptions`
 - `unstyled?: boolean` (default `false`)
 
@@ -55,6 +58,12 @@ const adapter = createChartJsAdapter(ChartJs);
 
 - Override via `theme.overrides.components.chart`.
 
+## Adapter Policy
+
+- `Chart.js` is intentionally treated as a consumer-installed peer integration, not a bundled runtime dependency.
+- Install `chart.js` in app dependencies when using `createChartJsAdapter`.
+- Keep adapter creation client-safe for SSR apps (for example, lazy import the chart engine in client-only paths).
+
 ## Tokens
 
 - `borderColor`, `borderRadius`, `backgroundColor`, `textColor`
@@ -79,9 +88,11 @@ const adapter = createChartJsAdapter(ChartJs);
 ## SSR/Hydration
 
 - Chart rendering starts only on client mount through adapter, avoiding SSR-side canvas logic.
+- `lazy` mode keeps adapter mount deferred until the chart container intersects viewport, while preserving deterministic SSR markup.
 - Loading/empty states are deterministic and hydration-safe.
 
 ## Testing
 
 - Cover adapter lifecycle (`mount`, `update`, `destroy`), loading/empty states, and ARIA attributes.
+- Cover lazy-mount behavior and resize handling (`ResizeObserver` + window resize fallback).
 - Verify adapter error propagation via `error` event.

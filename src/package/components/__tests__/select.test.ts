@@ -24,10 +24,8 @@ describe('Select', () => {
         const trigger = wrapper.find('.vf-select__control');
 
         await trigger.trigger('keydown', { key: 'ArrowDown' });
-        const renderedOptions = wrapper.findAll('.vf-select__option');
-
-        await renderedOptions[0].trigger('keydown', { key: 'ArrowDown' });
-        await renderedOptions[1].trigger('keydown', { key: 'Enter' });
+        await trigger.trigger('keydown', { key: 'ArrowDown' });
+        await trigger.trigger('keydown', { key: 'Enter' });
 
         expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['de']);
         expect(wrapper.emitted('change')?.[0]).toEqual(['de']);
@@ -66,5 +64,51 @@ describe('Select', () => {
         expect(wrapper.find('.vf-select').classes()).not.toContain('vf-select_open');
         expect(wrapper.find('.vf-select__clear').exists()).toBe(false);
         expect(trigger.attributes('aria-readonly')).toBe('true');
+    });
+
+    it('renders virtualized option window and emits loadMore near list end', async () => {
+        const longOptions = Array.from({ length: 140 }).map((_, index) => ({
+            label: `Option ${index}`,
+            value: index,
+        }));
+
+        const wrapper = mount(Select, {
+            props: {
+                options: longOptions,
+                virtual: true,
+                virtualThreshold: 100,
+                virtualItemHeight: 20,
+                loadMoreOffset: 1,
+            },
+            global: {
+                stubs: {
+                    teleport: true,
+                },
+            },
+        });
+
+        const trigger = wrapper.find('.vf-select__control');
+        await trigger.trigger('click');
+
+        const rendered = wrapper.findAll('.vf-select__option');
+        expect(rendered.length).toBeLessThan(140);
+
+        const panel = wrapper.find('.vf-select__panel');
+        Object.defineProperty(panel.element, 'clientHeight', { value: 120, configurable: true });
+        (panel.element as HTMLElement).scrollTop = 2700;
+        await panel.trigger('scroll');
+
+        const loadMore = wrapper.emitted('loadMore');
+        const payload = loadMore?.[0]?.[0] as { total: number; visibleEndIndex: number } | undefined;
+        expect(loadMore).toBeTruthy();
+        expect(payload).toMatchObject({
+            total: 140,
+        });
+        expect(payload?.visibleEndIndex ?? 0).toBeGreaterThan(0);
+
+        (panel.element as HTMLElement).scrollTop = 2720;
+        await panel.trigger('scroll');
+
+        expect(wrapper.emitted('loadMore')).toHaveLength(1);
     });
 });

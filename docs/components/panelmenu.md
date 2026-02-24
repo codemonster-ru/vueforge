@@ -11,6 +11,7 @@ Provide accordion-style hierarchical navigation for sidebar contexts where secti
 - `multiple?: boolean` (default `true`) - allow multiple expanded roots.
 - `disabled?: boolean` (default `false`)
 - `ariaLabel?: string` (default `Panel menu`)
+- `syncActiveFromRoute?: boolean` (default `true`) - keep active route branch expanded.
 
 `PanelMenuItem`:
 
@@ -18,7 +19,12 @@ Provide accordion-style hierarchical navigation for sidebar contexts where secti
 - `label: string`
 - `to?: string`
 - `href?: string`
+- `url?: string`
+- `active?: boolean`
+- `exact?: boolean`
 - `disabled?: boolean`
+- `lazy?: boolean`
+- `loading?: boolean`
 - `items?: Array<PanelMenuItem>`
 
 ## Events
@@ -26,6 +32,7 @@ Provide accordion-style hierarchical navigation for sidebar contexts where secti
 - `update:expandedKeys`
 - `toggle`
 - `itemClick`
+- `lazyLoad` (`{ key, item }`) - emitted when opening lazy node without loaded children.
 
 ## Slots
 
@@ -62,6 +69,7 @@ Provide accordion-style hierarchical navigation for sidebar contexts where secti
 
 - Root renders a `nav` landmark and internal `tree/group/treeitem` semantics.
 - Expandable rows expose `aria-expanded` + `aria-controls`; keyboard toggling supports `Enter`/`Space`.
+- Active route links/branches receive active styling and leaf links expose `aria-current="page"`.
 
 ## Responsive
 
@@ -75,3 +83,4 @@ Provide accordion-style hierarchical navigation for sidebar contexts where secti
 ## Testing
 
 - Cover expand/collapse behavior, single-open mode, leaf click events, and keyboard toggle behavior.
+- Cover route-driven expansion sync and `lazyLoad` handoff for deferred tree branches.

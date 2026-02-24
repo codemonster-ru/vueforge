@@ -42,7 +42,7 @@ Enable deep customization (attrs/classes/styles per part) and opt-out from built
 
 - `Carousel`: `root`, `viewport`, `track`, `slide`, `prevArrow`, `nextArrow`, `indicators`, `indicator`
 - `Chart`: `root`, `state`, `canvasWrap`, `canvas`
-- `Image`: `root`, `trigger`, `img`, `overlay`, `dialog`, `preview`, `close`
+- `Image`: `root`, `trigger`, `img`, `overlay`, `dialog`, `preview`, `close`, `toolbarButton`, `navButton`, `download`
 - `SpeedDial`: `root`, `trigger`, `actions`, `item`, `action`, `label`
 - `OverlayPanel`: `root`, `header`, `close`
 
@@ -50,3 +50,7 @@ Enable deep customization (attrs/classes/styles per part) and opt-out from built
 
 - `unstyled` removes built-in part classes for supported components.
 - `pt` classes/styles are merged after internal defaults (or act as the only classes in `unstyled` mode).
+
+## Recipes
+
+- Headless patterns cookbook: [`../recipes/headless-unstyled-patterns.md`](../recipes/headless-unstyled-patterns.md)

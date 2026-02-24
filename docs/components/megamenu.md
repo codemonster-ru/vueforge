@@ -10,11 +10,16 @@ Provide multi-column navigation content for product areas that need richer group
 - `modelValue?: number | null` - active top-level item index.
 - `disabled?: boolean` (default `false`)
 - `ariaLabel?: string` (default `Mega menu`)
+- `syncActiveFromRoute?: boolean` (default `true`) - auto-open root item containing active route link.
 
 `MegaMenuItem`:
 
 - `label: string`
 - `disabled?: boolean`
+- `active?: boolean`
+- `exact?: boolean`
+- `url?: string`
+- `command?: () => void`
 - `sections?: Array<{ label?: string; items: Array<{ label: string; to?: string; href?: string; disabled?: boolean }> }>`
 - `items?: Array<{ label: string; to?: string; href?: string; disabled?: boolean }>` (single-section shortcut)
 
@@ -24,6 +29,8 @@ Provide multi-column navigation content for product areas that need richer group
 - `open`
 - `close`
 - `linkClick`
+- `navigate` (`{ to, href, link }`) - emitted when router navigation is triggered for a `to` link.
+- `lazyLoad` (`{ index, item }`) - emitted when opening `lazy` root item without loaded sections/items.
 
 ## Slots
 
@@ -77,6 +84,7 @@ Provide multi-column navigation content for product areas that need richer group
 - Uses `nav` landmark and root `menubar` semantics with `menuitem` triggers.
 - Active triggers expose `aria-expanded` and connect to panel via `aria-controls`.
 - Keyboard supports `Enter`/`Space` toggle, `ArrowLeft`/`ArrowRight` item traversal, and `Escape` close.
+- Active route links receive `aria-current="page"` when `syncActiveFromRoute` is enabled.
 
 ## Responsive
 
@@ -90,3 +98,4 @@ Provide multi-column navigation content for product areas that need richer group
 ## Testing
 
 - Cover trigger open/close, multi-column rendering, keyboard traversal, and link-click close behavior.
+- Cover router navigation handoff (`to` links), active-route sync, and `lazyLoad` handoff for deferred sections.

@@ -1,31 +1,49 @@
 <template>
     <div ref="root" :class="getClass">
-        <input
-            ref="control"
-            class="vf-autocomplete__control"
-            type="text"
-            role="combobox"
-            :value="query"
-            :placeholder="placeholder"
-            :disabled="disabled"
-            :readonly="readonly"
-            :aria-label="ariaLabel"
-            :aria-labelledby="ariaLabelledby"
-            :aria-describedby="ariaDescribedby"
-            :aria-expanded="open"
-            aria-autocomplete="list"
-            :aria-controls="panelId"
-            :aria-activedescendant="activeDescendantId"
-            @input="onInput"
-            @focus="onFocus"
-            @blur="onBlur"
-            @click="openPanel"
-            @keydown.down.prevent="onArrowDown"
-            @keydown.up.prevent="onArrowUp"
-            @keydown.enter.prevent="onEnter"
-            @keydown.esc.prevent="close"
-            @keydown.tab="close"
-        />
+        <div class="vf-autocomplete__input-wrap">
+            <span v-if="multiple && selectedOptions.length > 0" class="vf-autocomplete__chips">
+                <span v-for="option in selectedOptions" :key="option.value" class="vf-autocomplete__chip">
+                    <span class="vf-autocomplete__chip-label">{{ option.label }}</span>
+                    <button
+                        v-if="!disabled && !readonly"
+                        type="button"
+                        class="vf-autocomplete__chip-remove"
+                        :aria-label="removeChipLabel"
+                        @mousedown.prevent.stop
+                        @click.stop="removeOption(option.value)"
+                    >
+                        x
+                    </button>
+                </span>
+            </span>
+            <input
+                ref="control"
+                class="vf-autocomplete__control"
+                type="text"
+                role="combobox"
+                :value="query"
+                :placeholder="resolvedPlaceholder"
+                :disabled="disabled"
+                :readonly="readonly"
+                :aria-label="ariaLabel"
+                :aria-labelledby="ariaLabelledby"
+                :aria-describedby="ariaDescribedby"
+                :aria-expanded="open"
+                aria-autocomplete="list"
+                :aria-controls="panelId"
+                :aria-activedescendant="activeDescendantId"
+                @input="onInput"
+                @focus="onFocus"
+                @blur="onBlur"
+                @click="openPanel"
+                @keydown.down.prevent="onArrowDown"
+                @keydown.up.prevent="onArrowUp"
+                @keydown.enter.prevent="onEnter"
+                @keydown.esc.prevent="close"
+                @keydown.backspace="onBackspace"
+                @keydown.tab="close"
+            />
+        </div>
         <button
             class="vf-autocomplete__chevron"
             type="button"
@@ -45,28 +63,59 @@
                 class="vf-autocomplete__panel"
                 role="listbox"
                 :data-placement="currentPlacement"
+                @scroll.passive="onPanelScroll"
             >
                 <div v-if="loading" class="vf-autocomplete__loading">{{ resolvedLoadingText }}</div>
-                <template v-else-if="filteredOptions.length > 0">
-                    <button
-                        v-for="(option, index) in filteredOptions"
-                        :id="getOptionId(index)"
-                        :key="option.value"
-                        class="vf-autocomplete__option"
-                        :class="{
-                            'is-active': isActive(option),
-                            'is-disabled': option.disabled,
-                            'is-highlighted': index === highlightedIndex,
-                        }"
-                        type="button"
-                        role="option"
-                        :disabled="option.disabled"
-                        :aria-selected="isActive(option)"
-                        @mousedown.prevent
-                        @click="selectOption(option)"
-                    >
-                        {{ option.label }}
-                    </button>
+                <template v-else-if="flatFilteredOptions.length > 0">
+                    <template v-if="shouldUseVirtual">
+                        <div class="vf-autocomplete__virtual-spacer" :style="virtualSpacerStyle">
+                            <button
+                                v-for="renderedOption in renderedOptions"
+                                :id="getOptionId(renderedOption.index)"
+                                :key="renderedOption.option.value"
+                                class="vf-autocomplete__option"
+                                :class="{
+                                    'is-active': isActive(renderedOption.option),
+                                    'is-disabled': renderedOption.option.disabled,
+                                    'is-highlighted': renderedOption.index === highlightedIndex,
+                                }"
+                                type="button"
+                                role="option"
+                                :disabled="renderedOption.option.disabled"
+                                :aria-selected="isActive(renderedOption.option)"
+                                @mousedown.prevent
+                                @mouseenter="highlightedIndex = renderedOption.index"
+                                @click="selectOption(renderedOption.option)"
+                            >
+                                {{ renderedOption.option.label }}
+                            </button>
+                        </div>
+                    </template>
+                    <template v-else>
+                        <div v-for="group in displayGroups" :key="group.key" class="vf-autocomplete__group">
+                            <div v-if="group.label" class="vf-autocomplete__group-label">{{ group.label }}</div>
+                            <button
+                                v-for="option in group.options"
+                                :id="getOptionId(option.flatIndex)"
+                                :key="option.value"
+                                class="vf-autocomplete__option"
+                                :class="{
+                                    'is-active': isActive(option),
+                                    'is-disabled': option.disabled,
+                                    'is-highlighted': option.flatIndex === highlightedIndex,
+                                }"
+                                type="button"
+                                role="option"
+                                :disabled="option.disabled"
+                                :aria-selected="isActive(option)"
+                                @mousedown.prevent
+                                @mouseenter="highlightedIndex = option.flatIndex"
+                                @click="selectOption(option)"
+                            >
+                                {{ option.label }}
+                            </button>
+                        </div>
+                    </template>
                 </template>
                 <div v-else class="vf-autocomplete__empty">{{ resolvedEmptyText }}</div>
             </div>
@@ -86,16 +135,43 @@ type OptionValue = string | number;
 let autocompleteIdCounter = 0;
 
 interface OptionItem {
+    label?: string;
+    value?: OptionValue;
+    disabled?: boolean;
+    [key: string]: unknown;
+}
+
+interface OptionGroupItem {
+    label?: string;
+    items?: Array<OptionItem>;
+    [key: string]: unknown;
+}
+
+interface NormalizedOption {
     label: string;
     value: OptionValue;
     disabled?: boolean;
+    groupLabel?: string;
+    flatIndex: number;
+}
+
+interface OptionGroup {
+    key: string;
+    label: string;
+    options: Array<NormalizedOption>;
 }
 
 interface Props {
-    modelValue?: OptionValue;
-    options?: Array<OptionItem>;
+    modelValue?: OptionValue | Array<OptionValue>;
+    options?: Array<OptionItem | OptionGroupItem>;
     optionLabel?: string;
     optionValue?: string;
+    optionGroupLabel?: string;
+    optionGroupChildren?: string;
+    grouped?: boolean;
+    groupBy?: string | ((option: OptionItem) => string);
+    multiple?: boolean;
+    removeChipLabel?: string;
     placeholder?: string;
     disabled?: boolean;
     readonly?: boolean;
@@ -106,16 +182,27 @@ interface Props {
     ariaLabel?: string;
     ariaLabelledby?: string;
     ariaDescribedby?: string;
+    virtual?: boolean;
+    virtualItemHeight?: number;
+    virtualOverscan?: number;
+    virtualThreshold?: number;
+    loadMoreOffset?: number;
     variant?: Variant;
     size?: Size;
 }
 
-const emits = defineEmits(['update:modelValue', 'change', 'focus', 'blur', 'search']);
+const emits = defineEmits(['update:modelValue', 'change', 'focus', 'blur', 'search', 'loadMore']);
 const props = withDefaults(defineProps<Props>(), {
     modelValue: undefined,
     options: () => [],
     optionLabel: 'label',
     optionValue: 'value',
+    optionGroupLabel: 'label',
+    optionGroupChildren: 'items',
+    grouped: false,
+    groupBy: undefined,
+    multiple: false,
+    removeChipLabel: 'Remove item',
     placeholder: '',
     disabled: false,
     readonly: false,
@@ -126,6 +213,11 @@ const props = withDefaults(defineProps<Props>(), {
     ariaLabel: 'Autocomplete input',
     ariaLabelledby: undefined,
     ariaDescribedby: undefined,
+    virtual: false,
+    virtualItemHeight: 36,
+    virtualOverscan: 4,
+    virtualThreshold: 100,
+    loadMoreOffset: 3,
     variant: 'filled',
     size: 'normal',
 });
@@ -141,40 +233,187 @@ const panel = ref<HTMLElement | null>(null);
 const open = ref(false);
 const query = ref('');
 const highlightedIndex = ref(-1);
+const panelScrollTop = ref(0);
+const panelViewportHeight = ref(0);
 const basePlacement = ref<'bottom' | 'top'>('bottom');
 const currentPlacement = ref<'bottom' | 'top'>('bottom');
 const panelId = `vf-autocomplete-panel-${++autocompleteIdCounter}`;
 let floater: FloaterInstance = null;
 const localeText = useLocaleText();
+const lastLoadMoreKey = ref('');
 const resolvedLoadingText = computed(() => props.loadingText ?? localeText.autocomplete.loadingText);
 const resolvedEmptyText = computed(() => props.emptyText ?? localeText.autocomplete.emptyText);
+const resolvedPlaceholder = computed(() => {
+    if (props.multiple && selectedOptions.value.length > 0) {
+        return '';
+    }
 
-const normalizedOptions = computed(() => {
-    return props.options.map(option => {
-        return {
-            label: option[props.optionLabel as keyof OptionItem] as string,
-            value: option[props.optionValue as keyof OptionItem] as OptionValue,
-            disabled: option.disabled,
-        };
+    return props.placeholder;
+});
+
+const toNormalizedOption = (option: OptionItem, groupLabel = '', flatIndex = -1): NormalizedOption => ({
+    label: String(option[props.optionLabel] ?? ''),
+    value: option[props.optionValue] as OptionValue,
+    disabled: Boolean(option.disabled),
+    groupLabel,
+    flatIndex,
+});
+
+const groupedOptions = computed<Array<OptionGroup>>(() => {
+    if (props.grouped) {
+        let flatIndex = 0;
+        const groups: Array<OptionGroup> = [];
+
+        props.options.forEach((group, groupIndex) => {
+            const groupItem = group as OptionGroupItem;
+            const label = String(groupItem[props.optionGroupLabel] ?? '');
+            const children = (groupItem[props.optionGroupChildren] as Array<OptionItem>) ?? [];
+            const options = children.map(child => {
+                const normalized = toNormalizedOption(child, label, flatIndex);
+                flatIndex += 1;
+                return normalized;
+            });
+
+            groups.push({
+                key: `${label || 'group'}-${groupIndex}`,
+                label,
+                options,
+            });
+        });
+
+        return groups;
+    }
+
+    const normalized = (props.options as Array<OptionItem>).map((option, index) =>
+        toNormalizedOption(option, '', index),
+    );
+
+    if (!props.groupBy) {
+        return [
+            {
+                key: 'default',
+                label: '',
+                options: normalized,
+            },
+        ];
+    }
+
+    const map = new Map<string, Array<NormalizedOption>>();
+    normalized.forEach(option => {
+        const source = props.options[option.flatIndex] as OptionItem;
+        const label =
+            typeof props.groupBy === 'function'
+                ? props.groupBy(source)
+                : String(source[props.groupBy as keyof OptionItem] ?? 'Other');
+        const key = label || 'Other';
+        const bucket = map.get(key) ?? [];
+        bucket.push({
+            ...option,
+            groupLabel: key,
+        });
+        map.set(key, bucket);
     });
+
+    return Array.from(map.entries()).map(([label, options], index) => ({
+        key: `${label}-${index}`,
+        label,
+        options,
+    }));
 });
 
-const selectedOption = computed(() => {
-    return normalizedOptions.value.find(option => option.value === props.modelValue);
-});
-
-const filteredOptions = computed(() => {
+const displayGroups = computed<Array<OptionGroup>>(() => {
+    const source = groupedOptions.value;
     if (!props.filter) {
-        return normalizedOptions.value;
+        return source;
     }
 
     const search = query.value.trim().toLowerCase();
-
     if (!search) {
-        return normalizedOptions.value;
+        return source;
     }
 
-    return normalizedOptions.value.filter(option => option.label.toLowerCase().includes(search));
+    return source
+        .map(group => ({
+            ...group,
+            options: group.options.filter(option => option.label.toLowerCase().includes(search)),
+        }))
+        .filter(group => group.options.length > 0);
+});
+
+const flatFilteredOptions = computed(() => displayGroups.value.flatMap(group => group.options));
+
+const selectedValues = computed<Array<OptionValue>>(() => {
+    if (!props.multiple) {
+        return [];
+    }
+
+    return Array.isArray(props.modelValue) ? props.modelValue : [];
+});
+
+const allNormalizedOptions = computed(() => groupedOptions.value.flatMap(group => group.options));
+
+const selectedOptions = computed(() => {
+    if (props.multiple) {
+        const values = new Set(selectedValues.value);
+        return allNormalizedOptions.value.filter(option => values.has(option.value));
+    }
+
+    const target = props.modelValue as OptionValue | undefined;
+    if (target === undefined) {
+        return [];
+    }
+
+    const selected = allNormalizedOptions.value.find(option => option.value === target);
+    return selected ? [selected] : [];
+});
+
+const shouldUseVirtual = computed(
+    () =>
+        props.virtual && !props.grouped && !props.groupBy && flatFilteredOptions.value.length >= props.virtualThreshold,
+);
+const virtualRange = computed(() => {
+    const total = flatFilteredOptions.value.length;
+
+    if (!shouldUseVirtual.value || total === 0) {
+        return {
+            start: 0,
+            end: total,
+        };
+    }
+
+    const itemHeight = Math.max(1, props.virtualItemHeight);
+    const viewport = Math.max(itemHeight, panelViewportHeight.value);
+    const visibleCount = Math.max(1, Math.ceil(viewport / itemHeight));
+    const start = Math.max(0, Math.floor(panelScrollTop.value / itemHeight) - props.virtualOverscan);
+    const end = Math.min(total, start + visibleCount + props.virtualOverscan * 2);
+
+    return {
+        start,
+        end,
+    };
+});
+const renderedOptions = computed(() => {
+    const { start, end } = virtualRange.value;
+    const options = flatFilteredOptions.value.slice(start, end);
+
+    return options.map((option, localIndex) => ({
+        option,
+        index: start + localIndex,
+    }));
+});
+const virtualSpacerStyle = computed(() => {
+    if (!shouldUseVirtual.value) {
+        return undefined;
+    }
+
+    const total = flatFilteredOptions.value.length;
+    const { start, end } = virtualRange.value;
+    const itemHeight = Math.max(1, props.virtualItemHeight);
+
+    return {
+        paddingTop: `${start * itemHeight}px`,
+        paddingBottom: `${Math.max(0, total - end) * itemHeight}px`,
+    };
 });
 
 const activeDescendantId = computed(() => {
@@ -186,7 +425,12 @@ const activeDescendantId = computed(() => {
 });
 
 const getClass = computed(() => {
-    const classes = ['vf-autocomplete', `vf-autocomplete_${props.variant}`, open.value ? 'vf-autocomplete_open' : ''];
+    const classes = [
+        'vf-autocomplete',
+        `vf-autocomplete_${props.variant}`,
+        props.multiple ? 'vf-autocomplete_multiple' : '',
+        open.value ? 'vf-autocomplete_open' : '',
+    ];
 
     if (props.size !== 'normal') {
         classes.push(`vf-autocomplete_${props.size}`);
@@ -200,11 +444,17 @@ const getClass = computed(() => {
 });
 
 const getOptionId = (index: number) => `${panelId}-option-${index}`;
-const isActive = (option: { value: OptionValue }) => option.value === props.modelValue;
-const firstEnabledIndex = () => filteredOptions.value.findIndex(option => !option.disabled);
+const isActive = (option: { value: OptionValue }) =>
+    props.multiple ? selectedValues.value.includes(option.value) : option.value === props.modelValue;
+const firstEnabledIndex = () => flatFilteredOptions.value.findIndex(option => !option.disabled);
+
+const emitValue = (value: OptionValue | Array<OptionValue> | undefined) => {
+    emits('update:modelValue', value);
+    emits('change', value);
+};
 
 const highlightByStep = (step: number) => {
-    const options = filteredOptions.value;
+    const options = flatFilteredOptions.value;
 
     if (!options.length) {
         highlightedIndex.value = -1;
@@ -223,6 +473,7 @@ const highlightByStep = (step: number) => {
 
         if (!options[index].disabled) {
             highlightedIndex.value = index;
+            ensureOptionVisible(index);
 
             return;
         }
@@ -248,6 +499,7 @@ const openPanel = () => {
 const close = () => {
     open.value = false;
     highlightedIndex.value = -1;
+    panelScrollTop.value = 0;
     basePlacement.value = 'bottom';
     currentPlacement.value = 'bottom';
 };
@@ -262,16 +514,33 @@ const togglePanel = () => {
     openPanel();
 };
 
+const removeOption = (value: OptionValue) => {
+    if (!props.multiple || props.disabled || props.readonly) {
+        return;
+    }
+
+    emitValue(selectedValues.value.filter(item => item !== value));
+};
+
 const selectOption = (option: { value: OptionValue; label: string; disabled?: boolean }) => {
     if (option.disabled) {
         return;
     }
 
+    if (props.multiple) {
+        const next = selectedValues.value.includes(option.value)
+            ? selectedValues.value.filter(item => item !== option.value)
+            : [...selectedValues.value, option.value];
+        emitValue(next);
+        query.value = '';
+        openPanel();
+        highlightedIndex.value = firstEnabledIndex();
+
+        return;
+    }
+
     query.value = option.label;
-
-    emits('update:modelValue', option.value);
-    emits('change', option.value);
-
+    emitValue(option.value);
     close();
 };
 
@@ -281,14 +550,24 @@ const onInput = (event: Event) => {
     }
 
     const target = event.target as HTMLInputElement;
-
     query.value = target.value;
-
     emits('search', target.value);
-
     openPanel();
-
     highlightedIndex.value = firstEnabledIndex();
+};
+
+const onBackspace = () => {
+    if (!props.multiple || props.disabled || props.readonly) {
+        return;
+    }
+
+    if (query.value.length > 0 || selectedValues.value.length === 0) {
+        return;
+    }
+
+    const next = [...selectedValues.value];
+    next.pop();
+    emitValue(next);
 };
 
 const onFocus = (event: FocusEvent) => {
@@ -330,7 +609,7 @@ const onEnter = () => {
         return;
     }
 
-    const option = filteredOptions.value[highlightedIndex.value];
+    const option = flatFilteredOptions.value[highlightedIndex.value];
 
     if (option && !option.disabled) {
         selectOption(option);
@@ -376,6 +655,8 @@ const mountFloater = () => {
     };
     const update = async () => {
         await applyPosition();
+        syncPanelMetrics();
+        maybeEmitLoadMore();
     };
 
     const cleanup = autoUpdate(reference, () => {
@@ -400,10 +681,93 @@ const mountFloater = () => {
     void floater.update();
 };
 
+const syncPanelMetrics = () => {
+    panelViewportHeight.value = panel.value?.clientHeight ?? 0;
+    panelScrollTop.value = panel.value?.scrollTop ?? 0;
+};
+
+const getLastVisibleIndex = () => {
+    const total = flatFilteredOptions.value.length;
+
+    if (total === 0) {
+        return -1;
+    }
+
+    if (!shouldUseVirtual.value) {
+        return total - 1;
+    }
+
+    const itemHeight = Math.max(1, props.virtualItemHeight);
+    const viewport = Math.max(itemHeight, panelViewportHeight.value);
+    const visibleCount = Math.max(1, Math.ceil(viewport / itemHeight));
+
+    return Math.min(
+        total - 1,
+        Math.floor(panelScrollTop.value / itemHeight) + visibleCount + props.virtualOverscan - 1,
+    );
+};
+
+const maybeEmitLoadMore = () => {
+    if (props.loading) {
+        return;
+    }
+
+    const total = flatFilteredOptions.value.length;
+    if (total === 0) {
+        return;
+    }
+
+    const lastVisible = getLastVisibleIndex();
+    if (lastVisible < total - 1 - props.loadMoreOffset) {
+        return;
+    }
+
+    const key = `${query.value}|${total}`;
+    if (lastLoadMoreKey.value === key) {
+        return;
+    }
+
+    lastLoadMoreKey.value = key;
+    emits('loadMore', {
+        query: query.value,
+        visibleEndIndex: lastVisible,
+        total,
+    });
+};
+
+const onPanelScroll = () => {
+    syncPanelMetrics();
+    maybeEmitLoadMore();
+};
+
+const ensureOptionVisible = (index: number) => {
+    if (!open.value || !shouldUseVirtual.value || !panel.value) {
+        return;
+    }
+
+    const itemHeight = Math.max(1, props.virtualItemHeight);
+    const itemTop = index * itemHeight;
+    const itemBottom = itemTop + itemHeight;
+    const viewportTop = panel.value.scrollTop;
+    const viewportBottom = viewportTop + panel.value.clientHeight;
+
+    if (itemTop < viewportTop) {
+        panel.value.scrollTop = itemTop;
+    } else if (itemBottom > viewportBottom) {
+        panel.value.scrollTop = Math.max(0, itemBottom - panel.value.clientHeight);
+    }
+
+    syncPanelMetrics();
+};
+
 watch(
     () => props.modelValue,
     () => {
-        query.value = selectedOption.value?.label ?? '';
+        if (props.multiple) {
+            return;
+        }
+
+        query.value = selectedOptions.value[0]?.label ?? '';
     },
     { immediate: true },
 );
@@ -411,8 +775,8 @@ watch(
 watch(
     () => props.options,
     () => {
-        if (!open.value) {
-            query.value = selectedOption.value?.label ?? '';
+        if (!open.value && !props.multiple) {
+            query.value = selectedOptions.value[0]?.label ?? '';
         }
 
         void floater?.update();
@@ -420,17 +784,17 @@ watch(
     { deep: true },
 );
 
-watch(filteredOptions, () => {
-    if (highlightedIndex.value >= filteredOptions.value.length) {
+watch(flatFilteredOptions, () => {
+    if (highlightedIndex.value >= flatFilteredOptions.value.length) {
         highlightedIndex.value = firstEnabledIndex();
     }
+    maybeEmitLoadMore();
 });
 
 watch(open, async value => {
     if (!value) {
         if (floater) {
             floater.destroy();
-
             floater = null;
         }
 
@@ -438,6 +802,7 @@ watch(open, async value => {
     }
 
     await nextTick();
+    syncPanelMetrics();
 
     if (!floater) {
         mountFloater();
@@ -445,6 +810,14 @@ watch(open, async value => {
 
     void floater?.update();
 });
+watch(
+    () => [query.value, flatFilteredOptions.value.length],
+    () => {
+        lastLoadMoreKey.value = '';
+        syncPanelMetrics();
+        maybeEmitLoadMore();
+    },
+);
 
 onMounted(() => {
     document.addEventListener('click', onDocumentClick);
@@ -463,7 +836,7 @@ onBeforeUnmount(() => {
     display: inline-flex;
     align-items: center;
     min-width: var(--vf-autocomplete-min-width);
-    height: var(--vf-controls-height);
+    min-height: var(--vf-controls-height);
     box-sizing: border-box;
     gap: var(--vf-autocomplete-control-gap);
     padding: var(--vf-autocomplete-padding);
@@ -480,9 +853,18 @@ onBeforeUnmount(() => {
     background-color: transparent;
 }
 
+.vf-autocomplete__input-wrap {
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--vf-autocomplete-chip-gap, 0.35rem);
+    flex: 1;
+}
+
 .vf-autocomplete__control {
     flex: 1;
     width: 100%;
+    min-width: 2.5rem;
     border: none;
     background: transparent;
     color: inherit;
@@ -494,6 +876,34 @@ onBeforeUnmount(() => {
     &::placeholder {
         color: var(--vf-autocomplete-placeholder-color);
     }
+}
+
+.vf-autocomplete__chips {
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--vf-autocomplete-chip-gap, 0.35rem);
+}
+
+.vf-autocomplete__chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: var(--vf-autocomplete-chip-padding, 0.15rem 0.4rem);
+    border-radius: var(--vf-autocomplete-chip-radius, var(--vf-radii-sm));
+    background-color: var(--vf-autocomplete-chip-background-color, rgba(var(--vf-blue-600-rgb), 0.12));
+    color: var(--vf-autocomplete-chip-text-color, var(--vf-text-color));
+    font-size: var(--vf-autocomplete-chip-font-size, 0.8125rem);
+}
+
+.vf-autocomplete__chip-remove {
+    border: none;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    font-size: inherit;
+    line-height: 1;
+    padding: 0;
 }
 
 .vf-autocomplete__chevron {
@@ -517,6 +927,24 @@ onBeforeUnmount(() => {
     background-color: var(--vf-autocomplete-panel-background-color);
     box-shadow: var(--vf-autocomplete-panel-shadow);
     color: var(--vf-autocomplete-text-color);
+}
+
+.vf-autocomplete__group {
+    display: grid;
+    gap: 0.1rem;
+}
+
+.vf-autocomplete__group + .vf-autocomplete__group {
+    margin-top: 0.25rem;
+}
+
+.vf-autocomplete__group-label {
+    padding: var(--vf-autocomplete-group-label-padding, 0.25rem 0.6rem);
+    color: var(--vf-autocomplete-group-label-color, var(--vf-secondary-text-color));
+    font-size: var(--vf-autocomplete-group-label-font-size, 0.75rem);
+    font-weight: var(--vf-autocomplete-group-label-font-weight, 600);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
 }
 
 .vf-autocomplete__option {
@@ -552,6 +980,10 @@ onBeforeUnmount(() => {
 .vf-autocomplete__option.is-disabled {
     opacity: 0.6;
     cursor: not-allowed;
+}
+
+.vf-autocomplete__virtual-spacer {
+    display: grid;
 }
 
 .vf-autocomplete__empty {

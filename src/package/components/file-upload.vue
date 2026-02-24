@@ -32,6 +32,19 @@
                     <div v-for="(file, index) in files" :key="getFileKey(file, index)" class="vf-file-upload__item">
                         <span class="vf-file-upload__name">{{ file.name }}</span>
                         <span class="vf-file-upload__size">{{ formatSize(file.size) }}</span>
+                        <span
+                            v-if="advanced"
+                            class="vf-file-upload__status"
+                            :data-status="getUploadStatus(file, index)"
+                        >
+                            {{ getUploadStatusLabel(file, index) }}
+                        </span>
+                        <div v-if="advanced" class="vf-file-upload__progress">
+                            <div
+                                class="vf-file-upload__progress-bar"
+                                :style="{ width: `${getUploadProgress(file, index)}%` }"
+                            />
+                        </div>
                         <button
                             v-if="!disabled && !readonly"
                             class="vf-file-upload__remove"
@@ -40,6 +53,15 @@
                             @click.stop="removeFile(index)"
                         >
                             &#10005;
+                        </button>
+                        <button
+                            v-if="advanced && getUploadStatus(file, index) === 'failed' && !disabled && !readonly"
+                            class="vf-file-upload__retry"
+                            type="button"
+                            :aria-label="`Retry ${file.name}`"
+                            @click.stop="retryUpload(file, index)"
+                        >
+                            Retry
                         </button>
                     </div>
                 </div>
@@ -53,21 +75,65 @@
                 {{ buttonLabel }}
             </button>
         </div>
+        <div v-if="advanced && files.length > 0" class="vf-file-upload__actions">
+            <button
+                class="vf-file-upload__button"
+                type="button"
+                :disabled="disabled || readonly || !hasPendingUploads"
+                @click="startUpload()"
+            >
+                {{ uploadButtonLabel }}
+            </button>
+        </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 
 type Size = 'small' | 'normal' | 'large';
 type Variant = 'filled' | 'outlined';
 type RejectReason = 'maxSize' | 'maxFiles';
+type UploadStatus = 'queued' | 'uploading' | 'success' | 'failed';
 
 interface RejectedFile {
     file: File;
     reason: RejectReason;
     maxSize?: number;
     maxFiles?: number;
+}
+
+interface FileUploadSignedRequest {
+    url: string;
+    method?: string;
+    headers?: Record<string, string>;
+}
+
+interface FileUploadChunkContext {
+    file: File;
+    fileKey: string;
+    chunk: Blob;
+    chunkIndex: number;
+    totalChunks: number;
+    uploadedBytes: number;
+    chunkStart: number;
+    chunkEnd: number;
+    signedRequest?: FileUploadSignedRequest | null;
+}
+
+interface FileUploadSummary {
+    total: number;
+    success: number;
+    failed: number;
+}
+
+interface UploadEntry {
+    status: UploadStatus;
+    uploadedBytes: number;
+    totalBytes: number;
+    totalChunks: number;
+    retries: number;
+    error?: string;
 }
 
 interface Props {
@@ -82,9 +148,29 @@ interface Props {
     buttonLabel?: string;
     size?: Size;
     variant?: Variant;
+    advanced?: boolean;
+    autoUpload?: boolean;
+    chunkSize?: number;
+    maxRetries?: number;
+    uploadButtonLabel?: string;
+    signedUrlResolver?: (
+        context: Omit<FileUploadChunkContext, 'signedRequest'>,
+    ) => Promise<FileUploadSignedRequest | null>;
+    uploadRequest?: (context: FileUploadChunkContext) => Promise<void>;
 }
 
-const emits = defineEmits(['update:modelValue', 'change', 'reject', 'focus', 'blur']);
+const emits = defineEmits([
+    'update:modelValue',
+    'change',
+    'reject',
+    'focus',
+    'blur',
+    'uploadStart',
+    'uploadProgress',
+    'uploadSuccess',
+    'uploadError',
+    'uploadComplete',
+]);
 const props = withDefaults(defineProps<Props>(), {
     modelValue: null,
     multiple: false,
@@ -97,11 +183,20 @@ const props = withDefaults(defineProps<Props>(), {
     buttonLabel: 'Browse',
     size: 'normal',
     variant: 'filled',
+    advanced: false,
+    autoUpload: false,
+    chunkSize: 5_000_000,
+    maxRetries: 2,
+    uploadButtonLabel: 'Upload',
+    signedUrlResolver: undefined,
+    uploadRequest: undefined,
 });
 
 const root = ref<HTMLElement | null>(null);
 const input = ref<HTMLInputElement | null>(null);
 const isDragging = ref(false);
+const uploadMap = ref<Record<string, UploadEntry>>({});
+const activeUploads = ref(new Set<string>());
 
 const files = computed<Array<File>>(() => {
     if (Array.isArray(props.modelValue)) {
@@ -134,6 +229,8 @@ const getClass = computed(() => {
 });
 
 const getFileKey = (file: File, index: number) => `${file.name}-${file.size}-${file.lastModified}-${index}`;
+const getResolvedChunkSize = () => (props.chunkSize && props.chunkSize > 0 ? Math.floor(props.chunkSize) : 5_000_000);
+const getResolvedMaxRetries = () => (props.maxRetries && props.maxRetries >= 0 ? Math.floor(props.maxRetries) : 0);
 
 const formatSize = (bytes: number) => {
     if (!Number.isFinite(bytes)) {
@@ -279,6 +376,274 @@ const removeFile = (index: number) => {
 
 const onFocus = (event: FocusEvent) => emits('focus', event);
 const onBlur = (event: FocusEvent) => emits('blur', event);
+
+const getUploadEntry = (file: File, index: number): UploadEntry => {
+    const key = getFileKey(file, index);
+    const existing = uploadMap.value[key];
+    const chunkSize = getResolvedChunkSize();
+    const totalChunks = Math.max(1, Math.ceil(file.size / chunkSize));
+
+    if (existing) {
+        return existing;
+    }
+
+    const created: UploadEntry = {
+        status: 'queued',
+        uploadedBytes: 0,
+        totalBytes: file.size,
+        totalChunks,
+        retries: 0,
+    };
+
+    uploadMap.value = {
+        ...uploadMap.value,
+        [key]: created,
+    };
+
+    return created;
+};
+
+const getUploadStatus = (file: File, index: number) => getUploadEntry(file, index).status;
+
+const getUploadProgress = (file: File, index: number) => {
+    const entry = getUploadEntry(file, index);
+
+    if (!entry.totalBytes) {
+        return entry.status === 'success' ? 100 : 0;
+    }
+
+    return Math.max(0, Math.min(100, Math.round((entry.uploadedBytes / entry.totalBytes) * 100)));
+};
+
+const getUploadStatusLabel = (file: File, index: number) => {
+    const status = getUploadStatus(file, index);
+
+    if (status === 'uploading') {
+        return `Uploading ${getUploadProgress(file, index)}%`;
+    }
+    if (status === 'success') {
+        return 'Uploaded';
+    }
+    if (status === 'failed') {
+        return 'Failed';
+    }
+
+    return 'Queued';
+};
+
+const hasPendingUploads = computed(() => {
+    if (!props.advanced) {
+        return false;
+    }
+
+    return files.value.some((file, index) => {
+        const status = getUploadStatus(file, index);
+
+        return status === 'queued' || status === 'failed';
+    });
+});
+
+const defaultUploadRequest = async (context: FileUploadChunkContext) => {
+    if (!context.signedRequest?.url) {
+        return;
+    }
+
+    if (typeof fetch !== 'function') {
+        return;
+    }
+
+    const method = context.signedRequest.method ?? 'PUT';
+    const headers = context.signedRequest.headers ?? {};
+    const response = await fetch(context.signedRequest.url, {
+        method,
+        headers,
+        body: context.chunk,
+    });
+
+    if (!response.ok) {
+        throw new Error(`Upload request failed with status ${response.status.toString()}`);
+    }
+};
+
+const uploadSingleFile = async (file: File, index: number) => {
+    const key = getFileKey(file, index);
+
+    if (activeUploads.value.has(key)) {
+        return;
+    }
+
+    activeUploads.value.add(key);
+
+    const entry = getUploadEntry(file, index);
+    const chunkSize = getResolvedChunkSize();
+    const totalChunks = Math.max(1, Math.ceil(file.size / chunkSize));
+    entry.totalChunks = totalChunks;
+    entry.totalBytes = file.size;
+    entry.error = undefined;
+    entry.status = 'uploading';
+    uploadMap.value = { ...uploadMap.value, [key]: { ...entry } };
+    emits('uploadStart', file, { key, totalChunks, totalBytes: file.size });
+
+    let chunkIndex = Math.floor(entry.uploadedBytes / chunkSize);
+
+    while (chunkIndex < totalChunks) {
+        const chunkStart = chunkIndex * chunkSize;
+        const chunkEnd = Math.min(file.size, chunkStart + chunkSize);
+        const chunk = file.slice(chunkStart, chunkEnd);
+        const contextBase: Omit<FileUploadChunkContext, 'signedRequest'> = {
+            file,
+            fileKey: key,
+            chunk,
+            chunkIndex,
+            totalChunks,
+            uploadedBytes: entry.uploadedBytes,
+            chunkStart,
+            chunkEnd,
+        };
+
+        let attempt = 0;
+        let uploaded = false;
+
+        while (!uploaded) {
+            try {
+                const signedRequest = props.signedUrlResolver ? await props.signedUrlResolver(contextBase) : null;
+                const uploadRequest = props.uploadRequest ?? defaultUploadRequest;
+
+                await uploadRequest({
+                    ...contextBase,
+                    signedRequest,
+                });
+                uploaded = true;
+            } catch (error) {
+                attempt += 1;
+                entry.retries += 1;
+
+                if (attempt > getResolvedMaxRetries()) {
+                    entry.status = 'failed';
+                    entry.error = error instanceof Error ? error.message : 'Upload failed';
+                    uploadMap.value = { ...uploadMap.value, [key]: { ...entry } };
+                    emits('uploadError', file, {
+                        key,
+                        error: entry.error,
+                        chunkIndex,
+                        retries: entry.retries,
+                    });
+                    activeUploads.value.delete(key);
+
+                    return;
+                }
+            }
+        }
+
+        entry.uploadedBytes = chunkEnd;
+        chunkIndex += 1;
+        uploadMap.value = { ...uploadMap.value, [key]: { ...entry } };
+        emits('uploadProgress', file, {
+            key,
+            uploadedBytes: entry.uploadedBytes,
+            totalBytes: entry.totalBytes,
+            progress: getUploadProgress(file, index),
+            chunkIndex,
+            totalChunks,
+        });
+    }
+
+    entry.status = 'success';
+    uploadMap.value = { ...uploadMap.value, [key]: { ...entry } };
+    emits('uploadSuccess', file, {
+        key,
+        uploadedBytes: entry.uploadedBytes,
+        totalBytes: entry.totalBytes,
+        retries: entry.retries,
+    });
+    activeUploads.value.delete(key);
+};
+
+const startUpload = async () => {
+    if (!props.advanced || props.disabled || props.readonly) {
+        return;
+    }
+
+    const list = files.value.map((file, index) => ({ file, index }));
+    for (const item of list) {
+        const status = getUploadStatus(item.file, item.index);
+
+        if (status === 'queued' || status === 'failed') {
+            await uploadSingleFile(item.file, item.index);
+        }
+    }
+
+    const summary: FileUploadSummary = files.value.reduce(
+        (acc, file, index) => {
+            const status = getUploadStatus(file, index);
+            if (status === 'success') {
+                acc.success += 1;
+            } else if (status === 'failed') {
+                acc.failed += 1;
+            }
+
+            return acc;
+        },
+        {
+            total: files.value.length,
+            success: 0,
+            failed: 0,
+        },
+    );
+
+    emits('uploadComplete', summary);
+};
+
+const retryUpload = async (file: File, index: number) => {
+    const key = getFileKey(file, index);
+    const entry = getUploadEntry(file, index);
+
+    if (entry.status !== 'failed') {
+        return;
+    }
+
+    entry.status = 'queued';
+    entry.error = undefined;
+    uploadMap.value = { ...uploadMap.value, [key]: { ...entry } };
+    await uploadSingleFile(file, index);
+};
+
+watch(
+    files,
+    nextFiles => {
+        if (!props.advanced) {
+            return;
+        }
+
+        const nextMap: Record<string, UploadEntry> = {};
+
+        nextFiles.forEach((file, index) => {
+            const key = getFileKey(file, index);
+            const existing = uploadMap.value[key];
+            const chunkSize = getResolvedChunkSize();
+            const totalChunks = Math.max(1, Math.ceil(file.size / chunkSize));
+
+            if (existing) {
+                nextMap[key] = { ...existing, totalBytes: file.size, totalChunks };
+            } else {
+                nextMap[key] = {
+                    status: 'queued',
+                    uploadedBytes: 0,
+                    totalBytes: file.size,
+                    totalChunks,
+                    retries: 0,
+                };
+            }
+        });
+
+        uploadMap.value = nextMap;
+
+        if (props.autoUpload && nextFiles.length > 0) {
+            void startUpload();
+        }
+    },
+    { immediate: true },
+);
 </script>
 
 <style lang="scss">
@@ -363,6 +728,35 @@ const onBlur = (event: FocusEvent) => emits('blur', event);
     box-sizing: border-box;
 }
 
+.vf-file-upload__status {
+    flex: 0 0 auto;
+    font-size: 0.78rem;
+    color: var(--vf-file-upload-size-text-color);
+}
+
+.vf-file-upload__status[data-status='failed'] {
+    color: var(--vf-red-600);
+}
+
+.vf-file-upload__status[data-status='success'] {
+    color: var(--vf-green-600);
+}
+
+.vf-file-upload__progress {
+    flex: 0 0 6rem;
+    height: 0.35rem;
+    border-radius: 999px;
+    background-color: var(--vf-file-upload-item-border-color);
+    overflow: hidden;
+}
+
+.vf-file-upload__progress-bar {
+    height: 100%;
+    background-color: var(--vf-file-upload-focus-border-color);
+    width: 0%;
+    transition: width 0.2s ease;
+}
+
 .vf-file-upload__name {
     flex: 1 1 0%;
     min-width: 0;
@@ -408,6 +802,22 @@ const onBlur = (event: FocusEvent) => emits('blur', event);
     font-size: inherit;
     font-family: inherit;
     cursor: pointer;
+}
+
+.vf-file-upload__retry {
+    flex: 0 0 auto;
+    border: var(--vf-border-width) solid var(--vf-file-upload-button-border-color);
+    border-radius: var(--vf-file-upload-button-radius);
+    background-color: transparent;
+    color: var(--vf-file-upload-button-text-color);
+    font-size: 0.75rem;
+    line-height: 1;
+    padding: 0.2rem 0.45rem;
+    cursor: pointer;
+}
+
+.vf-file-upload__actions {
+    padding: 0.35rem 0.6rem 0.6rem;
 }
 
 .vf-file-upload__button:hover:not(:disabled) {

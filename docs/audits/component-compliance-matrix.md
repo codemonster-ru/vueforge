@@ -1,6 +1,6 @@
 # Component Compliance Matrix
 
-Last updated: 2026-02-23
+Last updated: 2026-02-24
 
 Purpose: track execution of the global quality gate for every public component.
 
@@ -32,6 +32,7 @@ Completion policy:
 | Avatar             | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | Badge              | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | Breadcrumbs        | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
+| BlockUI            | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | Button             | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | ButtonGroup        | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | Calendar           | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
@@ -54,27 +55,34 @@ Completion policy:
 | DateTimePicker     | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | DialogService      | Yes | Yes   | N/A  | Yes           | N/A        | N/A    | Yes  | Yes     |
 | Divider            | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
+| Dock               | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | Drawer             | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | Dropdown           | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | EmptyState         | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | FileUpload         | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
+| Fieldset           | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | FilterChips        | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | Form               | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | FormField          | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
+| Galleria           | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | Grid               | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | GridItem           | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | Inline             | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | InlineEdit         | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
+| Inplace            | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
+| Icon               | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | Image              | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | Input              | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | InputAddon         | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | InputGroup         | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | KanbanBoard        | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
+| Knob               | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | Link               | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | Listbox            | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | MaskedInput        | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | MentionInput       | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | Menu               | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
+| Message            | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | MenuBar            | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | MegaMenu           | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | PanelMenu          | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
@@ -83,9 +91,13 @@ Completion policy:
 | NotificationCenter | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | NumberInput        | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | OtpInput           | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
+| OrgChart           | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
+| OrderList          | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | OverlayPanel       | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | PageHeader         | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | Pagination         | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
+| PickList           | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
+| Panel              | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | PasswordInput      | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | Popover            | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | Progress           | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
@@ -94,6 +106,9 @@ Completion policy:
 | Rating             | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | RichTextEditor     | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | SearchInput        | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
+| Sidebar            | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
+| ScrollPanel        | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
+| ScrollTop          | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | Section            | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | SegmentedControl   | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | Select             | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
@@ -111,9 +126,11 @@ Completion policy:
 | TabPanel           | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | Tabs               | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | TagInput           | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
+| Terminal           | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | Textarea           | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | Timeline           | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | TimePicker         | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
+| Toolbar            | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | Toast              | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | ToastContainer     | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | Tooltip            | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |

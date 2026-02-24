@@ -1,0 +1,17 @@
+export default {
+    borderColor: 'var(--vf-border-color)',
+    borderRadius: 'var(--vf-radii-md)',
+    backgroundColor: 'var(--vf-bg-color)',
+    shadow: '0 10px 24px rgba(0, 0, 0, 0.12)',
+    padding: '0.375rem',
+    gap: '0.25rem',
+    itemSize: '3rem',
+    itemBorderRadius: 'var(--vf-radii-sm)',
+    itemColor: 'var(--vf-text-color)',
+    itemHoverBackgroundColor: 'var(--vf-bg-soft-color)',
+    itemActiveBackgroundColor: 'var(--vf-color-blue-100)',
+    itemActiveColor: 'var(--vf-color-blue-700)',
+    iconSize: '1rem',
+    labelFontSize: '0.75rem',
+    disabledOpacity: 'var(--vf-states-disabled-opacity)',
+};

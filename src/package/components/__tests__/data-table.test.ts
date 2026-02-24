@@ -296,6 +296,73 @@ describe('DataTable', () => {
         });
     });
 
+    it('renders grouped rows with group headers', () => {
+        const groupedRows = [
+            { id: 1, name: 'Alice', team: 'Platform' },
+            { id: 2, name: 'Bob', team: 'Platform' },
+            { id: 3, name: 'Chen', team: 'Design' },
+        ];
+        const wrapper = mount(DataTable, {
+            props: {
+                columns: [
+                    { field: 'name', header: 'Name' },
+                    { field: 'team', header: 'Team' },
+                ],
+                rows: groupedRows,
+                rowGroupBy: 'team',
+            },
+        });
+
+        const groupRows = wrapper.findAll('.vf-datatable__row_group');
+        expect(groupRows).toHaveLength(2);
+        expect(groupRows[0].text()).toContain('Platform');
+        expect(groupRows[1].text()).toContain('Design');
+    });
+
+    it('supports row expansion toggle and expansion slot rendering', async () => {
+        const wrapper = mount(DataTable, {
+            props: {
+                columns,
+                rows,
+                rowExpansion: true,
+                expandedRows: [],
+            },
+            slots: {
+                'row-expansion': ({ row }: { row: Record<string, unknown> }) => `Details for ${String(row.name)}`,
+            },
+        });
+
+        const toggles = wrapper.findAll('.vf-datatable__expand-toggle');
+        await toggles[0].trigger('click');
+        await wrapper.vm.$nextTick();
+
+        expect(wrapper.emitted('update:expandedRows')?.[0]).toEqual([[1]]);
+        expect(wrapper.emitted('rowExpand')?.[0]?.[0]).toEqual(rows[0]);
+        expect(wrapper.text()).toContain('Details for Alice');
+    });
+
+    it('manages visible columns and emits visibility updates', async () => {
+        const wrapper = mount(DataTable, {
+            props: {
+                columns,
+                rows,
+                visibleColumns: ['name', 'role'],
+                columnVisibilityManager: true,
+            },
+        });
+
+        expect(wrapper.findAll('.vf-datatable__header')).toHaveLength(2);
+
+        await wrapper.find('.vf-datatable__column-visibility-toggle').trigger('click');
+        const optionInputs = wrapper.findAll('.vf-datatable__column-visibility-option input');
+
+        await optionInputs[1].setValue(false);
+        await wrapper.vm.$nextTick();
+
+        expect(wrapper.emitted('update:visibleColumns')?.[0]).toEqual([['name']]);
+        expect(wrapper.findAll('.vf-datatable__header')).toHaveLength(1);
+    });
+
     it('keeps sorting and selection behavior in RTL document direction', async () => {
         document.documentElement.setAttribute('dir', 'rtl');
 

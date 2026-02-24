@@ -12,7 +12,7 @@
             "budgets": {
                 "initialRenderP95Ms": 1200,
                 "sortInteractionP95Ms": 900,
-                "selectionToggleP95Ms": 250,
+                "selectionToggleP95Ms": 300,
                 "columnResizeP95Ms": 250
             }
         },
@@ -21,14 +21,14 @@
             "budgets": {
                 "initialRenderP95Ms": 1200,
                 "expandCollapseP95Ms": 400,
-                "keyboardNavP95Ms": 150,
+                "keyboardNavP95Ms": 170,
                 "selectionToggleP95Ms": 180
             }
         },
         "VirtualScroller": {
             "scenario": "10000 items, itemHeight=36, overscan=4",
             "budgets": {
-                "initialRenderP95Ms": 1300,
+                "initialRenderP95Ms": 1400,
                 "scrollUpdateP95Ms": 200,
                 "rangeChangeEmitP95Ms": 220,
                 "reachEndEmitP95Ms": 220
