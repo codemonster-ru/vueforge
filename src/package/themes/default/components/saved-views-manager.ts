@@ -18,4 +18,3 @@ export default {
     dangerBorderColor: 'rgba(var(--vf-red-600-rgb), 0.5)',
     disabledOpacity: 'var(--vf-states-disabled-opacity)',
 };
-

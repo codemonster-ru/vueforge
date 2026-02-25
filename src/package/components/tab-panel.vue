@@ -1,12 +1,5 @@
 <template>
-    <div
-        v-show="isActive"
-        :id="panelId"
-        class="vf-tab-panel"
-        role="tabpanel"
-        tabindex="0"
-        :aria-labelledby="tabId"
-    >
+    <div v-show="isActive" :id="panelId" class="vf-tab-panel" role="tabpanel" tabindex="0" :aria-labelledby="tabId">
         <slot />
     </div>
 </template>

@@ -18,4 +18,3 @@ export default {
     focusRing: 'var(--vf-focus-ring-shadow)',
     disabledOpacity: 'var(--vf-states-disabled-opacity)',
 };
-

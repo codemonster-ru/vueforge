@@ -25,6 +25,9 @@
     - Fixed lint blocker in `DataTableToolbar` (`no-unused-vars`).
     - Fixed type-safety issues in `InfiniteScroll` and `JSONViewer`.
     - Recalibrated local/CI performance budgets for unstable p95 metrics (`DataTable` and `Overlays`) to keep `performance:check` green.
+- Lint/format pipeline alignment:
+    - Switched ESLint to enforce Prettier output (`prettier/prettier: error`) to remove formatter-vs-lint drift.
+    - Applied Prettier normalization to touched files in tests/components/theme tokens to match CI lint expectations.
 
 ## [0.93.0] - 2026-02-24
 

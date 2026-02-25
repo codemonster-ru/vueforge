@@ -11,4 +11,3 @@ export default {
     tabActiveBorderColor: 'rgba(var(--vf-blue-600-rgb), 0.45)',
     disabledOpacity: 'var(--vf-states-disabled-opacity)',
 };
-

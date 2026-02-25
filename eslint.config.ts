@@ -43,13 +43,11 @@ export default [
         },
         rules: {
             'prettier/prettier': [
-                'off',
+                'error',
                 {
                     endOfLine: 'auto',
                 },
             ],
-            indent: ['error', 4, { SwitchCase: 1 }],
-            semi: [2, 'always'],
             'vue/multi-word-component-names': 'off',
         },
     },

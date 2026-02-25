@@ -14,6 +14,7 @@ export default {
     actionFontSize: '0.8125rem',
     detailsGap: '1rem',
     sectionTitleFontSize: '0.875rem',
-    monoFontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
+    monoFontFamily:
+        'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
     monoFontSize: '0.75rem',
 };

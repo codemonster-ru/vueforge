@@ -11,9 +11,7 @@ describe('Pagination', () => {
             },
         });
 
-        const thirdPageButton = wrapper
-            .findAll('.vf-pagination__item')
-            .find(button => button.text() === '3');
+        const thirdPageButton = wrapper.findAll('.vf-pagination__item').find(button => button.text() === '3');
 
         expect(thirdPageButton).toBeDefined();
 

@@ -8,4 +8,3 @@ export default {
     messageLineHeight: '1.45',
     actionsGap: '0.5rem',
 };
-
