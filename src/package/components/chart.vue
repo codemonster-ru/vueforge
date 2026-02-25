@@ -24,7 +24,7 @@ import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import type { ChartAdapter, ChartAdapterInstance, ChartConfig, ChartData, ChartType } from './chart-adapter';
 import { resolvePassThrough, withPartClass, type PassThroughOptions } from '@/package/config/pass-through';
 
-interface Props {
+export interface ChartProps {
     type?: ChartType;
     data?: ChartData;
     options?: Record<string, unknown>;
@@ -42,7 +42,7 @@ interface Props {
     unstyled?: boolean;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<ChartProps>(), {
     type: 'line',
     data: () => ({ labels: [], datasets: [] }),
     options: () => ({}),

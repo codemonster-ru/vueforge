@@ -120,6 +120,21 @@ export { default as DataView } from '@/package/components/data-view.vue';
 export { default as Carousel } from '@/package/components/carousel.vue';
 export { default as SpeedDial } from '@/package/components/speed-dial.vue';
 export { default as Chart } from '@/package/components/chart.vue';
+export { default as BarChart } from '@/package/components/bar-chart.vue';
+export { default as LineChart } from '@/package/components/line-chart.vue';
+export { default as AreaChart } from '@/package/components/area-chart.vue';
+export { default as PieChart } from '@/package/components/pie-chart.vue';
+export { default as DonutChart } from '@/package/components/donut-chart.vue';
+export { default as ScatterChart } from '@/package/components/scatter-chart.vue';
+export { default as BubbleChart } from '@/package/components/bubble-chart.vue';
+export { default as Histogram } from '@/package/components/histogram.vue';
+export { default as Heatmap } from '@/package/components/heatmap.vue';
+export { default as RadarChart } from '@/package/components/radar-chart.vue';
+export { default as FunnelChart } from '@/package/components/funnel-chart.vue';
+export { default as TreemapChart } from '@/package/components/treemap-chart.vue';
+export { default as GaugeChart } from '@/package/components/gauge-chart.vue';
+export { default as CandlestickChart } from '@/package/components/candlestick-chart.vue';
+export { default as Sparkline } from '@/package/components/sparkline.vue';
 export { default as Slider } from '@/package/components/slider.vue';
 export { default as Splitter } from '@/package/components/splitter.vue';
 export { default as SplitterPanel } from '@/package/components/splitter-panel.vue';
@@ -172,6 +187,31 @@ export type { ListboxOption, ListboxOptionGroup, ListboxValue } from '@/package/
 export type { MegaMenuItem, MegaMenuLink, MegaMenuSection } from '@/package/components/mega-menu.vue';
 export type { PanelMenuItem } from '@/package/components/panel-menu.vue';
 export type { SpeedDialAction } from '@/package/components/speed-dial.vue';
+export type { BarChartSeries } from '@/package/components/bar-chart.vue';
+export type { LineChartSeries, LineChartThreshold } from '@/package/components/line-chart.vue';
+export type { AreaChartSeries } from '@/package/components/area-chart.vue';
+export type {
+    PieChartSeries,
+    PieChartLegendTogglePayload,
+    PieChartSliceClickPayload,
+    PieChartDrilldownPayload,
+} from '@/package/components/pie-chart.vue';
+export type {
+    ScatterChartPoint,
+    ScatterChartSeries,
+    ScatterChartClusterOptions,
+} from '@/package/components/scatter-chart.vue';
+export type {
+    BubbleChartPoint,
+    BubbleChartSeries,
+    BubbleChartTooltipContext,
+} from '@/package/components/bubble-chart.vue';
+export type { HistogramBinStrategy, HistogramBin } from '@/package/components/histogram.vue';
+export type { HeatmapCell, HeatmapRangeItem } from '@/package/components/heatmap.vue';
+export type { RadarChartSeries } from '@/package/components/radar-chart.vue';
+export type { FunnelChartStage, FunnelChartStageComputed } from '@/package/components/funnel-chart.vue';
+export type { TreemapChartNode, TreemapChartTile } from '@/package/components/treemap-chart.vue';
+export type { CandlestickDataPoint } from '@/package/components/candlestick-chart.vue';
 export { createChartJsAdapter } from '@/package/components/chart-adapter';
 export type {
     ChartAdapter,

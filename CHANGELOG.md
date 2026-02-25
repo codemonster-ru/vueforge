@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.96.0] - 2026-02-25
+
+- Semver checklist:
+    - [x] Semver impact classified (`minor`)
+    - [x] Breaking-change assessment completed (`no`)
+    - [x] Deprecations documented (N/A)
+    - [x] Migration notes added when required (N/A)
+    - [x] Catalog mapping sync completed (`yes`)
+- Data visualization parity (`P1.15`) additions:
+    - Added `BarChart`, `LineChart`, `AreaChart`, `PieChart`, `DonutChart`, `ScatterChart`, `BubbleChart`, `Histogram`, `Heatmap`, `RadarChart`, `FunnelChart`, `TreemapChart`, `GaugeChart`, `CandlestickChart`, and `Sparkline`.
+    - Added API docs and unit tests for all new chart components.
+    - Added public exports and related chart types in `src/index.ts`.
+    - Updated roadmap/audit artifacts: `CHECKLIST.md`, `docs/audits/component-catalog-mapping.md`, and `docs/audits/component-compliance-matrix.md`.
+    - Removed deferred `Advanced analytics visuals` section from `CHECKLIST.md` by product scope decision.
+
 ## [0.95.0] - 2026-02-25
 
 - Semver checklist:

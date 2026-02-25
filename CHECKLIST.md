@@ -612,30 +612,20 @@ Goal: provide first-class charting and analytics visualization coverage for SaaS
 
 #### Core chart components
 
-- [ ] `BarChart` component (grouped/stacked/horizontal variants)
-- [ ] `LineChart` component (multi-series, gaps/nulls, threshold overlays)
-- [ ] `AreaChart` component (stacked and normalized variants)
-- [ ] `PieChart` / `DonutChart` component (legend interaction and drilldown hooks)
-- [ ] `ScatterChart` component (regression line and point clustering options)
-- [ ] `BubbleChart` component (size encoding and tooltip contracts)
-- [ ] `Histogram` component (bin strategies and density overlays)
-- [ ] `Heatmap` component (cell scaling, axis labeling, range legend)
-- [ ] `RadarChart` component (multi-series comparison)
-- [ ] `FunnelChart` component (conversion-stage visualization)
-- [ ] `TreemapChart` component (hierarchical area encoding)
-- [ ] `GaugeChart` component (single KPI arc/radial gauge)
-- [ ] `CandlestickChart` component (OHLC/volume overlays for financial/time-series use cases)
-- [ ] `Sparkline` component (inline trend visualizations)
-
-#### Advanced analytics visuals
-
-- [ ] `ComposableChart` container (mixed chart types on shared axes)
-- [ ] `TimeSeriesPanel` component (range selection, compare periods, timezone-aware ticks)
-- [ ] `GeoMap` / choropleth component (region-level metric rendering with legend and drilldown hooks)
-- [ ] `NetworkGraph` component (node-link visualization for dependency/relationship data)
-- [ ] `SankeyDiagram` component (flow magnitude visualization)
-- [ ] `BoxPlot` component (distribution and outlier analysis)
-- [ ] `ErrorBar` support for statistical confidence intervals
+- [x] `BarChart` component (grouped/stacked/horizontal variants)
+- [x] `LineChart` component (multi-series, gaps/nulls, threshold overlays)
+- [x] `AreaChart` component (stacked and normalized variants)
+- [x] `PieChart` / `DonutChart` component (legend interaction and drilldown hooks)
+- [x] `ScatterChart` component (regression line and point clustering options)
+- [x] `BubbleChart` component (size encoding and tooltip contracts)
+- [x] `Histogram` component (bin strategies and density overlays)
+- [x] `Heatmap` component (cell scaling, axis labeling, range legend)
+- [x] `RadarChart` component (multi-series comparison)
+- [x] `FunnelChart` component (conversion-stage visualization)
+- [x] `TreemapChart` component (hierarchical area encoding)
+- [x] `GaugeChart` component (single KPI arc/radial gauge)
+- [x] `CandlestickChart` component (OHLC/volume overlays for financial/time-series use cases)
+- [x] `Sparkline` component (inline trend visualizations)
 
 #### Visualization platform and quality
 
