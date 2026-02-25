@@ -59,7 +59,7 @@
                     />
                 </Section>
 
-                <Section bordered data-testid="vf-visual-layout-presets">
+                <Section bordered class="vf-visual__layout-presets" data-testid="vf-visual-layout-presets">
                     <Stack gap="16px">
                         <AppBar title="Layout Visual Presets" />
                         <PageLayout
@@ -131,5 +131,10 @@ const columns: Array<DataTableColumn> = [
 
 .vf-visual__text {
     margin: 0;
+}
+
+/* Keep visual regression capture height stable across OS/browser font metrics. */
+.vf-visual__layout-presets {
+    min-height: 882px;
 }
 </style>
