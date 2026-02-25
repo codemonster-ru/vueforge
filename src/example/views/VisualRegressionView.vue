@@ -95,6 +95,11 @@
 
 <script setup lang="ts">
 import type { DataTableColumn } from '@/package/components/data-table.vue';
+import AppBar from '@/package/components/app-bar.vue';
+import Card from '@/package/components/card.vue';
+import PageLayout from '@/package/components/page-layout.vue';
+import SplitLayout from '@/package/components/split-layout.vue';
+import StickyRegion from '@/package/components/sticky-region.vue';
 
 const rows = [
     { id: 1, name: 'Ada Lovelace', role: 'Maintainer', status: 'Active' },
