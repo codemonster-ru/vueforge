@@ -43,6 +43,7 @@ import megamenu from './components/megamenu';
 import panelmenu from './components/panelmenu';
 import modal from './components/modal';
 import confirmDialog from './components/confirm-dialog';
+import confirmPopup from './components/confirm-popup';
 import drawer from './components/drawer';
 import popover from './components/popover';
 import dropdown from './components/dropdown';
@@ -61,6 +62,7 @@ import listbox from './components/listbox';
 import picklist from './components/picklist';
 import orderlist from './components/orderlist';
 import taginput from './components/taginput';
+import cascadeSelect from './components/treeselect';
 import datepicker from './components/datepicker';
 import daterangepicker from './components/daterangepicker';
 import timepicker from './components/timepicker';
@@ -72,6 +74,7 @@ import radio from './components/radio';
 import switchComponent from './components/switch';
 import segmentedControl from './components/segmented-control';
 import tabs from './components/tabs';
+import tabMenu from './components/tab-menu';
 import accordion from './components/accordion';
 import tooltip from './components/tooltip';
 import tour from './components/tour';
@@ -87,6 +90,11 @@ import progress from './components/progress';
 import badge from './components/badge';
 import chip from './components/chip';
 import filterChips from './components/filter-chips';
+import advancedFilterPanel from './components/advanced-filter-panel';
+import queryBuilder from './components/query-builder';
+import savedViewsManager from './components/saved-views-manager';
+import dataTableToolbar from './components/data-table-toolbar';
+import bulkActionBar from './components/bulk-action-bar';
 import avatar from './components/avatar';
 import spinner from './components/spinner';
 import scrollpanel from './components/scrollpanel';
@@ -96,6 +104,22 @@ import splitter from './components/splitter';
 import stepper from './components/stepper';
 import wizard from './components/wizard';
 import timeline from './components/timeline';
+import activityFeed from './components/activity-feed';
+import auditLogViewer from './components/audit-log-viewer';
+import commentThread from './components/comment-thread';
+import memberPicker from './components/member-picker';
+import permissionMatrix from './components/permission-matrix';
+import kpiStatCard from './components/kpi-stat-card';
+import meterGroup from './components/meter-group';
+import inlineMessage from './components/inline-message';
+import overlayBadge from './components/overlay-badge';
+import fileManager from './components/file-manager';
+import jsonViewer from './components/json-viewer';
+import diffViewer from './components/diff-viewer';
+import codeEditor from './components/code-editor';
+import scheduler from './components/scheduler';
+import bottomSheet from './components/bottom-sheet';
+import infiniteScroll from './components/infinite-scroll';
 import rating from './components/rating';
 import tree from './components/tree';
 import orgchart from './components/orgchart';
@@ -146,11 +170,14 @@ export default {
         terminal,
         pageHeader,
         menu,
+        tieredMenu: menu,
         menubar,
         megamenu,
         panelmenu,
         modal,
+        dynamicDialog: modal,
         confirmDialog,
+        confirmPopup,
         drawer,
         sidebar: drawer,
         popover,
@@ -171,6 +198,7 @@ export default {
         picklist,
         orderlist,
         taginput,
+        cascadeSelect,
         datepicker,
         daterangepicker,
         timepicker,
@@ -182,6 +210,7 @@ export default {
         switch: switchComponent,
         segmentedControl,
         tabs,
+        tabMenu,
         accordion,
         tooltip,
         tour,
@@ -198,6 +227,11 @@ export default {
         badge,
         chip,
         filterChips,
+        advancedFilterPanel,
+        queryBuilder,
+        savedViewsManager,
+        dataTableToolbar,
+        bulkActionBar,
         avatar,
         spinner,
         scrollpanel,
@@ -207,6 +241,22 @@ export default {
         stepper,
         wizard,
         timeline,
+        activityFeed,
+        auditLogViewer,
+        commentThread,
+        memberPicker,
+        permissionMatrix,
+        kpiStatCard,
+        meterGroup,
+        inlineMessage,
+        overlayBadge,
+        fileManager,
+        jsonViewer,
+        diffViewer,
+        codeEditor,
+        scheduler,
+        bottomSheet,
+        infiniteScroll,
         rating,
         tree,
         orgchart,

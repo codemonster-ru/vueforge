@@ -40,6 +40,7 @@ export interface TreeItem {
     key: TreeValue;
     label: string;
     disabled?: boolean;
+    hasChildren?: boolean;
     children?: Array<TreeItem>;
 }
 

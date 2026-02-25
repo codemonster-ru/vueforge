@@ -35,6 +35,13 @@ export { default as FormField } from '@/package/components/form-field.vue';
 export { default as Textarea } from '@/package/components/textarea.vue';
 export { default as RichTextEditor } from '@/package/components/rich-text-editor.vue';
 export { default as FileUpload } from '@/package/components/file-upload.vue';
+export { default as FileManager } from '@/package/components/file-manager.vue';
+export { default as JSONViewer } from '@/package/components/json-viewer.vue';
+export { default as DiffViewer } from '@/package/components/diff-viewer.vue';
+export { default as CodeEditor } from '@/package/components/code-editor.vue';
+export { default as Scheduler } from '@/package/components/scheduler.vue';
+export { default as BottomSheet } from '@/package/components/bottom-sheet.vue';
+export { default as InfiniteScroll } from '@/package/components/infinite-scroll.vue';
 export { default as Select } from '@/package/components/select.vue';
 export { default as Autocomplete } from '@/package/components/autocomplete.vue';
 export { default as Combobox } from '@/package/components/combobox.vue';
@@ -43,6 +50,7 @@ export { default as Listbox } from '@/package/components/listbox.vue';
 export { default as PickList } from '@/package/components/pick-list.vue';
 export { default as OrderList } from '@/package/components/order-list.vue';
 export { default as TagInput } from '@/package/components/tag-input.vue';
+export { default as CascadeSelect } from '@/package/components/cascade-select.vue';
 export { default as DatePicker } from '@/package/components/datepicker.vue';
 export { default as DateRangePicker } from '@/package/components/date-range-picker.vue';
 export { default as TimePicker } from '@/package/components/timepicker.vue';
@@ -56,17 +64,21 @@ export { default as SegmentedControl } from '@/package/components/segmented-cont
 export { default as Tabs } from '@/package/components/tabs.vue';
 export { default as Tab } from '@/package/components/tab.vue';
 export { default as TabPanel } from '@/package/components/tab-panel.vue';
+export { default as TabMenu } from '@/package/components/tab-menu.vue';
 export { default as Accordion } from '@/package/components/accordion.vue';
 export { default as AccordionItem } from '@/package/components/accordion-item.vue';
 export { default as Toast } from '@/package/components/toast.vue';
 export { default as ToastContainer } from '@/package/components/toast-container.vue';
 export { default as Alert } from '@/package/components/alert.vue';
 export { default as Message } from '@/package/components/message.vue';
+export { default as InlineMessage } from '@/package/components/inline-message.vue';
 export { default as EmptyState } from '@/package/components/empty-state.vue';
 export { default as Switch } from '@/package/components/switch.vue';
 export { default as Popover } from '@/package/components/popover.vue';
 export { default as Modal } from '@/package/components/modal.vue';
+export { default as DynamicDialog } from '@/package/components/dynamic-dialog.vue';
 export { default as ConfirmDialog } from '@/package/components/confirm-dialog.vue';
+export { default as ConfirmPopup } from '@/package/components/confirm-popup.vue';
 export { default as Drawer } from '@/package/components/drawer.vue';
 export { default as Sidebar } from '@/package/components/sidebar.vue';
 export { default as Dropdown } from '@/package/components/dropdown.vue';
@@ -85,6 +97,11 @@ export { default as Progress } from '@/package/components/progress.vue';
 export { default as Badge } from '@/package/components/badge.vue';
 export { default as Chip } from '@/package/components/chip.vue';
 export { default as FilterChips } from '@/package/components/filter-chips.vue';
+export { default as AdvancedFilterPanel } from '@/package/components/advanced-filter-panel.vue';
+export { default as QueryBuilder } from '@/package/components/query-builder.vue';
+export { default as SavedViewsManager } from '@/package/components/saved-views-manager.vue';
+export { default as DataTableToolbar } from '@/package/components/data-table-toolbar.vue';
+export { default as BulkActionBar } from '@/package/components/bulk-action-bar.vue';
 export { default as Avatar } from '@/package/components/avatar.vue';
 export { default as Spinner } from '@/package/components/spinner.vue';
 export { default as ScrollPanel } from '@/package/components/scroll-panel.vue';
@@ -101,11 +118,20 @@ export { default as Stepper } from '@/package/components/stepper.vue';
 export { default as Wizard } from '@/package/components/wizard.vue';
 export { default as WizardStep } from '@/package/components/wizard-step.vue';
 export { default as Timeline } from '@/package/components/timeline.vue';
+export { default as ActivityFeed } from '@/package/components/activity-feed.vue';
+export { default as AuditLogViewer } from '@/package/components/audit-log-viewer.vue';
+export { default as CommentThread } from '@/package/components/comment-thread.vue';
+export { default as MemberPicker } from '@/package/components/member-picker.vue';
+export { default as PermissionMatrix } from '@/package/components/permission-matrix.vue';
+export { default as KPIStatCard } from '@/package/components/kpi-stat-card.vue';
+export { default as MeterGroup } from '@/package/components/meter-group.vue';
+export { default as OverlayBadge } from '@/package/components/overlay-badge.vue';
 export { default as Rating } from '@/package/components/rating.vue';
 export { default as Tree } from '@/package/components/tree.vue';
 export { default as OrgChart } from '@/package/components/org-chart.vue';
 export { default as TreeTable } from '@/package/components/tree-table.vue';
 export { default as TreeSelect } from '@/package/components/tree-select.vue';
+export { default as TieredMenu } from '@/package/components/tiered-menu.vue';
 export { default as Breadcrumbs } from '@/package/components/breadcrumbs.vue';
 export { default as Divider } from '@/package/components/divider.vue';
 export { default as Dock } from '@/package/components/dock.vue';
@@ -139,12 +165,62 @@ export type {
     ChartData,
     ChartType,
 } from '@/package/components/chart-adapter';
+export { createCodeMirrorAdapter, createMonacoAdapter } from '@/package/components/code-editor-adapter';
+export type {
+    CodeEditorAdapter,
+    CodeEditorAdapterInstance,
+    CodeEditorConfig,
+} from '@/package/components/code-editor-adapter';
 export type { TimelineItem } from '@/package/components/timeline.vue';
+export type { ActivityFeedActor, ActivityFeedItem } from '@/package/components/activity-feed.vue';
+export type { AuditLogActor, AuditLogEntry } from '@/package/components/audit-log-viewer.vue';
+export type { CommentThreadAuthor, CommentThreadItem } from '@/package/components/comment-thread.vue';
+export type { MemberPickerItem } from '@/package/components/member-picker.vue';
+export type { FileManagerItem } from '@/package/components/file-manager.vue';
+export type { SchedulerEvent, SchedulerResource } from '@/package/components/scheduler.vue';
+export type { InfiniteScrollLoadPayload, InfiniteScrollLoadTrigger } from '@/package/components/infinite-scroll.vue';
+export type {
+    PermissionMatrixCapability,
+    PermissionMatrixRole,
+    PermissionMatrixState,
+    PermissionMatrixValue,
+} from '@/package/components/permission-matrix.vue';
+export type { MeterGroupItem, MeterGroupThresholds } from '@/package/components/meter-group.vue';
+export type {
+    OverlayBadgeBinding,
+    OverlayBadgeOptions,
+    OverlayBadgePosition,
+    OverlayBadgeSeverity,
+    OverlayBadgeValue,
+} from '@/package/components/overlay-badge-utils';
 export type { TerminalEntry } from '@/package/components/terminal.vue';
 export type { TourStep } from '@/package/components/tour.vue';
 export type { WizardStepItem } from '@/package/components/wizard.vue';
 export type { NotificationCenterItem } from '@/package/components/notification-center.vue';
 export type { KanbanBoardItem, KanbanColumn } from '@/package/components/kanban-board.vue';
+export type {
+    AdvancedFilterField,
+    AdvancedFilterFieldOption,
+    AdvancedFilterFieldType,
+    AdvancedFilterPanelQueryBuilderField,
+    AdvancedFilterPanelQueryPayload,
+    AdvancedFilterPanelState,
+    AdvancedFilterPreset,
+} from '@/package/components/advanced-filter-panel-types';
+export type { SavedViewItem } from '@/package/components/saved-views-manager-types';
+export type { DataTableToolbarDensity, DataTableToolbarOption } from '@/package/components/data-table-toolbar-types';
+export type { BulkActionBarAction, BulkActionBarUndoPayload } from '@/package/components/bulk-action-bar-types';
+export type { CascadeSelectItem } from '@/package/components/cascade-select-types';
+export type {
+    QueryBuilderCombinator,
+    QueryBuilderField,
+    QueryBuilderFieldOption,
+    QueryBuilderFieldType,
+    QueryBuilderGroupNode,
+    QueryBuilderNode,
+    QueryBuilderOperator,
+    QueryBuilderRuleNode,
+} from '@/package/components/query-builder-types';
 // services
 export { createDialogService, dialogService } from '@/package/services/dialog-service';
 export type {
@@ -153,6 +229,14 @@ export type {
     DialogServiceHandle,
     DialogServiceOpenOptions,
 } from '@/package/services/dialog-service';
+export { createDynamicDialogService, dynamicDialogService } from '@/package/services/dynamic-dialog-service';
+export type {
+    DynamicDialogEntry,
+    DynamicDialogHandle,
+    DynamicDialogModalOptions,
+    DynamicDialogOpenOptions,
+    DynamicDialogService,
+} from '@/package/services/dynamic-dialog-service';
 export { createConfirmService, confirmService } from '@/package/services/confirm-service';
 export type {
     ConfirmService,
@@ -160,6 +244,8 @@ export type {
     ConfirmServiceHandle,
     ConfirmServiceOptions,
 } from '@/package/services/confirm-service';
+// directives
+export { vOverlayBadge } from '@/package/directives/overlay-badge';
 // config
 export {
     default as VueForge,

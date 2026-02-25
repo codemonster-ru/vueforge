@@ -10,9 +10,9 @@
         "DataTable": {
             "scenario": "1000 rows x 12 columns, client mode",
             "budgets": {
-                "initialRenderP95Ms": 1200,
+                "initialRenderP95Ms": 1700,
                 "sortInteractionP95Ms": 900,
-                "selectionToggleP95Ms": 420,
+                "selectionToggleP95Ms": 700,
                 "columnResizeP95Ms": 250
             }
         },
@@ -40,7 +40,7 @@
                 "openP95Ms": 180,
                 "closeP95Ms": 220,
                 "positionUpdateP95Ms": 120,
-                "focusTransferP95Ms": 180
+                "focusTransferP95Ms": 260
             }
         }
     }

@@ -1,0 +1,46 @@
+export default {
+    gap: '0.5rem',
+    paddingX: '0.625rem',
+    paddingY: '0.4rem',
+    borderRadius: 'var(--vf-radii-sm)',
+    borderColor: 'rgba(var(--vf-gray-500-rgb), 0.35)',
+    backgroundColor: 'rgba(var(--vf-gray-500-rgb), 0.12)',
+    textColor: 'var(--vf-text-color)',
+    iconColor: 'currentColor',
+    iconSize: '0.875rem',
+    fontSize: '0.8125rem',
+    lineHeight: '1.3',
+    bodyGap: '0.15rem',
+    titleFontSize: '0.8125rem',
+    titleFontWeight: '600',
+    info: {
+        backgroundColor: 'rgba(var(--vf-blue-600-rgb), 0.12)',
+        borderColor: 'rgba(var(--vf-blue-600-rgb), 0.38)',
+        textColor: 'var(--vf-text-color)',
+    },
+    success: {
+        backgroundColor: 'rgba(var(--vf-green-600-rgb), 0.14)',
+        borderColor: 'rgba(var(--vf-green-600-rgb), 0.42)',
+        textColor: 'var(--vf-text-color)',
+    },
+    warn: {
+        backgroundColor: 'rgba(var(--vf-yellow-600-rgb), 0.18)',
+        borderColor: 'rgba(var(--vf-yellow-600-rgb), 0.5)',
+        textColor: 'var(--vf-text-color)',
+    },
+    danger: {
+        backgroundColor: 'rgba(var(--vf-red-600-rgb), 0.14)',
+        borderColor: 'rgba(var(--vf-red-600-rgb), 0.45)',
+        textColor: 'var(--vf-text-color)',
+    },
+    small: {
+        fontSize: '0.75rem',
+        paddingX: '0.5rem',
+        paddingY: '0.3rem',
+    },
+    large: {
+        fontSize: '0.875rem',
+        paddingX: '0.75rem',
+        paddingY: '0.5rem',
+    },
+};

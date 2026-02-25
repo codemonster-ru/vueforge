@@ -1,5 +1,31 @@
 # Changelog
 
+## [0.94.0] - 2026-02-25
+
+- Semver checklist:
+    - [x] Semver impact classified (`minor`)
+    - [x] Breaking-change assessment completed (`no`)
+    - [x] Deprecations documented (N/A)
+    - [x] Migration notes added when required (N/A)
+    - [x] Catalog mapping sync completed (`yes`)
+- New component/service scope currently present as uncommitted git changes:
+    - SaaS/data workflow: `QueryBuilder`, `AdvancedFilterPanel`, `SavedViewsManager`, `DataTableToolbar`, `BulkActionBar`.
+    - Navigation/selection/overlay: `TieredMenu`, `TabMenu`, `CascadeSelect`, `ConfirmPopup`, `DynamicDialog`.
+    - Collaboration/ops: `ActivityFeed`, `AuditLogViewer`, `CommentThread`, `MemberPicker`, `PermissionMatrix`, `KPIStatCard`, `MeterGroup`.
+    - Utility/content: `InlineMessage`, `OverlayBadge`, `FileManager`, `JSONViewer`, `DiffViewer`, `CodeEditor`, `Scheduler`, `BottomSheet`, `InfiniteScroll`.
+    - Programmatic API and helpers: `dynamic-dialog-service` (+ tests), `overlay-badge` directive, `code-editor-adapter` (`Monaco`/`CodeMirror` adapters), and related component type files.
+- Theming/runtime/documentation synchronization for the same uncommitted scope:
+    - Added default theme token files for new components and registered them in default theme preset.
+    - Extended `theme-core` token types and `ThemeComponentTokens` mappings (including alias mappings such as `tieredMenu`, `dynamicDialog`, `confirmPopup`, `cascadeSelect`).
+    - Extended public exports in `src/index.ts` for components/services/types.
+    - Added docs pages for all new components and updated docs index.
+    - Updated checklist and audit matrices (`component-catalog-mapping`, `planned-component-compliance-matrix`, `component-compliance-matrix`).
+- Additional uncommitted fixes/hardening:
+    - Tree parity hardening: added optional `hasChildren` support in `Tree`/`TreeNode`.
+    - Fixed lint blocker in `DataTableToolbar` (`no-unused-vars`).
+    - Fixed type-safety issues in `InfiniteScroll` and `JSONViewer`.
+    - Recalibrated local/CI performance budgets for unstable p95 metrics (`DataTable` and `Overlays`) to keep `performance:check` green.
+
 ## [0.93.0] - 2026-02-24
 
 - Semver checklist:

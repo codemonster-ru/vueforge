@@ -1,6 +1,6 @@
 # Component Catalog Mapping
 
-Last updated: 2026-02-24
+Last updated: 2026-02-25
 
 Scope: parity, SaaS, layout, visualization, and catalog-delta coverage tracked in `CHECKLIST.md` (`P1.11`-`P1.16`).
 
@@ -14,16 +14,16 @@ Status legend:
 | --------------------- | -------------- | ----------- | ------------ |
 | DialogService         | Both           | Yes         | Yes          |
 | ConfirmService        | Vuetify        | Yes         | Yes          |
-| ConfirmPopup          | Both           | No          | Yes          |
-| DynamicDialog         | Both           | No          | Yes          |
+| ConfirmPopup          | Both           | Yes         | Yes          |
+| DynamicDialog         | Both           | Yes         | Yes          |
 | TreeTable             | Both           | Yes         | Yes          |
 | DataView              | Both           | Yes         | Yes          |
 | Listbox               | Both           | Yes         | Yes          |
 | MenuBar               | Both           | Yes         | Yes          |
 | MegaMenu              | Both           | Yes         | Yes          |
 | PanelMenu             | Both           | Yes         | Yes          |
-| TieredMenu            | Both           | No          | Yes          |
-| TabMenu               | Both           | No          | Yes          |
+| TieredMenu            | Both           | Yes         | Yes          |
+| TabMenu               | Both           | Yes         | Yes          |
 | Carousel              | Both           | Yes         | Yes          |
 | SpeedDial             | Both           | Yes         | Yes          |
 | Chart                 | Both           | Yes         | Yes          |
@@ -41,26 +41,27 @@ Status legend:
 | OrderList             | Both           | Yes         | Yes          |
 | OrgChart              | Both           | Yes         | Yes          |
 | Icon                  | Vuetify        | Yes         | Yes          |
-| MemberPicker          | Vuetify        | No          | Yes          |
-| QueryBuilder          | Vuetify        | No          | Yes          |
-| AdvancedFilterPanel   | Vuetify        | No          | Yes          |
-| SavedViewsManager     | Vuetify        | No          | Yes          |
-| DataTableToolbar      | Vuetify        | No          | Yes          |
-| BulkActionBar         | Vuetify        | No          | Yes          |
-| ActivityFeed          | Vuetify        | No          | Yes          |
-| AuditLogViewer        | Vuetify        | No          | Yes          |
-| CommentThread         | Vuetify        | No          | Yes          |
-| PermissionMatrix      | Vuetify        | No          | Yes          |
-| KPIStatCard           | Vuetify        | No          | Yes          |
-| FileManager           | Vuetify        | No          | Yes          |
-| JSONViewer            | Vuetify        | No          | Yes          |
-| DiffViewer            | Vuetify        | No          | Yes          |
-| CodeEditor            | Vuetify        | No          | Yes          |
-| Scheduler             | Vuetify        | No          | Yes          |
-| BottomSheet           | Vuetify        | No          | Yes          |
-| InfiniteScroll        | Vuetify        | No          | Yes          |
-| OverlayBadge          | Both           | No          | Yes          |
-| InlineMessage         | Both           | No          | Yes          |
+| MemberPicker          | Vuetify        | Yes         | Yes          |
+| QueryBuilder          | Vuetify        | Yes         | Yes          |
+| AdvancedFilterPanel   | Vuetify        | Yes         | Yes          |
+| SavedViewsManager     | Vuetify        | Yes         | Yes          |
+| DataTableToolbar      | Vuetify        | Yes         | Yes          |
+| BulkActionBar         | Vuetify        | Yes         | Yes          |
+| ActivityFeed          | Vuetify        | Yes         | Yes          |
+| AuditLogViewer        | Vuetify        | Yes         | Yes          |
+| CommentThread         | Vuetify        | Yes         | Yes          |
+| PermissionMatrix      | Vuetify        | Yes         | Yes          |
+| KPIStatCard           | Vuetify        | Yes         | Yes          |
+| MeterGroup            | Vuetify        | Yes         | Yes          |
+| FileManager           | Vuetify        | Yes         | Yes          |
+| JSONViewer            | Vuetify        | Yes         | Yes          |
+| DiffViewer            | Vuetify        | Yes         | Yes          |
+| CodeEditor            | Vuetify        | Yes         | Yes          |
+| Scheduler             | Vuetify        | Yes         | Yes          |
+| BottomSheet           | Vuetify        | Yes         | Yes          |
+| InfiniteScroll        | Vuetify        | Yes         | Yes          |
+| OverlayBadge          | Both           | Yes         | Yes          |
+| InlineMessage         | Both           | Yes         | Yes          |
 | Message               | Both           | Yes         | Yes          |
 | Sidebar               | Both           | Yes         | Yes          |
 | TreeView              | Vuetify        | No          | Yes          |
@@ -71,7 +72,7 @@ Status legend:
 | Knob                  | Both           | Yes         | Yes          |
 | Terminal              | Both           | Yes         | Yes          |
 | Inplace               | Both           | Yes         | Yes          |
-| CascadeSelect         | Both           | No          | Yes          |
+| CascadeSelect         | Both           | Yes         | Yes          |
 | VirtualScroller       | Both           | Yes         | Yes          |
 | ThemeProvider         | Vuetify        | No          | Yes          |
 | DefaultsProvider      | Vuetify        | No          | Yes          |

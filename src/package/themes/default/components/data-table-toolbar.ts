@@ -1,0 +1,21 @@
+export default {
+    gap: '0.8rem',
+    padding: '0.75rem',
+    borderColor: 'var(--vf-border-color)',
+    borderRadius: 'var(--vf-radii-md)',
+    backgroundColor: 'var(--vf-bg-color)',
+    textColor: 'var(--vf-text-color)',
+    secondaryTextColor: 'var(--vf-secondary-text-color)',
+    rowGap: '0.55rem',
+    labelFontSize: '0.78rem',
+    controlHeight: '2rem',
+    controlBorderColor: 'rgba(var(--vf-gray-500-rgb), 0.36)',
+    controlBorderRadius: 'var(--vf-radii-sm)',
+    controlBackgroundColor: 'var(--vf-bg-color)',
+    badgeBackgroundColor: 'var(--vf-blue-600)',
+    badgeTextColor: 'var(--vf-white)',
+    focusBorderColor: 'var(--vf-primary-color)',
+    focusRing: 'var(--vf-focus-ring-shadow)',
+    disabledOpacity: 'var(--vf-states-disabled-opacity)',
+};
+

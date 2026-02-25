@@ -95,7 +95,7 @@ defineSlots<{
     label?: (props: TreeLabelSlotProps) => unknown;
 }>();
 
-const hasChildren = computed(() => !!props.node.children?.length);
+const hasChildren = computed(() => Boolean(props.node.hasChildren) || !!props.node.children?.length);
 const disabledNode = computed(() => props.isDisabled(props.node));
 const selected = computed(() => props.isSelected(props.node.key));
 const expanded = computed(() => props.isExpanded(props.node.key));
