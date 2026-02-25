@@ -144,4 +144,78 @@ describe('NotificationCenter', () => {
 
         expect(wrapper.emitted('update:modelValue')?.at(-1)).toEqual([false]);
     });
+
+    it('supports read and unread filters', async () => {
+        const wrapper = mountCenter({
+            props: {
+                modelValue: true,
+                items,
+                showFilters: true,
+            },
+        });
+
+        await nextTick();
+        const filters = wrapper.findAll('.vf-notification-center__filter');
+        await filters[1].trigger('click');
+        await nextTick();
+
+        expect(wrapper.findAll('.vf-notification-center__item')).toHaveLength(1);
+        expect(wrapper.find('.vf-notification-center__item-title').text()).toContain('Build completed');
+        expect(wrapper.emitted('update:filter')?.at(-1)).toEqual(['unread']);
+    });
+
+    it('supports grouped rendering and item action links', async () => {
+        const wrapper = mountCenter({
+            props: {
+                modelValue: true,
+                groupBy: 'group',
+                items: [
+                    { id: 1, title: 'Deploy finished', read: false, group: 'Operations', actionLabel: 'Open runbook' },
+                    { id: 2, title: 'Invoice failed', read: false, group: 'Billing', actionLabel: 'Open invoice' },
+                ],
+            },
+        });
+
+        await nextTick();
+        const groupLabels = wrapper.findAll('.vf-notification-center__group-label').map(node => node.text());
+
+        expect(groupLabels).toEqual(['Operations', 'Billing']);
+
+        await wrapper.find('.vf-notification-center__action-link').trigger('click');
+        expect(wrapper.emitted('action')?.length).toBe(1);
+    });
+
+    it('hydrates and persists read/filter state when persistence is enabled', async () => {
+        window.localStorage.setItem(
+            'vf-notification-center',
+            JSON.stringify({
+                filter: 'unread',
+                readMap: { '1': true, '2': false },
+                updatedAt: '2026-01-01T00:00:00.000Z',
+            }),
+        );
+
+        const wrapper = mountCenter({
+            props: {
+                modelValue: true,
+                items,
+                showFilters: true,
+                persistKey: 'vf-notification-center',
+                persistReadState: true,
+                persistFilterState: true,
+            },
+        });
+
+        await nextTick();
+        expect(wrapper.findAll('.vf-notification-center__item')).toHaveLength(1);
+        expect(wrapper.find('.vf-notification-center__item-title').text()).toContain('New comment');
+
+        await wrapper.find('.vf-notification-center__toggle').trigger('click');
+        expect(wrapper.emitted('persist')?.length).toBeGreaterThan(1);
+
+        const savedRaw = window.localStorage.getItem('vf-notification-center');
+        const saved = savedRaw ? (JSON.parse(savedRaw) as { readMap: Record<string, boolean> }) : null;
+
+        expect(saved?.readMap?.['2']).toBe(true);
+    });
 });

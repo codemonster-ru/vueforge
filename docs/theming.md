@@ -117,3 +117,4 @@ updateTheme({
 
 - Components catalog: [`components/README.md`](components/README.md)
 - `Container` tokens example: [`components/container.md`](components/container.md)
+- Layout breakpoint/spacing contract: [`guides/layout-breakpoint-spacing-contracts.md`](guides/layout-breakpoint-spacing-contracts.md)

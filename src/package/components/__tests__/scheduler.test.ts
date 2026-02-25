@@ -79,4 +79,25 @@ describe('Scheduler', () => {
 
         expect(topA).not.toEqual(topB);
     });
+
+    it('formats slot labels with locale and timezone options', () => {
+        const wrapper = mount(Scheduler, {
+            props: {
+                resources: [resources[0]],
+                events: [],
+                startHour: 8,
+                endHour: 9,
+                slotMinutes: 60,
+                locale: 'en-US',
+                timeZone: 'UTC',
+            },
+        });
+        const expected = new Intl.DateTimeFormat('en-US', {
+            hour: 'numeric',
+            minute: '2-digit',
+            timeZone: 'UTC',
+        }).format(new Date(2026, 0, 1, 8, 0, 0, 0));
+
+        expect(wrapper.find('.vf-scheduler__slot-label').text()).toBe(expected);
+    });
 });

@@ -11,6 +11,7 @@ Support filtering, navigation, and bulk workflows used in core SaaS backoffice s
 - `modelValue?: string | number | Array<string | number>` (v-model)
 - `expandedKeys?: Array<string | number>` (`v-model:expandedKeys`)
 - `multiple?: boolean` (default `false`)
+- `selectionMode?: 'none' | 'single' | 'multiple'` (optional explicit selection behavior)
 - `selectable?: boolean` (default `true`)
 - `expandOnClick?: boolean` (default `true`)
 - `disabled?: boolean`
@@ -18,6 +19,14 @@ Support filtering, navigation, and bulk workflows used in core SaaS backoffice s
 - `variant?: 'filled' | 'outlined'` (default `filled`)
 - `ariaLabel?: string`
 - `ariaLabelledby?: string`
+- `virtualized?: boolean` (default `false`)
+- `virtualizationThreshold?: number` (default `120`)
+- `itemHeight?: number` (default `32`)
+- `virtualHeight?: number` (default `360`)
+- `overscan?: number` (default `4`)
+- `loadingKeys?: Array<string | number>` (default `[]`)
+- `loadOnExpand?: boolean` (default `false`)
+- `asyncBranchLabel?: string` (default `Loading...`)
 
 ## Events
 
@@ -26,6 +35,7 @@ Support filtering, navigation, and bulk workflows used in core SaaS backoffice s
 - `change`
 - `toggle`
 - `nodeClick`
+- `loadChildren` - payload: `(key, node, event)`
 
 ## Slots
 
@@ -70,6 +80,23 @@ const items = [
 
 ```vue
 <Tree :items="largeTreeItems" :expanded-keys="['group-0', 'group-1', 'group-2']" aria-label="Project structure" />
+```
+
+### Virtualized TreeView with async branch loading
+
+```vue
+<Tree
+    :items="items"
+    :expanded-keys="expandedKeys"
+    :loading-keys="loadingKeys"
+    virtualized
+    :virtualization-threshold="150"
+    :item-height="30"
+    :virtual-height="360"
+    load-on-expand
+    selection-mode="multiple"
+    @load-children="onLoadChildren"
+/>
 ```
 
 ## Theming

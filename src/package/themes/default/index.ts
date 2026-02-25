@@ -52,6 +52,13 @@ import contextMenu from './components/context-menu';
 import commandPalette from './components/command-palette';
 import notificationCenter from './components/notification-center';
 import appShell from './components/app-shell';
+import appBar from './components/app-bar';
+import navigationRail from './components/navigation-rail';
+import footer from './components/footer';
+import pageLayout from './components/page-layout';
+import splitLayout from './components/split-layout';
+import resizableSidebar from './components/resizable-sidebar';
+import stickyRegion from './components/sticky-region';
 import blockui from './components/block-ui';
 import kanbanBoard from './components/kanban-board';
 import select from './components/select';
@@ -188,6 +195,13 @@ export default {
         commandPalette,
         notificationCenter,
         appShell,
+        appBar,
+        navigationRail,
+        footer,
+        pageLayout,
+        splitLayout,
+        resizableSidebar,
+        stickyRegion,
         blockui,
         kanbanBoard,
         select,

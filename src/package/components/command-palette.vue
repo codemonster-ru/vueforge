@@ -19,6 +19,20 @@
                         :placeholder="resolvedPlaceholder"
                         @input="onInput"
                     />
+                    <div v-if="showScopeTabs" class="vf-command-palette__scopes" role="tablist">
+                        <button
+                            v-for="scopeOption in resolvedScopeOptions"
+                            :key="scopeOption.id"
+                            type="button"
+                            class="vf-command-palette__scope"
+                            :class="{ 'is-active': scopeOption.id === activeScope }"
+                            role="tab"
+                            :aria-selected="scopeOption.id === activeScope ? 'true' : 'false'"
+                            @click="setScope(scopeOption.id)"
+                        >
+                            {{ scopeOption.label }}
+                        </button>
+                    </div>
                 </div>
                 <div class="vf-command-palette__list" role="listbox">
                     <template v-if="groupedItems.length">
@@ -34,12 +48,12 @@
                                 :key="item._key"
                                 class="vf-command-palette__item"
                                 :class="{
-                                    'is-active': item._index === activeIndex,
+                                    'is-active': item._key === activeKey,
                                     'is-disabled': item.disabled,
                                 }"
                                 type="button"
                                 role="option"
-                                :aria-selected="item._index === activeIndex"
+                                :aria-selected="item._key === activeKey"
                                 :disabled="item.disabled"
                                 @click="selectItem(item, $event)"
                             >
@@ -52,6 +66,9 @@
                                 <span v-if="item.description" class="vf-command-palette__item-description">{{
                                     item.description
                                 }}</span>
+                                <span v-if="item.entityType" class="vf-command-palette__item-entity">
+                                    {{ item.entityType }}
+                                </span>
                             </button>
                         </div>
                     </template>
@@ -66,25 +83,35 @@
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { useLocaleText } from '@/package/config/locale-text';
 
-interface CommandPaletteItem {
+export interface CommandPaletteItem {
     label: string;
     value?: string | number;
     description?: string;
     shortcut?: string;
     group?: string;
+    scope?: string;
     disabled?: boolean;
     keywords?: Array<string>;
+    entityType?: string;
+    entityId?: string | number;
+    entityKeywords?: Array<string>;
     command?: () => void;
 }
 
 interface NormalizedCommandPaletteItem extends CommandPaletteItem {
-    _index: number;
+    _index: number; // stable original order index for deterministic fallback sorting
     _key: string;
 }
 
 interface CommandPaletteGroup {
     name: string;
     items: Array<NormalizedCommandPaletteItem>;
+}
+
+export interface CommandPaletteScope {
+    id: string;
+    label: string;
+    aliases?: Array<string>;
 }
 
 interface Props {
@@ -99,6 +126,13 @@ interface Props {
     filter?: boolean;
     enableShortcut?: boolean;
     shortcutKey?: string;
+    scopes?: Array<CommandPaletteScope>;
+    scope?: string;
+    showScopeTabs?: boolean;
+    showRecent?: boolean;
+    recentLimit?: number;
+    recentStorageKey?: string;
+    entitySearch?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -113,23 +147,88 @@ const props = withDefaults(defineProps<Props>(), {
     filter: true,
     enableShortcut: true,
     shortcutKey: 'k',
+    scopes: () => [],
+    scope: 'all',
+    showScopeTabs: true,
+    showRecent: true,
+    recentLimit: 6,
+    recentStorageKey: undefined,
+    entitySearch: true,
 });
 
-const emits = defineEmits(['update:modelValue', 'open', 'close', 'select', 'search']);
+const emits = defineEmits([
+    'update:modelValue',
+    'update:scope',
+    'update:recent',
+    'open',
+    'close',
+    'select',
+    'search',
+    'scopeChange',
+    'entitySearch',
+]);
 defineOptions({ name: 'VfCommandPalette' });
 
 const panel = ref<HTMLElement | null>(null);
 const inputRef = ref<HTMLInputElement | null>(null);
 const open = ref(false);
 const query = ref('');
-const activeIndex = ref(-1);
+const activeKey = ref<string | null>(null);
+const activeScope = ref<string>('all');
+const recentKeys = ref<Array<string>>([]);
 const previousActiveElement = ref<HTMLElement | null>(null);
 const localeText = useLocaleText();
 const resolvedEmptyText = computed(() => props.emptyText ?? localeText.commandPalette.emptyText);
 const resolvedPlaceholder = computed(() => props.placeholder ?? localeText.commandPalette.placeholder);
 const resolvedAriaLabel = computed(() => props.ariaLabel ?? localeText.commandPalette.ariaLabel);
+const resolvedScopeAllLabel = computed(() => localeText.commandPalette.scopeAllLabel);
+const resolvedRecentLabel = computed(() => localeText.commandPalette.recentLabel);
+const showScopeTabs = computed(() => props.showScopeTabs && resolvedScopeOptions.value.length > 1);
 
 const isControlled = computed(() => props.modelValue !== undefined);
+const canPersistRecent = computed(() => typeof window !== 'undefined' && !!props.recentStorageKey);
+
+const resolvedScopeOptions = computed<Array<CommandPaletteScope>>(() => [
+    { id: 'all', label: resolvedScopeAllLabel.value },
+    ...(props.scopes ?? []),
+]);
+
+const parseScopedQuery = () => {
+    const raw = query.value.trim();
+
+    if (!raw) {
+        return { scopeFromQuery: null as string | null, term: '' };
+    }
+
+    const match = raw.match(/^([^:\s]+):(.*)$/);
+
+    if (!match) {
+        return { scopeFromQuery: null as string | null, term: raw };
+    }
+
+    const prefix = match[1].toLowerCase();
+    const term = match[2].trim();
+    const hit = props.scopes.find(scopeOption => {
+        const aliases = [scopeOption.id, ...(scopeOption.aliases ?? [])].map(entry => entry.toLowerCase());
+        return aliases.includes(prefix);
+    });
+
+    if (!hit) {
+        return { scopeFromQuery: null as string | null, term: raw };
+    }
+
+    return { scopeFromQuery: hit.id, term };
+};
+
+const effectiveScope = computed(() => {
+    const parsed = parseScopedQuery();
+
+    if (parsed.scopeFromQuery) {
+        return parsed.scopeFromQuery;
+    }
+
+    return activeScope.value;
+});
 
 const normalizedItems = computed<Array<NormalizedCommandPaletteItem>>(() => {
     return props.items.map((item, index) => {
@@ -145,27 +244,76 @@ const normalizedItems = computed<Array<NormalizedCommandPaletteItem>>(() => {
 });
 
 const filteredItems = computed<Array<NormalizedCommandPaletteItem>>(() => {
+    const scoped = normalizedItems.value.filter(item => {
+        if (effectiveScope.value === 'all') {
+            return true;
+        }
+
+        return (item.scope ?? 'all') === effectiveScope.value;
+    });
+
     if (!props.filter) {
-        return normalizedItems.value;
+        return scoped;
     }
 
-    const term = query.value.trim().toLowerCase();
+    const parsed = parseScopedQuery();
+    const term = parsed.term.toLowerCase();
 
     if (!term) {
-        return normalizedItems.value;
+        return scoped;
     }
 
-    return normalizedItems.value.filter(item => {
-        const text = [item.label, item.description ?? '', ...(item.keywords ?? [])].join(' ').toLowerCase();
+    return scoped.filter(item => {
+        const text = [
+            item.label,
+            item.description ?? '',
+            item.entityType ?? '',
+            item.entityId !== undefined ? String(item.entityId) : '',
+            ...(item.keywords ?? []),
+            ...(item.entityKeywords ?? []),
+        ]
+            .join(' ')
+            .toLowerCase();
 
         return text.includes(term);
     });
 });
 
+const recentItems = computed<Array<NormalizedCommandPaletteItem>>(() => {
+    if (!props.showRecent || query.value.trim() || !recentKeys.value.length) {
+        return [];
+    }
+
+    const ordered: Array<NormalizedCommandPaletteItem> = [];
+
+    for (const key of recentKeys.value) {
+        const item = filteredItems.value.find(loopItem => loopItem._key === key && !loopItem.disabled);
+
+        if (item) {
+            ordered.push(item);
+        }
+    }
+
+    return ordered;
+});
+
 const groupedItems = computed<Array<CommandPaletteGroup>>(() => {
     const groups = new Map<string, Array<NormalizedCommandPaletteItem>>();
+    const recentKeySet = new Set(recentItems.value.map(item => item._key));
+    const out: Array<CommandPaletteGroup> = [];
+
+    if (recentItems.value.length) {
+        out.push({
+            name: resolvedRecentLabel.value,
+            items: recentItems.value,
+        });
+    }
 
     for (const item of filteredItems.value) {
+        if (recentKeySet.has(item._key)) {
+            continue;
+        }
+
         const group = item.group ?? '';
 
         if (!groups.has(group)) {
@@ -175,12 +323,17 @@ const groupedItems = computed<Array<CommandPaletteGroup>>(() => {
         groups.get(group)?.push(item);
     }
 
-    return Array.from(groups.entries()).map(([name, items]) => ({ name, items }));
+    out.push(...Array.from(groups.entries()).map(([name, items]) => ({ name, items })));
+
+    return out;
 });
 
-const enabledItems = computed<Array<NormalizedCommandPaletteItem>>(() => {
-    return filteredItems.value.filter(item => !item.disabled);
-});
+const visibleItems = computed<Array<NormalizedCommandPaletteItem>>(() =>
+    groupedItems.value.flatMap(group => group.items),
+);
+const enabledItems = computed<Array<NormalizedCommandPaletteItem>>(() =>
+    visibleItems.value.filter(item => !item.disabled),
+);
 
 const focusInput = async () => {
     await nextTick();
@@ -191,7 +344,7 @@ const focusInput = async () => {
 const resetActiveIndex = () => {
     const first = enabledItems.value[0];
 
-    activeIndex.value = first ? first._index : -1;
+    activeKey.value = first ? first._key : null;
 };
 
 const setOpen = (value: boolean) => {
@@ -231,12 +384,38 @@ const togglePalette = async () => {
 
 const onInput = (event: Event) => {
     const target = event.target as HTMLInputElement;
+    const nextQuery = target.value;
 
-    query.value = target.value;
+    query.value = nextQuery;
 
-    emits('search', query.value);
+    emits('search', nextQuery);
+    if (props.entitySearch) {
+        const parsed = parseScopedQuery();
+        emits('entitySearch', parsed.term.toLowerCase(), effectiveScope.value);
+    }
 
     resetActiveIndex();
+};
+
+const saveRecent = () => {
+    const next = recentKeys.value.slice(0, props.recentLimit);
+    emits('update:recent', next);
+
+    if (canPersistRecent.value) {
+        window.localStorage.setItem(props.recentStorageKey as string, JSON.stringify(next));
+    }
+};
+
+const pushRecent = (item: NormalizedCommandPaletteItem) => {
+    if (!props.showRecent) {
+        return;
+    }
+
+    recentKeys.value = [item._key, ...recentKeys.value.filter(entry => entry !== item._key)].slice(
+        0,
+        props.recentLimit,
+    );
+    saveRecent();
 };
 
 const selectItem = (item: NormalizedCommandPaletteItem, event: Event) => {
@@ -251,6 +430,7 @@ const selectItem = (item: NormalizedCommandPaletteItem, event: Event) => {
     }
 
     emits('select', item, event);
+    pushRecent(item);
 
     if (props.closeOnSelect) {
         closePalette();
@@ -259,30 +439,41 @@ const selectItem = (item: NormalizedCommandPaletteItem, event: Event) => {
 
 const moveActive = (direction: 1 | -1) => {
     if (!enabledItems.value.length) {
-        activeIndex.value = -1;
+        activeKey.value = null;
 
         return;
     }
 
-    const currentIndex = enabledItems.value.findIndex(item => item._index === activeIndex.value);
+    const currentIndex = enabledItems.value.findIndex(item => item._key === activeKey.value);
     const startIndex = currentIndex >= 0 ? currentIndex : direction > 0 ? -1 : 0;
     const nextIndex = (startIndex + direction + enabledItems.value.length) % enabledItems.value.length;
 
-    activeIndex.value = enabledItems.value[nextIndex]._index;
+    activeKey.value = enabledItems.value[nextIndex]._key;
 };
 
 const selectActive = (event: KeyboardEvent) => {
-    if (activeIndex.value < 0) {
+    if (!activeKey.value) {
         return;
     }
 
-    const item = filteredItems.value.find(loopItem => loopItem._index === activeIndex.value);
+    const item = visibleItems.value.find(loopItem => loopItem._key === activeKey.value);
 
     if (!item) {
         return;
     }
 
     selectItem(item, event);
+};
+
+const setScope = (nextScope: string) => {
+    if (activeScope.value === nextScope) {
+        return;
+    }
+
+    activeScope.value = nextScope;
+    emits('update:scope', nextScope);
+    emits('scopeChange', nextScope);
+    resetActiveIndex();
 };
 
 const onPanelKeydown = (event: KeyboardEvent) => {
@@ -376,6 +567,16 @@ watch(
     { immediate: true },
 );
 
+watch(
+    () => props.scope,
+    value => {
+        if (value && value !== activeScope.value) {
+            activeScope.value = value;
+        }
+    },
+    { immediate: true },
+);
+
 watch(open, async value => {
     if (value) {
         emits('open');
@@ -395,15 +596,49 @@ watch(open, async value => {
 });
 
 watch(
-    () => filteredItems.value,
+    () => visibleItems.value,
     () => {
-        const activeExists = filteredItems.value.some(item => item._index === activeIndex.value && !item.disabled);
+        const activeExists = visibleItems.value.some(item => item._key === activeKey.value && !item.disabled);
 
         if (!activeExists) {
             resetActiveIndex();
         }
     },
     { deep: true },
+);
+
+watch(
+    () => normalizedItems.value.map(item => item._key),
+    keys => {
+        const keySet = new Set(keys);
+        recentKeys.value = recentKeys.value.filter(key => keySet.has(key));
+    },
+    { deep: true },
+);
+
+watch(
+    () => [props.recentStorageKey, props.showRecent],
+    () => {
+        if (!canPersistRecent.value || !props.showRecent) {
+            recentKeys.value = [];
+            return;
+        }
+
+        const raw = window.localStorage.getItem(props.recentStorageKey as string);
+
+        if (!raw) {
+            recentKeys.value = [];
+            return;
+        }
+
+        try {
+            const parsed = JSON.parse(raw) as Array<string>;
+            recentKeys.value = Array.isArray(parsed) ? parsed.filter(entry => typeof entry === 'string') : [];
+        } catch {
+            recentKeys.value = [];
+        }
+    },
+    { immediate: true },
 );
 
 onMounted(() => {
@@ -452,6 +687,30 @@ defineExpose({ open: openPalette, close: closePalette, toggle: togglePalette });
 
 .vf-command-palette__header {
     margin-bottom: var(--vf-command-palette-header-gap);
+}
+
+.vf-command-palette__scopes {
+    margin-top: 0.5rem;
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+}
+
+.vf-command-palette__scope {
+    border: var(--vf-border-width) solid var(--vf-command-palette-group-label-color);
+    border-radius: 999px;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    font-size: 0.75rem;
+    line-height: 1.2;
+    padding: 0.2rem 0.55rem;
+    cursor: pointer;
+}
+
+.vf-command-palette__scope.is-active {
+    border-color: var(--vf-command-palette-item-active-background-color);
+    background-color: var(--vf-command-palette-item-active-background-color);
 }
 
 .vf-command-palette__input {
@@ -535,6 +794,11 @@ defineExpose({ open: openPalette, close: closePalette, toggle: togglePalette });
 .vf-command-palette__item-description {
     color: var(--vf-command-palette-item-description-color);
     font-size: var(--vf-command-palette-item-description-font-size);
+}
+
+.vf-command-palette__item-entity {
+    color: var(--vf-command-palette-group-label-color);
+    font-size: 0.75rem;
 }
 
 .vf-command-palette__item:hover:not(.is-disabled),

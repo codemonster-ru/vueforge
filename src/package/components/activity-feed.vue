@@ -99,6 +99,7 @@ interface Props {
     groupBy?: GroupByMode;
     relativeTime?: boolean;
     locale?: string;
+    timeZone?: string;
     now?: DateLike | null;
     emptyText?: string;
     ariaLabel?: string;
@@ -109,6 +110,7 @@ const props = withDefaults(defineProps<Props>(), {
     groupBy: 'date',
     relativeTime: true,
     locale: 'en',
+    timeZone: undefined,
     now: null,
     emptyText: 'No activity yet.',
     ariaLabel: 'Activity feed',
@@ -145,6 +147,7 @@ const formatAbsoluteTime = (value?: DateLike | null) => {
     return date.toLocaleString(props.locale, {
         dateStyle: 'medium',
         timeStyle: 'short',
+        timeZone: props.timeZone,
     });
 };
 
@@ -195,9 +198,16 @@ const getDateKey = (value?: DateLike | null) => {
         return 'undated';
     }
 
-    const year = date.getFullYear().toString();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
+    const formatter = new Intl.DateTimeFormat('en-CA', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        timeZone: props.timeZone,
+    });
+    const parts = formatter.formatToParts(date);
+    const year = parts.find(part => part.type === 'year')?.value ?? '0000';
+    const month = parts.find(part => part.type === 'month')?.value ?? '00';
+    const day = parts.find(part => part.type === 'day')?.value ?? '00';
 
     return `${year}-${month}-${day}`;
 };
@@ -218,6 +228,7 @@ const formatGroupLabel = (item: ActivityFeedItem) => {
         month: 'short',
         day: 'numeric',
         year: 'numeric',
+        timeZone: props.timeZone,
     });
 };
 

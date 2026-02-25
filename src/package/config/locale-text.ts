@@ -49,6 +49,8 @@ export type LocaleTextSchema = {
         placeholder: string;
         emptyText: string;
         ariaLabel: string;
+        scopeAllLabel: string;
+        recentLabel: string;
     };
     notificationCenter: {
         title: string;
@@ -58,6 +60,9 @@ export type LocaleTextSchema = {
         closeLabel: string;
         readLabel: string;
         unreadLabel: string;
+        filterAllLabel: string;
+        filterUnreadLabel: string;
+        filterReadLabel: string;
     };
     virtualScroller: {
         ariaLabel: string;
@@ -128,6 +133,8 @@ const DEFAULT_LOCALE_TEXT: LocaleTextSchema = {
         placeholder: 'Type a command or search...',
         emptyText: 'No commands found',
         ariaLabel: 'Command palette',
+        scopeAllLabel: 'All',
+        recentLabel: 'Recent',
     },
     notificationCenter: {
         title: 'Notifications',
@@ -137,6 +144,9 @@ const DEFAULT_LOCALE_TEXT: LocaleTextSchema = {
         closeLabel: 'Close notifications',
         readLabel: 'Mark as read',
         unreadLabel: 'Mark as unread',
+        filterAllLabel: 'All',
+        filterUnreadLabel: 'Unread',
+        filterReadLabel: 'Read',
     },
     virtualScroller: {
         ariaLabel: 'Virtual list',

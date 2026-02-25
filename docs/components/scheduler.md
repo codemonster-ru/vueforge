@@ -14,6 +14,7 @@ Render resource timeline schedules for time-slot planning, booking, and operatio
 - `endHour?: number` (default `20`)
 - `slotMinutes?: number` (default `30`)
 - `locale?: string` (default `en`)
+- `timeZone?: string` (optional IANA timezone)
 - `disabled?: boolean` (default `false`)
 - `readonly?: boolean` (default `false`)
 - `ariaLabel?: string` (default `Scheduler timeline`)

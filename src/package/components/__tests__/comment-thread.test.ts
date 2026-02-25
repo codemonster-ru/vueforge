@@ -82,4 +82,21 @@ describe('CommentThread', () => {
 
         expect(wrapper.find('.vf-comment-thread__empty').text()).toContain('No thread yet');
     });
+
+    it('formats timestamps with explicit timezone', () => {
+        const wrapper = mount(CommentThread, {
+            props: {
+                items: [items[0]],
+                locale: 'en-US',
+                timeZone: 'UTC',
+            },
+        });
+        const expected = new Date('2026-02-24T09:00:00.000Z').toLocaleString('en-US', {
+            dateStyle: 'medium',
+            timeStyle: 'short',
+            timeZone: 'UTC',
+        });
+
+        expect(wrapper.find('.vf-comment-thread__time').text()).toBe(expected);
+    });
 });

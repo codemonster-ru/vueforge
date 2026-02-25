@@ -1,5 +1,43 @@
 <template>
     <div :class="getClass">
+        <div v-if="showOpsBar" class="vf-datatable__ops">
+            <div v-if="showSavedFiltersControl" class="vf-datatable__saved-filters">
+                <label class="vf-datatable__saved-filters-label">
+                    <span>{{ savedFiltersLabel }}</span>
+                    <select
+                        class="vf-datatable__saved-filters-select"
+                        :value="String(internalActiveSavedFilterId ?? '')"
+                        @change="onSavedFilterChange"
+                    >
+                        <option value="">{{ savedFiltersPlaceholder }}</option>
+                        <option
+                            v-for="entry in savedFilters"
+                            :key="String(entry.id)"
+                            :value="String(entry.id)"
+                            :disabled="entry.disabled"
+                        >
+                            {{ entry.label }}
+                        </option>
+                    </select>
+                </label>
+            </div>
+            <div v-if="showExportActionsControl" class="vf-datatable__exports">
+                <span class="vf-datatable__exports-label">{{ exportLabel }}</span>
+                <button
+                    v-for="action in exportActions"
+                    :key="action.value"
+                    type="button"
+                    class="vf-datatable__export-action"
+                    :disabled="action.disabled || isExportPending(action.value) || !!actionsLocked"
+                    @click="triggerExport(action.value)"
+                >
+                    {{ action.label }}
+                    <span v-if="isExportPending(action.value)" class="vf-datatable__pending-note">
+                        {{ pendingActionText }}
+                    </span>
+                </button>
+            </div>
+        </div>
         <div v-if="columnVisibilityManager" class="vf-datatable__column-visibility">
             <button
                 type="button"
@@ -40,10 +78,13 @@
                         :key="action.value"
                         type="button"
                         class="vf-datatable__bulk-action"
-                        :disabled="action.disabled"
+                        :disabled="action.disabled || isBulkPending(action.value) || !!actionsLocked"
                         @click="applyBulkAction(action.value)"
                     >
                         {{ action.label }}
+                        <span v-if="isBulkPending(action.value)" class="vf-datatable__pending-note">
+                            {{ pendingActionText }}
+                        </span>
                     </button>
                     <button type="button" class="vf-datatable__bulk-clear" @click="clearSelection">
                         {{ resolvedClearSelectionLabel }}
@@ -260,6 +301,19 @@ export interface DataTableBulkAction {
     disabled?: boolean;
 }
 
+export interface DataTableSavedFilter {
+    id: string | number;
+    label: string;
+    filters: DataTableFilters;
+    disabled?: boolean;
+}
+
+export interface DataTableExportAction {
+    label: string;
+    value: string;
+    disabled?: boolean;
+}
+
 interface Props {
     rows?: Array<Record<string, unknown>>;
     columns?: Array<DataTableColumn>;
@@ -283,6 +337,9 @@ interface Props {
     selectionMode?: DataTableSelectionMode;
     selection?: DataTableRowKey | Array<DataTableRowKey> | null;
     bulkActions?: Array<DataTableBulkAction>;
+    pendingBulkActions?: Array<string>;
+    actionsLocked?: boolean;
+    pendingActionText?: string;
     selectAllAriaLabel?: string;
     selectRowAriaLabel?: string;
     stickyHeader?: boolean;
@@ -301,6 +358,15 @@ interface Props {
     visibleColumns?: Array<string>;
     columnVisibilityManager?: boolean;
     columnVisibilityLabel?: string;
+    savedFilters?: Array<DataTableSavedFilter>;
+    activeSavedFilterId?: string | number | null;
+    showSavedFilters?: boolean;
+    savedFiltersLabel?: string;
+    savedFiltersPlaceholder?: string;
+    exportActions?: Array<DataTableExportAction>;
+    pendingExportActions?: Array<string>;
+    showExportActions?: boolean;
+    exportLabel?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -326,6 +392,9 @@ const props = withDefaults(defineProps<Props>(), {
     selectionMode: null,
     selection: null,
     bulkActions: () => [],
+    pendingBulkActions: () => [],
+    actionsLocked: false,
+    pendingActionText: 'Running...',
     selectAllAriaLabel: undefined,
     selectRowAriaLabel: undefined,
     stickyHeader: false,
@@ -344,6 +413,15 @@ const props = withDefaults(defineProps<Props>(), {
     visibleColumns: () => [],
     columnVisibilityManager: false,
     columnVisibilityLabel: 'Columns',
+    savedFilters: () => [],
+    activeSavedFilterId: null,
+    showSavedFilters: false,
+    savedFiltersLabel: 'Saved filters',
+    savedFiltersPlaceholder: 'Choose filter',
+    exportActions: () => [],
+    pendingExportActions: () => [],
+    showExportActions: false,
+    exportLabel: 'Export',
 });
 
 const emits = defineEmits([
@@ -360,6 +438,9 @@ const emits = defineEmits([
     'update:selection',
     'selectionChange',
     'bulkAction',
+    'exportAction',
+    'update:activeSavedFilterId',
+    'savedFilterChange',
     'columnResize',
     'update:columnOrder',
     'columnReorder',
@@ -377,6 +458,7 @@ const internalPageSize = ref<number>(Math.max(1, props.pageSize ?? 10));
 const internalFilters = ref<DataTableFilters>({ ...(props.filters ?? {}) });
 const internalSelection = ref<DataTableRowKey | Array<DataTableRowKey> | null>(props.selection ?? null);
 const internalExpandedRows = ref<Array<DataTableRowKey>>([...(props.expandedRows ?? [])]);
+const internalActiveSavedFilterId = ref<string | number | null>(props.activeSavedFilterId ?? null);
 const resizedColumnWidths = ref<Record<string, number>>({});
 const internalColumnOrder = ref<Array<string>>([]);
 const internalVisibleColumns = ref<Array<string>>([]);
@@ -437,6 +519,12 @@ watch(
         internalExpandedRows.value = [...(value ?? [])];
     },
     { deep: true },
+);
+watch(
+    () => props.activeSavedFilterId,
+    value => {
+        internalActiveSavedFilterId.value = value ?? null;
+    },
 );
 watch(
     () => [props.columns, props.columnOrder, props.visibleColumns] as const,
@@ -532,6 +620,9 @@ const orderedColumns = computed(() => {
     return orderedColumnsAll.value.filter(column => visible.has(column.field));
 });
 const expandedRowsSet = computed(() => new Set(internalExpandedRows.value));
+const showSavedFiltersControl = computed(() => props.showSavedFilters || props.savedFilters.length > 0);
+const showExportActionsControl = computed(() => props.showExportActions || props.exportActions.length > 0);
+const showOpsBar = computed(() => showSavedFiltersControl.value || showExportActionsControl.value);
 const showBulkActions = computed(() => {
     if (props.selectionMode !== 'multiple' || selectedKeys.value.length === 0) {
         return false;
@@ -539,6 +630,8 @@ const showBulkActions = computed(() => {
 
     return true;
 });
+const isBulkPending = (value: string) => props.pendingBulkActions.includes(value);
+const isExportPending = (value: string) => props.pendingExportActions.includes(value);
 
 const isColumnSortable = (column: DataTableColumn) => {
     if (column.sortable === false) {
@@ -1213,12 +1306,49 @@ const clearFilters = () => {
     setFilters({});
 };
 
+const setSavedFilter = (value: string | number | null) => {
+    internalActiveSavedFilterId.value = value;
+    emits('update:activeSavedFilterId', value);
+
+    if (value == null || value === '') {
+        clearFilters();
+        emits('savedFilterChange', null, {});
+        return;
+    }
+
+    const match = props.savedFilters.find(item => String(item.id) === String(value));
+    if (!match) {
+        return;
+    }
+
+    setFilters(match.filters);
+    emits('savedFilterChange', match.id, { ...match.filters });
+};
+
+const onSavedFilterChange = (event: Event) => {
+    const target = event.target as HTMLSelectElement;
+    const nextId = target.value === '' ? null : target.value;
+
+    setSavedFilter(nextId);
+};
+
 const clearSelection = () => {
     emitSelection(props.selectionMode === 'multiple' ? [] : null);
 };
 
 const applyBulkAction = (value: string) => {
     emits('bulkAction', value, selectedKeys.value, selectedRows.value);
+};
+
+const triggerExport = (value: string) => {
+    emits(
+        'exportAction',
+        value,
+        getRequestPayload(),
+        selectedKeys.value,
+        selectedRows.value,
+        internalActiveSavedFilterId.value,
+    );
 };
 
 const setColumnOrder = (value: Array<string>) => {
@@ -1234,11 +1364,14 @@ defineExpose({
     setPageSize,
     setFilters,
     clearFilters,
+    setSavedFilter,
+    getActiveSavedFilterId: () => internalActiveSavedFilterId.value,
     getQuery: getRequestPayload,
     clearSelection,
     getSelectedKeys: () => [...selectedKeys.value],
     getSelectedRows: () => [...selectedRows.value],
     applyBulkAction,
+    triggerExport,
     setColumnOrder,
     getColumnOrder: () => [...internalColumnOrder.value],
     setVisibleColumns,
@@ -1261,6 +1394,59 @@ defineExpose({
     padding: 0.75rem;
     border-bottom: var(--vf-border-width) solid var(--vf-datatable-row-border-color);
     background-color: var(--vf-datatable-header-background-color);
+}
+
+.vf-datatable__ops {
+    padding: 0.75rem;
+    border-bottom: var(--vf-border-width) solid var(--vf-datatable-row-border-color);
+    background-color: var(--vf-datatable-header-background-color);
+    display: flex;
+    justify-content: space-between;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.vf-datatable__saved-filters {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+}
+
+.vf-datatable__saved-filters-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.875rem;
+}
+
+.vf-datatable__saved-filters-select {
+    border: var(--vf-border-width) solid var(--vf-datatable-header-border-color);
+    background-color: var(--vf-datatable-background-color);
+    color: inherit;
+    border-radius: var(--vf-radii-sm);
+    font: inherit;
+    padding: 0.2rem 0.45rem;
+}
+
+.vf-datatable__exports {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    flex-wrap: wrap;
+}
+
+.vf-datatable__exports-label {
+    font-size: 0.875rem;
+}
+
+.vf-datatable__export-action {
+    border: var(--vf-border-width) solid var(--vf-datatable-header-border-color);
+    background-color: var(--vf-datatable-background-color);
+    color: inherit;
+    border-radius: var(--vf-radii-sm);
+    padding: 0.25rem 0.5rem;
+    cursor: pointer;
+    font: inherit;
 }
 
 .vf-datatable__column-visibility {
@@ -1321,6 +1507,12 @@ defineExpose({
     padding: 0.25rem 0.5rem;
     cursor: pointer;
     font: inherit;
+}
+
+.vf-datatable__pending-note {
+    margin-inline-start: 0.25rem;
+    font-size: 0.75em;
+    opacity: 0.75;
 }
 
 .vf-datatable__table {

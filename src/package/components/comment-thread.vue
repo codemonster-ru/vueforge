@@ -104,6 +104,7 @@ interface Props {
     resolveLabel?: string;
     reopenLabel?: string;
     locale?: string;
+    timeZone?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -118,6 +119,7 @@ const props = withDefaults(defineProps<Props>(), {
     resolveLabel: 'Resolve',
     reopenLabel: 'Reopen',
     locale: 'en',
+    timeZone: undefined,
 });
 
 const emits = defineEmits<{
@@ -156,6 +158,7 @@ const formatTimestamp = (value?: DateLike) => {
     return date.toLocaleString(props.locale, {
         dateStyle: 'medium',
         timeStyle: 'short',
+        timeZone: props.timeZone,
     });
 };
 

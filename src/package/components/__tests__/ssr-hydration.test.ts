@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { createSSRApp, h } from 'vue';
+import { createSSRApp, h, nextTick } from 'vue';
 import { renderToString } from '@vue/server-renderer';
 import Container from '@/package/components/container.vue';
 import Stack from '@/package/components/stack.vue';
@@ -14,6 +14,10 @@ import SpeedDial from '@/package/components/speed-dial.vue';
 import Chart from '@/package/components/chart.vue';
 import Image from '@/package/components/image.vue';
 import OverlayPanel from '@/package/components/overlay-panel.vue';
+import AppShell from '@/package/components/app-shell.vue';
+import PageLayout from '@/package/components/page-layout.vue';
+import SplitLayout from '@/package/components/split-layout.vue';
+import StickyRegion from '@/package/components/sticky-region.vue';
 
 const createSsrFixtureApp = () =>
     createSSRApp({
@@ -132,6 +136,58 @@ const createMustHaveHydrationSsrApp = () =>
         },
     });
 
+const createResponsiveLayoutSsrApp = () =>
+    createSSRApp({
+        render() {
+            return h('section', { class: 'ssr-layout-fixture' }, [
+                h(
+                    AppShell,
+                    {
+                        modelValue: false,
+                        mobileBreakpoint: 1024,
+                    },
+                    {
+                        header: () => h('div', 'Shell header'),
+                        sidebar: () => h('nav', 'Shell sidebar'),
+                        default: () =>
+                            h(
+                                PageLayout,
+                                {
+                                    mobileBreakpoint: 1024,
+                                },
+                                {
+                                    sidebar: () => h('div', 'Page sidebar'),
+                                    default: () =>
+                                        h(
+                                            SplitLayout,
+                                            {
+                                                preset: 'master-detail',
+                                                mobileBreakpoint: 1024,
+                                            },
+                                            {
+                                                default: () => h('div', 'Primary pane'),
+                                                secondary: () => h('div', 'Secondary pane'),
+                                            },
+                                        ),
+                                    aside: () => h('div', 'Page aside'),
+                                },
+                            ),
+                    },
+                ),
+                h(
+                    StickyRegion,
+                    {
+                        edge: 'top',
+                        offset: '0px',
+                    },
+                    {
+                        default: () => h('div', 'Sticky actions'),
+                    },
+                ),
+            ]);
+        },
+    });
+
 describe('SSR hydration checks', () => {
     afterEach(() => {
         document.body.innerHTML = '';
@@ -196,5 +252,53 @@ describe('SSR hydration checks', () => {
         expect(container.querySelector('.vf-treetable')).not.toBeNull();
         expect(container.querySelector('.vf-carousel')).not.toBeNull();
         expect(container.textContent).toContain('Open actions');
+    });
+
+    it('hydrates responsive layout fixture and switches layout on resize without hydration errors', async () => {
+        const previousWidth = window.innerWidth;
+        Object.defineProperty(window, 'innerWidth', {
+            configurable: true,
+            writable: true,
+            value: 1400,
+        });
+
+        const html = await renderToString(createResponsiveLayoutSsrApp());
+        const container = document.createElement('div');
+        container.id = 'layout-app';
+        container.innerHTML = html;
+        document.body.appendChild(container);
+
+        const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+        const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+
+        createResponsiveLayoutSsrApp().mount(container, true);
+
+        let logs = [...warnSpy.mock.calls, ...errorSpy.mock.calls].flat().map(entry => String(entry).toLowerCase());
+        expect(logs.some(line => line.includes('hydration'))).toBe(false);
+        expect(container.querySelector('.vf-app-shell')).not.toBeNull();
+        expect(container.querySelector('.vf-page-layout')).not.toBeNull();
+        expect(container.querySelector('.vf-split-layout')).not.toBeNull();
+
+        Object.defineProperty(window, 'innerWidth', {
+            configurable: true,
+            writable: true,
+            value: 600,
+        });
+        window.dispatchEvent(new Event('resize'));
+        await nextTick();
+
+        expect(container.querySelector('.vf-app-shell')?.className).toContain('vf-app-shell_mobile');
+        expect(container.querySelector('.vf-page-layout')?.className).toContain('vf-page-layout_mobile');
+        expect(container.querySelector('.vf-split-layout')?.className).toContain('vf-split-layout_mobile');
+
+        logs = [...warnSpy.mock.calls, ...errorSpy.mock.calls].flat().map(entry => String(entry).toLowerCase());
+        expect(logs.some(line => line.includes('hydration'))).toBe(false);
+
+        Object.defineProperty(window, 'innerWidth', {
+            configurable: true,
+            writable: true,
+            value: previousWidth,
+        });
+        window.dispatchEvent(new Event('resize'));
     });
 });

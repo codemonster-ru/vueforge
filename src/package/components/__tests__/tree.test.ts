@@ -56,6 +56,19 @@ describe('Tree', () => {
         expect(wrapper.vm.value).toEqual(['docs']);
     });
 
+    it('supports explicit selectionMode="none"', async () => {
+        const wrapper = mount(Tree, {
+            props: {
+                items,
+                selectionMode: 'none',
+            },
+        });
+
+        await wrapper.findAll('[role="treeitem"]')[1].trigger('click');
+
+        expect(wrapper.emitted('update:modelValue')).toBeUndefined();
+    });
+
     it('updates expandedKeys when toggled', async () => {
         const wrapper = mount({
             components: { Tree },
@@ -148,6 +161,50 @@ describe('Tree', () => {
 
         expect(document.activeElement).toBe(last);
         wrapper.unmount();
+    });
+
+    it('supports virtualized rendering for large expanded datasets', async () => {
+        const largeItems = Array.from({ length: 50 }, (_, groupIndex) => ({
+            key: `group-${groupIndex}`,
+            label: `Group ${groupIndex}`,
+            children: Array.from({ length: 30 }, (_, childIndex) => ({
+                key: `node-${groupIndex}-${childIndex}`,
+                label: `Node ${groupIndex}-${childIndex}`,
+            })),
+        }));
+        const expandedKeys = largeItems.map(item => item.key);
+
+        const wrapper = mount(Tree, {
+            props: {
+                items: largeItems,
+                expandedKeys,
+                virtualized: true,
+                virtualizationThreshold: 100,
+                itemHeight: 28,
+                virtualHeight: 224,
+                overscan: 2,
+            },
+        });
+
+        expect(wrapper.find('.vf-tree__virtual').exists()).toBe(true);
+        expect(wrapper.findAll('[role="treeitem"]').length).toBeLessThan(200);
+    });
+
+    it('emits loadChildren and exposes async branch state on expand', async () => {
+        const wrapper = mount(Tree, {
+            props: {
+                items: [{ key: 'remote', label: 'Remote', hasChildren: true }],
+                expandedKeys: [],
+                loadOnExpand: true,
+                loadingKeys: [],
+            },
+        });
+
+        await wrapper.find('.vf-tree__toggle').trigger('click');
+        await wrapper.setProps({ loadingKeys: ['remote'] });
+
+        expect(wrapper.emitted('loadChildren')?.[0]?.[0]).toBe('remote');
+        expect(wrapper.find('[role="treeitem"]').attributes('aria-busy')).toBe('true');
     });
 
     it('keeps expand/select behavior in rtl mode', async () => {

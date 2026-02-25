@@ -17,6 +17,7 @@ Render discussion threads with inline replies, mention extraction, and resolve/r
 - `resolveLabel?: string` (default `Resolve`)
 - `reopenLabel?: string` (default `Reopen`)
 - `locale?: string` (default `en`)
+- `timeZone?: string` (optional IANA timezone)
 
 `CommentThreadItem`:
 
@@ -76,7 +77,7 @@ Render discussion threads with inline replies, mention extraction, and resolve/r
 ## SSR/Hydration
 
 - Thread rendering is deterministic for static item data.
-- Timestamp formatting depends on locale; keep locale consistent between server and client.
+- Timestamp formatting depends on locale/timezone; keep them consistent between server and client.
 
 ## Testing
 

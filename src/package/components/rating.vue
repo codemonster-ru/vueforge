@@ -62,6 +62,8 @@ interface Props {
     max?: number;
     size?: RatingSize;
     allowHalf?: boolean;
+    precision?: number;
+    clearable?: boolean;
     readonly?: boolean;
     disabled?: boolean;
     ariaLabel?: string;
@@ -73,6 +75,8 @@ const props = withDefaults(defineProps<Props>(), {
     max: 5,
     size: 'normal',
     allowHalf: false,
+    precision: undefined,
+    clearable: false,
     readonly: false,
     disabled: false,
     ariaLabel: '',
@@ -81,18 +85,24 @@ const props = withDefaults(defineProps<Props>(), {
 const hoverValue = ref<number | null>(null);
 const rootRef = ref<HTMLElement | null>(null);
 const itemRefs = ref<HTMLElement[]>([]);
-const step = computed(() => (props.allowHalf ? 0.5 : 1));
+const step = computed(() => {
+    const rawPrecision = Number(props.precision);
+
+    if (Number.isFinite(rawPrecision) && rawPrecision > 0) {
+        return Math.min(1, rawPrecision);
+    }
+
+    return props.allowHalf ? 0.5 : 1;
+});
 const maxValue = computed(() => Math.max(1, Math.floor(props.max)));
 const items = computed(() => Array.from({ length: maxValue.value }, (_, index) => index + 1));
+const isFractional = computed(() => step.value < 1);
 const displayValue = computed(() => {
     const raw = hoverValue.value ?? props.modelValue ?? 0;
     const clamped = Math.min(maxValue.value, Math.max(0, raw));
+    const snapped = Math.round(clamped / step.value) * step.value;
 
-    if (props.allowHalf) {
-        return Math.round(clamped * 2) / 2;
-    }
-
-    return Math.round(clamped);
+    return Math.min(maxValue.value, Math.max(0, snapped));
 });
 const focusIndex = computed(() => {
     const value = Math.min(maxValue.value, Math.max(0, props.modelValue ?? 0));
@@ -129,15 +139,16 @@ const snapValue = (value: number) => {
     return clampValue(next);
 };
 const resolvePointerValue = (index: number, event: MouseEvent) => {
-    if (!props.allowHalf) {
+    if (!isFractional.value) {
         return index;
     }
 
     const target = event.currentTarget as HTMLElement;
     const rect = target.getBoundingClientRect();
     const offset = event.clientX - rect.left;
+    const ratio = rect.width > 0 ? Math.min(1, Math.max(0, offset / rect.width)) : 1;
 
-    return offset <= rect.width / 2 ? index - 0.5 : index;
+    return index - 1 + ratio;
 };
 const updateValue = (value: number) => {
     const next = snapValue(value);
@@ -190,12 +201,12 @@ const onRootMove = (event: MouseEvent) => {
 
     let next = closestIndex + 1;
 
-    if (props.allowHalf) {
-        const center = closestRect.left + closestRect.width / 2;
-        next = x < center ? next - 0.5 : next;
+    if (isFractional.value) {
+        const ratio = closestRect.width > 0 ? Math.min(1, Math.max(0, (x - closestRect.left) / closestRect.width)) : 1;
+        next = closestIndex + ratio;
     }
 
-    hoverValue.value = clampValue(next);
+    hoverValue.value = snapValue(next);
 };
 const onRootLeave = () => {
     hoverValue.value = null;
@@ -205,7 +216,14 @@ const onSelect = (index: number, event: MouseEvent) => {
         return;
     }
 
-    updateValue(resolvePointerValue(index, event));
+    const next = snapValue(resolvePointerValue(index, event));
+
+    if (props.clearable && next === snapValue(props.modelValue ?? 0)) {
+        updateValue(0);
+        return;
+    }
+
+    updateValue(next);
 };
 const onKeydown = (index: number, event: KeyboardEvent) => {
     if (props.disabled || props.readonly) {
@@ -213,13 +231,24 @@ const onKeydown = (index: number, event: KeyboardEvent) => {
     }
 
     let next = props.modelValue ?? 0;
+    const target = event.currentTarget as HTMLElement;
+    const root = target.closest('.vf-rating');
+    const attrDirection = root?.getAttribute('dir') ?? root?.closest('[dir]')?.getAttribute('dir');
+    const computedDirection = root ? window.getComputedStyle(root).direction : '';
+    const fallbackDirection = document?.documentElement?.getAttribute('dir') || 'ltr';
+    const direction = (attrDirection || computedDirection || fallbackDirection).toLowerCase();
+    const isRtl = direction === 'rtl';
 
     switch (event.key) {
         case 'ArrowRight':
+            next = (props.modelValue ?? 0) + (isRtl ? -step.value : step.value);
+            break;
         case 'ArrowUp':
             next = (props.modelValue ?? 0) + step.value;
             break;
         case 'ArrowLeft':
+            next = (props.modelValue ?? 0) - (isRtl ? -step.value : step.value);
+            break;
         case 'ArrowDown':
             next = (props.modelValue ?? 0) - step.value;
             break;
@@ -233,7 +262,19 @@ const onKeydown = (index: number, event: KeyboardEvent) => {
         case 'Enter':
             next = index;
             break;
+        case 'Backspace':
+        case 'Delete':
+            if (!props.clearable) {
+                return;
+            }
+            next = 0;
+            break;
         default:
+            if (/^[0-9]$/.test(event.key)) {
+                const digit = Number(event.key);
+                next = digit === 0 ? 0 : Math.min(maxValue.value, digit);
+                break;
+            }
             return;
     }
 
@@ -247,16 +288,9 @@ const onBlur = (event: FocusEvent) => emits('blur', event);
 const getFillWidth = (index: number) => {
     const raw = displayValue.value - (index - 1);
     const fill = Math.min(1, Math.max(0, raw));
+    const roundedPercent = Math.round(fill * 1000) / 10;
 
-    if (!props.allowHalf) {
-        return fill >= 1 ? '100%' : '0%';
-    }
-
-    if (fill >= 1) {
-        return '100%';
-    }
-
-    return fill >= 0.5 ? '50%' : '0%';
+    return `${roundedPercent.toString()}%`;
 };
 const getTabIndex = (index: number) => {
     return index === focusIndex.value ? 0 : -1;

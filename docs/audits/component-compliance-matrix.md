@@ -27,6 +27,7 @@ Completion policy:
 | Accordion           | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | AccordionItem       | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | ActivityFeed        | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
+| AppBar              | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | Alert               | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | AdvancedFilterPanel | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | AppShell            | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
@@ -74,6 +75,7 @@ Completion policy:
 | FileUpload          | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | FileManager         | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | Fieldset            | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
+| Footer              | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | FilterChips         | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | Form                | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | FormField           | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
@@ -100,6 +102,7 @@ Completion policy:
 | MemberPicker        | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | MeterGroup          | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | MentionInput        | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
+| NavigationRail      | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | Menu                | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | Message             | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | MenuBar             | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
@@ -115,6 +118,7 @@ Completion policy:
 | OrderList           | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | OverlayPanel        | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | PageHeader          | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
+| PageLayout          | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | Pagination          | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | PickList            | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | Panel               | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
@@ -126,10 +130,12 @@ Completion policy:
 | RadioButton         | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | RadioGroup          | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | Rating              | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
+| ResizableSidebar    | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | RichTextEditor      | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | SavedViewsManager   | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | SearchInput         | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | Scheduler           | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
+| Show                | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | Sidebar             | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | ScrollPanel         | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | ScrollTop           | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
@@ -140,11 +146,14 @@ Completion policy:
 | Slider              | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | Spinner             | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | SpeedDial           | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
+| Hide                | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | SplitButton         | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
+| SplitLayout         | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | Splitter            | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | SplitterPanel       | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | Stack               | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | Stepper             | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
+| StickyRegion        | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | Switch              | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | TabMenu             | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |
 | Tab                 | Yes | Yes   | Yes  | Yes           | Yes        | Yes    | Yes  | Yes     |

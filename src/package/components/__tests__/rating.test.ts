@@ -42,4 +42,41 @@ describe('Rating', () => {
         expect(wrapper.emitted('update:modelValue')).toBeUndefined();
         expect(wrapper.classes()).toContain('vf-rating_disabled');
     });
+
+    it('renders readonly precision fills without interaction emit', async () => {
+        const wrapper = mount(Rating, {
+            props: {
+                modelValue: 3.7,
+                precision: 0.1,
+                readonly: true,
+            },
+        });
+
+        const fillWidths = wrapper.findAll('.vf-rating__icon_fill').map(node => node.attributes('style'));
+        expect(fillWidths[3]).toContain('70%');
+
+        await wrapper.findAll('button')[3].trigger('click');
+        expect(wrapper.emitted('update:modelValue')).toBeUndefined();
+    });
+
+    it('supports clearable keyboard delete/backspace and numeric shortcuts', async () => {
+        const wrapper = mount(Rating, { props: { modelValue: 3, clearable: true } });
+        const buttons = wrapper.findAll('button');
+
+        await buttons[2].trigger('keydown', { key: 'Delete' });
+        await buttons[1].trigger('keydown', { key: '4' });
+
+        expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([0]);
+        expect(wrapper.emitted('update:modelValue')?.[1]).toEqual([4]);
+    });
+
+    it('reverses horizontal arrow behavior in RTL', async () => {
+        const wrapper = mount(Rating, {
+            attrs: { dir: 'rtl' },
+            props: { modelValue: 3 },
+        });
+
+        await wrapper.findAll('button')[2].trigger('keydown', { key: 'ArrowRight' });
+        expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([2]);
+    });
 });

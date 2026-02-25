@@ -11,6 +11,7 @@ Gate columns include `Responsive` to enforce mobile/tablet/desktop behavior plan
 | Component             | Target Catalog | Implementation | DoD     | Tests   | A11y    | SSR/Hydration | Responsive | Visual  | Docs    | Catalog |
 | --------------------- | -------------- | -------------- | ------- | ------- | ------- | ------------- | ---------- | ------- | ------- | ------- |
 | ActivityFeed          | Vuetify        | Done           | Done    | Done    | Done    | Done          | Done       | Done    | Done    | Yes     |
+| AppBar                | Vuetify        | Done           | Done    | Done    | Done    | Done          | Done       | Done    | Done    | Yes     |
 | AuditLogViewer        | Vuetify        | Done           | Done    | Done    | Done    | Done          | Done       | Done    | Done    | Yes     |
 | AvatarGroup           | PrimeVue       | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
 | Banner                | Vuetify        | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
@@ -27,6 +28,7 @@ Gate columns include `Responsive` to enforce mobile/tablet/desktop behavior plan
 | ExpansionPanel        | Vuetify        | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
 | Fieldset              | Both           | Done           | Done    | Done    | Done    | Done          | Done       | Done    | Done    | Yes     |
 | FileManager           | Vuetify        | Done           | Done    | Done    | Done    | Done          | Done       | Done    | Done    | Yes     |
+| Footer                | Vuetify        | Done           | Done    | Done    | Done    | Done          | Done       | Done    | Done    | Yes     |
 | FloatLabel            | PrimeVue       | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
 | Galleria              | Both           | Done           | Done    | Done    | Done    | Done          | Done       | Done    | Done    | Yes     |
 | Hotkey                | Vuetify        | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
@@ -48,24 +50,31 @@ Gate columns include `Responsive` to enforce mobile/tablet/desktop behavior plan
 | MemberPicker          | Vuetify        | Done           | Done    | Done    | Done    | Done          | Done       | Done    | Done    | Yes     |
 | MeterGroup            | Vuetify        | Done           | Done    | Done    | Done    | Done          | Done       | Done    | Done    | Yes     |
 | Message               | Both           | Done           | Done    | Done    | Done    | Done          | Done       | Done    | Done    | Yes     |
+| NavigationRail        | Vuetify        | Done           | Done    | Done    | Done    | Done          | Done       | Done    | Done    | Yes     |
 | NoSsr                 | Vuetify        | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
 | OrderList             | Both           | Done           | Done    | Done    | Done    | Done          | Done       | Done    | Done    | Yes     |
 | OrgChart              | Both           | Done           | Done    | Done    | Done    | Done          | Done       | Done    | Done    | Yes     |
 | OverlayBadge          | Both           | Done           | Done    | Done    | Done    | Done          | Done       | Done    | Done    | Yes     |
 | Panel                 | Both           | Done           | Done    | Done    | Done    | Done          | Done       | Done    | Done    | Yes     |
+| PageLayout            | Vuetify        | Done           | Done    | Done    | Done    | Done          | Done       | Done    | Done    | Yes     |
 | Parallax              | Vuetify        | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
 | PassThrough           | Both           | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
 | PermissionMatrix      | Vuetify        | Done           | Done    | Done    | Done    | Done          | Done       | Done    | Done    | Yes     |
 | PickList              | Both           | Done           | Done    | Done    | Done    | Done          | Done       | Done    | Done    | Yes     |
 | Scheduler             | Vuetify        | Done           | Done    | Done    | Done    | Done          | Done       | Done    | Done    | Yes     |
+| Show                  | No             | Done           | Done    | Done    | Done    | Done          | Done       | Done    | Done    | Yes     |
 | ScrollPanel           | Both           | Done           | Done    | Done    | Done    | Done          | Done       | Done    | Done    | Yes     |
 | ScrollTop             | Both           | Done           | Done    | Done    | Done    | Done          | Done       | Done    | Done    | Yes     |
 | SelectionControl      | Vuetify        | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
 | SelectionControlGroup | Vuetify        | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
 | Sheet                 | Vuetify        | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
 | Sidebar               | Both           | Done           | Done    | Done    | Done    | Done          | Done       | Done    | Done    | Yes     |
+| Hide                  | No             | Done           | Done    | Done    | Done    | Done          | Done       | Done    | Done    | Yes     |
+| SplitLayout           | Vuetify        | Done           | Done    | Done    | Done    | Done          | Done       | Done    | Done    | Yes     |
+| ResizableSidebar      | Vuetify        | Done           | Done    | Done    | Done    | Done          | Done       | Done    | Done    | Yes     |
 | SlideGroup            | Vuetify        | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
 | SnackbarQueue         | Vuetify        | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
+| StickyRegion          | Vuetify        | Done           | Done    | Done    | Done    | Done          | Done       | Done    | Done    | Yes     |
 | SystemBar             | Vuetify        | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |
 | Terminal              | Both           | Done           | Done    | Done    | Done    | Done          | Done       | Done    | Done    | Yes     |
 | ThemeProvider         | Vuetify        | Planned        | Planned | Planned | Planned | Planned       | Planned    | Planned | Planned | Yes     |

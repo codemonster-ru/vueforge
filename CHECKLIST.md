@@ -568,20 +568,20 @@ Goal: ensure the library can ship full-featured SaaS products (admin panels, ops
 
 #### SaaS hardening for existing components
 
-- [ ] `KanbanBoard` production hardening (keyboard DnD, virtualization, swimlane performance tests)
-- [ ] `NotificationCenter` SaaS mode (read/unread filters, grouping, action links, persistence contract)
-- [ ] `CommandPalette` SaaS actions mode (entity search, recent items, scoped commands)
-- [ ] `DataTable` SaaS ops mode (server-driven saved filters, export hooks, long-running action states)
-- [ ] `Tree` hardening as `TreeView` parity (virtualized expansion, selection modes, async branch states)
-- [ ] `Accordion` hardening as `ExpansionPanel` parity (dense mode, grouped control patterns, analytics hooks)
-- [ ] `Rating` hardening for form/review scenarios (readonly precision, keyboard/a11y edge cases)
+- [x] `KanbanBoard` production hardening (keyboard DnD, virtualization, swimlane performance tests)
+- [x] `NotificationCenter` SaaS mode (read/unread filters, grouping, action links, persistence contract)
+- [x] `CommandPalette` SaaS actions mode (entity search, recent items, scoped commands)
+- [x] `DataTable` SaaS ops mode (server-driven saved filters, export hooks, long-running action states)
+- [x] `Tree` hardening as `TreeView` parity (virtualized expansion, selection modes, async branch states)
+- [x] `Accordion` hardening as `ExpansionPanel` parity (dense mode, grouped control patterns, analytics hooks)
+- [x] `Rating` hardening for form/review scenarios (readonly precision, keyboard/a11y edge cases)
 
 SaaS acceptance criteria (applies to each item):
 
-- [ ] RBAC-friendly API boundaries are documented (what is UI-only vs permission-enforced by backend).
-- [ ] Large-dataset behavior is validated (pagination/virtualization/loading and empty/error states).
-- [ ] Internationalization and timezone-sensitive behavior are covered where relevant.
-- [ ] At least one end-to-end SaaS recipe is added (`list page`, `detail page`, or `settings/billing` flow).
+- [x] RBAC-friendly API boundaries are documented (what is UI-only vs permission-enforced by backend).
+- [x] Large-dataset behavior is validated (pagination/virtualization/loading and empty/error states).
+- [x] Internationalization and timezone-sensitive behavior are covered where relevant.
+- [x] At least one end-to-end SaaS recipe is added (`list page`, `detail page`, or `settings/billing` flow).
 
 ### P1.14 Layout parity
 
@@ -589,22 +589,22 @@ Goal: provide production-grade application layout patterns for complex SaaS prod
 
 #### Missing layout primitives and shells
 
-- [ ] `AppBar` component (fixed/sticky/dense variants, action slots, responsive behavior)
-- [ ] `NavigationRail` component (collapsed/expanded states, icon+label patterns, keyboard support)
-- [ ] `Footer` component (app/page footer layout with left/center/right slots)
-- [ ] `PageLayout` preset component (sidebar/content/aside composition with responsive collapse)
-- [ ] `SplitLayout` presets (master-detail, inspector panel, and editor-preview compositions)
-- [ ] `ResizableSidebar` behavior (drag resize + collapse + persisted width/state)
-- [ ] `StickyRegion` utility (header/subheader/action bars with offset and z-index contracts)
-- [ ] Responsive visibility utilities (`Show`, `Hide`, breakpoint-aware rendering helpers)
+- [x] `AppBar` component (fixed/sticky/dense variants, action slots, responsive behavior)
+- [x] `NavigationRail` component (collapsed/expanded states, icon+label patterns, keyboard support)
+- [x] `Footer` component (app/page footer layout with left/center/right slots)
+- [x] `PageLayout` preset component (sidebar/content/aside composition with responsive collapse)
+- [x] `SplitLayout` presets (master-detail, inspector panel, and editor-preview compositions)
+- [x] `ResizableSidebar` behavior (drag resize + collapse + persisted width/state)
+- [x] `StickyRegion` utility (header/subheader/action bars with offset and z-index contracts)
+- [x] Responsive visibility utilities (`Show`, `Hide`, breakpoint-aware rendering helpers)
 
 #### Layout hardening and consistency
 
-- [ ] Define layout breakpoint contracts and tokenized spacing scale for app shells and page templates
-- [ ] Verify SSR/hydration stability for responsive layout switching
-- [ ] Add keyboard/a11y checks for collapsible/resizable navigation regions
-- [ ] Add docs recipes: dashboard shell, settings shell, analytics shell, and mobile adaptive shell
-- [ ] Add visual regression scenarios for major layout presets and breakpoint transitions
+- [x] Define layout breakpoint contracts and tokenized spacing scale for app shells and page templates
+- [x] Verify SSR/hydration stability for responsive layout switching
+- [x] Add keyboard/a11y checks for collapsible/resizable navigation regions
+- [x] Add docs recipes: dashboard shell, settings shell, analytics shell, and mobile adaptive shell
+- [x] Add visual regression scenarios for major layout presets and breakpoint transitions
 
 ### P1.15 Data visualization parity
 

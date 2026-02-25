@@ -13,6 +13,7 @@ Display operational audit events as a table with quick detail inspection in a si
 - `ariaLabel?: string` (default `Audit log`)
 - `showDiff?: boolean` (default `true`)
 - `locale?: string` (default `en`)
+- `timeZone?: string` (optional IANA timezone)
 
 `AuditLogEntry`:
 
@@ -74,7 +75,7 @@ Display operational audit events as a table with quick detail inspection in a si
 
 ## SSR/Hydration
 
-- Timestamp formatting is deterministic for static values; provide stable `locale` where needed.
+- Timestamp formatting is deterministic for static values; provide stable `locale`/`timeZone` where needed.
 - Drawer interaction is client-driven and hydration-safe.
 
 ## Testing

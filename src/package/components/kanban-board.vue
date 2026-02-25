@@ -8,52 +8,82 @@
                 :data-column-id="String(column.id)"
             >
                 <header class="vf-kanban-board__column-header">
-                    <slot name="column-header" :column="column" :items="getItemsByColumn(column.id)">
+                    <slot name="column-header" :column="column" :items="getRenderState(column.id).items">
                         <h3 class="vf-kanban-board__column-title">{{ column.title }}</h3>
-                        <span class="vf-kanban-board__column-count">{{ getItemsByColumn(column.id).length }}</span>
+                        <span class="vf-kanban-board__column-count">{{ getRenderState(column.id).items.length }}</span>
                     </slot>
                 </header>
 
-                <ul class="vf-kanban-board__list" @dragover.prevent @drop.prevent="onColumnDrop(column.id, $event)">
+                <ul
+                    class="vf-kanban-board__list"
+                    :style="getListStyle(column.id)"
+                    @dragover.prevent
+                    @drop.prevent="onColumnDrop(column.id, $event)"
+                    @scroll="onLaneScroll(column.id, $event)"
+                >
                     <li
-                        v-for="(item, index) in getItemsByColumn(column.id)"
-                        :key="String(item.id)"
-                        class="vf-kanban-board__item"
+                        v-if="getRenderState(column.id).topSpacer > 0"
+                        class="vf-kanban-board__spacer"
+                        aria-hidden="true"
+                        :style="{ height: `${getRenderState(column.id).topSpacer.toString()}px` }"
+                    ></li>
+                    <li
+                        v-for="entry in getRenderState(column.id).visibleEntries"
+                        :key="String(entry.item.id)"
+                        :data-item-id="String(entry.item.id)"
+                        :data-column-id="String(column.id)"
+                        role="listitem"
+                        :tabindex="keyboardDnD ? 0 : undefined"
+                        :aria-grabbed="keyboardDraggingItemId === entry.item.id ? 'true' : 'false'"
+                        :aria-keyshortcuts="
+                            keyboardDnD ? 'Space Enter ArrowUp ArrowDown ArrowLeft ArrowRight Escape' : undefined
+                        "
+                        :draggable="true"
                         :class="{
-                            'is-dragging': draggingItemId === item.id,
-                            'priority-low': item.priority === 'low',
-                            'priority-medium': item.priority === 'medium',
-                            'priority-high': item.priority === 'high',
+                            'is-dragging': draggingItemId === entry.item.id,
+                            'is-keyboard-dragging': keyboardDraggingItemId === entry.item.id,
+                            'priority-low': entry.item.priority === 'low',
+                            'priority-medium': entry.item.priority === 'medium',
+                            'priority-high': entry.item.priority === 'high',
                         }"
-                        draggable="true"
-                        @click="onCardClick(item)"
-                        @dragstart="onCardDragStart(item, $event)"
+                        class="vf-kanban-board__item"
+                        @click="onCardClick(entry.item)"
+                        @keydown="onCardKeyDown(entry.item, $event)"
+                        @dragstart="onCardDragStart(entry.item, $event)"
                         @dragend="onCardDragEnd"
                         @dragover.prevent
-                        @drop.prevent.stop="onCardDrop(column.id, index, $event)"
+                        @drop.prevent.stop="onCardDrop(column.id, entry.absoluteIndex, $event)"
                     >
-                        <slot name="card" :item="item" :column="column" :index="index">
+                        <slot name="card" :item="entry.item" :column="column" :index="entry.absoluteIndex">
                             <div class="vf-kanban-board__card">
-                                <p class="vf-kanban-board__card-title">{{ item.title }}</p>
-                                <p v-if="item.description" class="vf-kanban-board__card-description">
-                                    {{ item.description }}
+                                <p class="vf-kanban-board__card-title">{{ entry.item.title }}</p>
+                                <p v-if="entry.item.description" class="vf-kanban-board__card-description">
+                                    {{ entry.item.description }}
                                 </p>
-                                <div v-if="item.tags?.length" class="vf-kanban-board__tags">
-                                    <span v-for="tag in item.tags" :key="tag" class="vf-kanban-board__tag">
+                                <div v-if="entry.item.tags?.length" class="vf-kanban-board__tags">
+                                    <span v-for="tag in entry.item.tags" :key="tag" class="vf-kanban-board__tag">
                                         {{ tag }}
                                     </span>
                                 </div>
-                                <p v-if="item.assignee" class="vf-kanban-board__assignee">{{ item.assignee }}</p>
+                                <p v-if="entry.item.assignee" class="vf-kanban-board__assignee">
+                                    {{ entry.item.assignee }}
+                                </p>
                             </div>
                         </slot>
                     </li>
-                    <li v-if="!getItemsByColumn(column.id).length" class="vf-kanban-board__empty">
+                    <li
+                        v-if="getRenderState(column.id).bottomSpacer > 0"
+                        class="vf-kanban-board__spacer"
+                        aria-hidden="true"
+                        :style="{ height: `${getRenderState(column.id).bottomSpacer.toString()}px` }"
+                    ></li>
+                    <li v-if="!getRenderState(column.id).items.length" class="vf-kanban-board__empty">
                         <slot name="empty-column" :column="column">{{ emptyColumnText }}</slot>
                     </li>
                 </ul>
 
                 <footer class="vf-kanban-board__column-footer">
-                    <slot name="column-footer" :column="column" :items="getItemsByColumn(column.id)" />
+                    <slot name="column-footer" :column="column" :items="getRenderState(column.id).items" />
                 </footer>
             </section>
         </div>
@@ -61,7 +91,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { computed, nextTick, ref, watch } from 'vue';
+import type { CSSProperties } from 'vue';
 
 type KanbanId = string | number;
 type KanbanPriority = 'low' | 'medium' | 'high';
@@ -86,6 +117,12 @@ interface Props {
     items?: Array<KanbanBoardItem>;
     ariaLabel?: string;
     emptyColumnText?: string;
+    virtualization?: boolean;
+    virtualizationThreshold?: number;
+    itemHeight?: number;
+    swimlaneHeight?: number;
+    overscan?: number;
+    keyboardDnD?: boolean;
 }
 
 const emits = defineEmits(['update:items', 'move', 'click']);
@@ -95,11 +132,18 @@ const props = withDefaults(defineProps<Props>(), {
     items: () => [],
     ariaLabel: 'Kanban board',
     emptyColumnText: 'Drop cards here',
+    virtualization: false,
+    virtualizationThreshold: 40,
+    itemHeight: 72,
+    swimlaneHeight: 420,
+    overscan: 3,
+    keyboardDnD: true,
 });
 
 const localItems = ref<Array<KanbanBoardItem>>([]);
 const draggingItemId = ref<KanbanId | null>(null);
-const draggingFromColumnId = ref<KanbanId | null>(null);
+const keyboardDraggingItemId = ref<KanbanId | null>(null);
+const laneScrollOffsets = ref<Record<string, number>>({});
 
 const normalizedColumns = computed(() => props.columns ?? []);
 
@@ -109,8 +153,84 @@ const normalizeItems = (items: Array<KanbanBoardItem>) =>
         tags: item.tags ? [...item.tags] : [],
     }));
 
-const getItemsByColumn = (columnId: KanbanId) =>
-    localItems.value.filter(item => String(item.columnId) === String(columnId));
+const columnItemsMap = computed(() => {
+    const grouped: Record<string, Array<KanbanBoardItem>> = {};
+    for (const column of normalizedColumns.value) {
+        grouped[String(column.id)] = [];
+    }
+    for (const item of localItems.value) {
+        const key = String(item.columnId);
+        if (!grouped[key]) {
+            grouped[key] = [];
+        }
+        grouped[key].push(item);
+    }
+    return grouped;
+});
+
+interface KanbanRenderEntry {
+    item: KanbanBoardItem;
+    absoluteIndex: number;
+}
+
+interface KanbanColumnRenderState {
+    items: Array<KanbanBoardItem>;
+    visibleEntries: Array<KanbanRenderEntry>;
+    topSpacer: number;
+    bottomSpacer: number;
+    virtualized: boolean;
+}
+
+const buildColumnRenderState = (columnId: KanbanId): KanbanColumnRenderState => {
+    const items = columnItemsMap.value[String(columnId)] ?? [];
+    const shouldVirtualize = props.virtualization && items.length >= props.virtualizationThreshold;
+
+    if (!shouldVirtualize) {
+        return {
+            items,
+            visibleEntries: items.map((item, index) => ({ item, absoluteIndex: index })),
+            topSpacer: 0,
+            bottomSpacer: 0,
+            virtualized: false,
+        };
+    }
+
+    const laneKey = String(columnId);
+    const laneOffset = laneScrollOffsets.value[laneKey] ?? 0;
+    const visibleCount = Math.max(1, Math.ceil(props.swimlaneHeight / props.itemHeight));
+    const start = Math.max(0, Math.floor(laneOffset / props.itemHeight) - props.overscan);
+    const end = Math.min(items.length, start + visibleCount + props.overscan * 2);
+
+    return {
+        items,
+        visibleEntries: items.slice(start, end).map((item, index) => ({
+            item,
+            absoluteIndex: start + index,
+        })),
+        topSpacer: start * props.itemHeight,
+        bottomSpacer: Math.max(0, (items.length - end) * props.itemHeight),
+        virtualized: true,
+    };
+};
+
+const columnRenderStateMap = computed<Record<string, KanbanColumnRenderState>>(() => {
+    const result: Record<string, KanbanColumnRenderState> = {};
+
+    for (const column of normalizedColumns.value) {
+        result[String(column.id)] = buildColumnRenderState(column.id);
+    }
+
+    return result;
+});
+
+const getRenderState = (columnId: KanbanId): KanbanColumnRenderState =>
+    columnRenderStateMap.value[String(columnId)] ?? {
+        items: [],
+        visibleEntries: [],
+        topSpacer: 0,
+        bottomSpacer: 0,
+        virtualized: false,
+    };
 
 const resolveInsertIndex = (items: Array<KanbanBoardItem>, columnId: KanbanId, position?: number) => {
     const targetIndexes: Array<number> = [];
@@ -167,7 +287,6 @@ const onCardClick = (item: KanbanBoardItem) => {
 
 const onCardDragStart = (item: KanbanBoardItem, event: DragEvent) => {
     draggingItemId.value = item.id;
-    draggingFromColumnId.value = item.columnId;
 
     if (event.dataTransfer) {
         event.dataTransfer.effectAllowed = 'move';
@@ -177,7 +296,6 @@ const onCardDragStart = (item: KanbanBoardItem, event: DragEvent) => {
 
 const onCardDragEnd = () => {
     draggingItemId.value = null;
-    draggingFromColumnId.value = null;
 };
 
 const onCardDrop = (columnId: KanbanId, index: number, event: DragEvent) => {
@@ -204,10 +322,122 @@ const onColumnDrop = (columnId: KanbanId, event: DragEvent) => {
     onCardDragEnd();
 };
 
+const getListStyle = (columnId: KanbanId): CSSProperties | undefined => {
+    if (!getRenderState(columnId).virtualized) {
+        return undefined;
+    }
+
+    return {
+        maxHeight: `${props.swimlaneHeight.toString()}px`,
+        overflowY: 'auto' as const,
+    };
+};
+
+const onLaneScroll = (columnId: KanbanId, event: Event) => {
+    if (!props.virtualization) {
+        return;
+    }
+
+    const lane = event.target;
+
+    if (!(lane instanceof HTMLElement)) {
+        return;
+    }
+
+    laneScrollOffsets.value = {
+        ...laneScrollOffsets.value,
+        [String(columnId)]: lane.scrollTop,
+    };
+};
+
+const focusCard = async (itemId: KanbanId) => {
+    await nextTick();
+
+    const cards = Array.from(document.querySelectorAll<HTMLElement>('.vf-kanban-board__item'));
+    const card = cards.find(candidate => candidate.dataset.itemId === String(itemId));
+
+    card?.focus();
+};
+
+const onCardKeyDown = async (item: KanbanBoardItem, event: KeyboardEvent) => {
+    if (!props.keyboardDnD) {
+        return;
+    }
+
+    const id = item.id;
+    const key = event.key;
+    const isGrabToggle = key === ' ' || key === 'Enter';
+
+    if (isGrabToggle) {
+        event.preventDefault();
+        keyboardDraggingItemId.value = keyboardDraggingItemId.value === id ? null : id;
+        return;
+    }
+
+    if (key === 'Escape' && keyboardDraggingItemId.value === id) {
+        event.preventDefault();
+        keyboardDraggingItemId.value = null;
+        return;
+    }
+
+    if (keyboardDraggingItemId.value !== id) {
+        return;
+    }
+
+    const latest = localItems.value.find(candidate => String(candidate.id) === String(id));
+
+    if (!latest) {
+        keyboardDraggingItemId.value = null;
+        return;
+    }
+
+    const currentColumnId = latest.columnId;
+    const currentColumnKey = String(currentColumnId);
+    const currentColumnItems = columnItemsMap.value[currentColumnKey] ?? [];
+    const currentIndex = currentColumnItems.findIndex(candidate => String(candidate.id) === String(id));
+
+    if (currentIndex < 0) {
+        return;
+    }
+
+    if (key === 'ArrowUp' || key === 'ArrowDown') {
+        event.preventDefault();
+        const offset = key === 'ArrowUp' ? -1 : 1;
+        const targetIndex = Math.max(0, Math.min(currentColumnItems.length - 1, currentIndex + offset));
+
+        if (targetIndex !== currentIndex) {
+            moveItem(id, currentColumnId, targetIndex);
+            await focusCard(id);
+        }
+        return;
+    }
+
+    if (key === 'ArrowLeft' || key === 'ArrowRight') {
+        event.preventDefault();
+        const currentColumnIndex = normalizedColumns.value.findIndex(
+            column => String(column.id) === String(currentColumnId),
+        );
+        const columnOffset = key === 'ArrowLeft' ? -1 : 1;
+        const targetColumn = normalizedColumns.value[currentColumnIndex + columnOffset];
+
+        if (!targetColumn) {
+            return;
+        }
+
+        const targetItems = columnItemsMap.value[String(targetColumn.id)] ?? [];
+        const targetIndex = Math.min(currentIndex, targetItems.length);
+
+        moveItem(id, targetColumn.id, targetIndex);
+        await focusCard(id);
+    }
+};
+
 watch(
     () => props.items,
     value => {
         localItems.value = normalizeItems(value);
+        laneScrollOffsets.value = {};
+        keyboardDraggingItemId.value = null;
     },
     { immediate: true, deep: true },
 );
@@ -264,6 +494,7 @@ watch(
     gap: var(--vf-kanban-board-card-gap);
     min-height: 7rem;
     align-content: start;
+    overflow-x: hidden;
 }
 
 .vf-kanban-board__item {
@@ -277,8 +508,17 @@ watch(
     border-color: var(--vf-kanban-board-card-hover-border-color);
 }
 
+.vf-kanban-board__item:focus-visible {
+    outline: 2px solid var(--vf-kanban-board-card-hover-border-color);
+    outline-offset: 1px;
+}
+
 .vf-kanban-board__item.is-dragging {
     opacity: var(--vf-kanban-board-drag-opacity);
+}
+
+.vf-kanban-board__item.is-keyboard-dragging {
+    border-color: var(--vf-kanban-board-card-hover-border-color);
 }
 
 .vf-kanban-board__item.priority-low {
@@ -340,6 +580,10 @@ watch(
     color: var(--vf-kanban-board-empty-color);
     border-radius: var(--vf-kanban-board-card-border-radius);
     border: var(--vf-border-width) dashed var(--vf-kanban-board-card-border-color);
+}
+
+.vf-kanban-board__spacer {
+    pointer-events: none;
 }
 
 .vf-kanban-board__column-footer {

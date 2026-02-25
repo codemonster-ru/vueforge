@@ -10,6 +10,7 @@ Render chronological product activity with actor metadata, date grouping, and re
 - `groupBy?: 'date' | 'none'` (default `date`)
 - `relativeTime?: boolean` (default `true`)
 - `locale?: string` (default `en`)
+- `timeZone?: string` (optional IANA timezone)
 - `now?: string | number | Date | null` (default `null`)
 - `emptyText?: string` (default `No activity yet.`)
 - `ariaLabel?: string` (default `Activity feed`)
@@ -86,6 +87,7 @@ Render chronological product activity with actor metadata, date grouping, and re
 
 - Relative-time labels use runtime time calculations; pass `now` for deterministic SSR/hydration output.
 - If `now` is omitted, labels are computed from current render time.
+- For timestamp/date grouping stability across regions, provide explicit `timeZone`.
 
 ## Testing
 

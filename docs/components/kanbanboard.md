@@ -11,6 +11,12 @@ Support filtering, navigation, and bulk workflows used in core SaaS backoffice s
 - `items?: Array<{ id: string | number; columnId: string | number; title: string; description?: string; assignee?: string; priority?: 'low' | 'medium' | 'high'; tags?: string[] }>`
 - `ariaLabel?: string` (default `Kanban board`)
 - `emptyColumnText?: string` (default `Drop cards here`)
+- `virtualization?: boolean` (default `false`)
+- `virtualizationThreshold?: number` (default `40`)
+- `itemHeight?: number` (default `72`)
+- `swimlaneHeight?: number` (default `420`)
+- `overscan?: number` (default `3`)
+- `keyboardDnD?: boolean` (default `true`)
 
 ## Events
 
@@ -29,6 +35,17 @@ Support filtering, navigation, and bulk workflows used in core SaaS backoffice s
 
 ```vue
 <KanbanBoard v-model:items="items" :columns="columns" @move="onMove" />
+```
+
+```vue
+<KanbanBoard
+    v-model:items="items"
+    :columns="columns"
+    virtualization
+    :virtualization-threshold="20"
+    :item-height="56"
+    :swimlane-height="420"
+/>
 ```
 
 ## Theming
@@ -60,8 +77,8 @@ Component tokens (override via `theme.overrides.components.kanbanBoard`):
 
 ## Responsive
 
-Validate table/list density, horizontal overflow strategy, and virtualization behavior across breakpoints.
-Ensure row/item actions remain accessible and discoverable on touch devices.
+Validate lane density, horizontal overflow strategy, and virtualization behavior across breakpoints.
+Ensure card actions remain accessible and discoverable on touch devices.
 
 ## SSR/Hydration
 
@@ -70,9 +87,14 @@ Defer measurement-driven virtualization logic until client mount.
 
 ## Testing
 
-Cover sorting/filtering/selection/navigation flows and large-dataset edge cases.
-Add performance-sensitive regression tests and ARIA verification for interactive data regions.
+Cover keyboard DnD, drag/drop lane moves, and large-dataset virtualization edge cases.
+Add performance-sensitive regression tests for swimlane scrolling and move interactions.
 
 ## Accessibility
 
-- Ensure keyboard access, visible focus state, and sufficient color contrast in usage contexts.
+- Keyboard DnD shortcuts:
+    - `Space` or `Enter`: pick/drop focused card
+    - `ArrowUp` / `ArrowDown`: reorder within lane while picked
+    - `ArrowLeft` / `ArrowRight`: move to adjacent lane while picked
+    - `Escape`: cancel keyboard drag mode
+- Ensure visible focus state and sufficient color contrast in usage contexts.

@@ -92,6 +92,7 @@ interface Props {
     endHour?: number;
     slotMinutes?: number;
     locale?: string;
+    timeZone?: string;
     disabled?: boolean;
     readonly?: boolean;
     ariaLabel?: string;
@@ -106,6 +107,7 @@ const props = withDefaults(defineProps<Props>(), {
     endHour: 20,
     slotMinutes: 30,
     locale: 'en',
+    timeZone: undefined,
     disabled: false,
     readonly: false,
     ariaLabel: 'Scheduler timeline',
@@ -181,6 +183,7 @@ const formatMinutes = (value: number, locale: string) => {
     return new Intl.DateTimeFormat(locale, {
         hour: 'numeric',
         minute: '2-digit',
+        timeZone: props.timeZone,
     }).format(date);
 };
 

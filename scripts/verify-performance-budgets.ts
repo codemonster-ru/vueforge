@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import process from 'node:process';
 
-const REQUIRED_COMPONENTS = ['DataTable', 'Tree', 'VirtualScroller', 'Overlays'];
+const REQUIRED_COMPONENTS = ['DataTable', 'Tree', 'VirtualScroller', 'Overlays', 'Kanban'];
 const REQUIRED_ENV_KEYS = ['browser', 'cpuThrottling', 'network', 'device'];
 
 const fail = message => {

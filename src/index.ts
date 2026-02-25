@@ -88,6 +88,15 @@ export { default as ContextMenu } from '@/package/components/context-menu.vue';
 export { default as CommandPalette } from '@/package/components/command-palette.vue';
 export { default as NotificationCenter } from '@/package/components/notification-center.vue';
 export { default as AppShell } from '@/package/components/app-shell.vue';
+export { default as AppBar } from '@/package/components/app-bar.vue';
+export { default as NavigationRail } from '@/package/components/navigation-rail.vue';
+export { default as Footer } from '@/package/components/footer.vue';
+export { default as PageLayout } from '@/package/components/page-layout.vue';
+export { default as SplitLayout } from '@/package/components/split-layout.vue';
+export { default as ResizableSidebar } from '@/package/components/resizable-sidebar.vue';
+export { default as StickyRegion } from '@/package/components/sticky-region.vue';
+export { default as Show } from '@/package/components/show.vue';
+export { default as Hide } from '@/package/components/hide.vue';
 export { default as BlockUI } from '@/package/components/block-ui.vue';
 export { default as KanbanBoard } from '@/package/components/kanban-board.vue';
 export { default as Tooltip } from '@/package/components/tooltip.vue';
@@ -140,7 +149,13 @@ export { default as Knob } from '@/package/components/knob.vue';
 export { default as Terminal } from '@/package/components/terminal.vue';
 export { default as PageHeader } from '@/package/components/page-header.vue';
 export { default as VirtualScroller } from '@/package/components/virtual-scroller.vue';
-export type { DataTableColumn, DataTableQuery, DataTableBulkAction } from '@/package/components/data-table.vue';
+export type {
+    DataTableColumn,
+    DataTableQuery,
+    DataTableBulkAction,
+    DataTableSavedFilter,
+    DataTableExportAction,
+} from '@/package/components/data-table.vue';
 export type {
     FormErrors,
     FormSubmitErrorMapper,
@@ -150,7 +165,7 @@ export type {
     FormValidateResult,
     FormValues,
 } from '@/package/components/form.vue';
-export type { TreeItem, TreeValue } from '@/package/components/tree.vue';
+export type { TreeItem, TreeValue, TreeSelectionMode } from '@/package/components/tree.vue';
 export type { OrgChartNodeItem, OrgChartValue } from '@/package/components/org-chart.vue';
 export type { TreeTableColumn, TreeTableNode, TreeTableValue } from '@/package/components/tree-table.vue';
 export type { ListboxOption, ListboxOptionGroup, ListboxValue } from '@/package/components/listbox.vue';
@@ -196,7 +211,13 @@ export type {
 export type { TerminalEntry } from '@/package/components/terminal.vue';
 export type { TourStep } from '@/package/components/tour.vue';
 export type { WizardStepItem } from '@/package/components/wizard.vue';
-export type { NotificationCenterItem } from '@/package/components/notification-center.vue';
+export type {
+    NotificationCenterItem,
+    NotificationCenterPersistState,
+    NotificationFilter,
+    NotificationGroupBy,
+} from '@/package/components/notification-center.vue';
+export type { CommandPaletteItem, CommandPaletteScope } from '@/package/components/command-palette.vue';
 export type { KanbanBoardItem, KanbanColumn } from '@/package/components/kanban-board.vue';
 export type {
     AdvancedFilterField,

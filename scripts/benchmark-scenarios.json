@@ -20,6 +20,10 @@
         "Overlays": {
             "routeComponent": "overlays",
             "metrics": ["openP95Ms", "closeP95Ms", "positionUpdateP95Ms", "focusTransferP95Ms"]
+        },
+        "Kanban": {
+            "routeComponent": "kanban",
+            "metrics": ["initialRenderP95Ms", "keyboardDnDMoveP95Ms", "swimlaneScrollP95Ms"]
         }
     }
 }

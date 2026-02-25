@@ -8,6 +8,8 @@ export type AccordionContext = {
     modelValue: ComputedRef<AccordionValue | AccordionValue[] | undefined>;
     multiple: ComputedRef<boolean>;
     disabled: ComputedRef<boolean>;
+    dense: ComputedRef<boolean>;
+    grouped: ComputedRef<boolean>;
     variant: ComputedRef<AccordionVariant>;
     size: ComputedRef<AccordionSize>;
     onToggle: (value: AccordionValue, event: Event) => void;

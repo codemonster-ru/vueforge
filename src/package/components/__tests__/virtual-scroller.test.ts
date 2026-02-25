@@ -68,4 +68,19 @@ describe('VirtualScroller', () => {
 
         expect(wrapper.find('.custom-empty').exists()).toBe(true);
     });
+
+    it('supports error-state fallback via empty slot for failed large-list fetches', () => {
+        const wrapper = mount(VirtualScroller, {
+            props: {
+                items: [],
+                height: '240px',
+                virtual: true,
+            },
+            slots: {
+                empty: '<div class="virtual-error">Failed to load feed</div>',
+            },
+        });
+
+        expect(wrapper.find('.virtual-error').exists()).toBe(true);
+    });
 });

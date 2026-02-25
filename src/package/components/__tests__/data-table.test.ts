@@ -56,6 +56,25 @@ describe('DataTable', () => {
         expect(wrapper.text()).toContain('No data');
     });
 
+    it('supports loading, empty, and error-state slot patterns for server datasets', async () => {
+        const wrapper = mount(DataTable, {
+            props: {
+                columns,
+                rows: [],
+                server: true,
+                loading: true,
+            },
+            slots: {
+                loading: '<div class="table-loading">Loading dataset...</div>',
+                empty: '<div class="table-error">Unable to load records</div>',
+            },
+        });
+
+        expect(wrapper.find('.table-loading').exists()).toBe(true);
+        await wrapper.setProps({ loading: false });
+        expect(wrapper.find('.table-error').exists()).toBe(true);
+    });
+
     it('uses global locale text defaults when state labels are not provided', () => {
         setLocaleText({
             dataTable: {
@@ -159,6 +178,35 @@ describe('DataTable', () => {
         });
     });
 
+    it('applies saved filters and emits server request handoff', async () => {
+        const wrapper = mount(DataTable, {
+            props: {
+                columns,
+                rows,
+                server: true,
+                showSavedFilters: true,
+                savedFilters: [
+                    { id: 'open', label: 'Open', filters: { status: 'open' } },
+                    { id: 'assigned', label: 'Assigned', filters: { assignee: 'alice' } },
+                ],
+            },
+        });
+
+        const select = wrapper.find('.vf-datatable__saved-filters-select');
+        await select.setValue('assigned');
+
+        expect(wrapper.emitted('update:activeSavedFilterId')?.at(-1)).toEqual(['assigned']);
+        expect(wrapper.emitted('update:filters')?.at(-1)).toEqual([{ assignee: 'alice' }]);
+        expect(wrapper.emitted('savedFilterChange')?.at(-1)).toEqual(['assigned', { assignee: 'alice' }]);
+        expect(wrapper.emitted('request')?.at(-1)?.[0]).toEqual({
+            sortField: null,
+            sortOrder: null,
+            page: 1,
+            pageSize: 10,
+            filters: { assignee: 'alice' },
+        });
+    });
+
     it('supports single row selection and emits selection updates', async () => {
         const wrapper = mount(DataTable, {
             props: {
@@ -195,6 +243,58 @@ describe('DataTable', () => {
 
         expect(wrapper.emitted('bulkAction')?.[0]?.[0]).toBe('archive');
         expect(wrapper.emitted('bulkAction')?.[0]?.[1]).toEqual([1, 2, 3]);
+    });
+
+    it('supports export hooks with current query and selection context', async () => {
+        const wrapper = mount(DataTable, {
+            props: {
+                columns,
+                rows,
+                selectionMode: 'multiple',
+                selection: [1, 3],
+                filters: { status: 'open' },
+                showExportActions: true,
+                exportActions: [{ label: 'CSV', value: 'csv' }],
+                activeSavedFilterId: 'ops',
+            },
+        });
+
+        await wrapper.find('.vf-datatable__export-action').trigger('click');
+
+        expect(wrapper.emitted('exportAction')?.[0]?.[0]).toBe('csv');
+        expect(wrapper.emitted('exportAction')?.[0]?.[1]).toEqual({
+            sortField: null,
+            sortOrder: null,
+            page: 1,
+            pageSize: 10,
+            filters: { status: 'open' },
+        });
+        expect(wrapper.emitted('exportAction')?.[0]?.[2]).toEqual([1, 3]);
+        expect(wrapper.emitted('exportAction')?.[0]?.[4]).toBe('ops');
+    });
+
+    it('disables pending bulk and export actions for long-running states', async () => {
+        const wrapper = mount(DataTable, {
+            props: {
+                columns,
+                rows,
+                selectionMode: 'multiple',
+                selection: [1],
+                bulkActions: [{ label: 'Archive', value: 'archive' }],
+                pendingBulkActions: ['archive'],
+                showExportActions: true,
+                exportActions: [{ label: 'CSV', value: 'csv' }],
+                pendingExportActions: ['csv'],
+                pendingActionText: 'In progress',
+            },
+        });
+
+        const bulkButton = wrapper.find('.vf-datatable__bulk-action');
+        const exportButton = wrapper.find('.vf-datatable__export-action');
+
+        expect(bulkButton.attributes('disabled')).toBeDefined();
+        expect(exportButton.attributes('disabled')).toBeDefined();
+        expect(wrapper.text()).toContain('In progress');
     });
 
     it('applies sticky header and sticky column styles', () => {

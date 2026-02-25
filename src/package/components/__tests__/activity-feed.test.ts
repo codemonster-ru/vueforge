@@ -88,4 +88,23 @@ describe('ActivityFeed', () => {
 
         expect(wrapper.find('.vf-activity-feed__empty').text()).toContain('No events yet');
     });
+
+    it('formats absolute timestamps with explicit timezone', () => {
+        const wrapper = mount(ActivityFeed, {
+            props: {
+                items: [items[0]],
+                groupBy: 'none',
+                relativeTime: false,
+                locale: 'en-US',
+                timeZone: 'UTC',
+            },
+        });
+        const expected = new Date('2026-02-24T10:00:00.000Z').toLocaleString('en-US', {
+            dateStyle: 'medium',
+            timeStyle: 'short',
+            timeZone: 'UTC',
+        });
+
+        expect(wrapper.find('.vf-activity-feed__time').text()).toBe(expected);
+    });
 });

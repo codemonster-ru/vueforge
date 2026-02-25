@@ -73,4 +73,67 @@ describe('KanbanBoard', () => {
 
         expect(wrapper.emitted('click')?.length).toBe(1);
     });
+
+    it('supports keyboard drag and drop between columns', async () => {
+        const wrapper = mount(KanbanBoard, {
+            props: {
+                columns,
+                items,
+            },
+        });
+
+        await nextTick();
+        const firstCard = wrapper.find('.vf-kanban-board__item');
+
+        await firstCard.trigger('keydown', { key: ' ' });
+        expect(firstCard.attributes('aria-grabbed')).toBe('true');
+
+        await firstCard.trigger('keydown', { key: 'ArrowRight' });
+        await nextTick();
+
+        const emitted = wrapper.emitted('update:items');
+        const latest = emitted?.at(-1)?.[0] as Array<{ id: string | number; columnId: string | number }>;
+        const moved = latest.find(item => String(item.id) === '1');
+
+        expect(moved?.columnId).toBe('doing');
+        expect(wrapper.emitted('move')?.length).toBeGreaterThan(0);
+
+        const movedCard = wrapper.find('[data-column-id="doing"][data-item-id="1"]');
+        await movedCard.trigger('keydown', { key: 'Enter' });
+
+        expect(movedCard.attributes('aria-grabbed')).toBe('false');
+    });
+
+    it('virtualizes lane cards when enabled', async () => {
+        const largeDataset = Array.from({ length: 100 }, (_, index) => ({
+            id: `todo-${index + 1}`,
+            columnId: 'todo',
+            title: `Task ${index + 1}`,
+        }));
+
+        const wrapper = mount(KanbanBoard, {
+            props: {
+                columns: [{ id: 'todo', title: 'To do' }],
+                items: largeDataset,
+                virtualization: true,
+                virtualizationThreshold: 1,
+                itemHeight: 40,
+                swimlaneHeight: 120,
+                overscan: 0,
+            },
+        });
+
+        await nextTick();
+        expect(wrapper.findAll('.vf-kanban-board__item')).toHaveLength(3);
+
+        const lane = wrapper.find('.vf-kanban-board__list');
+        (lane.element as HTMLElement).scrollTop = 160;
+        await lane.trigger('scroll');
+        await nextTick();
+
+        const cardTitles = wrapper.findAll('.vf-kanban-board__card-title').map(node => node.text());
+
+        expect(cardTitles[0]).toBe('Task 5');
+        expect(wrapper.findAll('.vf-kanban-board__spacer').length).toBeGreaterThan(0);
+    });
 });

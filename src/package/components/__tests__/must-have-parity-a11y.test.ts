@@ -1,15 +1,25 @@
 import { mount } from '@vue/test-utils';
 import { nextTick } from 'vue';
+import { vi } from 'vitest';
 import Carousel from '../carousel.vue';
 import Chart from '../chart.vue';
 import DataView from '../data-view.vue';
 import Image from '../image.vue';
 import Listbox from '../listbox.vue';
 import MegaMenu from '../mega-menu.vue';
+import NavigationRail from '../navigation-rail.vue';
 import OverlayPanel from '../overlay-panel.vue';
 import PanelMenu from '../panel-menu.vue';
+import PageLayout from '../page-layout.vue';
+import ResizableSidebar from '../resizable-sidebar.vue';
 import SpeedDial from '../speed-dial.vue';
 import TreeTable from '../tree-table.vue';
+
+vi.mock('@codemonster-ru/vueiconify', () => ({
+    CmIcon: {
+        template: '<span class="vf-icon-stub" />',
+    },
+}));
 
 describe('Must-have parity keyboard and ARIA regression', () => {
     it('TreeTable exposes treegrid semantics and keyboard expand/select contract', async () => {
@@ -167,5 +177,81 @@ describe('Must-have parity keyboard and ARIA regression', () => {
         document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
         await nextTick();
         expect(wrapper.emitted('hide')?.length).toBe(1);
+    });
+
+    it('collapsible/resizable navigation regions keep keyboard and ARIA contracts', async () => {
+        const rail = mount(NavigationRail, {
+            props: {
+                items: [
+                    { key: 'home', label: 'Home', href: '#' },
+                    { key: 'ops', label: 'Ops', href: '#' },
+                ],
+                collapsed: false,
+            },
+            global: {
+                stubs: {
+                    RouterLink: {
+                        template: '<a class="router-link-stub"><slot /></a>',
+                    },
+                },
+            },
+        });
+        expect(rail.find('.vf-navigation-rail__list').attributes('role')).toBe('menu');
+        expect(rail.findAll('[role="menuitem"]').length).toBe(2);
+
+        const sidebar = mount(ResizableSidebar, {
+            props: {
+                modelValue: 260,
+                minWidth: 220,
+                maxWidth: 320,
+            },
+            slots: {
+                default: 'Sidebar',
+            },
+        });
+        const separator = sidebar.find('[role="separator"]');
+        expect(separator.exists()).toBe(true);
+        await separator.trigger('keydown', { key: 'ArrowRight' });
+        expect(sidebar.emitted('update:modelValue')?.length).toBeGreaterThan(0);
+
+        const previousWidth = window.innerWidth;
+        Object.defineProperty(window, 'innerWidth', {
+            configurable: true,
+            writable: true,
+            value: 640,
+        });
+        window.dispatchEvent(new Event('resize'));
+
+        const page = mount(PageLayout, {
+            props: {
+                mobileBreakpoint: 800,
+                showMobileToggles: true,
+                closeOnEsc: true,
+            },
+            slots: {
+                sidebar: 'Sidebar',
+                default: 'Main',
+            },
+            attachTo: document.body,
+        });
+        await nextTick();
+
+        await page.find('.vf-page-layout__toggle').trigger('click');
+        expect(page.find('.vf-page-layout__sidebar').attributes('aria-hidden')).toBe('false');
+
+        window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+        await nextTick();
+        expect(page.find('.vf-page-layout__sidebar').attributes('aria-hidden')).toBe('true');
+
+        Object.defineProperty(window, 'innerWidth', {
+            configurable: true,
+            writable: true,
+            value: previousWidth,
+        });
+        window.dispatchEvent(new Event('resize'));
+
+        rail.unmount();
+        sidebar.unmount();
+        page.unmount();
     });
 });

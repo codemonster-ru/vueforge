@@ -9,6 +9,7 @@
             :aria-expanded="hasChildren ? expanded : undefined"
             :aria-selected="selected"
             :aria-disabled="disabledNode ? 'true' : undefined"
+            :aria-busy="loading ? 'true' : undefined"
             :tabindex="disabledNode ? -1 : 0"
             @click="onRowClick"
             @keydown="onRowKeydown"
@@ -18,12 +19,12 @@
                 type="button"
                 class="vf-tree__toggle"
                 :class="{ 'is-expanded': expanded }"
-                :disabled="disabledNode"
+                :disabled="disabledNode || loading"
                 tabindex="-1"
                 :aria-label="expanded ? 'Collapse' : 'Expand'"
                 @click.stop="onToggleClick"
             >
-                {{ expanded ? '-' : '+' }}
+                {{ loading ? '...' : expanded ? '-' : '+' }}
             </button>
             <span v-else class="vf-tree__toggle-spacer" aria-hidden="true" />
             <span class="vf-tree__label">
@@ -40,6 +41,9 @@
             </span>
         </div>
         <ul v-if="hasChildren && expanded" class="vf-tree__group" role="group">
+            <li v-if="loading && !node.children?.length" class="vf-tree__async">
+                {{ loadingLabel }}
+            </li>
             <TreeNode
                 v-for="child in node.children"
                 :key="child.key"
@@ -53,8 +57,10 @@
                 :is-selected="isSelected"
                 :is-expanded="isExpanded"
                 :is-disabled="isDisabled"
+                :is-loading="isLoading"
                 :on-select="onSelect"
                 :on-toggle="onToggle"
+                :loading-label="loadingLabel"
             >
                 <template #label="slotProps">
                     <slot name="label" v-bind="slotProps" />
@@ -79,8 +85,10 @@ interface Props {
     isSelected: (key: TreeValue) => boolean;
     isExpanded: (key: TreeValue) => boolean;
     isDisabled: (node: TreeItem) => boolean;
+    isLoading: (key: TreeValue) => boolean;
     onSelect: (node: TreeItem, event: Event) => void;
     onToggle: (node: TreeItem, event: Event) => void;
+    loadingLabel: string;
 }
 type TreeLabelSlotProps = {
     node: TreeItem;
@@ -99,6 +107,7 @@ const hasChildren = computed(() => Boolean(props.node.hasChildren) || !!props.no
 const disabledNode = computed(() => props.isDisabled(props.node));
 const selected = computed(() => props.isSelected(props.node.key));
 const expanded = computed(() => props.isExpanded(props.node.key));
+const loading = computed(() => props.isLoading(props.node.key));
 
 const rowClass = computed(() => {
     const classes = [`vf-tree__row_${props.variant}`];
@@ -333,6 +342,14 @@ const onToggleClick = (event: MouseEvent) => {
 
 .vf-tree__label {
     min-width: 0;
+}
+
+.vf-tree__async {
+    padding: 0.25rem 0.5rem;
+    margin-inline-start: calc(var(--vf-tree-indent) * var(--vf-tree-level));
+    font-size: 0.8125rem;
+    color: var(--vf-tree-row-text-color);
+    opacity: 0.75;
 }
 
 .vf-tree__row_small {

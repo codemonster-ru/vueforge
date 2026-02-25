@@ -134,6 +134,7 @@ interface Props {
     ariaLabel?: string;
     showDiff?: boolean;
     locale?: string;
+    timeZone?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -144,6 +145,7 @@ const props = withDefaults(defineProps<Props>(), {
     ariaLabel: 'Audit log',
     showDiff: true,
     locale: 'en',
+    timeZone: undefined,
 });
 
 const emits = defineEmits<{
@@ -180,6 +182,7 @@ const getTimestampLabel = (value?: DateLike) => {
     return date.toLocaleString(props.locale, {
         dateStyle: 'medium',
         timeStyle: 'short',
+        timeZone: props.timeZone,
     });
 };
 

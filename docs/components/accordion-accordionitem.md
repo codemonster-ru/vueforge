@@ -12,6 +12,12 @@ Props (Accordion):
 - `modelValue?: string | number | Array<string | number>` (v-model)
 - `multiple?: boolean` (default `false`)
 - `disabled?: boolean`
+- `dense?: boolean` (default `false`)
+- `grouped?: boolean` (default `false`)
+- `groupTitle?: string`
+- `groupDescription?: string`
+- `analytics?: boolean` (default `false`)
+- `analyticsContext?: string`
 - `variant?: 'filled' | 'outlined'` (default `filled`)
 - `size?: 'small' | 'normal' | 'large'` (default `normal`)
 - `ariaLabel?: string`
@@ -32,10 +38,17 @@ Props (AccordionItem):
 
 - `update:modelValue`
 - `change`
+- `itemToggle` - payload `{ value, expanded, values, event }`
+- `itemExpand`
+- `itemCollapse`
+- `analytics` - payload `{ type, value, values, context, at }`
 
 ## Slots
 
-- This component does not expose named slots.
+- `group-title`
+- `group-description`
+- `group-actions`
+- `title` (on `AccordionItem`)
 
 ## Examples
 
@@ -68,6 +81,27 @@ Props (AccordionItem):
 <Accordion v-model="openSections" multiple>
     <AccordionItem value="privacy" title="Privacy">Privacy policy</AccordionItem>
     <AccordionItem value="terms" title="Terms">Terms of service</AccordionItem>
+</Accordion>
+```
+
+### Grouped expansion panel with dense mode and analytics
+
+```vue
+<Accordion
+    v-model="openPanels"
+    grouped
+    dense
+    group-title="Access controls"
+    group-description="Policy and approval settings"
+    analytics
+    analytics-context="security-settings"
+    @analytics="trackAccordion"
+>
+    <template #group-actions>
+        <Button size="small">Manage roles</Button>
+    </template>
+    <AccordionItem value="policy" title="Policy rules">...</AccordionItem>
+    <AccordionItem value="approvals" title="Approval matrix">...</AccordionItem>
 </Accordion>
 ```
 

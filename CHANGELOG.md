@@ -1,5 +1,59 @@
 # Changelog
 
+## [0.95.0] - 2026-02-25
+
+- Semver checklist:
+    - [x] Semver impact classified (`minor`)
+    - [x] Breaking-change assessment completed (`no`)
+    - [x] Deprecations documented (N/A)
+    - [x] Migration notes added when required (N/A)
+    - [x] Catalog mapping sync completed (`yes`)
+- New component/service scope:
+    - SaaS/data workflow: `QueryBuilder`, `AdvancedFilterPanel`, `SavedViewsManager`, `DataTableToolbar`, `BulkActionBar`.
+    - Navigation/selection/overlay: `TieredMenu`, `TabMenu`, `CascadeSelect`, `ConfirmPopup`, `DynamicDialog`.
+    - Collaboration/ops: `ActivityFeed`, `AuditLogViewer`, `CommentThread`, `MemberPicker`, `PermissionMatrix`, `KPIStatCard`, `MeterGroup`.
+    - Utility/content: `InlineMessage`, `OverlayBadge`, `FileManager`, `JSONViewer`, `DiffViewer`, `CodeEditor`, `Scheduler`, `BottomSheet`, `InfiniteScroll`.
+    - Programmatic API and helpers: `dynamic-dialog-service` (+ tests), `overlay-badge` directive, `code-editor-adapter` (`Monaco`/`CodeMirror` adapters), and related component type files.
+- Theming/runtime/documentation synchronization for this release scope:
+    - Added default theme token files for new components and registered them in default theme preset.
+    - Extended `theme-core` token types and `ThemeComponentTokens` mappings (including alias mappings such as `tieredMenu`, `dynamicDialog`, `confirmPopup`, `cascadeSelect`).
+    - Extended public exports in `src/index.ts` for components/services/types.
+    - Added docs pages for all new components and updated docs index.
+    - Updated checklist and audit matrices (`component-catalog-mapping`, `planned-component-compliance-matrix`, `component-compliance-matrix`).
+- Additional fixes/hardening:
+    - `KanbanBoard` production hardening: added keyboard DnD controls, lane virtualization props, regression tests, and swimlane performance benchmark coverage.
+    - `NotificationCenter` SaaS mode hardening: added read/unread filters, grouped rendering modes, per-item action links, and persistence contract (`persistKey` + `persist` payload).
+    - `CommandPalette` SaaS actions mode: added scoped commands (tabs + `scope:` query prefixes), entity-aware search fields/events, and recent items with optional local persistence.
+    - `DataTable` SaaS ops mode: added server-driven saved filters UI/contracts, export action hooks with query context, and pending long-running state controls for bulk/export actions.
+    - `Tree` TreeView hardening: added explicit `selectionMode`, virtualized expanded rendering mode, and async branch loading states/events (`loadingKeys`, `loadOnExpand`, `loadChildren`).
+    - `Accordion` ExpansionPanel hardening: added `dense`/`grouped` behavior with group header/action slots and analytics hooks (`itemToggle`, `itemExpand`, `itemCollapse`, `analytics`).
+    - `Rating` hardening for form/review usage: added `precision` and `clearable`, improved readonly fractional rendering, and expanded keyboard/RTL accessibility handling.
+    - Added RBAC boundary guide (`docs/guides/rbac-api-boundaries.md`) defining UI-only vs backend-enforced authorization responsibilities for SaaS components.
+    - Added SaaS large-dataset validation audit (`docs/audits/saas-large-dataset-validation.md`) and extended `DataTable`/`VirtualScroller` tests for loading/empty/error fallback patterns.
+    - Added SaaS i18n/timezone validation audit (`docs/audits/saas-i18n-timezone-validation.md`) and extended `ActivityFeed`/`CommentThread`/`AuditLogViewer`/`Scheduler` APIs and tests with explicit `timeZone` formatting coverage.
+    - Added end-to-end SaaS recipe (`docs/recipes/saas-ops-list-detail-flow.md`) covering list/detail workflow composition with `DataTable`, `SavedViewsManager`, `BulkActionBar`, `ActivityFeed`, `CommentThread`, and `AuditLogViewer`.
+    - Added `AppBar` component (fixed/sticky/dense variants, action slots, responsive behavior) with default theme tokens, docs, and regression tests.
+    - Added `NavigationRail` component (collapsed/expanded states, icon+label patterns, keyboard navigation) with theme tokens, API docs, and regression tests.
+    - Added `Footer` component (app/page footer layout with left/center/right slots) with responsive stacking behavior, theme tokens, docs, and regression tests.
+    - Added `PageLayout` preset component for `sidebar/content/aside` composition with responsive off-canvas collapse behavior, docs, and regression tests.
+    - Added `SplitLayout` presets (`master-detail`, `inspector`, `editor-preview`) with collapse controls, responsive off-canvas behavior, and regression tests.
+    - Added `ResizableSidebar` behavior component with drag resize, collapse toggle, and local/session persistence support for width/state.
+    - Added `StickyRegion` utility for sticky headers/subheaders/action bars with configurable `edge`, `offset`, and z-index/theming contracts.
+    - Added responsive visibility utility components `Show` and `Hide` with breakpoint-aware rendering (`from`/`to`) and docs/tests coverage.
+    - Added layout contract guide (`docs/guides/layout-breakpoint-spacing-contracts.md`) defining shared breakpoints and tokenized spacing scale for shell/page presets.
+    - Expanded SSR/hydration regression suite for responsive layout switching (`AppShell`, `PageLayout`, `SplitLayout`, `StickyRegion`) with resize transition assertions.
+    - Expanded must-have a11y regression coverage for collapsible/resizable navigation regions (`NavigationRail`, `ResizableSidebar`, `PageLayout`) including separator keyboard and Escape-close flows.
+    - Added layout shell recipes (`dashboard`, `settings`, `analytics`, `mobile adaptive`) under `docs/recipes/` for production-oriented app composition patterns.
+    - Extended visual regression suite with dedicated layout preset snapshots for desktop and mobile breakpoints (`vf-visual-layout-presets`).
+    - Tree parity hardening: added optional `hasChildren` support in `Tree`/`TreeNode`.
+    - Fixed lint blocker in `DataTableToolbar` (`no-unused-vars`).
+    - Fixed type-safety issues in `InfiniteScroll` and `JSONViewer`.
+    - Removed Vue test warning noise by stubbing `RouterLink` in a11y parity tests for `NavigationRail`.
+    - Recalibrated local/CI performance budgets for unstable p95 metrics (`DataTable` and `Overlays`) to keep `performance:check` green.
+- Lint/format pipeline alignment:
+    - Switched ESLint to enforce Prettier output (`prettier/prettier: error`) to remove formatter-vs-lint drift.
+    - Applied Prettier normalization to touched files in tests/components/theme tokens to match CI lint expectations.
+
 ## [0.94.0] - 2026-02-25
 
 - Semver checklist:

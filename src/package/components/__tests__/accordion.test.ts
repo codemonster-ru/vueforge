@@ -173,4 +173,52 @@ describe('Accordion', () => {
 
         expect(wrapper.vm.value).toBe('a');
     });
+
+    it('applies dense and grouped classes with group header/actions pattern', () => {
+        const wrapper = mount({
+            components: { Accordion, AccordionItem },
+            template: `
+                <Accordion v-model="value" dense grouped group-title="Notifications" group-description="Rules">
+                    <template #group-actions>
+                        <button type="button" class="group-action">Manage</button>
+                    </template>
+                    <AccordionItem value="a" title="A">A body</AccordionItem>
+                    <AccordionItem value="b" title="B">B body</AccordionItem>
+                </Accordion>
+            `,
+            data() {
+                return { value: 'a' };
+            },
+        });
+
+        expect(wrapper.find('.vf-accordion').classes()).toContain('vf-accordion_dense');
+        expect(wrapper.find('.vf-accordion').classes()).toContain('vf-accordion_grouped');
+        expect(wrapper.find('.vf-accordion__group-title').text()).toBe('Notifications');
+        expect(wrapper.find('.group-action').exists()).toBe(true);
+    });
+
+    it('emits analytics hooks for expand and collapse', async () => {
+        const wrapper = mount({
+            components: { Accordion, AccordionItem },
+            template: `
+                <Accordion v-model="value" analytics analytics-context="settings-audit">
+                    <AccordionItem value="a" title="A">A body</AccordionItem>
+                    <AccordionItem value="b" title="B">B body</AccordionItem>
+                </Accordion>
+            `,
+            data() {
+                return { value: undefined };
+            },
+        });
+
+        const headers = wrapper.findAll('.vf-accordion__header');
+        await headers[0].trigger('click');
+        await headers[0].trigger('click');
+
+        expect(wrapper.findComponent(Accordion).emitted('itemExpand')?.length).toBe(1);
+        expect(wrapper.findComponent(Accordion).emitted('itemCollapse')?.length).toBe(1);
+        const analytics = wrapper.findComponent(Accordion).emitted('analytics');
+        expect(analytics?.length).toBe(2);
+        expect((analytics?.[0]?.[0] as { context?: string }).context).toBe('settings-audit');
+    });
 });

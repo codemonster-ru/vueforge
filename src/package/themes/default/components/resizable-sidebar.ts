@@ -1,0 +1,15 @@
+export default {
+    backgroundColor: 'var(--vf-bg-color)',
+    textColor: 'var(--vf-text-color)',
+    borderColor: 'var(--vf-border-color)',
+    disabledOpacity: 'var(--vf-states-disabled-opacity)',
+    sectionPadding: '0.5rem',
+    contentPadding: '0.5rem',
+    toggleMargin: '0.5rem',
+    toggleSize: '1.75rem',
+    toggleBorderRadius: 'var(--vf-radii-sm)',
+    toggleBorderColor: 'var(--vf-border-color)',
+    toggleBackgroundColor: 'var(--vf-bg-color)',
+    toggleTextColor: 'var(--vf-text-color)',
+    resizerSize: '0.625rem',
+};

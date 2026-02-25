@@ -87,6 +87,12 @@ const getClass = computed(() => {
     if (isDisabled.value) {
         classes.push('vf-accordion-item_disabled');
     }
+    if (context?.dense.value) {
+        classes.push('vf-accordion-item_dense');
+    }
+    if (context?.grouped.value) {
+        classes.push('vf-accordion-item_grouped');
+    }
 
     return classes;
 });
@@ -245,6 +251,10 @@ const onHeaderKeydown = (event: KeyboardEvent) => {
     .vf-accordion__header {
         cursor: not-allowed;
     }
+}
+
+.vf-accordion-item_dense .vf-accordion__header {
+    min-height: 2rem;
 }
 
 .vf-accordion_outlined {

@@ -29,6 +29,9 @@ Support filtering, navigation, and bulk workflows used in core SaaS backoffice s
 - `selectionMode?: 'single' | 'multiple' | null` (default `null`)
 - `selection?: string | number | Array<string | number> | null` (default `null`)
 - `bulkActions?: Array<{ label: string; value: string; disabled?: boolean }>` (default `[]`)
+- `pendingBulkActions?: Array<string>` (default `[]`)
+- `actionsLocked?: boolean` (default `false`)
+- `pendingActionText?: string` (default `Running...`)
 - `selectAllAriaLabel?: string` (default `Select all rows`)
 - `selectRowAriaLabel?: string` (default `Select row`)
 - `stickyHeader?: boolean` (default `false`)
@@ -47,6 +50,15 @@ Support filtering, navigation, and bulk workflows used in core SaaS backoffice s
 - `visibleColumns?: Array<string>` (default `[]`) - controlled visible column fields (`[]` means all)
 - `columnVisibilityManager?: boolean` (default `false`) - built-in column visibility UI
 - `columnVisibilityLabel?: string` (default `Columns`) - label for visibility manager toggle
+- `savedFilters?: Array<{ id: string | number; label: string; filters: Record<string, unknown>; disabled?: boolean }>` (default `[]`)
+- `activeSavedFilterId?: string | number | null` (default `null`)
+- `showSavedFilters?: boolean` (default `false`)
+- `savedFiltersLabel?: string` (default `Saved filters`)
+- `savedFiltersPlaceholder?: string` (default `Choose filter`)
+- `exportActions?: Array<{ label: string; value: string; disabled?: boolean }>` (default `[]`)
+- `pendingExportActions?: Array<string>` (default `[]`)
+- `showExportActions?: boolean` (default `false`)
+- `exportLabel?: string` (default `Export`)
 
 ## Events
 
@@ -63,6 +75,9 @@ Support filtering, navigation, and bulk workflows used in core SaaS backoffice s
 - `update:selection`
 - `selectionChange`
 - `bulkAction` - payload: `(action, selectedKeys, selectedRows)`
+- `exportAction` - payload: `(action, query, selectedKeys, selectedRows, activeSavedFilterId)`
+- `update:activeSavedFilterId`
+- `savedFilterChange` - payload: `(id | null, filters)`
 - `columnResize` - payload: `{ field, width, widthPx }`
 - `update:columnOrder`
 - `columnReorder` - payload: `{ fromField, toField, order }`
@@ -173,6 +188,30 @@ const onBulkAction = (action: string, keys: Array<string | number>) => {
         @bulk-action="onBulkAction"
     />
 </template>
+```
+
+### SaaS ops mode (saved filters + export hooks)
+
+```vue
+<DataTable
+    server
+    :columns="columns"
+    :rows="rows"
+    :filters="filters"
+    :saved-filters="savedFilters"
+    :active-saved-filter-id="activeSavedFilterId"
+    show-saved-filters
+    :export-actions="[
+        { label: 'CSV', value: 'csv' },
+        { label: 'XLSX', value: 'xlsx' },
+    ]"
+    :pending-export-actions="pendingExports"
+    :pending-bulk-actions="pendingBulkActions"
+    show-export-actions
+    @update:filters="filters = $event"
+    @update:active-saved-filter-id="activeSavedFilterId = $event"
+    @export-action="onExport"
+/>
 ```
 
 ### Sticky header and sticky columns

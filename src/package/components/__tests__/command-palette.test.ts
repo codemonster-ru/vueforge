@@ -35,6 +35,7 @@ describe('CommandPalette', () => {
     afterEach(() => {
         setLocaleText();
         document.documentElement.removeAttribute('dir');
+        window.localStorage.clear();
     });
 
     it('opens with Ctrl/Cmd+K shortcut', async () => {
@@ -148,8 +149,6 @@ describe('CommandPalette', () => {
         const panel = wrapper.find('.vf-command-palette__panel');
         await panel.trigger('keydown', { key: 'ArrowDown' });
         await nextTick();
-        await panel.trigger('keydown', { key: 'ArrowDown' });
-        await nextTick();
         await panel.trigger('keydown', { key: 'Enter' });
 
         const selected = wrapper.emitted('select')?.[0]?.[0] as { value?: string } | undefined;
@@ -193,5 +192,78 @@ describe('CommandPalette', () => {
 
         expect(command).toHaveBeenCalledTimes(1);
         expect(wrapper.emitted('select')?.length).toBe(1);
+    });
+
+    it('supports scoped commands via tabs and scope query prefix', async () => {
+        const wrapper = mountCommandPalette({
+            props: {
+                modelValue: true,
+                scopes: [
+                    { id: 'project', label: 'Project', aliases: ['p'] },
+                    { id: 'billing', label: 'Billing', aliases: ['b'] },
+                ],
+                items: [
+                    { label: 'Open board', value: 'board', scope: 'project' },
+                    { label: 'Open invoices', value: 'invoices', scope: 'billing' },
+                ],
+            },
+        });
+
+        await nextTick();
+        await wrapper.findAll('.vf-command-palette__scope')[1].trigger('click');
+        await nextTick();
+        expect(wrapper.findAll('.vf-command-palette__item')).toHaveLength(1);
+        expect(wrapper.find('.vf-command-palette__item-label').text()).toContain('Open board');
+
+        await wrapper.find('.vf-command-palette__input').setValue('b:inv');
+        await nextTick();
+        expect(wrapper.findAll('.vf-command-palette__item')).toHaveLength(1);
+        expect(wrapper.find('.vf-command-palette__item-label').text()).toContain('Open invoices');
+    });
+
+    it('tracks recent items and persists them to local storage', async () => {
+        const wrapper = mountCommandPalette({
+            props: {
+                modelValue: true,
+                recentStorageKey: 'vf-command-palette-recent',
+                items: [
+                    { label: 'Open docs', value: 'docs', group: 'Navigation' },
+                    { label: 'Publish', value: 'publish', group: 'Actions' },
+                ],
+            },
+        });
+
+        await nextTick();
+        await wrapper.find('.vf-command-palette__item').trigger('click');
+
+        expect(wrapper.emitted('update:recent')?.length).toBe(1);
+
+        await wrapper.setProps({ modelValue: true });
+        await nextTick();
+        expect(wrapper.find('.vf-command-palette__group-label').text()).toContain('Recent');
+    });
+
+    it('emits entitySearch for entity-aware query flow', async () => {
+        const wrapper = mountCommandPalette({
+            props: {
+                modelValue: true,
+                items: [
+                    {
+                        label: 'Acme Inc',
+                        value: 'ent-1',
+                        entityType: 'Company',
+                        entityId: 'c-42',
+                        entityKeywords: ['acme'],
+                    },
+                ],
+            },
+        });
+
+        await nextTick();
+        await wrapper.find('.vf-command-palette__input').setValue('acme');
+        await nextTick();
+
+        expect(wrapper.emitted('entitySearch')?.at(-1)).toEqual(['acme', 'all']);
+        expect(wrapper.find('.vf-command-palette__item-entity').text()).toContain('Company');
     });
 });

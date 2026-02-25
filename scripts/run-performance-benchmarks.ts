@@ -68,6 +68,7 @@ const runMetric = async (page, component, metric) => {
         tree: '[data-testid="perf-tree"]',
         virtualscroller: '[data-testid="perf-virtual-scroller"]',
         overlays: '[data-testid="perf-overlays"]',
+        kanban: '[data-testid="perf-kanban"]',
     };
     const componentSelector = selectors[component] ?? selectors.overlays;
 
@@ -196,6 +197,32 @@ const runMetric = async (page, component, metric) => {
             return time(async () => {
                 await page.getByTestId('perf-open-notification').click();
                 await page.waitForTimeout(32);
+            });
+        }
+    }
+
+    if (component === 'kanban') {
+        if (metric === 'keyboardDnDMoveP95Ms') {
+            return time(async () => {
+                const firstCard = page.locator('.vf-kanban-board__item').first();
+                await firstCard.focus();
+                await firstCard.press('Space');
+                await firstCard.press('ArrowRight');
+                await firstCard.press('Enter');
+                await page.waitForTimeout(16);
+            });
+        }
+
+        if (metric === 'swimlaneScrollP95Ms') {
+            return time(async () => {
+                await page
+                    .locator('.vf-kanban-board__list')
+                    .first()
+                    .evaluate(element => {
+                        element.scrollTop = 2200;
+                        element.dispatchEvent(new Event('scroll'));
+                    });
+                await page.waitForTimeout(16);
             });
         }
     }

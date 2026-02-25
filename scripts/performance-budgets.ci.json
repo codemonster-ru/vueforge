@@ -42,6 +42,14 @@
                 "positionUpdateP95Ms": 120,
                 "focusTransferP95Ms": 260
             }
+        },
+        "Kanban": {
+            "scenario": "8 swimlanes x 500 cards, virtualization enabled",
+            "budgets": {
+                "initialRenderP95Ms": 1900,
+                "keyboardDnDMoveP95Ms": 320,
+                "swimlaneScrollP95Ms": 300
+            }
         }
     }
 }

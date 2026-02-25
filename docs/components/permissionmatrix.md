@@ -66,6 +66,7 @@ Render role-versus-capability access grid with tri-state controls (`Inherit`, `A
 
 - Bind `modelValue` to backend RBAC map and persist via explicit save action in parent screen.
 - Use `cellChange` to collect audit payloads for who changed which permission cell.
+- Treat emitted state as UI intent only; enforce authorization in backend handlers (see `docs/guides/rbac-api-boundaries.md`).
 
 ## Accessibility
 

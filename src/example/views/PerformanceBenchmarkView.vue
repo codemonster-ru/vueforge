@@ -70,6 +70,20 @@
                         <span data-testid="perf-command-open">{{ commandOpen ? 'open' : 'closed' }}</span>
                     </div>
                 </Section>
+
+                <Section v-if="showKanban" bordered data-testid="perf-kanban">
+                    <h2>Kanban Benchmark</h2>
+                    <KanbanBoard
+                        data-testid="perf-kanban-root"
+                        :columns="kanbanColumns"
+                        :items="kanbanItems"
+                        virtualization
+                        :virtualization-threshold="1"
+                        :item-height="52"
+                        :swimlane-height="360"
+                        :overscan="4"
+                    />
+                </Section>
             </Stack>
         </Container>
     </main>
@@ -81,6 +95,7 @@ import { useRoute } from 'vue-router';
 import type { DataTableColumn } from '@/package/components/data-table.vue';
 import type { TreeItem } from '@/package/components/tree.vue';
 import type { NotificationCenterItem } from '@/package/components/notification-center.vue';
+import type { KanbanBoardItem, KanbanColumn } from '@/package/components/kanban-board.vue';
 import Container from '@/package/components/container.vue';
 import Stack from '@/package/components/stack.vue';
 import Section from '@/package/components/section.vue';
@@ -91,6 +106,7 @@ import Tree from '@/package/components/tree.vue';
 import VirtualScroller from '@/package/components/virtual-scroller.vue';
 import NotificationCenter from '@/package/components/notification-center.vue';
 import CommandPalette from '@/package/components/command-palette.vue';
+import KanbanBoard from '@/package/components/kanban-board.vue';
 
 const route = useRoute();
 const isReady = ref(false);
@@ -113,6 +129,7 @@ const showDataTable = computed(() => ['all', 'datatable'].includes(activeCompone
 const showTree = computed(() => ['all', 'tree'].includes(activeComponent.value));
 const showVirtualScroller = computed(() => ['all', 'virtualscroller'].includes(activeComponent.value));
 const showOverlays = computed(() => ['all', 'overlays'].includes(activeComponent.value));
+const showKanban = computed(() => ['all', 'kanban'].includes(activeComponent.value));
 
 const tableColumns: Array<DataTableColumn> = Array.from({ length: 12 }, (_, index) => {
     const field = `col${index + 1}`;
@@ -161,6 +178,20 @@ const commandItems = Array.from({ length: 200 }, (_, index) => ({
     value: `cmd-${index + 1}`,
     group: index % 2 === 0 ? 'General' : 'Actions',
 }));
+
+const kanbanColumns: Array<KanbanColumn> = Array.from({ length: 8 }, (_, index) => ({
+    id: `lane-${index + 1}`,
+    title: `Lane ${index + 1}`,
+}));
+
+const kanbanItems: Array<KanbanBoardItem> = kanbanColumns.flatMap((column, columnIndex) =>
+    Array.from({ length: 500 }, (_, cardIndex) => ({
+        id: `${String(column.id)}-${cardIndex + 1}`,
+        columnId: column.id,
+        title: `Task ${columnIndex + 1}-${cardIndex + 1}`,
+        priority: cardIndex % 3 === 0 ? 'high' : cardIndex % 3 === 1 ? 'medium' : 'low',
+    })),
+);
 
 const onTreeExpandedUpdate = (value: Array<string | number>) => {
     treeExpanded.value = value.map(item => String(item));

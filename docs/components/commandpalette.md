@@ -8,7 +8,7 @@ Enable product features that require richer interaction than basic form controls
 ## Props
 
 - `modelValue?: boolean` (v-model)
-- `items?: Array<{ label: string; value?: string | number; description?: string; shortcut?: string; group?: string; disabled?: boolean; keywords?: Array<string>; command?: () => void }>`
+- `items?: Array<{ label: string; value?: string | number; description?: string; shortcut?: string; group?: string; scope?: string; disabled?: boolean; keywords?: Array<string>; entityType?: string; entityId?: string | number; entityKeywords?: Array<string>; command?: () => void }>`
 - `placeholder?: string` (default `Type a command or search...`)
 - `emptyText?: string` (default `No commands found`)
 - `ariaLabel?: string` (default `Command palette`)
@@ -18,14 +18,25 @@ Enable product features that require richer interaction than basic form controls
 - `filter?: boolean` (default `true`)
 - `enableShortcut?: boolean` (default `true`)
 - `shortcutKey?: string` (default `k`)
+- `scopes?: Array<{ id: string; label: string; aliases?: string[] }>`
+- `scope?: string` (default `all`)
+- `showScopeTabs?: boolean` (default `true`)
+- `showRecent?: boolean` (default `true`)
+- `recentLimit?: number` (default `6`)
+- `recentStorageKey?: string`
+- `entitySearch?: boolean` (default `true`)
 
 ## Events
 
 - `update:modelValue`
+- `update:scope`
+- `update:recent`
 - `open`
 - `close`
 - `select`
 - `search`
+- `scopeChange`
+- `entitySearch`
 
 ## Slots
 
@@ -36,11 +47,26 @@ Enable product features that require richer interaction than basic form controls
 ```vue
 <CommandPalette
     v-model="open"
+    v-model:scope="scope"
     :items="[
-        { label: 'Open docs', value: 'docs', group: 'Navigation' },
-        { label: 'Save and publish', value: 'publish', group: 'Actions', shortcut: 'Ctrl+Enter' },
+        { label: 'Open docs', value: 'docs', group: 'Navigation', scope: 'project' },
+        {
+            label: 'Open customer',
+            value: 'customer-42',
+            group: 'Entities',
+            scope: 'project',
+            entityType: 'Customer',
+            entityId: 42,
+        },
+        { label: 'Save and publish', value: 'publish', group: 'Actions', scope: 'project', shortcut: 'Ctrl+Enter' },
     ]"
+    :scopes="[
+        { id: 'project', label: 'Project', aliases: ['p'] },
+        { id: 'billing', label: 'Billing', aliases: ['b'] },
+    ]"
+    recent-storage-key="workspace.commandPalette.recent"
     @select="onCommand"
+    @entitySearch="onEntitySearch"
 />
 ```
 
@@ -49,6 +75,9 @@ Enable product features that require richer interaction than basic form controls
 - Global app command launcher: bind to `Ctrl/Cmd+K` and group commands by domain (`Navigation`, `Actions`).
 - Admin shortcuts: attach `command` callbacks for direct side effects plus `select` event analytics.
 - Search-only mode: keep `filter=true`, feed dynamic `items` from server, and use `search` for debounced fetch.
+- Scoped commands: use scope tabs and query prefix (`p:deploy`, `b:invoice`) for domain-specific command sets.
+- Recent actions: set `recentStorageKey` to persist last-used commands and surface them first when query is empty.
+- Entity search: emit `entitySearch` to fetch entities and pass results as `items` with `entityType` metadata.
 
 ## Theming
 

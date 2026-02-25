@@ -16,6 +16,7 @@ VueForge uses Playwright screenshot comparisons to detect unintended visual chan
 - Visual tests run against a deterministic showcase route: `/visual-regression`.
 - Baseline snapshots are stored in `tests/visual/visual-regression.spec.ts-snapshots`.
 - Current baseline target is Chromium only.
+- Layout coverage includes dedicated `vf-visual-layout-presets` snapshots for desktop and mobile breakpoints.
 
 ## Triage Rules
 

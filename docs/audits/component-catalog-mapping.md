@@ -33,6 +33,13 @@ Status legend:
 | PassThrough           | Both           | No          | Yes          |
 | Panel                 | Both           | Yes         | Yes          |
 | Fieldset              | Both           | Yes         | Yes          |
+| Footer                | Vuetify        | Yes         | Yes          |
+| PageLayout            | Vuetify        | Yes         | Yes          |
+| SplitLayout           | Vuetify        | Yes         | Yes          |
+| ResizableSidebar      | Vuetify        | Yes         | Yes          |
+| StickyRegion          | Vuetify        | Yes         | Yes          |
+| Show                  | No             | Yes         | Yes          |
+| Hide                  | No             | Yes         | Yes          |
 | Toolbar               | Both           | Yes         | Yes          |
 | BlockUI               | Both           | Yes         | Yes          |
 | ScrollPanel           | Both           | Yes         | Yes          |
@@ -79,6 +86,7 @@ Status legend:
 | LocaleProvider        | Vuetify        | No          | Yes          |
 | NoSsr                 | Vuetify        | No          | Yes          |
 | MainLayoutRegion      | Vuetify        | No          | Yes          |
+| NavigationRail        | Vuetify        | Yes         | Yes          |
 | SystemBar             | Vuetify        | No          | Yes          |
 | BottomNavigation      | Vuetify        | No          | Yes          |
 | Banner                | Vuetify        | No          | Yes          |

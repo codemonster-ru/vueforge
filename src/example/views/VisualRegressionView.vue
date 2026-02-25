@@ -58,6 +58,36 @@
                         hover
                     />
                 </Section>
+
+                <Section bordered data-testid="vf-visual-layout-presets">
+                    <Stack gap="16px">
+                        <AppBar title="Layout Visual Presets" />
+                        <PageLayout
+                            :show-mobile-toggles="true"
+                            :show-desktop-toggles="true"
+                            sidebar-width="220px"
+                            aside-width="200px"
+                        >
+                            <template #sidebar>
+                                <Card><template #default>Sidebar region</template></Card>
+                            </template>
+                            <template #default>
+                                <StickyRegion bordered>Sticky action bar</StickyRegion>
+                                <SplitLayout preset="master-detail" secondary-width="260px">
+                                    <template #default>
+                                        <Card><template #default>Primary content</template></Card>
+                                    </template>
+                                    <template #secondary>
+                                        <Card><template #default>Detail panel</template></Card>
+                                    </template>
+                                </SplitLayout>
+                            </template>
+                            <template #aside>
+                                <Card><template #default>Aside region</template></Card>
+                            </template>
+                        </PageLayout>
+                    </Stack>
+                </Section>
             </Stack>
         </Container>
     </main>

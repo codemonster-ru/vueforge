@@ -8,7 +8,7 @@ Support filtering, navigation, and bulk workflows used in core SaaS backoffice s
 ## Props
 
 - `modelValue?: boolean` (v-model)
-- `items?: Array<{ id: string | number; title: string; message?: string; date?: string; read?: boolean; severity?: 'neutral' | 'info' | 'success' | 'warn' | 'danger'; avatar?: string }>`
+- `items?: Array<{ id: string | number; title: string; message?: string; date?: string; read?: boolean; severity?: 'neutral' | 'info' | 'success' | 'warn' | 'danger'; avatar?: string; group?: string; actionLabel?: string; actionHref?: string; actionTarget?: string; actionRel?: string }>`
 - `title?: string` (default `Notifications`)
 - `emptyText?: string` (default `No notifications`)
 - `closeOnOverlay?: boolean` (default `true`)
@@ -18,17 +18,27 @@ Support filtering, navigation, and bulk workflows used in core SaaS backoffice s
 - `closeLabel?: string` (default `Close notifications`)
 - `readLabel?: string` (default `Mark as read`)
 - `unreadLabel?: string` (default `Mark as unread`)
+- `showFilters?: boolean` (default `false`)
+- `filter?: 'all' | 'unread' | 'read'`
+- `groupBy?: 'none' | 'date' | 'severity' | 'group'` (default `none`)
+- `persistKey?: string`
+- `persistReadState?: boolean` (default `false`)
+- `persistFilterState?: boolean` (default `false`)
 
 ## Events
 
 - `update:modelValue`
 - `update:items`
+- `update:filter`
 - `open`
 - `close`
 - `click`
 - `read`
 - `readAll`
 - `clear`
+- `action`
+- `filterChange`
+- `persist` (payload: `{ filter, readMap, updatedAt }`, reason: `hydrate|filter|toggleRead|markAll|clear`)
 
 ## Slots
 
@@ -41,11 +51,27 @@ Support filtering, navigation, and bulk workflows used in core SaaS backoffice s
 <NotificationCenter v-model="open" v-model:items="notifications" />
 ```
 
+```vue
+<NotificationCenter
+    v-model="open"
+    v-model:items="notifications"
+    show-filters
+    group-by="group"
+    persist-key="workspace.notifications"
+    persist-read-state
+    persist-filter-state
+    @persist="saveNotificationState"
+/>
+```
+
 ## Recipes
 
 - Header bell pattern: open panel from a header icon button and sync `items` from app store.
 - Inbox workflow: use `readAll` and `clear` events to trigger API mutations and optimistic UI updates.
 - Non-blocking center: set `closeOnOverlay=false` for persistent side panel behavior during multitasking.
+- SaaS grouping: use `groupBy="group"` (or `date` / `severity`) to partition dense event streams.
+- Action links: provide `actionLabel` + optional `actionHref` per item for deep-link handling from notifications.
+- Persistence contract: use `persist` payload with `persistKey` for local restore; sync to backend store when required.
 
 ## Theming
 
@@ -87,6 +113,7 @@ Add performance-sensitive regression tests and ARIA verification for interactive
 - Panel uses `role="dialog"` and `aria-modal="true"`.
 - On open, focus moves into the panel; on close, focus is restored to previously active element.
 - Supports `Escape` close behavior when `closeOnEsc` is enabled.
+- Filter controls expose tab-like toggles with `aria-selected`.
 
 ## Interaction Contract
 

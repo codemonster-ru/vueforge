@@ -91,4 +91,18 @@ describe('AuditLogViewer', () => {
 
         expect(wrapper.emitted('closeDetails')?.length).toBe(1);
     });
+
+    it('formats timestamp column with explicit timezone', () => {
+        const wrapper = mountViewer({
+            locale: 'en-US',
+            timeZone: 'UTC',
+        });
+        const expected = new Date('2026-02-24T10:00:00.000Z').toLocaleString('en-US', {
+            dateStyle: 'medium',
+            timeStyle: 'short',
+            timeZone: 'UTC',
+        });
+
+        expect(wrapper.findAll('.vf-audit-log-viewer__cell')[3].text()).toBe(expected);
+    });
 });
