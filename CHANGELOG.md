@@ -47,6 +47,7 @@
     - Extended visual regression suite with dedicated layout preset snapshots for desktop and mobile breakpoints (`vf-visual-layout-presets`).
     - Stabilized visual regression baseline route by explicitly registering layout preset components in `VisualRegressionView` and refreshing Playwright snapshots (`visual-page`, `visual-layout-presets-desktop`, `visual-layout-presets-mobile`) for CI parity.
     - Hardened Playwright visual assertions for CI determinism: switched page baseline capture away from `fullPage`, added post-navigation root synchronization for mobile viewport, and re-baselined snapshots.
+    - Finalized CI tolerance for cross-platform text rasterization drift by increasing `visual-page` `maxDiffPixelRatio` to `0.04`.
     - Tree parity hardening: added optional `hasChildren` support in `Tree`/`TreeNode`.
     - Fixed lint blocker in `DataTableToolbar` (`no-unused-vars`).
     - Fixed type-safety issues in `InfiniteScroll` and `JSONViewer`.
