@@ -35,8 +35,16 @@ test.describe('visual regression baseline', () => {
     test('captures chart variants visual baseline', async ({ page }) => {
         const charts = page.getByTestId('vf-visual-charts');
         await expect(charts).toBeVisible();
+        await charts.evaluate(element => {
+            // Keep snapshot bounds stable across OS/browser font metric rounding.
+            element.setAttribute(
+                'style',
+                `${element.getAttribute('style') ?? ''};position:fixed;left:0;top:0;z-index:1;box-sizing:border-box;width:1280px;height:1373px;min-height:1373px;max-height:1373px;overflow:hidden;`,
+            );
+        });
         await expect(charts).toHaveScreenshot('visual-chart-variants-desktop.png', {
             animations: 'disabled',
+            scale: 'css',
             maxDiffPixelRatio: 0.02,
         });
     });

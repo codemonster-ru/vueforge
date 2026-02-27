@@ -18,6 +18,7 @@
     - Added chart large-dataset performance baseline to benchmark pipeline: new `Charts` scenario in benchmark runner/view, chart budgets in local/CI budget files, and docs updates for performance budgets/benchmarks.
     - Added chart visual regression coverage for chart variants and themed mode in visual baseline route and Playwright snapshots (`visual-chart-variants-desktop`).
     - Stabilized chart visual regression snapshot bounds in `VisualRegressionView` to avoid cross-platform 1px height drift (`1373px` vs `1372px`) in CI.
+    - Hardened chart visual regression capture in Playwright by pinning deterministic chart section bounds during the snapshot step, removing environment-specific 1px drift (`1372px`/`1373px`/`1374px`) in `test:visual`.
     - Added chart recipe docs for `executive dashboard`, `product analytics`, `finance/reporting`, and `ops monitoring` flows.
     - Added secure chart data-rendering guidance for untrusted labels/tooltips/HTML formatters and exported sanitizer helpers (`sanitizeChartText`, `escapeChartHtml`) with unit tests.
 - Catalog delta parity (`P1.16`) additions:
@@ -57,6 +58,7 @@
     - Updated `.vscode/settings.json` to keep format-on-save with automatic ESLint fixes (`source.fixAll.eslint: always`).
     - Added root `.editorconfig` aligned with Prettier defaults (`indent_size: 4`, `end_of_line: lf`, `utf-8`, final newline).
     - Added npm scripts for mass formatting workflows: `format` (`prettier --write .`) and `format:check` (`prettier --check .`).
+    - Added project `markdownlint` config (`.markdownlint.json`) and aligned unordered list indentation rule (`MD007`) with formatter output (`indent: 4`) to prevent lint-vs-format drift in markdown files.
 
 ## [0.96.0] - 2026-02-25
 
