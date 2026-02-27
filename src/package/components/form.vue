@@ -31,13 +31,15 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
+import { normalizeValidationErrors } from './validation';
+import type { ValidationErrors, ValidationResultInput } from './validation';
 
 type ValidateTrigger = 'submit' | 'input' | 'change' | 'blur';
 
 export type FormValues = Record<string, unknown>;
-export type FormErrors = Record<string, string>;
+export type FormErrors = ValidationErrors;
 export type FormTouched = Record<string, boolean>;
-export type FormValidateResult = FormErrors | string | boolean | null | undefined;
+export type FormValidateResult = ValidationResultInput;
 export type FormValidateHandler = (values: FormValues) => FormValidateResult | Promise<FormValidateResult>;
 export type FormSubmitHandler = (values: FormValues) => unknown | Promise<unknown>;
 export type FormSubmitErrorMapper = (error: unknown, values: FormValues) => FormValidateResult;
@@ -196,7 +198,7 @@ const validateForm = async (trigger: ValidateTrigger = 'submit') => {
     }
 
     const result = await props.validate(cloneValue(values.value));
-    const nextErrors = normalizeValidationResult(result);
+    const nextErrors = normalizeValidationErrors(result);
 
     errors.value = nextErrors;
     emits('validate', cloneValue(nextErrors), cloneValue(values.value), trigger);
@@ -236,7 +238,7 @@ const submitForm = async (event?: Event) => {
             emits('submitSuccess', snapshot, result, event);
         } catch (error: unknown) {
             const mapped = props.mapSubmitError ? props.mapSubmitError(error, snapshot) : 'Submit failed';
-            const nextErrors = normalizeValidationResult(mapped);
+            const nextErrors = normalizeValidationErrors(mapped);
 
             errors.value = nextErrors;
             emits('submitError', error, cloneValue(nextErrors), snapshot, event);
@@ -395,36 +397,6 @@ function mergeRecords(...sources: Array<FormValues | undefined>) {
     }
 
     return result;
-}
-
-function normalizeValidationResult(result: FormValidateResult): FormErrors {
-    if (result === undefined || result === null || result === true) {
-        return {};
-    }
-
-    if (result === false) {
-        return { _form: 'Form is invalid' };
-    }
-
-    if (typeof result === 'string') {
-        return { _form: result };
-    }
-
-    if (!isPlainObject(result)) {
-        return {};
-    }
-
-    const normalized: FormErrors = {};
-
-    for (const key in result) {
-        const value = result[key];
-
-        if (typeof value === 'string' && value) {
-            normalized[key] = value;
-        }
-    }
-
-    return normalized;
 }
 
 function getNamedControl(target: unknown): NamedControl | null {

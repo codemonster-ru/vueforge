@@ -2,7 +2,13 @@ import { App } from 'vue';
 import { ThemeOptions, ThemePreset } from './theme-core';
 import { getTheme, setTheme, updateTheme } from './theme-runtime';
 import { DateTimeLocaleOptions, getDateTimeLocale, setDateTimeLocale, updateDateTimeLocale } from './date-time-locale';
-import { getLocaleText, LocaleTextOptions, setLocaleText, updateLocaleText } from './locale-text';
+import {
+    getLocaleText,
+    LocaleTextOptions,
+    provideLocaleTextScope,
+    setLocaleText,
+    updateLocaleText,
+} from './locale-text';
 import {
     applyUiPreferences,
     DensityPreset,
@@ -13,6 +19,7 @@ import {
     setReducedMotion,
 } from './ui-preferences';
 import { resolvePassThrough, withPartClass } from './pass-through';
+import { provideComponentDefaults, useComponentDefaults } from './defaults-provider';
 
 type VueForgeOptions = {
     theme?: ThemeOptions | ThemePreset;
@@ -32,12 +39,14 @@ export {
     setLocaleText,
     updateLocaleText,
     getLocaleText,
+    provideLocaleTextScope,
 };
 export type { DateTimeLocaleOptions };
 export type { LocaleTextOptions };
 export { setDensityPreset, getDensityPreset, setReducedMotion, getReducedMotion, getUiPreferences, applyUiPreferences };
 export type { DensityPreset };
 export { resolvePassThrough, withPartClass };
+export { provideComponentDefaults, useComponentDefaults };
 export type {
     PassThroughAttrs,
     PassThroughEntry,

@@ -32,6 +32,15 @@ test.describe('visual regression baseline', () => {
         });
     });
 
+    test('captures chart variants visual baseline', async ({ page }) => {
+        const charts = page.getByTestId('vf-visual-charts');
+        await expect(charts).toBeVisible();
+        await expect(charts).toHaveScreenshot('visual-chart-variants-desktop.png', {
+            animations: 'disabled',
+            maxDiffPixelRatio: 0.02,
+        });
+    });
+
     test('captures layout preset visual baseline on mobile breakpoint', async ({ page }) => {
         await page.setViewportSize({ width: 640, height: 960 });
         await page.goto('/visual-regression');

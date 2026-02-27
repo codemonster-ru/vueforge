@@ -629,16 +629,16 @@ Goal: provide first-class charting and analytics visualization coverage for SaaS
 
 #### Visualization platform and quality
 
-- [ ] Define official chart engine adapter strategy (single default adapter + extension interface)
-- [ ] Define shared data schema contracts for series, axes, legend, tooltip, and annotation layers
-- [ ] Add accessibility contracts (keyboard navigation, screen-reader summaries, data table fallback)
-- [ ] Add responsive and high-density rendering strategy (resize observers, decimation, virtualization where needed)
-- [ ] Add theming/token contracts for chart colors, grids, typography, and states
-- [ ] Add export contracts (PNG/SVG/CSV) and print-friendly rendering mode
-- [ ] Add performance budgets and benchmark scenarios for large datasets
-- [ ] Add visual regression suites for chart variants and theme modes
-- [ ] Add docs recipes: executive dashboard, product analytics, finance/reporting, and ops monitoring
-- [ ] Add secure data-rendering guidance (untrusted labels/tooltips/HTML formatters)
+- [x] Define official chart engine adapter strategy (single default adapter + extension interface)
+- [x] Define shared data schema contracts for series, axes, legend, tooltip, and annotation layers
+- [x] Add accessibility contracts (keyboard navigation, screen-reader summaries, data table fallback)
+- [x] Add responsive and high-density rendering strategy (resize observers, decimation, virtualization where needed)
+- [x] Add theming/token contracts for chart colors, grids, typography, and states
+- [x] Add export contracts (PNG/SVG/CSV) and print-friendly rendering mode
+- [x] Add performance budgets and benchmark scenarios for large datasets
+- [x] Add visual regression suites for chart variants and theme modes
+- [x] Add docs recipes: executive dashboard, product analytics, finance/reporting, and ops monitoring
+- [x] Add secure data-rendering guidance (untrusted labels/tooltips/HTML formatters)
 
 ### P1.16 Catalog delta parity (foundation and utility components)
 
@@ -646,85 +646,85 @@ Goal: close remaining catalog-level gaps for foundation, utility, and compositio
 
 #### Foundation and provider layer
 
-- [ ] `ThemeProvider` component/API (local theme scope overrides per subtree)
-- [ ] `DefaultsProvider` component/API (local default prop policies per subtree)
-- [ ] `LocaleProvider` component/API (local i18n scope overrides)
-- [ ] `NoSsr` utility component (client-only rendering boundary)
-- [ ] `MainLayoutRegion` primitive (`main` area contract for shell composition)
-- [ ] `SystemBar` component (global top status/utility strip)
+- [x] `ThemeProvider` component/API (local theme scope overrides per subtree)
+- [x] `DefaultsProvider` component/API (local default prop policies per subtree)
+- [x] `LocaleProvider` component/API (local i18n scope overrides)
+- [x] `NoSsr` utility component (client-only rendering boundary)
+- [x] `MainLayoutRegion` primitive (`main` area contract for shell composition)
+- [x] `SystemBar` component (global top status/utility strip)
 
 #### Navigation and surface utilities
 
-- [ ] `BottomNavigation` component (mobile-first primary navigation)
-- [ ] `Banner` component (inline page-level announcements/actions)
-- [ ] `Sheet` component (generic elevated/flat container surface with variants)
-- [ ] `Window` / pager container component (stateful pane switching and transitions)
-- [ ] `SlideGroup` component (scrollable chip/tab/button group navigation)
-- [ ] `SnackbarQueue` behavior (queued toast/snackbar orchestration)
+- [x] `BottomNavigation` component (mobile-first primary navigation)
+- [x] `Banner` component (inline page-level announcements/actions)
+- [x] `Sheet` component (generic elevated/flat container surface with variants)
+- [x] `Window` / pager container component (stateful pane switching and transitions)
+- [x] `SlideGroup` component (scrollable chip/tab/button group navigation)
+- [x] `SnackbarQueue` behavior (queued toast/snackbar orchestration)
 
 #### Input and form composition helpers
 
-- [ ] `AvatarGroup` component (overlap/stack/grouped avatar patterns)
-- [ ] `FloatLabel` utility (floating label composition for inputs/selects)
-- [ ] `IftaLabel` utility (in-field top-aligned label pattern support)
-- [ ] `IconField` and `InputIcon` helpers (consistent icon slots/placement contracts)
-- [ ] `SelectionControl` and `SelectionControlGroup` primitives (shared checkbox/radio/switch base behavior)
-- [ ] `ToggleButton` component parity (binary action toggle separate from segmented control)
+- [x] `AvatarGroup` component (overlap/stack/grouped avatar patterns)
+- [x] `FloatLabel` utility (floating label composition for inputs/selects)
+- [x] `IftaLabel` utility (in-field top-aligned label pattern support)
+- [x] `IconField` and `InputIcon` helpers (consistent icon slots/placement contracts)
+- [x] `SelectionControl` and `SelectionControlGroup` primitives (shared checkbox/radio/switch base behavior)
+- [x] `ToggleButton` component parity (binary action toggle separate from segmented control)
 
 #### Interaction and content helpers
 
-- [ ] `Hover` utility wrapper (hover state exposure with keyboard parity constraints)
-- [ ] `Hotkey` utility component/composable (scoped shortcuts with accessibility-safe defaults)
-- [ ] `Kbd` component (keyboard key visual tokens in docs/UI)
-- [ ] `CodeBlock` component (syntax-highlighted display with copy/action slots)
-- [ ] `Lazy` utility component (deferred mount/render for heavy subtree content)
-- [ ] `Parallax` component (optional decorative motion container with reduced-motion compliance)
-- [ ] `Validation` utility contracts (shared validation-state primitives and message wiring)
-- [ ] `PassThrough` utility contracts (part-level prop/attr forwarding hooks for deep customization)
+- [x] `Hover` utility wrapper (hover state exposure with keyboard parity constraints)
+- [x] `Hotkey` utility component/composable (scoped shortcuts with accessibility-safe defaults)
+- [x] `Kbd` component (keyboard key visual tokens in docs/UI)
+- [x] `CodeBlock` component (syntax-highlighted display with copy/action slots)
+- [x] `Lazy` utility component (deferred mount/render for heavy subtree content)
+- [x] `Parallax` component (optional decorative motion container with reduced-motion compliance)
+- [x] `Validation` utility contracts (shared validation-state primitives and message wiring)
+- [x] `PassThrough` utility contracts (part-level prop/attr forwarding hooks for deep customization)
 
 #### Delivery waves
 
 MVP wave (required for immediate product impact):
 
-- [ ] `ThemeProvider`
-- [ ] `DefaultsProvider`
-- [ ] `LocaleProvider`
-- [ ] `NoSsr`
-- [ ] `BottomNavigation`
-- [ ] `Sheet`
-- [ ] `Window`
-- [ ] `AvatarGroup`
-- [ ] `FloatLabel`
-- [ ] `IconField` / `InputIcon`
-- [ ] `ToggleButton`
-- [ ] `CodeBlock`
+- [x] `ThemeProvider`
+- [x] `DefaultsProvider`
+- [x] `LocaleProvider`
+- [x] `NoSsr`
+- [x] `BottomNavigation`
+- [x] `Sheet`
+- [x] `Window`
+- [x] `AvatarGroup`
+- [x] `FloatLabel`
+- [x] `IconField` / `InputIcon`
+- [x] `ToggleButton`
+- [x] `CodeBlock`
 
 Next wave (high leverage after MVP):
 
-- [ ] `SystemBar`
-- [ ] `Banner`
-- [ ] `SlideGroup`
-- [ ] `SnackbarQueue`
-- [ ] `SelectionControl` / `SelectionControlGroup`
-- [ ] `Hotkey`
-- [ ] `Lazy`
-- [ ] `Validation`
-- [ ] `PassThrough`
+- [x] `SystemBar`
+- [x] `Banner`
+- [x] `SlideGroup`
+- [x] `SnackbarQueue`
+- [x] `SelectionControl` / `SelectionControlGroup`
+- [x] `Hotkey`
+- [x] `Lazy`
+- [x] `Validation`
+- [x] `PassThrough`
 
 Later wave (specialized/optional utility coverage):
 
-- [ ] `MainLayoutRegion`
-- [ ] `IftaLabel`
-- [ ] `Hover`
-- [ ] `Kbd`
-- [ ] `Parallax`
+- [x] `MainLayoutRegion`
+- [x] `IftaLabel`
+- [x] `Hover`
+- [x] `Kbd`
+- [x] `Parallax`
 
 Catalog delta acceptance criteria:
 
-- [ ] Every new item is added to `docs/audits/component-catalog-mapping.md` in the same PR.
-- [ ] For aliases/equivalents, document mapping rationale and API differences.
-- [ ] Alias-only items are explicitly mapped to canonical package ownership in rollout/API package specs.
-- [ ] Components classified as `not planned` include explicit product rationale.
+- [x] Every new item is added to `docs/audits/component-catalog-mapping.md` in the same PR.
+- [x] For aliases/equivalents, document mapping rationale and API differences.
+- [x] Alias-only items are explicitly mapped to canonical package ownership in rollout/API package specs.
+- [x] Components classified as `not planned` include explicit product rationale.
 
 ## P2 (Scaling and Adoption)
 
@@ -749,10 +749,14 @@ Catalog delta acceptance criteria:
 
 ### P2.3 Ecosystem support
 
-- [ ] Add Nuxt integration guide
-- [ ] Add starter template repository/examples
-- [ ] Add design token export guide (JSON/Figma-friendly)
-- [ ] Document i18n translation key conventions
+Documentation platform and deployment:
+
+- [ ] Add dedicated docs app (`src/docs`) with shell layout (`header` / `sidebar` / `content` / `footer`) inspired by Vue-style docs UX
+- [ ] Add docs routing and sidebar navigation tree generated from documentation structure (pages + groups + prev/next links)
+- [ ] Add markdown content pipeline to render docs from repository `docs/` sources into docs app pages
+- [ ] Add docs search/navigation quality baseline (active section highlight, mobile nav drawer, keyboard-accessible nav)
+- [ ] Add docs build target (`npm run build:docs`) and output artifact strategy
+- [ ] Add SSH deployment pipeline for docs artifacts (script + CI workflow + environment variable contract + rollback strategy)
 
 ### P2.4 Security and robustness
 

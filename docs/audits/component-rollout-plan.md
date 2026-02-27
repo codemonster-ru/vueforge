@@ -1,6 +1,6 @@
 # Component Rollout Plan
 
-Last updated: 2026-02-23
+Last updated: 2026-02-26
 
 Purpose: execute full quality hardening and implementation coverage for all component scope (implemented and planned) with PR-sized batches.
 
@@ -94,3 +94,13 @@ Track E (foundation, providers, utilities, styling contracts):
 Execution rule:
 
 - Any component introduced in planned tracks must be added to `docs/audits/component-catalog-mapping.md` and transitioned from `docs/audits/planned-component-compliance-matrix.md` to `docs/audits/component-compliance-matrix.md` only after quality gates are complete.
+
+Alias-only ownership rule (rollout):
+
+| Alias-facing item | Canonical owner           | Canonical rollout owner | Alias rollout scope                     |
+| ----------------- | ------------------------- | ----------------------- | --------------------------------------- |
+| `Dropdown`        | `Select`                  | `W2-PR3`                | `W2-PR6` compatibility alias only       |
+| `OverlayPanel`    | `Popover`                 | `W2-PR6`                | `W4-PR14` alias-parity hardening only   |
+| `Sidebar`         | `Drawer`                  | `W2-PR6`                | `P-PR1` alias API continuity only       |
+| `Message`         | `Alert` / `InlineMessage` | `W2-PR7`                | `P-PR5` naming parity only              |
+| `TieredMenu`      | `Menu`                    | `W1-PR3`                | `P-PR2` hierarchical preset parity only |

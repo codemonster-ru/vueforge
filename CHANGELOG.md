@@ -1,5 +1,62 @@
 # Changelog
 
+## [0.97.0] - 2026-02-26
+
+- Semver checklist:
+    - [x] Semver impact classified (`minor`)
+    - [x] Breaking-change assessment completed (`no`)
+    - [x] Deprecations documented (N/A)
+    - [x] Migration notes added when required (N/A)
+    - [x] Catalog mapping sync completed (`yes`)
+- Data visualization parity (`P1.15`) follow-up:
+    - Defined official chart engine adapter strategy (`Chart.js` default adapter + `ChartAdapter` extension interface), documented in `docs/guides/chart-engine-adapter-strategy.md`, and added adapter contract tests.
+    - Added shared chart data schema contracts (`series`, `axes`, `legend`, `tooltip`, `annotations`) with public exports, validation helper, tests, and guide (`docs/guides/chart-data-schema-contracts.md`).
+    - Added shared chart accessibility contracts for keyboard navigation, screen-reader summaries, and data-table fallback (`a11ySummary`, `a11yKeyboardHint`, `a11yTableFallback`) with docs and regression tests.
+    - Added responsive and high-density chart rendering strategy with shared helpers, `Chart` runtime high-density props (`highDensity*`), decimation option injection, and strategy guide (`docs/guides/chart-responsive-high-density-strategy.md`).
+    - Added chart theming/token contracts for colors, grids, typography, and states: expanded `ChartTokens`, default chart theme tokens, `createChartThemeOptions` helper, and theming contract guide (`docs/guides/chart-theming-token-contracts.md`).
+    - Added chart export contracts and print-friendly mode: adapter extension hooks (`exportPng`/`exportSvg`/`exportCsv`/`setPrintMode`), `Chart` exposed export methods, `createChartCsv` fallback helper, and export/print guide (`docs/guides/chart-export-print-contracts.md`).
+    - Added chart large-dataset performance baseline to benchmark pipeline: new `Charts` scenario in benchmark runner/view, chart budgets in local/CI budget files, and docs updates for performance budgets/benchmarks.
+    - Added chart visual regression coverage for chart variants and themed mode in visual baseline route and Playwright snapshots (`visual-chart-variants-desktop`).
+    - Added chart recipe docs for `executive dashboard`, `product analytics`, `finance/reporting`, and `ops monitoring` flows.
+    - Added secure chart data-rendering guidance for untrusted labels/tooltips/HTML formatters and exported sanitizer helpers (`sanitizeChartText`, `escapeChartHtml`) with unit tests.
+- Catalog delta parity (`P1.16`) additions:
+    - Added `ThemeProvider` component/API for local theme scope overrides per subtree with docs, public export, and unit tests.
+    - Added `DefaultsProvider` component/API for local default-prop policies per subtree, plus `useComponentDefaults` / `provideComponentDefaults` config helpers, docs, and unit tests.
+    - Added `LocaleProvider` component/API for local i18n scope overrides, plus `provideLocaleTextScope` runtime helper and scoped locale precedence tests.
+    - Added `NoSsr` utility component for client-only rendering boundaries with fallback slot/placeholder behavior, docs, and SSR+mount tests.
+    - Added `MainLayoutRegion` primitive (`main` area contract) with landmark semantics, constrained-width behavior, theme tokens, docs, and unit tests.
+    - Added `SystemBar` component (global top status/utility strip) with fixed/sticky/dense variants, theme tokens, docs, and unit tests.
+    - Added `BottomNavigation` component (mobile-first primary navigation) with icon/label/badge patterns, keyboard navigation, route-synced active state, docs, default theme tokens, and unit tests.
+    - Added `Sheet` component (generic elevated/flat/outlined/tonal surface container) with header/body/footer sections, default theme tokens, docs, and unit tests.
+    - Added `Window` pager container component for stateful pane switching with controls, keyboard navigation, transition modes, docs, default theme tokens, and unit tests.
+    - Added `AvatarGroup` component for overlap/stack avatar clustering with configurable overflow indicator (`+N`), docs, default theme tokens, and unit tests.
+    - Added `Banner` component for inline page-level announcements and actions with severity semantics, sticky mode, dismiss contract, docs, default theme tokens, and unit tests.
+    - Added `SlideGroup` component for horizontally scrollable chip/tab/button-style navigation with controls, keyboard selection, docs, default theme tokens, and unit tests.
+    - Added `SnackbarQueue` behavior component for queued toast/snackbar orchestration with imperative enqueue/dequeue API, dedupe support, docs, default theme tokens, and unit tests.
+    - Added `FloatLabel` utility component for floating label composition around input/select controls with focus/value state handling, docs, default theme tokens, and unit tests.
+    - Added `IftaLabel` utility component for in-field top-aligned label pattern support with docs, default theme tokens, and unit tests.
+    - Added `IconField` and `InputIcon` helpers for consistent input icon placement contracts, including docs, default theme tokens, and unit tests.
+    - Added `SelectionControl` and `SelectionControlGroup` primitives for shared checkbox/radio/switch behavior with grouped state contracts, docs, default theme tokens, and unit tests.
+    - Added `ToggleButton` component parity for binary action toggles (`aria-pressed`) with state-specific labels/icons, docs, default theme tokens, and unit tests.
+    - Added `Hover` utility wrapper with scoped hover/focus state exposure, open/close delay controls, keyboard parity behavior, docs, default theme token, and unit tests.
+    - Added `Hotkey` utility component/composable for scoped shortcut handling with accessibility-safe defaults (`ignoreInputs`, scoped focus boundary), docs, and unit tests.
+    - Added `Kbd` visual helper component for keyboard shortcut hints (`Ctrl+K`) with docs, default theme tokens, and unit tests.
+    - Added `CodeBlock` component for read-only syntax-highlighted snippets with copy action/event and custom header action slot, including docs, default theme tokens, and unit tests.
+    - Added `Lazy` utility component for deferred subtree mount/render with intersection-triggered activation (`once`, `delay`, `placeholder`) and docs/tests/theme tokens.
+    - Added `Parallax` decorative motion container with scroll-based offset, axis/reverse/clamp controls, reduced-motion compliance, docs, default theme tokens, and unit tests.
+    - Added shared `Validation` utility contracts (`normalizeValidationErrors`, `createValidationMessages`, `buildValidationDescribedBy`, `createValidationState`) with public exports, docs, tests, and integration in `Form` / `FormField`.
+    - Finalized `PassThrough` utility contracts with dedicated API docs page and contract tests for `resolvePassThrough` / `withPartClass` behavior (styled vs `unstyled`, static vs resolver entries).
+    - Closed catalog delta acceptance criteria: synchronized new-item mapping status, documented alias/equivalent API differences, added alias ownership mapping in rollout/API package specs, and clarified `not planned` rationale policy.
+    - Updated roadmap/audit artifacts: `CHECKLIST.md`, `docs/audits/component-catalog-mapping.md`, and `docs/audits/component-compliance-matrix.md`.
+    - Removed deferred `Advanced analytics visuals` section from `CHECKLIST.md` by product scope decision.
+- Release alignment:
+    - Bumped package version to `0.97.0` in `package.json` and `package-lock.json`.
+- Developer tooling:
+    - Added project-level VS Code recommendations in `.vscode/extensions.json` (`Vue.volar`, `dbaeumer.vscode-eslint`, `esbenp.prettier-vscode`).
+    - Updated `.vscode/settings.json` to keep format-on-save with automatic ESLint fixes (`source.fixAll.eslint: always`).
+    - Added root `.editorconfig` aligned with Prettier defaults (`indent_size: 4`, `end_of_line: lf`, `utf-8`, final newline).
+    - Added npm scripts for mass formatting workflows: `format` (`prettier --write .`) and `format:check` (`prettier --check .`).
+
 ## [0.96.0] - 2026-02-25
 
 - Semver checklist:

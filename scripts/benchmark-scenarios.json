@@ -24,6 +24,10 @@
         "Kanban": {
             "routeComponent": "kanban",
             "metrics": ["initialRenderP95Ms", "keyboardDnDMoveP95Ms", "swimlaneScrollP95Ms"]
+        },
+        "Charts": {
+            "routeComponent": "charts",
+            "metrics": ["initialRenderP95Ms", "datasetUpdateP95Ms", "resizeP95Ms"]
         }
     }
 }

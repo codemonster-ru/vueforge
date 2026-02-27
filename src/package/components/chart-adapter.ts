@@ -20,6 +20,10 @@ export interface ChartAdapter {
     update?: (instance: ChartAdapterInstance, config: ChartConfig) => void;
     resize?: (instance: ChartAdapterInstance) => void;
     destroy?: (instance: ChartAdapterInstance) => void;
+    exportPng?: (instance: ChartAdapterInstance, config: ChartConfig) => string;
+    exportSvg?: (instance: ChartAdapterInstance, config: ChartConfig) => string;
+    exportCsv?: (instance: ChartAdapterInstance, config: ChartConfig) => string;
+    setPrintMode?: (instance: ChartAdapterInstance, enabled: boolean) => void;
 }
 
 type ChartJsLikeConstructor = new (
@@ -38,6 +42,7 @@ type ChartJsLikeConstructor = new (
         data: ChartData;
         options?: Record<string, unknown>;
     };
+    toBase64Image?: () => string;
 };
 
 export const createChartJsAdapter = (ChartCtor: ChartJsLikeConstructor): ChartAdapter => ({
@@ -78,5 +83,12 @@ export const createChartJsAdapter = (ChartCtor: ChartJsLikeConstructor): ChartAd
         const chart = instance as { destroy: () => void };
 
         chart.destroy();
+    },
+    exportPng(instance) {
+        const chart = instance as {
+            toBase64Image?: () => string;
+        };
+
+        return chart.toBase64Image?.() ?? '';
     },
 });

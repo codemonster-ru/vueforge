@@ -3,6 +3,7 @@ import button from './components/button';
 import buttonGroup from './components/button-group';
 import card from './components/card';
 import panel from './components/panel';
+import sheet from './components/sheet';
 import fieldset from './components/fieldset';
 import toolbar from './components/toolbar';
 import chart from './components/chart';
@@ -13,6 +14,8 @@ import stack from './components/stack';
 import inlineComponent from './components/inline';
 import input from './components/input';
 import inputGroup from './components/input-group';
+import iconField from './components/icon-field';
+import inputIcon from './components/input-icon';
 import inlineEdit from './components/inline-edit';
 import inplace from './components/inplace';
 import image from './components/image';
@@ -26,6 +29,8 @@ import maskedInput from './components/masked-input';
 import numberInput from './components/number-input';
 import form from './components/form';
 import formField from './components/form-field';
+import floatLabel from './components/float-label';
+import iftaLabel from './components/ifta-label';
 import textarea from './components/textarea';
 import richTextEditor from './components/rich-text-editor';
 import fileUpload from './components/file-upload';
@@ -54,8 +59,11 @@ import notificationCenter from './components/notification-center';
 import appShell from './components/app-shell';
 import appBar from './components/app-bar';
 import navigationRail from './components/navigation-rail';
+import bottomNavigation from './components/bottom-navigation';
+import systemBar from './components/system-bar';
 import footer from './components/footer';
 import pageLayout from './components/page-layout';
+import mainLayoutRegion from './components/main-layout-region';
 import splitLayout from './components/split-layout';
 import resizableSidebar from './components/resizable-sidebar';
 import stickyRegion from './components/sticky-region';
@@ -79,9 +87,18 @@ import pagination from './components/pagination';
 import checkbox from './components/checkbox';
 import radio from './components/radio';
 import switchComponent from './components/switch';
+import selectionControl from './components/selection-control';
+import selectionControlGroup from './components/selection-control-group';
 import segmentedControl from './components/segmented-control';
+import toggleButton from './components/toggle-button';
+import hover from './components/hover';
+import kbd from './components/kbd';
+import lazy from './components/lazy';
+import parallax from './components/parallax';
 import tabs from './components/tabs';
 import tabMenu from './components/tab-menu';
+import window from './components/window';
+import slideGroup from './components/slide-group';
 import accordion from './components/accordion';
 import tooltip from './components/tooltip';
 import tour from './components/tour';
@@ -91,6 +108,8 @@ import dataview from './components/dataview';
 import carousel from './components/carousel';
 import speeddial from './components/speeddial';
 import toast from './components/toast';
+import snackbarQueue from './components/snackbar-queue';
+import banner from './components/banner';
 import alert from './components/alert';
 import emptyState from './components/empty-state';
 import progress from './components/progress';
@@ -103,6 +122,7 @@ import savedViewsManager from './components/saved-views-manager';
 import dataTableToolbar from './components/data-table-toolbar';
 import bulkActionBar from './components/bulk-action-bar';
 import avatar from './components/avatar';
+import avatarGroup from './components/avatar-group';
 import spinner from './components/spinner';
 import scrollpanel from './components/scrollpanel';
 import scrolltop from './components/scrolltop';
@@ -124,6 +144,7 @@ import fileManager from './components/file-manager';
 import jsonViewer from './components/json-viewer';
 import diffViewer from './components/diff-viewer';
 import codeEditor from './components/code-editor';
+import codeBlock from './components/code-block';
 import scheduler from './components/scheduler';
 import bottomSheet from './components/bottom-sheet';
 import infiniteScroll from './components/infinite-scroll';
@@ -142,6 +163,7 @@ export default {
         buttonGroup,
         card,
         panel,
+        sheet,
         fieldset,
         toolbar,
         chart,
@@ -152,6 +174,8 @@ export default {
         inline: inlineComponent,
         input,
         inputGroup,
+        iconField,
+        inputIcon,
         inlineEdit,
         inplace,
         image,
@@ -165,6 +189,8 @@ export default {
         numberInput,
         form,
         formField,
+        floatLabel,
+        iftaLabel,
         textarea,
         richTextEditor,
         fileUpload,
@@ -197,8 +223,11 @@ export default {
         appShell,
         appBar,
         navigationRail,
+        bottomNavigation,
+        systemBar,
         footer,
         pageLayout,
+        mainLayoutRegion,
         splitLayout,
         resizableSidebar,
         stickyRegion,
@@ -222,9 +251,18 @@ export default {
         checkbox,
         radio,
         switch: switchComponent,
+        selectionControl,
+        selectionControlGroup,
         segmentedControl,
+        toggleButton,
+        hover,
+        kbd,
+        lazy,
+        parallax,
         tabs,
         tabMenu,
+        window,
+        slideGroup,
         accordion,
         tooltip,
         tour,
@@ -234,6 +272,8 @@ export default {
         carousel,
         speeddial,
         toast,
+        snackbarQueue,
+        banner,
         alert,
         message: alert,
         emptyState,
@@ -247,6 +287,7 @@ export default {
         dataTableToolbar,
         bulkActionBar,
         avatar,
+        avatarGroup,
         spinner,
         scrollpanel,
         scrolltop,
@@ -268,6 +309,7 @@ export default {
         jsonViewer,
         diffViewer,
         codeEditor,
+        codeBlock,
         scheduler,
         bottomSheet,
         infiniteScroll,

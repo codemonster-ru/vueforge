@@ -50,6 +50,14 @@
                 "keyboardDnDMoveP95Ms": 320,
                 "swimlaneScrollP95Ms": 300
             }
+        },
+        "Charts": {
+            "scenario": "Line chart with 5000 points, high-density mode enabled",
+            "budgets": {
+                "initialRenderP95Ms": 1200,
+                "datasetUpdateP95Ms": 650,
+                "resizeP95Ms": 300
+            }
         }
     }
 }

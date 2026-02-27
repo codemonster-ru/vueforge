@@ -23,6 +23,7 @@ Budgets are currently defined for:
 - `Tree`
 - `VirtualScroller`
 - key overlays (`Modal`, `Drawer`, `Dropdown`, `Popover`, `Tooltip`, `ContextMenu`, `CommandPalette`, `NotificationCenter`)
+- `Charts` (large-dataset line chart benchmark with high-density mode)
 
 ## Budget Semantics
 

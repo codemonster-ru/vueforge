@@ -19,6 +19,7 @@ VueForge benchmark scenarios and measurement runner are defined as:
 - `VirtualScroller`
 - `Overlays`
 - `Kanban`
+- `Charts`
 
 Each group maps to deterministic UI scenarios rendered via:
 

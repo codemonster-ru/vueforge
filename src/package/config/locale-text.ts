@@ -1,4 +1,14 @@
-import { readonly, reactive } from 'vue';
+import {
+    inject,
+    provide,
+    readonly,
+    reactive,
+    unref,
+    watchEffect,
+    type ComputedRef,
+    type InjectionKey,
+    type Ref,
+} from 'vue';
 
 export type LocaleTextSchema = {
     common: {
@@ -205,6 +215,7 @@ const mergeDeep = <T extends Record<string, unknown>>(base: T, patch?: DeepParti
 };
 
 const state = reactive<LocaleTextSchema>(cloneDeep(DEFAULT_LOCALE_TEXT));
+const localeTextScopeKey: InjectionKey<LocaleTextSchema> = Symbol('vueforge-locale-text-scope');
 
 export const setLocaleText = (options: LocaleTextOptions = {}) => {
     const merged = mergeDeep(DEFAULT_LOCALE_TEXT, options);
@@ -223,4 +234,27 @@ export const getLocaleText = (): LocaleTextSchema => {
     return mergeDeep(DEFAULT_LOCALE_TEXT, state as unknown as LocaleTextOptions);
 };
 
-export const useLocaleText = () => readonly(state);
+export const provideLocaleTextScope = (
+    options?: LocaleTextOptions | Ref<LocaleTextOptions | undefined> | ComputedRef<LocaleTextOptions | undefined>,
+) => {
+    const parent = inject(localeTextScopeKey, null);
+    const scoped = reactive<LocaleTextSchema>(cloneDeep(parent ?? getLocaleText()));
+
+    watchEffect(() => {
+        const inherited = parent ? cloneDeep(parent) : getLocaleText();
+        const local = unref(options) ?? {};
+        const merged = mergeDeep(inherited, local);
+
+        Object.assign(scoped, merged);
+    });
+
+    provide(localeTextScopeKey, scoped);
+
+    return readonly(scoped);
+};
+
+export const useLocaleText = () => {
+    const scoped = inject(localeTextScopeKey, null);
+
+    return readonly(scoped ?? state);
+};

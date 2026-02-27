@@ -134,6 +134,28 @@ export type NavigationRailTokens = {
     iconSize?: string;
     labelFontSize?: string;
 };
+export type BottomNavigationTokens = {
+    height?: string;
+    padding?: string;
+    gap?: string;
+    borderColor?: string;
+    backgroundColor?: string;
+    textColor?: string;
+    zIndex?: string;
+    disabledOpacity?: string;
+    itemMinHeight?: string;
+    itemPadding?: string;
+    itemBorderRadius?: string;
+    itemContentGap?: string;
+    itemColor?: string;
+    itemHoverBackgroundColor?: string;
+    itemActiveBackgroundColor?: string;
+    itemActiveColor?: string;
+    iconSize?: string;
+    labelFontSize?: string;
+    badgeTextColor?: string;
+    badgeBackgroundColor?: string;
+};
 export type FooterTokens = {
     minHeight?: string;
     denseMinHeight?: string;
@@ -145,6 +167,18 @@ export type FooterTokens = {
     borderColor?: string;
     backgroundColor?: string;
     textColor?: string;
+};
+export type SystemBarTokens = {
+    height?: string;
+    denseHeight?: string;
+    padding?: string;
+    densePadding?: string;
+    gap?: string;
+    sectionGap?: string;
+    borderColor?: string;
+    backgroundColor?: string;
+    textColor?: string;
+    zIndex?: string;
 };
 export type PageLayoutTokens = {
     minHeight?: string;
@@ -167,6 +201,13 @@ export type PageLayoutTokens = {
     toggleTextColor?: string;
     overlayBackgroundColor?: string;
     zIndex?: string;
+};
+export type MainLayoutRegionTokens = {
+    padding?: string;
+    maxWidth?: string;
+    borderColor?: string;
+    backgroundColor?: string;
+    textColor?: string;
 };
 export type SplitLayoutTokens = {
     minHeight?: string;
@@ -290,11 +331,45 @@ export type ChartTokens = {
     borderRadius?: string;
     backgroundColor?: string;
     textColor?: string;
+    gridColor?: string;
+    axisColor?: string;
+    axisLabelColor?: string;
+    legendTextColor?: string;
+    tooltipBackgroundColor?: string;
+    tooltipTitleColor?: string;
+    tooltipBodyColor?: string;
+    tooltipBorderColor?: string;
+    seriesPrimaryColor?: string;
+    seriesSecondaryColor?: string;
+    seriesTertiaryColor?: string;
+    seriesQuaternaryColor?: string;
+    seriesPositiveColor?: string;
+    seriesWarningColor?: string;
+    seriesNegativeColor?: string;
+    titleFontFamily?: string;
+    titleFontSize?: string;
+    labelFontFamily?: string;
+    labelFontSize?: string;
+    valueFontFamily?: string;
+    valueFontSize?: string;
     padding?: string;
     minHeight?: string;
     stateMinHeight?: string;
     stateTextColor?: string;
     stateFontSize?: string;
+    stateBackgroundColor?: string;
+    stateBorderColor?: string;
+    stateBorderStyle?: string;
+    controlBackgroundColor?: string;
+    controlTextColor?: string;
+    controlBorderColor?: string;
+    controlHoverBackgroundColor?: string;
+    tableHeaderBackgroundColor?: string;
+    tableHeaderTextColor?: string;
+    tableRowHoverBackgroundColor?: string;
+    tableBorderColor?: string;
+    focusOutlineColor?: string;
+    focusOutlineOffset?: string;
 };
 export type ContainerTokens = {
     maxWidth?: string;
@@ -407,6 +482,18 @@ export type InputGroupTokens = {
         addonPadding?: string;
         addonFontSize?: string;
     };
+};
+export type IconFieldTokens = {
+    iconSize?: string;
+    iconColor?: string;
+    slotOffset?: string;
+    controlPaddingStart?: string;
+    controlPaddingEnd?: string;
+    disabledOpacity?: string;
+};
+export type InputIconTokens = {
+    size?: string;
+    color?: string;
 };
 export type InlineEditTokens = {
     gap?: string;
@@ -831,6 +918,43 @@ export type FormFieldTokens = {
         hintFontSize?: string;
     };
 };
+export type FloatLabelTokens = {
+    labelOffsetX?: string;
+    labelFloatingTop?: string;
+    labelPadding?: string;
+    labelFontSize?: string;
+    labelFloatingFontSize?: string;
+    labelColor?: string;
+    labelFloatingColor?: string;
+    labelBackgroundColor?: string;
+    requiredColor?: string;
+    invalidColor?: string;
+    transition?: string;
+    disabledOpacity?: string;
+    small?: {
+        labelFontSize?: string;
+    };
+    large?: {
+        labelFontSize?: string;
+    };
+};
+export type IftaLabelTokens = {
+    offsetX?: string;
+    offsetY?: string;
+    padding?: string;
+    fontSize?: string;
+    color?: string;
+    backgroundColor?: string;
+    requiredColor?: string;
+    invalidColor?: string;
+    disabledOpacity?: string;
+    small?: {
+        fontSize?: string;
+    };
+    large?: {
+        fontSize?: string;
+    };
+};
 export type TextareaTokens = {
     gap?: string;
     fontSize?: string;
@@ -1083,6 +1207,41 @@ export type CodeEditorTokens = {
     darkStateColor?: string;
     disabledOpacity?: string;
 };
+export type CodeBlockTokens = {
+    gap?: string;
+    borderColor?: string;
+    borderRadius?: string;
+    backgroundColor?: string;
+    textColor?: string;
+    fontFamily?: string;
+    fontSize?: string;
+    lineHeight?: string;
+    padding?: string;
+    headerGap?: string;
+    headerPadding?: string;
+    headerBorderColor?: string;
+    metaGap?: string;
+    metaColor?: string;
+    metaFontSize?: string;
+    filenameColor?: string;
+    filenameFontWeight?: string;
+    actionsGap?: string;
+    actionBorderColor?: string;
+    actionBorderRadius?: string;
+    actionBackgroundColor?: string;
+    actionTextColor?: string;
+    actionPadding?: string;
+    actionFontSize?: string;
+    lineGap?: string;
+    lineNumberColor?: string;
+    lineNumberMinWidth?: string;
+    tokenKeywordColor?: string;
+    tokenStringColor?: string;
+    tokenNumberColor?: string;
+    tokenCommentColor?: string;
+    tokenVariableColor?: string;
+    disabledOpacity?: string;
+};
 export type SchedulerTokens = {
     gap?: string;
     borderColor?: string;
@@ -1160,6 +1319,22 @@ export type BottomSheetTokens = {
     bodyPadding?: string;
     footerPadding?: string;
     footerGap?: string;
+};
+export type SheetTokens = {
+    borderRadius?: string;
+    borderColor?: string;
+    sectionBorderColor?: string;
+    backgroundColor?: string;
+    textColor?: string;
+    tonalBackgroundColor?: string;
+    tonalTextColor?: string;
+    shadow?: string;
+    shadowHover?: string;
+    transition?: string;
+    disabledOpacity?: string;
+    headerPadding?: string;
+    bodyPadding?: string;
+    footerPadding?: string;
 };
 export type InfiniteScrollTokens = {
     gap?: string;
@@ -2100,6 +2275,38 @@ export type SwitchTokens = {
     textColor?: string;
     disabledOpacity?: string;
 };
+export type SelectionControlTokens = {
+    gap?: string;
+    textColor?: string;
+    disabledOpacity?: string;
+    boxSize?: string;
+    boxBorderRadius?: string;
+    boxBorderColor?: string;
+    boxBackgroundColor?: string;
+    boxCheckedBackgroundColor?: string;
+    boxCheckedBorderColor?: string;
+    boxCheckColor?: string;
+    boxCheckRadius?: string;
+    radioSize?: string;
+    radioBorderColor?: string;
+    radioBackgroundColor?: string;
+    radioCheckedBackgroundColor?: string;
+    radioCheckedBorderColor?: string;
+    radioDotSize?: string;
+    radioDotColor?: string;
+    switchWidth?: string;
+    switchHeight?: string;
+    switchThumbSize?: string;
+    switchThumbOffset?: string;
+    switchThumbTranslateOffset?: string;
+    switchBackgroundColor?: string;
+    switchCheckedBackgroundColor?: string;
+    switchThumbColor?: string;
+};
+export type SelectionControlGroupTokens = {
+    gap?: string;
+    horizontalGap?: string;
+};
 export type SegmentedControlTokens = {
     fontSize?: string;
     padding?: string;
@@ -2126,6 +2333,70 @@ export type SegmentedControlTokens = {
         padding?: string;
         segmentPadding?: string;
     };
+};
+export type ToggleButtonTokens = {
+    fontSize?: string;
+    padding?: string;
+    borderRadius?: string;
+    borderColor?: string;
+    backgroundColor?: string;
+    textColor?: string;
+    hoverBackgroundColor?: string;
+    activeBorderColor?: string;
+    activeBackgroundColor?: string;
+    activeTextColor?: string;
+    focusRingShadow?: string;
+    disabledOpacity?: string;
+    iconGap?: string;
+    small?: {
+        fontSize?: string;
+        padding?: string;
+    };
+    large?: {
+        fontSize?: string;
+        padding?: string;
+    };
+};
+export type HoverTokens = {
+    disabledOpacity?: string;
+};
+export type KbdTokens = {
+    fontFamily?: string;
+    fontSize?: string;
+    fontWeight?: string;
+    lineHeight?: string;
+    gap?: string;
+    keyPadding?: string;
+    keyMinWidth?: string;
+    keyBorderRadius?: string;
+    keyBorderColor?: string;
+    keyBackgroundColor?: string;
+    keyTextColor?: string;
+    keyShadow?: string;
+    separatorColor?: string;
+    disabledOpacity?: string;
+    small?: {
+        fontSize?: string;
+        keyPadding?: string;
+        keyMinWidth?: string;
+    };
+    large?: {
+        fontSize?: string;
+        keyPadding?: string;
+        keyMinWidth?: string;
+    };
+};
+export type LazyTokens = {
+    placeholderMinHeight?: string;
+    placeholderBorderRadius?: string;
+    placeholderBackgroundColor?: string;
+    disabledOpacity?: string;
+};
+export type ParallaxTokens = {
+    overflow?: string;
+    transformOrigin?: string;
+    transition?: string;
+    disabledOpacity?: string;
 };
 export type TabsTokens = {
     gap?: string;
@@ -3059,6 +3330,15 @@ export type ToastTokens = {
         textColor?: string;
     };
 };
+export type SnackbarQueueTokens = {
+    actionGap?: string;
+    actionPadding?: string;
+    actionRadius?: string;
+    actionBorderColor?: string;
+    actionBackgroundColor?: string;
+    actionTextColor?: string;
+    actionHoverBackgroundColor?: string;
+};
 export type AlertTokens = {
     gap?: string;
     padding?: string;
@@ -3077,6 +3357,47 @@ export type AlertTokens = {
     closeRadius?: string;
     closeFontSize?: string;
     closeHoverBackgroundColor?: string;
+    info?: {
+        backgroundColor?: string;
+        borderColor?: string;
+        textColor?: string;
+    };
+    success?: {
+        backgroundColor?: string;
+        borderColor?: string;
+        textColor?: string;
+    };
+    warn?: {
+        backgroundColor?: string;
+        borderColor?: string;
+        textColor?: string;
+    };
+    danger?: {
+        backgroundColor?: string;
+        borderColor?: string;
+        textColor?: string;
+    };
+};
+export type BannerTokens = {
+    gap?: string;
+    padding?: string;
+    borderRadius?: string;
+    borderColor?: string;
+    backgroundColor?: string;
+    textColor?: string;
+    iconColor?: string;
+    fontSize?: string;
+    lineHeight?: string;
+    bodyGap?: string;
+    titleFontSize?: string;
+    titleFontWeight?: string;
+    actionsGap?: string;
+    closeSize?: string;
+    closeRadius?: string;
+    closeFontSize?: string;
+    closeHoverBackgroundColor?: string;
+    stickyTop?: string;
+    zIndex?: string;
     info?: {
         backgroundColor?: string;
         borderColor?: string;
@@ -3410,6 +3731,45 @@ export type TabMenuTokens = {
     tabActiveBorderColor?: string;
     disabledOpacity?: string;
 };
+export type WindowTokens = {
+    gap?: string;
+    padding?: string;
+    minHeight?: string;
+    borderColor?: string;
+    borderRadius?: string;
+    backgroundColor?: string;
+    textColor?: string;
+    controlsGap?: string;
+    controlPadding?: string;
+    controlRadius?: string;
+    controlBorderColor?: string;
+    controlBackgroundColor?: string;
+    controlTextColor?: string;
+    controlHoverBackgroundColor?: string;
+    transitionDuration?: string;
+    transitionTiming?: string;
+    disabledOpacity?: string;
+};
+export type SlideGroupTokens = {
+    gap?: string;
+    controlsGap?: string;
+    controlSize?: string;
+    controlRadius?: string;
+    controlBorderColor?: string;
+    controlBackgroundColor?: string;
+    controlTextColor?: string;
+    controlHoverBackgroundColor?: string;
+    itemPadding?: string;
+    itemBorderRadius?: string;
+    itemBorderColor?: string;
+    itemBackgroundColor?: string;
+    itemTextColor?: string;
+    itemHoverBackgroundColor?: string;
+    itemActiveBackgroundColor?: string;
+    itemActiveTextColor?: string;
+    itemActiveBorderColor?: string;
+    disabledOpacity?: string;
+};
 export type AvatarTokens = {
     size?: string;
     fontSize?: string;
@@ -3437,6 +3797,15 @@ export type AvatarTokens = {
         statusSize?: string;
     };
 };
+export type AvatarGroupTokens = {
+    gap?: string;
+    overlapOffset?: string;
+    ringWidth?: string;
+    ringColor?: string;
+    overflowBackgroundColor?: string;
+    overflowTextColor?: string;
+    disabledOpacity?: string;
+};
 export type ThemeComponentTokens = {
     button?: ButtonTokens;
     buttonGroup?: ButtonGroupTokens;
@@ -3462,6 +3831,8 @@ export type ThemeComponentTokens = {
     accordion?: AccordionTokens;
     input?: InputTokens;
     inputGroup?: InputGroupTokens;
+    iconField?: IconFieldTokens;
+    inputIcon?: InputIconTokens;
     inlineEdit?: InlineEditTokens;
     inplace?: InplaceTokens;
     image?: ImageTokens;
@@ -3479,6 +3850,8 @@ export type ThemeComponentTokens = {
     numberInput?: NumberInputTokens;
     form?: FormTokens;
     formField?: FormFieldTokens;
+    floatLabel?: FloatLabelTokens;
+    iftaLabel?: IftaLabelTokens;
     textarea?: TextareaTokens;
     richTextEditor?: RichTextEditorTokens;
     fileUpload?: FileUploadTokens;
@@ -3507,8 +3880,11 @@ export type ThemeComponentTokens = {
     appShell?: AppShellTokens;
     kanbanBoard?: KanbanBoardTokens;
     navigationRail?: NavigationRailTokens;
+    bottomNavigation?: BottomNavigationTokens;
+    systemBar?: SystemBarTokens;
     footer?: FooterTokens;
     pageLayout?: PageLayoutTokens;
+    mainLayoutRegion?: MainLayoutRegionTokens;
     splitLayout?: SplitLayoutTokens;
     resizableSidebar?: ResizableSidebarTokens;
     stickyRegion?: StickyRegionTokens;
@@ -3525,8 +3901,17 @@ export type ThemeComponentTokens = {
     datetimepicker?: DateTimePickerTokens;
     pagination?: PaginationTokens;
     switch?: SwitchTokens;
+    selectionControl?: SelectionControlTokens;
+    selectionControlGroup?: SelectionControlGroupTokens;
     segmentedControl?: SegmentedControlTokens;
+    toggleButton?: ToggleButtonTokens;
+    hover?: HoverTokens;
+    kbd?: KbdTokens;
+    lazy?: LazyTokens;
+    parallax?: ParallaxTokens;
     tabMenu?: TabMenuTokens;
+    window?: WindowTokens;
+    slideGroup?: SlideGroupTokens;
     tooltip?: TooltipTokens;
     tour?: TourTokens;
     skeleton?: SkeletonTokens;
@@ -3551,6 +3936,8 @@ export type ThemeComponentTokens = {
     carousel?: CarouselTokens;
     speeddial?: SpeedDialTokens;
     toast?: ToastTokens;
+    snackbarQueue?: SnackbarQueueTokens;
+    banner?: BannerTokens;
     alert?: AlertTokens;
     message?: AlertTokens;
     inlineMessage?: InlineMessageTokens;
@@ -3558,8 +3945,10 @@ export type ThemeComponentTokens = {
     jsonViewer?: JsonViewerTokens;
     diffViewer?: DiffViewerTokens;
     codeEditor?: CodeEditorTokens;
+    codeBlock?: CodeBlockTokens;
     scheduler?: SchedulerTokens;
     bottomSheet?: BottomSheetTokens;
+    sheet?: SheetTokens;
     infiniteScroll?: InfiniteScrollTokens;
     emptyState?: EmptyStateTokens;
     badge?: BadgeTokens;
@@ -3571,6 +3960,7 @@ export type ThemeComponentTokens = {
     dataTableToolbar?: DataTableToolbarTokens;
     bulkActionBar?: BulkActionBarTokens;
     avatar?: AvatarTokens;
+    avatarGroup?: AvatarGroupTokens;
     rating?: RatingTokens;
     tree?: TreeTokens;
     orgchart?: OrgChartTokens;

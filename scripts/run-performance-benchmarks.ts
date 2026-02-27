@@ -69,6 +69,7 @@ const runMetric = async (page, component, metric) => {
         virtualscroller: '[data-testid="perf-virtual-scroller"]',
         overlays: '[data-testid="perf-overlays"]',
         kanban: '[data-testid="perf-kanban"]',
+        charts: '[data-testid="perf-charts"]',
     };
     const componentSelector = selectors[component] ?? selectors.overlays;
 
@@ -222,6 +223,24 @@ const runMetric = async (page, component, metric) => {
                         element.scrollTop = 2200;
                         element.dispatchEvent(new Event('scroll'));
                     });
+                await page.waitForTimeout(16);
+            });
+        }
+    }
+
+    if (component === 'charts') {
+        if (metric === 'datasetUpdateP95Ms') {
+            return time(async () => {
+                await page.getByTestId('perf-chart-update').click();
+                await page.waitForTimeout(16);
+            });
+        }
+
+        if (metric === 'resizeP95Ms') {
+            return time(async () => {
+                await page.evaluate(() => {
+                    window.dispatchEvent(new Event('resize'));
+                });
                 await page.waitForTimeout(16);
             });
         }

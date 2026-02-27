@@ -84,6 +84,21 @@
                         :overscan="4"
                     />
                 </Section>
+
+                <Section v-if="showCharts" bordered data-testid="perf-charts">
+                    <h2>Chart Benchmark</h2>
+                    <Button data-testid="perf-chart-update" @click="onChartUpdate">Update chart series</Button>
+                    <Chart
+                        data-testid="perf-chart-root"
+                        :adapter="chartAdapter"
+                        type="line"
+                        :data="chartData"
+                        :high-density="true"
+                        :high-density-point-threshold="1000"
+                        :lazy="false"
+                        aria-label="Performance line chart"
+                    />
+                </Section>
             </Stack>
         </Container>
     </main>
@@ -96,6 +111,7 @@ import type { DataTableColumn } from '@/package/components/data-table.vue';
 import type { TreeItem } from '@/package/components/tree.vue';
 import type { NotificationCenterItem } from '@/package/components/notification-center.vue';
 import type { KanbanBoardItem, KanbanColumn } from '@/package/components/kanban-board.vue';
+import type { ChartAdapter } from '@/package/components/chart-adapter';
 import Container from '@/package/components/container.vue';
 import Stack from '@/package/components/stack.vue';
 import Section from '@/package/components/section.vue';
@@ -107,6 +123,7 @@ import VirtualScroller from '@/package/components/virtual-scroller.vue';
 import NotificationCenter from '@/package/components/notification-center.vue';
 import CommandPalette from '@/package/components/command-palette.vue';
 import KanbanBoard from '@/package/components/kanban-board.vue';
+import Chart from '@/package/components/chart.vue';
 
 const route = useRoute();
 const isReady = ref(false);
@@ -130,6 +147,7 @@ const showTree = computed(() => ['all', 'tree'].includes(activeComponent.value))
 const showVirtualScroller = computed(() => ['all', 'virtualscroller'].includes(activeComponent.value));
 const showOverlays = computed(() => ['all', 'overlays'].includes(activeComponent.value));
 const showKanban = computed(() => ['all', 'kanban'].includes(activeComponent.value));
+const showCharts = computed(() => ['all', 'charts'].includes(activeComponent.value));
 
 const tableColumns: Array<DataTableColumn> = Array.from({ length: 12 }, (_, index) => {
     const field = `col${index + 1}`;
@@ -193,6 +211,32 @@ const kanbanItems: Array<KanbanBoardItem> = kanbanColumns.flatMap((column, colum
     })),
 );
 
+const chartLabels = Array.from({ length: 5000 }, (_, index) => `P${index + 1}`);
+const chartSeed = ref(0);
+const chartData = computed(() => {
+    const seed = chartSeed.value;
+
+    return {
+        labels: chartLabels,
+        datasets: [
+            {
+                label: 'Throughput',
+                data: chartLabels.map((_, index) => ((index * 17 + seed * 13) % 120) + (index % 40)),
+            },
+            {
+                label: 'Latency',
+                data: chartLabels.map((_, index) => ((index * 11 + seed * 7) % 80) + 20),
+            },
+        ],
+    };
+});
+const chartAdapter: ChartAdapter = {
+    mount: canvas => ({ canvas }),
+    update: () => undefined,
+    resize: () => undefined,
+    destroy: () => undefined,
+};
+
 const onTreeExpandedUpdate = (value: Array<string | number>) => {
     treeExpanded.value = value.map(item => String(item));
 };
@@ -203,6 +247,10 @@ const onRangeChange = (value: { start: number; end: number }) => {
 
 const onReachEnd = () => {
     reachEndCount.value += 1;
+};
+
+const onChartUpdate = () => {
+    chartSeed.value += 1;
 };
 
 const waitForPaint = async () => {

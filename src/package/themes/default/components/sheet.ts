@@ -1,0 +1,16 @@
+export default {
+    borderRadius: 'var(--vf-radii-lg)',
+    borderColor: 'var(--vf-border-color)',
+    sectionBorderColor: 'var(--vf-border-color)',
+    backgroundColor: 'var(--vf-bg-color)',
+    textColor: 'var(--vf-text-color)',
+    tonalBackgroundColor: 'rgba(var(--vf-blue-600-rgb), 0.08)',
+    tonalTextColor: 'var(--vf-text-color)',
+    shadow: '0 8px 24px rgba(0, 0, 0, 0.14)',
+    shadowHover: '0 10px 26px rgba(0, 0, 0, 0.18)',
+    transition: 'box-shadow 0.2s ease',
+    disabledOpacity: 'var(--vf-states-disabled-opacity)',
+    headerPadding: '0.75rem 0.9rem',
+    bodyPadding: '0.9rem',
+    footerPadding: '0.75rem 0.9rem',
+};

@@ -1,0 +1,26 @@
+export default {
+    fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
+    fontSize: '0.8rem',
+    fontWeight: '600',
+    lineHeight: '1',
+    gap: '0.3rem',
+    keyPadding: '0.22rem 0.45rem',
+    keyMinWidth: '1.75rem',
+    keyBorderRadius: 'var(--vf-radii-sm)',
+    keyBorderColor: 'var(--vf-border-color)',
+    keyBackgroundColor: 'var(--vf-controls-background-color)',
+    keyTextColor: 'var(--vf-text-color)',
+    keyShadow: 'inset 0 -1px 0 rgba(0, 0, 0, 0.12)',
+    separatorColor: 'var(--vf-secondary-text-color)',
+    disabledOpacity: 'var(--vf-states-disabled-opacity)',
+    small: {
+        fontSize: '0.72rem',
+        keyPadding: '0.15rem 0.35rem',
+        keyMinWidth: '1.45rem',
+    },
+    large: {
+        fontSize: '0.92rem',
+        keyPadding: '0.28rem 0.55rem',
+        keyMinWidth: '1.95rem',
+    },
+};

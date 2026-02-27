@@ -1,6 +1,6 @@
 # Component Catalog Mapping
 
-Last updated: 2026-02-25
+Last updated: 2026-02-26
 
 Scope: parity, SaaS, layout, visualization, and catalog-delta coverage tracked in `CHECKLIST.md` (`P1.11`-`P1.16`).
 
@@ -45,7 +45,7 @@ Status legend:
 | Image                 | Both           | Yes         | Yes          |
 | Skeleton              | Both           | Yes         | Yes          |
 | OverlayPanel          | Both           | Yes         | Yes          |
-| PassThrough           | Both           | No          | Yes          |
+| PassThrough           | Both           | Yes         | Yes          |
 | Panel                 | Both           | Yes         | Yes          |
 | Fieldset              | Both           | Yes         | Yes          |
 | Footer                | Vuetify        | Yes         | Yes          |
@@ -96,34 +96,34 @@ Status legend:
 | Inplace               | Both           | Yes         | Yes          |
 | CascadeSelect         | Both           | Yes         | Yes          |
 | VirtualScroller       | Both           | Yes         | Yes          |
-| ThemeProvider         | Vuetify        | No          | Yes          |
-| DefaultsProvider      | Vuetify        | No          | Yes          |
-| LocaleProvider        | Vuetify        | No          | Yes          |
-| NoSsr                 | Vuetify        | No          | Yes          |
-| MainLayoutRegion      | Vuetify        | No          | Yes          |
+| ThemeProvider         | Vuetify        | Yes         | Yes          |
+| DefaultsProvider      | Vuetify        | Yes         | Yes          |
+| LocaleProvider        | Vuetify        | Yes         | Yes          |
+| NoSsr                 | Vuetify        | Yes         | Yes          |
+| MainLayoutRegion      | Vuetify        | Yes         | Yes          |
 | NavigationRail        | Vuetify        | Yes         | Yes          |
-| SystemBar             | Vuetify        | No          | Yes          |
-| BottomNavigation      | Vuetify        | No          | Yes          |
-| Banner                | Vuetify        | No          | Yes          |
-| Sheet                 | Vuetify        | No          | Yes          |
-| Window                | Vuetify        | No          | Yes          |
-| SlideGroup            | Vuetify        | No          | Yes          |
-| SnackbarQueue         | Vuetify        | No          | Yes          |
-| AvatarGroup           | PrimeVue       | No          | Yes          |
-| FloatLabel            | PrimeVue       | No          | Yes          |
-| IftaLabel             | PrimeVue       | No          | Yes          |
-| IconField             | PrimeVue       | No          | Yes          |
-| InputIcon             | PrimeVue       | No          | Yes          |
-| SelectionControl      | Vuetify        | No          | Yes          |
-| SelectionControlGroup | Vuetify        | No          | Yes          |
-| ToggleButton          | PrimeVue       | No          | Yes          |
-| Hover                 | Vuetify        | No          | Yes          |
-| Hotkey                | Vuetify        | No          | Yes          |
-| Kbd                   | Vuetify        | No          | Yes          |
-| CodeBlock             | Vuetify        | No          | Yes          |
-| Lazy                  | Vuetify        | No          | Yes          |
-| Parallax              | Vuetify        | No          | Yes          |
-| Validation            | Vuetify        | No          | Yes          |
+| SystemBar             | Vuetify        | Yes         | Yes          |
+| BottomNavigation      | Vuetify        | Yes         | Yes          |
+| Banner                | Vuetify        | Yes         | Yes          |
+| Sheet                 | Vuetify        | Yes         | Yes          |
+| Window                | Vuetify        | Yes         | Yes          |
+| SlideGroup            | Vuetify        | Yes         | Yes          |
+| SnackbarQueue         | Vuetify        | Yes         | Yes          |
+| AvatarGroup           | PrimeVue       | Yes         | Yes          |
+| FloatLabel            | PrimeVue       | Yes         | Yes          |
+| IftaLabel             | PrimeVue       | Yes         | Yes          |
+| IconField             | PrimeVue       | Yes         | Yes          |
+| InputIcon             | PrimeVue       | Yes         | Yes          |
+| SelectionControl      | Vuetify        | Yes         | Yes          |
+| SelectionControlGroup | Vuetify        | Yes         | Yes          |
+| ToggleButton          | PrimeVue       | Yes         | Yes          |
+| Hover                 | Vuetify        | Yes         | Yes          |
+| Hotkey                | Vuetify        | Yes         | Yes          |
+| Kbd                   | Vuetify        | Yes         | Yes          |
+| CodeBlock             | Vuetify        | Yes         | Yes          |
+| Lazy                  | Vuetify        | Yes         | Yes          |
+| Parallax              | Vuetify        | Yes         | Yes          |
+| Validation            | Vuetify        | Yes         | Yes          |
 
 Notes:
 
@@ -144,6 +144,23 @@ Duplicate-prevention rules:
 - Prefer one canonical component per functional domain; avoid adding second components with equivalent behavior under different naming.
 - If an alias/equivalent is required for migration or ecosystem familiarity, document: canonical target, API differences, and deprecation/migration path.
 - Reject roadmap additions when behavior is already covered by an existing component unless there is a clear capability delta.
+
+Alias/equivalent mapping rationale and API differences:
+
+| Alias/equivalent item | Canonical implementation  | Mapping rationale                                                | API differences maintained                                                                                   |
+| --------------------- | ------------------------- | ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `Dropdown`            | `Select`                  | PrimeVue naming compatibility in migration paths.                | `Dropdown` keeps compatibility naming; canonical docs/ownership stay on `Select`.                            |
+| `OverlayPanel`        | `Popover`                 | Legacy API continuity for overlay migration.                     | `OverlayPanel` remains anchored/trigger-first API alias to `Popover` semantics.                              |
+| `Sidebar`             | `Drawer`                  | Ecosystem familiarity alias without second rendering core.       | `Sidebar` exports as alias surface; canonical layout/behavior tokens live in `Drawer`.                       |
+| `Message`             | `Alert` / `InlineMessage` | Compatibility naming for global vs inline status patterns.       | `Message` stays alias-facing; canonical behavior split remains `Alert` (block) and `InlineMessage` (inline). |
+| `TieredMenu`          | `Menu`                    | Migration-friendly naming while sharing menu foundation.         | `TieredMenu` keeps hierarchical preset semantics over `Menu` base contracts.                                 |
+| `TreeView`            | `Tree`                    | Catalog parity achieved via hardened `Tree`, no duplicate core.  | `TreeView` target mapped to `Tree` API and state model.                                                      |
+| `ExpansionPanel`      | `Accordion`               | Catalog parity achieved via hardened `Accordion` group behavior. | `ExpansionPanel` target mapped to `Accordion`/`AccordionItem` contract.                                      |
+
+Not planned register:
+
+- Current status: no component in this file is classified as `not planned`.
+- Rule: when a component is marked `not planned`, this file must include explicit product rationale in the same PR.
 
 Potential overlap pairs (initial triage):
 

@@ -1,6 +1,6 @@
 {
     "name": "@codemonster-ru/vueforge",
-    "version": "0.96.0",
+    "version": "0.97.0",
     "description": "Open source UI components for Vue.js.",
     "license": "MIT",
     "author": "Kirill Kolesnikov",
@@ -47,6 +47,8 @@
         "dev": "vite dev --force --mode development",
         "build": "vite build --mode production",
         "lint": "node --import tsx ./node_modules/eslint/bin/eslint.js . --ext .ts,.vue --config eslint.config.ts",
+        "format": "prettier --write .",
+        "format:check": "prettier --check .",
         "typecheck": "vue-tsc --noEmit",
         "test": "vitest run",
         "test:ssr": "vitest run src/package/components/__tests__/ssr-hydration.test.ts",

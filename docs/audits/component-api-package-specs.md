@@ -1,6 +1,6 @@
 # Component API Package Specs
 
-Last updated: 2026-02-23
+Last updated: 2026-02-26
 
 Purpose: define API specifications for all rollout packages (implemented and planned) so implementation follows explicit contracts instead of ad-hoc decisions.
 
@@ -43,6 +43,16 @@ For each planned component:
 - Capture parity targets (must-have behaviors and API shapes).
 - Record intentional deviations and rationale.
 - Mark alias-first cases explicitly (`alias` vs `split` vs `merge`) per catalog mapping policy.
+
+Alias-only ownership mapping (canonical package ownership):
+
+| Alias-facing item | Canonical owner           | Owning package | Alias package note                                                        |
+| ----------------- | ------------------------- | -------------- | ------------------------------------------------------------------------- |
+| `Dropdown`        | `Select`                  | `W2-PR3`       | `W2-PR6` keeps compatibility API surface only.                            |
+| `OverlayPanel`    | `Popover`                 | `W2-PR6`       | `W4-PR14` is alias-parity baseline, no separate rendering core ownership. |
+| `Sidebar`         | `Drawer`                  | `W2-PR6`       | `P-PR1` covers alias parity behavior/docs only.                           |
+| `Message`         | `Alert` / `InlineMessage` | `W2-PR7`       | `P-PR5` tracks naming parity, not a distinct behavior core.               |
+| `TieredMenu`      | `Menu`                    | `W1-PR3`       | `P-PR2` tracks hierarchical preset parity only.                           |
 
 ## Implemented Package API Specs
 

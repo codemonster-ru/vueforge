@@ -25,6 +25,7 @@
 
 <script setup lang="ts">
 import { computed, useSlots } from 'vue';
+import { buildValidationDescribedBy } from './validation';
 
 type Size = 'small' | 'normal' | 'large';
 
@@ -57,16 +58,10 @@ const hasLabel = computed(() => !!props.label || !!slots.label);
 const hasHint = computed(() => !!props.hint || !!slots.hint);
 const hasError = computed(() => !!props.error || !!slots.error);
 const describedBy = computed(() => {
-    const ids: Array<string> = [];
-
-    if (hasHint.value) {
-        ids.push(hintId.value);
-    }
-    if (hasError.value) {
-        ids.push(errorId.value);
-    }
-
-    return ids.length ? ids.join(' ') : undefined;
+    return buildValidationDescribedBy(
+        hasHint.value ? hintId.value : undefined,
+        hasError.value ? errorId.value : undefined,
+    );
 });
 const getClass = computed(() => {
     const classes = ['vf-form-field'];
