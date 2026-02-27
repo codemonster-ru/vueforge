@@ -17,7 +17,7 @@ Targets SaaS forms and filters where child options are fetched on-demand by bran
 - `readonly?: boolean`
 - `loading?: boolean`
 - `loadingText?: string`
-- `loadingBranchText?: string` (default ` (loading...)`)
+- `loadingBranchText?: string` (default `(loading...)`)
 - `emptyText?: string`
 - `placeholder?: string`
 - `searchPlaceholder?: string`

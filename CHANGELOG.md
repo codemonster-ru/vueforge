@@ -59,6 +59,7 @@
     - Added root `.editorconfig` aligned with Prettier defaults (`indent_size: 4`, `end_of_line: lf`, `utf-8`, final newline).
     - Added npm scripts for mass formatting workflows: `format` (`prettier --write .`) and `format:check` (`prettier --check .`).
     - Added project `markdownlint` config (`.markdownlint.json`) and aligned unordered list indentation rule (`MD007`) with formatter output (`indent: 4`) to prevent lint-vs-format drift in markdown files.
+    - Finalized markdownlint baseline by ignoring generated/vendor markdown (`.markdownlintignore` for `node_modules` and `dist`), disabling strict line-length enforcement (`MD013`), and fixing remaining docs warnings (`MD038` in `cascadeselect.md`, `MD059` in `docs/components/README.md`) so `markdownlint` runs cleanly across repository markdown.
 
 ## [0.96.0] - 2026-02-25
 

@@ -93,7 +93,7 @@ Detailed API pages generated from the current package reference.
 - [KPIStatCard](kpistatcard.md)
 - [Knob](knob.md)
 - [JSONViewer](jsonviewer.md)
-- [Link](link.md)
+- [Link component](link.md)
 - [LineChart](linechart.md)
 - [Listbox](listbox.md)
 - [LocaleProvider](localeprovider.md)
