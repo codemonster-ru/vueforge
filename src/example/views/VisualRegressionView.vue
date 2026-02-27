@@ -59,7 +59,7 @@
                     />
                 </Section>
 
-                <Section bordered data-testid="vf-visual-charts">
+                <Section bordered class="vf-visual__charts" data-testid="vf-visual-charts">
                     <Stack gap="12px">
                         <h2 class="vf-visual__card-title">Chart variants</h2>
                         <Grid columns="12" gap="12px">
@@ -263,6 +263,11 @@ const visualChartAdapter: ChartAdapter = {
 
 .vf-visual__text {
     margin: 0;
+}
+
+/* Keep chart snapshot bounds stable across OS/browser font metrics. */
+.vf-visual__charts {
+    min-height: 257px;
 }
 
 /* Keep visual regression capture height stable across OS/browser font metrics. */

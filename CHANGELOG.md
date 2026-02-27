@@ -17,6 +17,7 @@
     - Added chart export contracts and print-friendly mode: adapter extension hooks (`exportPng`/`exportSvg`/`exportCsv`/`setPrintMode`), `Chart` exposed export methods, `createChartCsv` fallback helper, and export/print guide (`docs/guides/chart-export-print-contracts.md`).
     - Added chart large-dataset performance baseline to benchmark pipeline: new `Charts` scenario in benchmark runner/view, chart budgets in local/CI budget files, and docs updates for performance budgets/benchmarks.
     - Added chart visual regression coverage for chart variants and themed mode in visual baseline route and Playwright snapshots (`visual-chart-variants-desktop`).
+    - Stabilized chart visual regression snapshot bounds in `VisualRegressionView` to avoid cross-platform 1px height drift (`1373px` vs `1372px`) in CI.
     - Added chart recipe docs for `executive dashboard`, `product analytics`, `finance/reporting`, and `ops monitoring` flows.
     - Added secure chart data-rendering guidance for untrusted labels/tooltips/HTML formatters and exported sanitizer helpers (`sanitizeChartText`, `escapeChartHtml`) with unit tests.
 - Catalog delta parity (`P1.16`) additions:
