@@ -6,7 +6,7 @@ This document defines the FTP/FTPS deployment pipeline for docs artifacts.
 
 - CI workflow: `.github/workflows/docs-deploy.yml`
 - Build artifact source: `dist/docs` (from `npm run build:docs`)
-- Automatic trigger: GitHub Release `published`
+- Automatic trigger: successful completion of `publish to NPM`
 - Manual trigger: `workflow_dispatch`
 
 ## GitHub Secrets Contract
@@ -38,9 +38,10 @@ Expected deployed files:
 
 Automatic deploy flow:
 
-- Publish a new release/tag through the normal release pipeline
-- `docs deploy` runs after the GitHub Release is marked `published`
-- Workflow checks out the released tag and deploys docs for that exact release
+- Push a release tag through the normal publish pipeline
+- `publish to NPM` completes successfully
+- `docs deploy` runs from `workflow_run`
+- Workflow checks out the published workflow `head_sha` and deploys docs for that exact release commit
 
 Manual deploy flow:
 

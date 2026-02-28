@@ -1,9 +1,11 @@
 name: docs deploy
 
 on:
-    release:
+    workflow_run:
+        workflows:
+            - publish to NPM
         types:
-            - published
+            - completed
     workflow_dispatch:
         inputs:
             ref:
@@ -17,11 +19,12 @@ concurrency:
 
 jobs:
     deploy-docs:
+        if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
               with:
-                  ref: ${{ github.event_name == 'release' && github.event.release.tag_name || github.event.inputs.ref || github.ref }}
+                  ref: ${{ github.event_name == 'workflow_dispatch' && (github.event.inputs.ref || github.ref) || github.event.workflow_run.head_sha }}
 
             - uses: actions/setup-node@v4
               with:

@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+- Docs deployment:
+    - Switched docs deployment from `release.published` to `workflow_run` after a successful `publish to NPM`, because GitHub Releases created inside the publish workflow do not trigger downstream release-based workflows.
+    - Added Apache SPA fallback via docs `.htaccess` so hosted docs routes survive direct refresh/navigation on shared hosting.
+
 ## [0.98.0] - 2026-02-27
 
 - Semver checklist:
