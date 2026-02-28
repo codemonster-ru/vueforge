@@ -2334,6 +2334,33 @@ export type SegmentedControlTokens = {
         segmentPadding?: string;
     };
 };
+export type ThemeModeSwitchTokens = {
+    fontSize?: string;
+    padding?: string;
+    gap?: string;
+    borderRadius?: string;
+    borderColor?: string;
+    backgroundColor?: string;
+    textColor?: string;
+    hoverBackgroundColor?: string;
+    activeBackgroundColor?: string;
+    activeTextColor?: string;
+    focusRingShadow?: string;
+    disabledOpacity?: string;
+    segmentPadding?: string;
+    segmentRadius?: string;
+    segmentFontWeight?: string;
+    small?: {
+        fontSize?: string;
+        padding?: string;
+        segmentPadding?: string;
+    };
+    large?: {
+        fontSize?: string;
+        padding?: string;
+        segmentPadding?: string;
+    };
+};
 export type ToggleButtonTokens = {
     fontSize?: string;
     padding?: string;
@@ -3904,6 +3931,7 @@ export type ThemeComponentTokens = {
     selectionControl?: SelectionControlTokens;
     selectionControlGroup?: SelectionControlGroupTokens;
     segmentedControl?: SegmentedControlTokens;
+    themeModeSwitch?: ThemeModeSwitchTokens;
     toggleButton?: ToggleButtonTokens;
     hover?: HoverTokens;
     kbd?: KbdTokens;

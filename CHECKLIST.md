@@ -730,17 +730,17 @@ Catalog delta acceptance criteria:
 
 ### P2.1 Release discipline
 
-- [ ] Add bundle-size tracking per release
+- [x] Add bundle-size tracking per release
 - [x] Add and enforce semver checklist
-- [ ] Add deprecation policy
-- [ ] Add migration guide template
-- [ ] Define component-level breaking-change rules and examples
+- [x] Add deprecation policy
+- [x] Add migration guide template
+- [x] Define component-level breaking-change rules and examples
 - [x] Add release gate: catalog mapping sync required before versioned release (`docs/contributing/semver-release-checklist.md`)
 
 ### P2.2 Governance
 
-- [ ] Add contribution guide focused on API consistency
-- [ ] Add "what belongs in core" policy
+- [x] Add contribution guide focused on API consistency
+- [x] Add "what belongs in core" policy
 - [x] Add PR review checklist item for component catalog parity impact (`docs/contributing/testing.md`)
 - [x] Define recurring catalog audit cadence (monthly + pre-release) in mapping doc
 - [x] Add anti-duplicate component policy and PR gate (canonical component per functional domain)
@@ -751,12 +751,12 @@ Catalog delta acceptance criteria:
 
 Documentation platform and deployment:
 
-- [ ] Add dedicated docs app (`src/docs`) with shell layout (`header` / `sidebar` / `content` / `footer`) inspired by Vue-style docs UX
-- [ ] Add docs routing and sidebar navigation tree generated from documentation structure (pages + groups + prev/next links)
-- [ ] Add markdown content pipeline to render docs from repository `docs/` sources into docs app pages
-- [ ] Add docs search/navigation quality baseline (active section highlight, mobile nav drawer, keyboard-accessible nav)
-- [ ] Add docs build target (`npm run build:docs`) and output artifact strategy
-- [ ] Add SSH deployment pipeline for docs artifacts (script + CI workflow + environment variable contract + rollback strategy)
+- [x] Add dedicated docs app (`src/docs`) with shell layout (`header` / `sidebar` / `content` / `footer`) inspired by Vue-style docs UX
+- [x] Add docs routing and sidebar navigation tree generated from documentation structure (pages + groups + prev/next links)
+- [x] Add markdown content pipeline to render docs from repository `docs/` sources into docs app pages
+- [x] Add docs search/navigation quality baseline (active section highlight, mobile nav drawer, keyboard-accessible nav)
+- [x] Add docs build target (`npm run build:docs`) and output artifact strategy
+- [x] Add SSH deployment pipeline for docs artifacts (script + CI workflow + environment variable contract + rollback strategy)
 
 ### P2.4 Security and robustness
 

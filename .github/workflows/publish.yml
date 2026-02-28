@@ -23,6 +23,7 @@ jobs:
             - run: npm run verify:performance-budgets
             - run: npm run performance:check
             - run: npm run build
+            - run: npm run verify:bundle-size
             - run: npm audit signatures
             - run: npm publish --access public --provenance
             - name: Extract release notes

@@ -1,0 +1,73 @@
+name: docs deploy
+
+on:
+    push:
+        branches:
+            - main
+        paths:
+            - 'docs/**'
+            - 'src/docs/**'
+            - 'docs-index.html'
+            - 'vite.docs.config.mts'
+            - 'scripts/deploy-docs-ssh.sh'
+            - '.github/workflows/docs-deploy.yml'
+    workflow_dispatch:
+        inputs:
+            rollback_to:
+                description: 'Rollback release timestamp (YYYYMMDDHHMMSS). Leave empty for regular deploy.'
+                required: false
+                default: ''
+
+concurrency:
+    group: docs-deploy
+    cancel-in-progress: false
+
+jobs:
+    deploy-docs:
+        runs-on: ubuntu-latest
+        env:
+            DOCS_DEPLOY_ROLLBACK_TO: ${{ github.event.inputs.rollback_to || '' }}
+        steps:
+            - uses: actions/checkout@v4
+
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+                  cache: npm
+
+            - run: npm ci
+
+            - if: ${{ env.DOCS_DEPLOY_ROLLBACK_TO == '' }}
+              run: npm run build:docs
+
+            - name: Prepare SSH key and known_hosts
+              env:
+                  DOCS_SSH_PRIVATE_KEY: ${{ secrets.DOCS_SSH_PRIVATE_KEY }}
+                  DOCS_SSH_KNOWN_HOSTS: ${{ secrets.DOCS_SSH_KNOWN_HOSTS }}
+                  DOCS_SSH_HOST: ${{ secrets.DOCS_SSH_HOST }}
+                  DOCS_SSH_PORT: ${{ secrets.DOCS_SSH_PORT }}
+              run: |
+                  set -euo pipefail
+                  mkdir -p ~/.ssh
+                  chmod 700 ~/.ssh
+                  printf "%s" "$DOCS_SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
+                  chmod 600 ~/.ssh/id_ed25519
+
+                  if [ -n "${DOCS_SSH_KNOWN_HOSTS:-}" ]; then
+                      printf "%s\n" "$DOCS_SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+                  else
+                      ssh-keyscan -p "${DOCS_SSH_PORT:-22}" "${DOCS_SSH_HOST}" >> ~/.ssh/known_hosts
+                  fi
+
+                  chmod 644 ~/.ssh/known_hosts
+
+            - name: Deploy docs over SSH
+              env:
+                  DOCS_SSH_HOST: ${{ secrets.DOCS_SSH_HOST }}
+                  DOCS_SSH_PORT: ${{ secrets.DOCS_SSH_PORT }}
+                  DOCS_SSH_USER: ${{ secrets.DOCS_SSH_USER }}
+                  DOCS_SSH_TARGET_DIR: ${{ secrets.DOCS_SSH_TARGET_DIR }}
+                  DOCS_RELEASES_TO_KEEP: ${{ secrets.DOCS_RELEASES_TO_KEEP }}
+                  DOCS_DEPLOY_ID: ${{ github.run_number }}-${{ github.sha }}
+                  DOCS_DEPLOY_ROLLBACK_TO: ${{ env.DOCS_DEPLOY_ROLLBACK_TO }}
+              run: ./scripts/deploy-docs-ssh.sh

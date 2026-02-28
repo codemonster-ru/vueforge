@@ -1,5 +1,28 @@
 # Changelog
 
+## [0.98.0] - 2026-02-27
+
+- Semver checklist:
+    - [x] Semver impact classified (`minor`)
+    - [x] Breaking-change assessment completed (`no`)
+    - [x] Deprecations documented (N/A)
+    - [x] Migration notes added when required (N/A)
+    - [x] Catalog mapping sync completed (`yes`)
+    - [x] Bundle-size check completed (`npm run build && npm run verify:bundle-size`)
+- Public API/theming additions:
+    - Added `ThemeModeSwitch` public export in `src/index.ts`.
+    - Added `ThemeModeSwitchTokens` and `themeModeSwitch` component token mapping in `theme-core`.
+    - Registered default `themeModeSwitch` tokens in default theme preset.
+- Docs platform updates:
+    - Added standalone docs app/runtime under `src/docs` with generated route tree from `docs/**/*.md`.
+    - Added docs build target (`build:docs`) and docs deployment workflow/scripts.
+    - Added docs shell UX updates: header search/theme switch, collapsible+animated sidebar, component tabs, sticky `On this page`, and robust hash/tab synchronization.
+    - Updated docs routing behavior so `/docs/components` redirects to first component page and removed index duplication in sidebar navigation.
+    - Hardened docs live playground prop inference/defaults across component pages (function/tuple/object/array/default literal cases) and route/event sync behavior.
+- Release/tooling:
+    - Added bundle-size verification script and budgets to release gates.
+    - Updated semver checklist enforcement to include bundle-size completion.
+
 ## [0.97.0] - 2026-02-26
 
 - Semver checklist:
@@ -8,6 +31,7 @@
     - [x] Deprecations documented (N/A)
     - [x] Migration notes added when required (N/A)
     - [x] Catalog mapping sync completed (`yes`)
+    - [x] Bundle-size check completed (`npm run build && npm run verify:bundle-size`)
 - Data visualization parity (`P1.15`) follow-up:
     - Defined official chart engine adapter strategy (`Chart.js` default adapter + `ChartAdapter` extension interface), documented in `docs/guides/chart-engine-adapter-strategy.md`, and added adapter contract tests.
     - Added shared chart data schema contracts (`series`, `axes`, `legend`, `tooltip`, `annotations`) with public exports, validation helper, tests, and guide (`docs/guides/chart-data-schema-contracts.md`).
@@ -53,6 +77,7 @@
     - Removed deferred `Advanced analytics visuals` section from `CHECKLIST.md` by product scope decision.
 - Release alignment:
     - Bumped package version to `0.97.0` in `package.json` and `package-lock.json`.
+    - Added per-release bundle-size gate with tracked budgets for `dist/index.ts.mjs`, `dist/index.ts.umd.js`, and `dist/index.css` (raw/gzip/brotli).
 - Developer tooling:
     - Added project-level VS Code recommendations in `.vscode/extensions.json` (`Vue.volar`, `dbaeumer.vscode-eslint`, `esbenp.prettier-vscode`).
     - Updated `.vscode/settings.json` to keep format-on-save with automatic ESLint fixes (`source.fixAll.eslint: always`).
@@ -60,6 +85,23 @@
     - Added npm scripts for mass formatting workflows: `format` (`prettier --write .`) and `format:check` (`prettier --check .`).
     - Added project `markdownlint` config (`.markdownlint.json`) and aligned unordered list indentation rule (`MD007`) with formatter output (`indent: 4`) to prevent lint-vs-format drift in markdown files.
     - Finalized markdownlint baseline by ignoring generated/vendor markdown (`.markdownlintignore` for `node_modules` and `dist`), disabling strict line-length enforcement (`MD013`), and fixing remaining docs warnings (`MD038` in `cascadeselect.md`, `MD059` in `docs/components/README.md`) so `markdownlint` runs cleanly across repository markdown.
+- Release discipline:
+    - Added formal deprecation lifecycle policy and release requirements in `docs/contributing/deprecation-policy.md`.
+    - Linked semver/testing contributor checklists to deprecation policy and required replacement/removal metadata for deprecated APIs.
+    - Added reusable migration guide template (`docs/migrations/MIGRATION_TEMPLATE.md`) and wired it into semver release guidance for major/complex migrations.
+    - Added component-level breaking change rules with classification criteria and examples (`docs/contributing/component-breaking-change-rules.md`), and linked them in release/testing guidance.
+    - Added API consistency contribution guide (`docs/contributing/api-consistency-contribution-guide.md`) with required PR checklist and classification rules for public API updates.
+    - Added governance policy for core scope decisions (`docs/contributing/what-belongs-in-core-policy.md`) with admission criteria and duplicate/alias enforcement rules.
+- Ecosystem support:
+    - Added dedicated docs app shell baseline under `src/docs` with route `/docs/:pathMatch(.*)*`, including `header/sidebar/content/footer` layout structure and responsive behavior.
+    - Added docs shell regression tests (`src/docs/__tests__/docs-app-view.test.ts`) covering shell regions and active sidebar state.
+    - Added generated docs routing/sidebar tree from repository markdown structure (`docs/**/*.md`) with grouped navigation, dynamic `/docs/...` route map, and prev/next page links.
+    - Added markdown content pipeline for docs app pages: repository markdown is loaded via Vite raw imports, rendered through a safe in-app markdown renderer, and internal `.md` links are resolved to `/docs/...` routes.
+    - Added docs navigation quality baseline: sidebar search filter, table-of-contents with active section highlight, mobile navigation drawer, and keyboard arrow navigation for docs link lists.
+    - Added dedicated docs build target (`npm run build:docs`) using `vite.docs.config.mts` + `docs-index.html`, outputting static docs artifact to `dist/docs`.
+    - Added docs artifact strategy document (`docs/contributing/docs-build-artifact-strategy.md`) and CI validation step for docs bundle generation.
+    - Added SSH docs deployment pipeline: deploy script (`scripts/deploy-docs-ssh.sh`), CI workflow (`.github/workflows/docs-deploy.yml`), explicit environment variable contract, and rollback strategy with release symlink switching.
+    - Added reusable `ThemeModeSwitch` library component (segmented `system/light/dark` selector) with tests/docs, and replaced docs header theme `select` with the new component plus compact search-in-header layout.
 
 ## [0.96.0] - 2026-02-25
 

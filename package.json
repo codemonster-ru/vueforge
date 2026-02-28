@@ -1,6 +1,6 @@
 {
     "name": "@codemonster-ru/vueforge",
-    "version": "0.97.0",
+    "version": "0.98.0",
     "description": "Open source UI components for Vue.js.",
     "license": "MIT",
     "author": "Kirill Kolesnikov",
@@ -46,6 +46,8 @@
     "scripts": {
         "dev": "vite dev --force --mode development",
         "build": "vite build --mode production",
+        "build:docs": "vite build --config vite.docs.config.mts --mode production",
+        "deploy:docs:ssh": "./scripts/deploy-docs-ssh.sh",
         "lint": "node --import tsx ./node_modules/eslint/bin/eslint.js . --ext .ts,.vue --config eslint.config.ts",
         "format": "prettier --write .",
         "format:check": "prettier --check .",
@@ -58,6 +60,7 @@
         "verify:performance-report": "node --import tsx ./scripts/verify-performance-report.ts",
         "performance:check": "npm run benchmark:run && npm run verify:performance-report",
         "verify:performance-budgets": "node --import tsx ./scripts/verify-performance-budgets.ts",
+        "verify:bundle-size": "node --import tsx ./scripts/verify-bundle-size.ts",
         "verify:semver": "node --import tsx ./scripts/verify-semver-checklist.ts"
     },
     "peerDependencies": {

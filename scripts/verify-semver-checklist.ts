@@ -34,6 +34,7 @@ const requiredPatterns = [
     /\[x\]\s+Deprecations documented\b/i,
     /\[x\]\s+Migration notes added when required\b/i,
     /\[x\]\s+Catalog mapping sync completed\b/i,
+    /\[x\]\s+Bundle-size check completed\b/i,
 ];
 
 for (const pattern of requiredPatterns) {

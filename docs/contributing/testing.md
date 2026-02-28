@@ -57,13 +57,21 @@ Before merge:
 For any versioned release, complete the semver checklist in `CHANGELOG.md` and keep it checked.
 
 - Required template and rules: [Semver Release Checklist](./semver-release-checklist.md)
+- API consistency contribution process: [API Consistency Contribution Guide](./api-consistency-contribution-guide.md)
+- Scope admission policy for new components/APIs: [What Belongs in Core Policy](./what-belongs-in-core-policy.md)
+- Docs artifact output contract: [Docs Build Artifact Strategy](./docs-build-artifact-strategy.md)
+- Docs SSH deployment contract and rollback: [Docs SSH Deployment Pipeline](./docs-ssh-deployment.md)
+- Deprecation rules and lifecycle: [Deprecation Policy](./deprecation-policy.md)
+- Breaking change classification rules: [Component-Level Breaking Change Rules](./component-breaking-change-rules.md)
 - Enforcement command: `npm run verify:semver`
+- Bundle-size gate command (after build): `npm run verify:bundle-size`
 
 ## CI Recommendation
 
 - Keep at least one targeted test command in PR description.
 - For large refactors, include quick summary of covered interaction paths.
 - CI runs dedicated `ssr-hydration` (`npm run test:ssr`) and `visual-regression` (`npm run test:visual`) jobs in addition to core lint/typecheck/unit/build checks.
+- CI validates docs static bundle generation with `npm run build:docs`.
 - Use the standard failure workflow: [Regression Triage Playbook](./regression-triage-playbook.md)
 - Keep performance targets aligned with the baseline budget file: [`docs/audits/performance-budgets.md`](../audits/performance-budgets.md)
 

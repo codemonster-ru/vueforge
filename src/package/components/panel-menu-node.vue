@@ -38,24 +38,32 @@
             {{ item.label }}
         </Link>
 
-        <ul
-            v-if="hasChildren && expanded"
-            :id="panelId"
-            class="vf-panelmenu-node__group"
-            role="group"
-            :aria-labelledby="triggerId"
+        <Transition
+            name="vf-panelmenu-expand"
+            @enter="onEnter"
+            @after-enter="onAfterEnter"
+            @leave="onLeave"
+            @after-leave="onAfterLeave"
         >
-            <PanelMenuNode
-                v-for="(child, childIndex) in item.items"
-                :key="`${child.label}-${childIndex}`"
-                :item="child"
-                :level="level + 1"
-                :expanded-keys="expandedKeys"
-                :disabled="resolvedDisabled"
-                @toggle="onToggle"
-                @item-click="onItemClick"
-            />
-        </ul>
+            <ul
+                v-if="hasChildren && expanded"
+                :id="panelId"
+                class="vf-panelmenu-node__group"
+                role="group"
+                :aria-labelledby="triggerId"
+            >
+                <PanelMenuNode
+                    v-for="(child, childIndex) in item.items"
+                    :key="`${child.label}-${childIndex}`"
+                    :item="child"
+                    :level="level + 1"
+                    :expanded-keys="expandedKeys"
+                    :disabled="resolvedDisabled"
+                    @toggle="onToggle"
+                    @item-click="onItemClick"
+                />
+            </ul>
+        </Transition>
     </li>
 </template>
 
@@ -108,6 +116,44 @@ const emitItemClick = (event: Event) => {
 const emitActive = () => emits('itemClick', props.item, new Event('active'));
 const onToggle = (key: string, event: Event) => emits('toggle', key, event);
 const onItemClick = (item: PanelMenuItem, event: Event) => emits('itemClick', item, event);
+
+const onEnter = (element: Element) => {
+    const target = element as HTMLElement;
+    target.style.height = '0px';
+    target.style.overflow = 'hidden';
+    target.style.opacity = '0';
+
+    void target.offsetHeight;
+
+    target.style.height = `${target.scrollHeight}px`;
+    target.style.opacity = '1';
+};
+
+const onAfterEnter = (element: Element) => {
+    const target = element as HTMLElement;
+    target.style.height = 'auto';
+    target.style.overflow = '';
+    target.style.opacity = '';
+};
+
+const onLeave = (element: Element) => {
+    const target = element as HTMLElement;
+    target.style.height = `${target.scrollHeight}px`;
+    target.style.overflow = 'hidden';
+    target.style.opacity = '1';
+
+    void target.offsetHeight;
+
+    target.style.height = '0px';
+    target.style.opacity = '0';
+};
+
+const onAfterLeave = (element: Element) => {
+    const target = element as HTMLElement;
+    target.style.height = '';
+    target.style.overflow = '';
+    target.style.opacity = '';
+};
 </script>
 
 <style lang="scss">
@@ -148,5 +194,13 @@ const onItemClick = (item: PanelMenuItem, event: Event) => emits('itemClick', it
     padding: 0 0 0 var(--vf-panelmenu-indent);
     display: grid;
     gap: var(--vf-panelmenu-gap);
+    will-change: height, opacity;
+}
+
+.vf-panelmenu-expand-enter-active,
+.vf-panelmenu-expand-leave-active {
+    transition:
+        height 180ms ease,
+        opacity 140ms ease;
 }
 </style>

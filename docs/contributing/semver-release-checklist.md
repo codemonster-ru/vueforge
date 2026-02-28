@@ -13,6 +13,7 @@ Add this block inside the release section (`## [x.y.z] - YYYY-MM-DD`):
     - [x] Deprecations documented (or N/A)
     - [x] Migration notes added when required (or N/A)
     - [x] Catalog mapping sync completed (`yes`|`n/a`)
+    - [x] Bundle-size check completed (`npm run build && npm run verify:bundle-size`)
 ```
 
 ## Rules
@@ -20,15 +21,19 @@ Add this block inside the release section (`## [x.y.z] - YYYY-MM-DD`):
 - `patch`: bugfixes/docs/tests/refactors with no API break and no new public API.
 - `minor`: backward-compatible public API additions or behavior expansions.
 - `major`: any breaking API/behavior change.
+- Breaking classification must follow [Component-Level Breaking Change Rules](./component-breaking-change-rules.md).
 - If breaking changes are marked `yes`, add migration notes in the same release section.
-- If deprecations are introduced, explicitly describe replacement path and removal intent.
+- For major releases or complex migrations, create a dedicated migration document using [`docs/migrations/MIGRATION_TEMPLATE.md`](../migrations/MIGRATION_TEMPLATE.md).
+- If deprecations are introduced, explicitly describe replacement path and removal intent following [Deprecation Policy](./deprecation-policy.md).
 - Mark catalog sync as `yes` when `docs/audits/component-catalog-mapping.md` was reviewed/updated for the release scope, otherwise use `n/a` with explanation.
+- Record bundle-size metrics in release notes for `dist/index.ts.mjs`, `dist/index.ts.umd.js`, and `dist/index.css` (raw/gzip/brotli bytes).
 
 ## Enforcement
 
 - CI and publish pipelines run `npm run verify:semver`.
 - The check validates the current `package.json` version section in `CHANGELOG.md`.
 - Release is blocked if the required semver checklist items are missing or unchecked.
+- Bundle-size gate runs in CI/release via `npm run verify:bundle-size` after `npm run build`.
 
 ## Catalog Sync Gate
 
@@ -37,3 +42,4 @@ Before cutting a versioned release:
 - Update [`docs/audits/component-catalog-mapping.md`](../audits/component-catalog-mapping.md) for all component additions/renames/deprecations included in the release.
 - Ensure every newly introduced public component/API is marked in the mapping and in `CHECKLIST.md` (`implemented` or `deferred` with rationale).
 - Add a short note in the release PR description: `Catalog mapping synced: yes`.
+- For deprecated APIs, include replacement + planned removal version per [Deprecation Policy](./deprecation-policy.md).

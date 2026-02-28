@@ -101,6 +101,7 @@ export { default as CommandPalette } from '@/package/components/command-palette.
 export { default as NotificationCenter } from '@/package/components/notification-center.vue';
 export { default as AppShell } from '@/package/components/app-shell.vue';
 export { default as ThemeProvider } from '@/package/components/theme-provider.vue';
+export { default as ThemeModeSwitch } from '@/package/components/theme-mode-switch.vue';
 export { default as DefaultsProvider } from '@/package/components/defaults-provider.vue';
 export { default as LocaleProvider } from '@/package/components/locale-provider.vue';
 export { default as NoSsr } from '@/package/components/no-ssr.vue';

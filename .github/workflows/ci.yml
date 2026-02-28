@@ -20,6 +20,8 @@ jobs:
             - run: npm run verify:semver
             - run: npm run test
             - run: npm run build
+            - run: npm run build:docs
+            - run: npm run verify:bundle-size
 
     ssr-hydration:
         runs-on: ubuntu-latest

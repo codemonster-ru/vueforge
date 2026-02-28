@@ -1,0 +1,19 @@
+{
+    "files": {
+        "dist/index.ts.mjs": {
+            "maxRawBytes": 1200000,
+            "maxGzipBytes": 245000,
+            "maxBrotliBytes": 208000
+        },
+        "dist/index.ts.umd.js": {
+            "maxRawBytes": 1300000,
+            "maxGzipBytes": 252000,
+            "maxBrotliBytes": 215000
+        },
+        "dist/index.css": {
+            "maxRawBytes": 380000,
+            "maxGzipBytes": 45000,
+            "maxBrotliBytes": 36000
+        }
+    }
+}

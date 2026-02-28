@@ -1,6 +1,5 @@
 <template>
     <Drawer
-        class="vf-sidebar"
         :model-value="resolvedVisible"
         :title="title"
         :position="position"
@@ -151,9 +150,3 @@ const onClose = () => {
     emits('onHide');
 };
 </script>
-
-<style lang="scss">
-.vf-sidebar {
-    display: contents;
-}
-</style>

@@ -90,6 +90,7 @@ import switchComponent from './components/switch';
 import selectionControl from './components/selection-control';
 import selectionControlGroup from './components/selection-control-group';
 import segmentedControl from './components/segmented-control';
+import themeModeSwitch from './components/theme-mode-switch';
 import toggleButton from './components/toggle-button';
 import hover from './components/hover';
 import kbd from './components/kbd';
@@ -254,6 +255,7 @@ export default {
         selectionControl,
         selectionControlGroup,
         segmentedControl,
+        themeModeSwitch,
         toggleButton,
         hover,
         kbd,
