@@ -1,16 +1,9 @@
 name: docs deploy
 
 on:
-    push:
-        branches:
-            - main
-        paths:
-            - 'docs/**'
-            - 'src/docs/**'
-            - 'docs-index.html'
-            - 'vite.docs.config.mts'
-            - 'scripts/deploy-docs-ssh.sh'
-            - '.github/workflows/docs-deploy.yml'
+    release:
+        types:
+            - published
     workflow_dispatch:
         inputs:
             rollback_to:
@@ -29,6 +22,8 @@ jobs:
             DOCS_DEPLOY_ROLLBACK_TO: ${{ github.event.inputs.rollback_to || '' }}
         steps:
             - uses: actions/checkout@v4
+              with:
+                  ref: ${{ github.event_name == 'release' && github.event.release.tag_name || github.ref }}
 
             - uses: actions/setup-node@v4
               with:
@@ -68,6 +63,6 @@ jobs:
                   DOCS_SSH_USER: ${{ secrets.DOCS_SSH_USER }}
                   DOCS_SSH_TARGET_DIR: ${{ secrets.DOCS_SSH_TARGET_DIR }}
                   DOCS_RELEASES_TO_KEEP: ${{ secrets.DOCS_RELEASES_TO_KEEP }}
-                  DOCS_DEPLOY_ID: ${{ github.run_number }}-${{ github.sha }}
+                  DOCS_DEPLOY_ID: ${{ github.event_name == 'release' && github.event.release.tag_name || format('{0}-{1}', github.run_number, github.sha) }}
                   DOCS_DEPLOY_ROLLBACK_TO: ${{ env.DOCS_DEPLOY_ROLLBACK_TO }}
               run: ./scripts/deploy-docs-ssh.sh

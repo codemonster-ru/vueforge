@@ -97,12 +97,14 @@
                                         <p v-if="tab.key === 'features'" class="vf-docs__source">
                                             Source: {{ currentPage.sourcePath }}
                                         </p>
+                                        <!-- eslint-disable vue/no-v-html -->
                                         <div
                                             class="vf-docs__markdown"
                                             data-testid="vf-docs-markdown"
                                             :data-active-tab="activeComponentTab === tab.key ? 'true' : 'false'"
                                             v-html="tab.html"
                                         />
+                                        <!-- eslint-enable vue/no-v-html -->
                                     </div>
                                     <aside
                                         v-if="activeComponentTab === tab.key && currentPageHeadings.length"
@@ -146,12 +148,14 @@
                                 :page-title="currentPage.title"
                                 :markdown="currentPage.markdown"
                             />
+                            <!-- eslint-disable vue/no-v-html -->
                             <div
                                 class="vf-docs__markdown"
                                 data-testid="vf-docs-markdown"
                                 data-active-tab="true"
                                 v-html="currentPageHtml"
                             />
+                            <!-- eslint-enable vue/no-v-html -->
                         </div>
                         <aside v-if="currentPageHeadings.length" class="vf-docs__toc" data-testid="vf-docs-toc">
                             <p class="vf-docs__toc-title">On this page</p>

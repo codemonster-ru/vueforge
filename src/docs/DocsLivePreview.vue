@@ -29,29 +29,29 @@
                         v-else-if="control.kind === 'boolean'"
                         :id="`vf-docs-control-${control.name}`"
                         :checked="getBooleanValue(control.name)"
-                        @change="setBooleanValue(control.name, ($event.target as HTMLInputElement).checked)"
                         type="checkbox"
+                        @change="setBooleanValue(control.name, ($event.target as HTMLInputElement).checked)"
                     />
                     <input
                         v-else-if="control.kind === 'number'"
                         :id="`vf-docs-control-${control.name}`"
                         :value="getNumberValue(control.name)"
-                        @input="setNumberValue(control.name, ($event.target as HTMLInputElement).value)"
                         type="number"
+                        @input="setNumberValue(control.name, ($event.target as HTMLInputElement).value)"
                     />
                     <textarea
                         v-else-if="control.kind === 'json'"
                         :id="`vf-docs-control-${control.name}`"
                         :value="getStringValue(control.name)"
-                        @input="setStringValue(control.name, ($event.target as HTMLTextAreaElement).value)"
                         rows="3"
+                        @input="setStringValue(control.name, ($event.target as HTMLTextAreaElement).value)"
                     />
                     <input
                         v-else
                         :id="`vf-docs-control-${control.name}`"
                         :value="getStringValue(control.name)"
-                        @input="setStringValue(control.name, ($event.target as HTMLInputElement).value)"
                         type="text"
+                        @input="setStringValue(control.name, ($event.target as HTMLInputElement).value)"
                     />
                 </div>
             </aside>

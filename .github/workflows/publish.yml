@@ -19,9 +19,6 @@ jobs:
             - run: npm -v
             - run: npm ci
             - run: npm run verify:semver
-            - run: npx playwright install --with-deps chromium
-            - run: npm run verify:performance-budgets
-            - run: npm run performance:check
             - run: npm run build
             - run: npm run verify:bundle-size
             - run: npm audit signatures

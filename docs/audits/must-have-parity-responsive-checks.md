@@ -28,4 +28,4 @@ Coverage summary:
 Notes:
 
 - Touch-target and overflow contracts are enforced at component level through tokenized sizing and structural wrappers.
-- Visual-regression baseline remains the primary full-page responsive safety net (`tests/visual/visual-regression.spec.ts`).
+- Responsive safety net is currently enforced through component-level regression tests and responsive docs guidance.

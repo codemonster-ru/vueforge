@@ -16,6 +16,9 @@
 - Docs platform updates:
     - Added standalone docs app/runtime under `src/docs` with generated route tree from `docs/**/*.md`.
     - Added docs build target (`build:docs`) and docs deployment workflow/scripts.
+    - Switched docs static entry artifact from `dist/docs/docs-index.html` to standard `dist/docs/index.html` via dedicated docs build root, simplifying static hosting configuration.
+    - Moved docs build root from ad-hoc `docs-site` into `apps/docs` to make the docs app entrypoint explicit in project structure.
+    - Removed the legacy `src/example` runtime and made docs the single dev entrypoint.
     - Added docs shell UX updates: header search/theme switch, collapsible+animated sidebar, component tabs, sticky `On this page`, and robust hash/tab synchronization.
     - Updated docs routing behavior so `/docs/components` redirects to first component page and removed index duplication in sidebar navigation.
     - Hardened docs live playground prop inference/defaults across component pages (function/tuple/object/array/default literal cases) and route/event sync behavior.
@@ -23,6 +26,9 @@
     - Added bundle-size verification script and budgets to release gates.
     - Updated semver checklist enforcement to include bundle-size completion.
     - Stabilized `ThemeModeSwitch` theme-override test timing in CI by aligning its timeout with other `ThemeProvider` token-override coverage.
+    - Removed the Playwright visual-regression and benchmark/performance-gate pipeline from active tooling and CI workflows.
+    - Switched docs deployment to run only from published GitHub releases, so hosted docs track released package versions instead of every `main` push.
+    - Fixed docs build output path and ESLint ignores so `npm run lint` completes cleanly after docs/runtime restructuring.
 
 ## [0.97.0] - 2026-02-26
 

@@ -1,33 +1,14 @@
-import fs from 'fs';
-import * as path from 'path';
 import dts from 'vite-plugin-dts';
 import vue from '@vitejs/plugin-vue';
 import { resolve } from 'node:path';
 import { defineConfig } from 'vite';
 import { fileURLToPath, URL } from 'url';
 
-const removeUnnecessaryFiles = () => {
-    return {
-        name: 'remove-files',
-        writeBundle(outputOptions) {
-            const outDir = outputOptions.dir;
-
-            if (!outDir) {
-                return;
-            }
-
-            const devDir = path.resolve(outDir, 'example');
-
-            fs.rm(devDir, { recursive: true, force: true }, () => console.log(`Deleted ${devDir}`));
-        },
-    };
-};
-
 export default defineConfig(({ mode }) => {
-    const entry = mode === 'development' ? './src/example/main.ts' : './src/index.ts';
+    const entry = mode === 'development' ? './src/docs/main.ts' : './src/index.ts';
 
     return {
-        plugins: [vue(), dts(), removeUnnecessaryFiles()],
+        plugins: [vue(), dts()],
         resolve: {
             alias: [{ find: '@', replacement: fileURLToPath(new URL('./src', import.meta.url)) }],
         },

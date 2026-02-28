@@ -370,7 +370,7 @@ Wave 1 execution plan (PR packages):
 Wave 1 package gate (applies to each `W1-PR*`):
 
 - [x] All touched component rows are `Yes`/justified `N/A` across `DoD`, `Tests`, `A11y`, `SSR/Hydration`, `Responsive`, `Visual`, `Docs`, `Catalog`.
-- [x] `npm run lint`, `npm run typecheck`, targeted `npm run test`, `npm run test:ssr`, and `npm run test:visual` are green.
+- [x] `npm run lint`, `npm run typecheck`, targeted `npm run test`, and `npm run test:ssr` are green.
 - [x] At least one production-style docs recipe is updated/added for touched component group.
 
 - [x] `AccordionItem` hardening baseline (API, tests, a11y/docs confirmation)

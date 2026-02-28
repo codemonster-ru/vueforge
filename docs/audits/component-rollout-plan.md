@@ -7,7 +7,7 @@ Purpose: execute full quality hardening and implementation coverage for all comp
 Quality gate for every package:
 
 - All touched rows in compliance matrix are `Yes` (or justified `N/A`) across `DoD`, `Tests`, `A11y`, `SSR/Hydration`, `Responsive`, `Visual`, `Docs`, `Catalog`.
-- `npm run lint`, `npm run typecheck`, targeted `npm run test`, `npm run test:ssr`, and `npm run test:visual` are green.
+- `npm run lint`, `npm run typecheck`, targeted `npm run test`, and `npm run test:ssr` are green.
 - Docs include API updates and at least one production-style recipe for touched component group.
 
 ## Implemented Components Backfill

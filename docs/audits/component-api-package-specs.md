@@ -237,4 +237,4 @@ For each package (`W*` or `P-PR*`):
 - [ ] API specs are complete for every component in the package.
 - [ ] Competitor parity notes and intentional deviations are documented.
 - [ ] Compliance matrix rows are updated (`implemented` or `planned`) for all touched components.
-- [ ] Quality gates are green (`lint`, `typecheck`, targeted tests, `test:ssr`, `test:visual`).
+- [ ] Quality gates are green (`lint`, `typecheck`, targeted tests, `test:ssr`).

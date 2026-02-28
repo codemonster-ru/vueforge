@@ -6,7 +6,7 @@ This document defines how VueForge docs static artifacts are produced and consum
 
 - Command: `npm run build:docs`
 - Config: `vite.docs.config.mts`
-- HTML entry: `docs-index.html`
+- HTML entry: `apps/docs/index.html`
 - App entry: `src/docs/main.ts`
 
 ## Output Contract
@@ -19,7 +19,7 @@ This document defines how VueForge docs static artifacts are produced and consum
 
 After `npm run build:docs`, expect:
 
-- `dist/docs/docs-index.html` (entry html)
+- `dist/docs/index.html` (entry html)
 - `dist/docs/assets/*` (hashed JS/CSS chunks and static assets)
 
 `dist/` package library artifacts (`index.ts.mjs`, `index.ts.umd.js`, `index.css`) are not required for docs-only deploys.

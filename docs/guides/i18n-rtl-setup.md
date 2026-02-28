@@ -63,8 +63,6 @@ Vue template example:
 
 - Run RTL regression checks:
     - `npx vitest run src/package/components/__tests__/rtl-regression.test.ts`
-- Run visual baseline checks:
-    - `npm run test:visual`
 - Run full quality gate:
     - `npm run lint`
     - `npm run typecheck`

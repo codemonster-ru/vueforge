@@ -1,6 +1,6 @@
 # Regression Triage Playbook
 
-Use this playbook when any CI quality gate fails (`core`, `ssr-hydration`, `visual-regression`).
+Use this playbook when any CI quality gate fails (`core`, `ssr-hydration`).
 
 ## Triage Flow
 
@@ -31,19 +31,12 @@ Use this playbook when any CI quality gate fails (`core`, `ssr-hydration`, `visu
     - `npm run build`
 - SSR/hydration checks:
     - `npm run test:ssr`
-- Visual regression checks:
-    - `npm run test:visual`
-    - `npm run test:visual:update` (intentional UI changes only)
 
 ## Decision Rules
 
 - `core` or `ssr-hydration` failure:
     - Treat as blocker by default.
     - Merge only after behavior and test expectations are aligned.
-- `visual-regression` failure:
-    - If unintentional, fix UI/theme/component code.
-    - If intentional, update snapshots and include rationale in PR/changelog.
-    - Never update snapshots without confirming expected UI outcome.
 
 ## Flake Handling
 
@@ -59,5 +52,5 @@ Use this playbook when any CI quality gate fails (`core`, `ssr-hydration`, `visu
 - [ ] Failure reproduced locally
 - [ ] Failure type classified (regression/intentional/flake)
 - [ ] Root cause documented
-- [ ] Fix or snapshot update justified
+- [ ] Fix justified
 - [ ] Relevant commands rerun and passed

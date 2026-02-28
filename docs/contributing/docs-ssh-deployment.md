@@ -7,6 +7,7 @@ This document defines the SSH deployment pipeline for docs artifacts.
 - Deploy script: `scripts/deploy-docs-ssh.sh`
 - CI workflow: `.github/workflows/docs-deploy.yml`
 - Build artifact source: `dist/docs` (from `npm run build:docs`)
+- Automatic trigger: GitHub Release `published`
 
 ## Environment Variable Contract
 
@@ -52,6 +53,12 @@ Workflow rollback:
 
 - Run `docs deploy` workflow manually (`workflow_dispatch`)
 - Set input `rollback_to` to a previous release id
+
+Automatic deploy flow:
+
+- Publish a new release/tag through the normal release pipeline
+- `docs deploy` runs after the GitHub Release is marked `published`
+- Workflow checks out the released tag and deploys docs for that exact release
 
 Local/manual rollback:
 
