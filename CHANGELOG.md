@@ -22,6 +22,7 @@
 - Release/tooling:
     - Added bundle-size verification script and budgets to release gates.
     - Updated semver checklist enforcement to include bundle-size completion.
+    - Stabilized `ThemeModeSwitch` theme-override test timing in CI by aligning its timeout with other `ThemeProvider` token-override coverage.
 
 ## [0.97.0] - 2026-02-26
 

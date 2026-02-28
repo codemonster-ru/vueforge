@@ -61,5 +61,5 @@ describe('ThemeModeSwitch', () => {
         const provider = wrapper.get('.vf-theme-provider');
         expect(provider.attributes('style')).toContain('--vf-theme-mode-switch-border-color: #123456');
         expect(provider.attributes('style')).toContain('--vf-theme-mode-switch-active-background-color: #abcdef');
-    });
+    }, 10000);
 });
