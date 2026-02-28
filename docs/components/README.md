@@ -211,7 +211,7 @@ Related docs:
 - [API Consistency Contribution Guide](../contributing/api-consistency-contribution-guide.md)
 - [What Belongs in Core Policy](../contributing/what-belongs-in-core-policy.md)
 - [Docs Build Artifact Strategy](../contributing/docs-build-artifact-strategy.md)
-- [Docs SSH Deployment Pipeline](../contributing/docs-ssh-deployment.md)
+- [Docs FTP Deployment Pipeline](../contributing/docs-ftp-deployment.md)
 - [Deprecation Policy](../contributing/deprecation-policy.md)
 - [Component-Level Breaking Change Rules](../contributing/component-breaking-change-rules.md)
 - [Component Docs Template](DOCS_TEMPLATE.md)

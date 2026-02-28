@@ -6,8 +6,8 @@ on:
             - published
     workflow_dispatch:
         inputs:
-            rollback_to:
-                description: 'Rollback release timestamp (YYYYMMDDHHMMSS). Leave empty for regular deploy.'
+            ref:
+                description: 'Git ref to deploy manually. Leave empty to deploy the current default branch state.'
                 required: false
                 default: ''
 
@@ -18,12 +18,10 @@ concurrency:
 jobs:
     deploy-docs:
         runs-on: ubuntu-latest
-        env:
-            DOCS_DEPLOY_ROLLBACK_TO: ${{ github.event.inputs.rollback_to || '' }}
         steps:
             - uses: actions/checkout@v4
               with:
-                  ref: ${{ github.event_name == 'release' && github.event.release.tag_name || github.ref }}
+                  ref: ${{ github.event_name == 'release' && github.event.release.tag_name || github.event.inputs.ref || github.ref }}
 
             - uses: actions/setup-node@v4
               with:
@@ -32,37 +30,15 @@ jobs:
 
             - run: npm ci
 
-            - if: ${{ env.DOCS_DEPLOY_ROLLBACK_TO == '' }}
-              run: npm run build:docs
+            - run: npm run build:docs
 
-            - name: Prepare SSH key and known_hosts
-              env:
-                  DOCS_SSH_PRIVATE_KEY: ${{ secrets.DOCS_SSH_PRIVATE_KEY }}
-                  DOCS_SSH_KNOWN_HOSTS: ${{ secrets.DOCS_SSH_KNOWN_HOSTS }}
-                  DOCS_SSH_HOST: ${{ secrets.DOCS_SSH_HOST }}
-                  DOCS_SSH_PORT: ${{ secrets.DOCS_SSH_PORT }}
-              run: |
-                  set -euo pipefail
-                  mkdir -p ~/.ssh
-                  chmod 700 ~/.ssh
-                  printf "%s" "$DOCS_SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
-                  chmod 600 ~/.ssh/id_ed25519
-
-                  if [ -n "${DOCS_SSH_KNOWN_HOSTS:-}" ]; then
-                      printf "%s\n" "$DOCS_SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
-                  else
-                      ssh-keyscan -p "${DOCS_SSH_PORT:-22}" "${DOCS_SSH_HOST}" >> ~/.ssh/known_hosts
-                  fi
-
-                  chmod 644 ~/.ssh/known_hosts
-
-            - name: Deploy docs over SSH
-              env:
-                  DOCS_SSH_HOST: ${{ secrets.DOCS_SSH_HOST }}
-                  DOCS_SSH_PORT: ${{ secrets.DOCS_SSH_PORT }}
-                  DOCS_SSH_USER: ${{ secrets.DOCS_SSH_USER }}
-                  DOCS_SSH_TARGET_DIR: ${{ secrets.DOCS_SSH_TARGET_DIR }}
-                  DOCS_RELEASES_TO_KEEP: ${{ secrets.DOCS_RELEASES_TO_KEEP }}
-                  DOCS_DEPLOY_ID: ${{ github.event_name == 'release' && github.event.release.tag_name || format('{0}-{1}', github.run_number, github.sha) }}
-                  DOCS_DEPLOY_ROLLBACK_TO: ${{ env.DOCS_DEPLOY_ROLLBACK_TO }}
-              run: ./scripts/deploy-docs-ssh.sh
+            - name: Deploy docs over FTP/FTPS
+              uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+              with:
+                  server: ${{ secrets.DOCS_FTP_HOST }}
+                  username: ${{ secrets.DOCS_FTP_USERNAME }}
+                  password: ${{ secrets.DOCS_FTP_PASSWORD }}
+                  port: ${{ secrets.DOCS_FTP_PORT || 21 }}
+                  protocol: ${{ secrets.DOCS_FTP_PROTOCOL || 'ftps' }}
+                  local-dir: dist/docs/
+                  server-dir: ${{ secrets.DOCS_FTP_SERVER_DIR }}/

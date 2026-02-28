@@ -47,7 +47,6 @@
         "dev": "vite dev --force --mode development",
         "build": "vite build --mode production",
         "build:docs": "vite build --config vite.docs.config.mts --mode production",
-        "deploy:docs:ssh": "./scripts/deploy-docs-ssh.sh",
         "lint": "node --import tsx ./node_modules/eslint/bin/eslint.js . --ext .ts,.vue --config eslint.config.ts",
         "format": "prettier --write .",
         "format:check": "prettier --check .",

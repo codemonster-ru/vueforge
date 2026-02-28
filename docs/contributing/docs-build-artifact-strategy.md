@@ -29,7 +29,7 @@ After `npm run build:docs`, expect:
 - Docs artifact build is validated in CI using `npm run build:docs`.
 - Deployment pipeline should publish `dist/docs` as the docs site payload.
 - Keep docs build separate from package publish artifact to avoid mixing npm package files with docs hosting files.
-- SSH deployment details (env contract + rollback flow): [`docs-ssh-deployment.md`](./docs-ssh-deployment.md)
+- FTP/FTPS deployment details (secrets contract + hosting flow): [`docs-ftp-deployment.md`](./docs-ftp-deployment.md)
 
 ## Verification Checklist
 

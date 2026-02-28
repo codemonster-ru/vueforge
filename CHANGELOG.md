@@ -28,6 +28,7 @@
     - Stabilized `ThemeModeSwitch` theme-override test timing in CI by aligning its timeout with other `ThemeProvider` token-override coverage.
     - Removed the Playwright visual-regression and benchmark/performance-gate pipeline from active tooling and CI workflows.
     - Switched docs deployment to run only from published GitHub releases, so hosted docs track released package versions instead of every `main` push.
+    - Replaced the SSH docs deployment pipeline with an FTP/FTPS workflow that fits shared-hosting deployment constraints.
     - Fixed docs build output path and ESLint ignores so `npm run lint` completes cleanly after docs/runtime restructuring.
 
 ## [0.97.0] - 2026-02-26
