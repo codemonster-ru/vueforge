@@ -5,6 +5,9 @@
 - Docs deployment:
     - Switched docs deployment from `release.published` to `workflow_run` after a successful `publish to NPM`, because GitHub Releases created inside the publish workflow do not trigger downstream release-based workflows.
     - Added Apache SPA fallback via docs `.htaccess` so hosted docs routes survive direct refresh/navigation on shared hosting.
+- Docs shell:
+    - Restored VueForge plugin/theme initialization in the docs runtime after removing the legacy `src/example` entry, fixing docs-only layout/theme regressions.
+    - Added the current package version to the docs header as non-clickable metadata next to the `vueforge` brand.
 
 ## [0.98.0] - 2026-02-27
 

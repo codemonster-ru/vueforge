@@ -1,10 +1,13 @@
 <template>
     <div class="vf-docs" :class="`vf-docs_theme-${effectiveTheme}`" data-testid="vf-docs-app">
         <header class="vf-docs__header" data-testid="vf-docs-header">
-            <RouterLink :to="firstDocsRoute" class="vf-docs__brand" aria-label="Go to docs home">
-                <span class="vf-docs__logo" aria-hidden="true">VF</span>
-                <strong class="vf-docs__brand-name">vueforge</strong>
-            </RouterLink>
+            <div class="vf-docs__brand-wrap">
+                <RouterLink :to="firstDocsRoute" class="vf-docs__brand" aria-label="Go to docs home">
+                    <span class="vf-docs__logo" aria-hidden="true">VF</span>
+                    <strong class="vf-docs__brand-name">vueforge</strong>
+                </RouterLink>
+                <span class="vf-docs__brand-version">{{ packageVersion }}</span>
+            </div>
             <div class="vf-docs__header-controls">
                 <input
                     id="vf-docs-search-input"
@@ -217,6 +220,7 @@
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import type { LocationQueryRaw } from 'vue-router';
 import { useRoute, useRouter } from 'vue-router';
+import packageJson from '../../package.json';
 import type { PanelMenuItem } from '@/package/components/panel-menu.vue';
 import PanelMenu from '@/package/components/panel-menu.vue';
 import Tab from '@/package/components/tab.vue';
@@ -237,6 +241,8 @@ type ComponentTabItem = {
     html: string;
     headings: Array<{ id: string; level: number; text: string }>;
 };
+
+const packageVersion = packageJson.version;
 
 const extractFirstParagraphText = (markdown: string): string => {
     const lines = markdown.split(/\r?\n/);
@@ -975,6 +981,12 @@ watch(activeComponentTab, tab => {
     text-decoration: none;
 }
 
+.vf-docs__brand-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+}
+
 .vf-docs__logo {
     display: grid;
     place-items: center;
@@ -991,6 +1003,14 @@ watch(activeComponentTab, tab => {
     font-size: 1rem;
     font-weight: 600;
     letter-spacing: 0.01em;
+}
+
+.vf-docs__brand-version {
+    color: var(--vf-docs-muted);
+    font-size: 0.72rem;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    opacity: 0.72;
 }
 
 .vf-docs__mobile-toggle {

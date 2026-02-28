@@ -1,5 +1,6 @@
 import { createApp } from 'vue';
 import { createRouter, createWebHistory } from 'vue-router';
+import { DefaultTheme, VueForge } from '@/index';
 import App from './App.vue';
 import DocsAppView from './DocsAppView.vue';
 import { docsRoutes, firstComponentsRoute, firstDocsRoute } from './docs-structure';
@@ -28,4 +29,11 @@ const router = createRouter({
     ],
 });
 
-createApp(App).use(router).mount('#app');
+createApp(App)
+    .use(router)
+    .use(VueForge, {
+        theme: {
+            preset: DefaultTheme,
+        },
+    })
+    .mount('#app');
