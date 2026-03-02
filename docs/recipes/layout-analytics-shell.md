@@ -19,7 +19,7 @@ Compose analytics pages with pinned controls and split visualization/detail pane
             </SplitLayout>
         </template>
         <template #aside>
-            <Card>Saved views and query notes</Card>
+            <Card> Saved views and query notes </Card>
         </template>
     </PageLayout>
 </template>

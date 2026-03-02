@@ -30,9 +30,19 @@
 
 ```vue
 <Footer>
-    <template #left>© 2026 Codemonster</template>
-    <template #center><a href="/status">Status</a></template>
-    <template #right><a href="/terms">Terms</a></template>
+    <template #left>
+        © 2026 Codemonster
+    </template>
+    <template #center>
+        <a href="/status">
+            Status
+        </a>
+    </template>
+    <template #right>
+        <a href="/terms">
+            Terms
+        </a>
+    </template>
 </Footer>
 ```
 

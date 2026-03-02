@@ -44,7 +44,6 @@ export { default as FileManager } from '@/package/components/file-manager.vue';
 export { default as JSONViewer } from '@/package/components/json-viewer.vue';
 export { default as DiffViewer } from '@/package/components/diff-viewer.vue';
 export { default as CodeEditor } from '@/package/components/code-editor.vue';
-export { default as CodeBlock } from '@/package/components/code-block.vue';
 export { default as Scheduler } from '@/package/components/scheduler.vue';
 export { default as BottomSheet } from '@/package/components/bottom-sheet.vue';
 export { default as InfiniteScroll } from '@/package/components/infinite-scroll.vue';

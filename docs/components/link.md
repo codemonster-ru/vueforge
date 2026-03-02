@@ -30,9 +30,15 @@
 ## Examples
 
 ```vue
-<Link href="https://example.com" target="_blank">External</Link>
-<Link to="/settings">Router link</Link>
-<Link href="https://example.com" disabled>Disabled external</Link>
+<Link href="https://example.com" target="_blank">
+    External
+</Link>
+<Link to="/settings">
+    Router link
+</Link>
+<Link href="https://example.com" disabled>
+    Disabled external
+</Link>
 ```
 
 ## External vs Internal Usage

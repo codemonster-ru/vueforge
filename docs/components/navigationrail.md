@@ -38,7 +38,9 @@
 ```vue
 <NavigationRail v-model="activeKey" v-model:collapsed="collapsed" :items="railItems">
     <template #header>
-        <strong>Ops</strong>
+        <strong>
+            Ops
+        </strong>
     </template>
 </NavigationRail>
 ```

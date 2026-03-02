@@ -14,18 +14,8 @@
             :aria-label="ariaLabel"
             :aria-labelledby="ariaLabelledby"
             :aria-describedby="ariaDescribedby"
-            :aria-invalid="
-                ariaInvalid === true || ariaInvalid === 'true' ? 'true' : ariaInvalid === 'false' ? 'false' : undefined
-            "
-            :aria-required="
-                required
-                    ? 'true'
-                    : ariaRequired === true || ariaRequired === 'true'
-                      ? 'true'
-                      : ariaRequired === 'false'
-                        ? 'false'
-                        : undefined
-            "
+            :aria-invalid="resolvedAriaInvalid"
+            :aria-required="resolvedAriaRequired"
             :rows="rows"
             @input="onInput"
             @change="onChange"
@@ -95,6 +85,34 @@ const getClass = computed(() => {
     }
 
     return classes;
+});
+
+const resolvedAriaInvalid = computed(() => {
+    if (props.ariaInvalid === true || props.ariaInvalid === 'true') {
+        return 'true';
+    }
+
+    if (props.ariaInvalid === 'false') {
+        return 'false';
+    }
+
+    return undefined;
+});
+
+const resolvedAriaRequired = computed(() => {
+    if (props.required) {
+        return 'true';
+    }
+
+    if (props.ariaRequired === true || props.ariaRequired === 'true') {
+        return 'true';
+    }
+
+    if (props.ariaRequired === 'false') {
+        return 'false';
+    }
+
+    return undefined;
 });
 
 const onInput = (event: Event) => {

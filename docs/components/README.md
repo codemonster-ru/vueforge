@@ -36,7 +36,6 @@ Detailed API pages generated from the current package reference.
 - [Chip](chip.md)
 - [ColorPicker](colorpicker.md)
 - [CodeEditor](codeeditor.md)
-- [CodeBlock](codeblock.md)
 - [Combobox](combobox.md)
 - [CommentThread](commentthread.md)
 - [CommandPalette](commandpalette.md)

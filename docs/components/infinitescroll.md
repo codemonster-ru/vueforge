@@ -39,7 +39,9 @@ Provide a sentinel-based infinite loading utility with automatic intersection/sc
 ```vue
 <InfiniteScroll :loading="loading" :error="error" :has-more="hasMore" @load="onLoadMore" @retry="onRetry">
     <ul>
-        <li v-for="item in items" :key="item.id">{{ item.title }}</li>
+        <li v-for="item in items" :key="item.id">
+            {{ item.title }}
+        </li>
     </ul>
 </InfiniteScroll>
 ```

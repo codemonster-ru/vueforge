@@ -77,7 +77,9 @@ const rowActionsOpen = ref(false);
 
         <Carousel :items="highlights" :autoplay="true" :autoplay-interval="4500">
             <template #item="{ item }">
-                <article class="ops-highlight">{{ item.title }}</article>
+                <article class="ops-highlight">
+                    {{ item.title }}
+                </article>
             </template>
         </Carousel>
 
@@ -109,7 +111,9 @@ const rowActionsOpen = ref(false);
                                 height="140"
                                 fit="cover"
                             />
-                            <h3>{{ item.name }}</h3>
+                            <h3>
+                                {{ item.name }}
+                            </h3>
                             <p>Owner: {{ item.owner }}</p>
                             <OverlayPanel v-model="rowActionsOpen" showCloseIcon>
                                 <template #trigger>

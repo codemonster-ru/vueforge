@@ -64,6 +64,7 @@ const onClick = (event: Event) => {
     background-color: var(--vf-tabs-tab-background-color);
     color: var(--vf-tabs-tab-text-color);
     font-size: var(--vf-tabs-tab-font-size);
+    font-weight: var(--vf-tabs-tab-font-weight, inherit);
     line-height: var(--vf-typography-line-height);
     font-family: inherit;
     border-radius: var(--vf-tabs-tab-border-radius);
@@ -81,6 +82,7 @@ const onClick = (event: Event) => {
     color: var(--vf-tabs-tab-active-text-color);
     background-color: var(--vf-tabs-tab-active-background-color);
     border-bottom-color: var(--vf-tabs-tab-active-border-color);
+    font-weight: var(--vf-tabs-tab-active-font-weight, var(--vf-tabs-tab-font-weight, inherit));
 }
 
 .vf-tabs_vertical .vf-tab_active {

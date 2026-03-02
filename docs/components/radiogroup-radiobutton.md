@@ -43,8 +43,12 @@ Props (RadioButton):
 
 ```vue
 <RadioGroup v-model="plan" direction="horizontal">
-    <RadioButton value="basic">Basic</RadioButton>
-    <RadioButton value="pro">Pro</RadioButton>
+    <RadioButton value="basic">
+        Basic
+    </RadioButton>
+    <RadioButton value="pro">
+        Pro
+    </RadioButton>
 </RadioGroup>
 ```
 

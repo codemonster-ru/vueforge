@@ -43,7 +43,9 @@ Centralize close policies, focus management, and stack/layer contracts for compl
     <template #button>
         <Button label="Open popover" />
     </template>
-    <template #default>Popover content</template>
+    <template #default>
+        Popover content
+    </template>
 </Popover>
 ```
 

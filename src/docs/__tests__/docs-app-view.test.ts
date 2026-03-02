@@ -62,8 +62,8 @@ describe('DocsAppView', () => {
     });
 
     it('highlights active sidebar item for the current docs route', async () => {
-        const router = createTestRouter('/docs/components/chart');
-        router.push('/docs/components/chart');
+        const router = createTestRouter('/docs/components/button');
+        router.push('/docs/components/button');
         await router.isReady();
 
         const wrapper = mount(DocsAppView, {
@@ -72,13 +72,14 @@ describe('DocsAppView', () => {
             },
         });
 
-        expect(wrapper.find('.vf-docs__title').text()).toBe('Chart');
-        expect(wrapper.find('.vf-panelmenu-node__link.is-active').text()).toBe('Chart');
+        expect(wrapper.find('.vf-docs__title').text()).toBe('Button');
+        expect(wrapper.find('.vf-panelmenu-node__link.is-active').text()).toBe('Button');
         expect(wrapper.find('[data-testid="vf-docs-markdown"]').text()).toContain(
-            'Provide an adapter-based chart wrapper with a stable VueForge API',
+            'Execute primary and secondary actions with consistent visual hierarchy and interaction semantics.',
         );
         expect(wrapper.find('[data-testid="vf-docs-markdown"] pre code').exists()).toBe(true);
-        expect(wrapper.find('[data-testid="vf-docs-live-preview"]').exists()).toBe(true);
+        expect(wrapper.find('[data-testid="vf-docs-example-block"]').exists()).toBe(true);
+        expect(wrapper.find('[data-testid="vf-docs-example-preview"]').text()).toContain('Primary');
     });
 
     it('resolves internal markdown links to docs routes', async () => {
@@ -137,7 +138,7 @@ describe('DocsAppView', () => {
         expect(activeTocItem.text()).toContain('Props');
     });
 
-    it('does not render live preview for non-component docs pages', async () => {
+    it('does not render example blocks for non-component docs pages', async () => {
         const router = createTestRouter('/docs/theming');
         router.push('/docs/theming');
         await router.isReady();
@@ -148,10 +149,10 @@ describe('DocsAppView', () => {
             },
         });
 
-        expect(wrapper.find('[data-testid="vf-docs-live-preview"]').exists()).toBe(false);
+        expect(wrapper.find('[data-testid="vf-docs-example-block"]').exists()).toBe(false);
     });
 
-    it('renders registry-based live preview for additional component docs routes', async () => {
+    it('renders example blocks for additional component docs routes', async () => {
         const router = createTestRouter('/docs/components/textarea');
         router.push('/docs/components/textarea');
         await router.isReady();
@@ -162,6 +163,48 @@ describe('DocsAppView', () => {
             },
         });
 
-        expect(wrapper.find('[data-testid="vf-docs-live-preview"]').exists()).toBe(true);
+        expect(wrapper.find('[data-testid="vf-docs-example-block"]').exists()).toBe(true);
+    });
+
+    it('renders textarea examples without preview number prop warnings', async () => {
+        const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+        const router = createTestRouter('/docs/components/textarea');
+        router.push('/docs/components/textarea');
+        await router.isReady();
+
+        const wrapper = mount(DocsAppView, {
+            global: {
+                plugins: [router],
+            },
+        });
+
+        await nextTick();
+        await nextTick();
+
+        expect(wrapper.find('[data-testid="vf-docs-example-preview"]').exists()).toBe(true);
+
+        const warnings = warnSpy.mock.calls.map(([message]) => String(message));
+        expect(
+            warnings.some(message => message.includes('Expected Number with value 4, got String with value "4"')),
+        ).toBe(false);
+
+        warnSpy.mockRestore();
+    });
+
+    it('renders live preview for simple v-model-only examples', async () => {
+        const router = createTestRouter('/docs/components/accordion-accordionitem');
+        router.push('/docs/components/accordion-accordionitem');
+        await router.isReady();
+
+        const wrapper = mount(DocsAppView, {
+            global: {
+                plugins: [router],
+            },
+        });
+
+        expect(wrapper.find('[data-testid="vf-docs-example-block"]').exists()).toBe(true);
+        expect(wrapper.find('[data-testid="vf-docs-example-preview"] .vf-accordion__header').exists()).toBe(true);
+        expect(wrapper.find('[data-testid="vf-docs-example-preview"]').text()).toContain('Shipping');
+        expect(wrapper.text()).not.toContain('Live preview is not available for this example yet.');
     });
 });

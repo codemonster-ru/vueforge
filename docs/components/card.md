@@ -24,9 +24,15 @@
 
 ```vue
 <Card>
-    <template #header>Header</template>
-    <template #body>Main content</template>
-    <template #footer>Footer</template>
+    <template #header>
+        Header
+    </template>
+    <template #body>
+        Main content
+    </template>
+    <template #footer>
+        Footer
+    </template>
 </Card>
 ```
 

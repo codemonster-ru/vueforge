@@ -27,9 +27,13 @@
 <Divider />
 <Divider label="OR" />
 <div style="height: 32px; display: flex; align-items: center; gap: 8px">
-    <span>Left</span>
+    <span>
+        Left
+    </span>
     <Divider orientation="vertical" />
-    <span>Right</span>
+    <span>
+        Right
+    </span>
 </div>
 ```
 

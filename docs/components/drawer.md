@@ -36,7 +36,9 @@ Centralize close policies, focus management, and stack/layer contracts for compl
 ```vue
 <Drawer v-model="open" title="Filters" position="right">
     <template #body>
-        <p>Drawer content</p>
+        <p>
+            Drawer content
+        </p>
     </template>
     <template #footer>
         <Button label="Reset" severity="secondary" size="small" />

@@ -26,7 +26,9 @@ Utility wrapper that exposes hover/focus interaction state with keyboard parity.
 
 ```vue
 <Hover v-slot="{ active }">
-    <Card :class="{ 'is-elevated': active }">Hover or focus me</Card>
+    <Card :class="{ 'is-elevated': active }">
+        Hover or focus me
+    </Card>
 </Hover>
 ```
 

@@ -15,25 +15,25 @@ Build a dashboard shell with `PageHeader`, `Grid`, `Card`, and `DataTable`.
                 <Grid :columns="12" gap="1rem" :breakpoints="{ md: { columns: 12 } }">
                     <GridItem :span="12" :breakpoints="{ md: { span: 4 } }">
                         <Card>
-                            <template #header>Active users</template>
-                            <template #body>1,248</template>
+                            <template #header> Active users </template>
+                            <template #body> 1,248 </template>
                         </Card>
                     </GridItem>
                     <GridItem :span="12" :breakpoints="{ md: { span: 4 } }">
                         <Card>
-                            <template #header>Errors</template>
-                            <template #body>12</template>
+                            <template #header> Errors </template>
+                            <template #body> 12 </template>
                         </Card>
                     </GridItem>
                     <GridItem :span="12" :breakpoints="{ md: { span: 4 } }">
                         <Card>
-                            <template #header>Deploys</template>
-                            <template #body>4 today</template>
+                            <template #header> Deploys </template>
+                            <template #body> 4 today </template>
                         </Card>
                     </GridItem>
                     <GridItem :span="12">
                         <Card>
-                            <template #header>Recent activity</template>
+                            <template #header> Recent activity </template>
                             <template #body>
                                 <DataTable
                                     :columns="[

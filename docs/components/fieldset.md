@@ -31,7 +31,9 @@ Provide semantic form grouping with optional collapse/toggle and legend actions.
 ```vue
 <Fieldset v-model="advancedOpen" legend="Advanced Filters" collapsible>
     <template #actions>
-        <Button size="small" variant="outlined">Reset</Button>
+        <Button size="small" variant="outlined">
+            Reset
+        </Button>
     </template>
 
     <Grid>

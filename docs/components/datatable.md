@@ -283,7 +283,9 @@ const order = ref(['name', 'role', 'age']);
         <strong>{{ group }}</strong> ({{ groupRows.length }})
     </template>
     <template #row-expansion="{ row }">
-        <div>Details for {{ row.name }}</div>
+        <div>
+            Details for {{ row.name }}
+        </div>
     </template>
 </DataTable>
 ```

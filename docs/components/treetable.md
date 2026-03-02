@@ -66,8 +66,12 @@ Render hierarchical datasets in a table-like layout with expandable branches and
 ```vue
 <TreeTable v-model="selectedMany" :columns="columns" :items="rows" multiple striped>
     <template #cell-name="{ value, level }">
-        <strong v-if="level === 1">{{ value }}</strong>
-        <span v-else>{{ value }}</span>
+        <strong v-if="level === 1">
+            {{ value }}
+        </strong>
+        <span v-else>
+            {{ value }}
+        </span>
     </template>
 </TreeTable>
 ```

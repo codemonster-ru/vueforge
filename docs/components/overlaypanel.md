@@ -55,8 +55,12 @@ Provide a compatibility alias for `Popover` with `OverlayPanel`-style API names,
     <template #trigger>
         <Button label="Open overlay" />
     </template>
-    <template #header>Quick actions</template>
-    <template #default>Panel content</template>
+    <template #header>
+        Quick actions
+    </template>
+    <template #default>
+        Panel content
+    </template>
 </OverlayPanel>
 ```
 

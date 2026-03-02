@@ -12,11 +12,11 @@ Use `AppBar`, `PageLayout`, and `ResizableSidebar` for an operations dashboard s
             </ResizableSidebar>
         </template>
         <template #default>
-            <StickyRegion as="header" bordered>Filters / Actions</StickyRegion>
+            <StickyRegion as="header" bordered> Filters / Actions </StickyRegion>
             <div>Dashboard widgets and KPI cards</div>
         </template>
         <template #aside>
-            <Card>Alerts and recent activity</Card>
+            <Card> Alerts and recent activity </Card>
         </template>
     </PageLayout>
 </template>

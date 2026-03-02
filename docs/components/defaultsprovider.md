@@ -25,7 +25,7 @@ import { Button, DefaultsProvider } from '@codemonster-ru/vueforge';
             },
         }"
     >
-        <Button>Large Rounded by Scope</Button>
+        <Button> Large Rounded by Scope </Button>
     </DefaultsProvider>
 </template>
 ```

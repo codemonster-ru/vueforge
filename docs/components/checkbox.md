@@ -33,7 +33,9 @@ Standardize selection controls and grouped input patterns used across product se
 
 ```vue
 <Checkbox v-model="agreed" label="I agree" />
-<Checkbox v-model="agreed" variant="outlined">Custom label</Checkbox>
+<Checkbox v-model="agreed" variant="outlined">
+    Custom label
+</Checkbox>
 ```
 
 ## Theming

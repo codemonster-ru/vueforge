@@ -13,7 +13,7 @@ export default {
     disabledOpacity: 'var(--vf-states-disabled-opacity)',
     segmentPadding: '0.24rem 0.44rem',
     segmentRadius: 'var(--vf-radii-sm)',
-    segmentFontWeight: '500',
+    segmentFontWeight: '400',
     small: {
         fontSize: 'var(--vf-sizes-sm-font-size)',
         padding: '0.14rem',

@@ -8,7 +8,15 @@ export default defineConfig(({ mode }) => {
     const entry = mode === 'development' ? './src/docs/main.ts' : './src/index.ts';
 
     return {
-        plugins: [vue(), dts()],
+        plugins: [
+            vue(),
+            dts({
+                include: ['src/index.ts', 'src/package/**/*'],
+                exclude: ['src/docs/**', 'src/**/*.test.ts', 'src/**/__tests__/**'],
+                insertTypesEntry: true,
+                outDir: 'dist',
+            }),
+        ],
         resolve: {
             alias: [{ find: '@', replacement: fileURLToPath(new URL('./src', import.meta.url)) }],
         },

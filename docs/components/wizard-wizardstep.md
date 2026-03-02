@@ -86,7 +86,9 @@ Events (`Wizard`):
     <WizardStep value="plan">
         <Select v-model="plan" :options="plans" />
     </WizardStep>
-    <WizardStep value="confirm">Review and finish</WizardStep>
+    <WizardStep value="confirm">
+        Review and finish
+    </WizardStep>
 </Wizard>
 ```
 
@@ -94,9 +96,15 @@ Events (`Wizard`):
 
 ```vue
 <Wizard v-model="step" :steps="steps" :linear="false">
-    <WizardStep value="profile">Profile form</WizardStep>
-    <WizardStep value="notifications">Notification settings</WizardStep>
-    <WizardStep value="review">Review changes</WizardStep>
+    <WizardStep value="profile">
+        Profile form
+    </WizardStep>
+    <WizardStep value="notifications">
+        Notification settings
+    </WizardStep>
+    <WizardStep value="review">
+        Review changes
+    </WizardStep>
 </Wizard>
 ```
 

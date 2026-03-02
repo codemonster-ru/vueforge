@@ -117,7 +117,9 @@ const onSearch = async (term: string) => {
         placeholder="Find user"
         @search="onSearch"
     />
-    <p v-if="error">{{ error }}</p>
+    <p v-if="error">
+        {{ error }}
+    </p>
 </template>
 ```
 

@@ -43,7 +43,9 @@ Support high-frequency form entry scenarios in SaaS settings, auth, and CRUD flo
 ```vue
 <Input v-model="email" placeholder="Email" />
 <Input v-model="query" variant="outlined">
-    <template #prefix>🔎</template>
+    <template #prefix>
+        🔎
+    </template>
 </Input>
 ```
 

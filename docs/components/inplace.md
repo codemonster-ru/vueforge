@@ -34,7 +34,9 @@ Provide a display-to-edit container that toggles inline content without opening 
 ```vue
 <Inplace v-model="editing">
     <template #display>
-        <button type="button">Edit profile bio</button>
+        <button type="button">
+            Edit profile bio
+        </button>
     </template>
     <template #content>
         <textarea v-model="bio" rows="3" />

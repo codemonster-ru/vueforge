@@ -46,12 +46,20 @@ Props (TabPanel):
 ```vue
 <Tabs v-model="tab">
     <template #tabs>
-        <Tab value="overview">Overview</Tab>
-        <Tab value="settings">Settings</Tab>
+        <Tab value="overview">
+            Overview
+        </Tab>
+        <Tab value="settings">
+            Settings
+        </Tab>
     </template>
     <template #panels>
-        <TabPanel value="overview">Overview content</TabPanel>
-        <TabPanel value="settings">Settings content</TabPanel>
+        <TabPanel value="overview">
+            Overview content
+        </TabPanel>
+        <TabPanel value="settings">
+            Settings content
+        </TabPanel>
     </template>
 </Tabs>
 ```
@@ -63,14 +71,26 @@ Props (TabPanel):
 ```vue
 <Tabs v-model="section" orientation="vertical" aria-label="Settings sections">
     <template #tabs>
-        <Tab value="profile">Profile</Tab>
-        <Tab value="security">Security</Tab>
-        <Tab value="billing" :disabled="isBillingDisabled">Billing</Tab>
+        <Tab value="profile">
+            Profile
+        </Tab>
+        <Tab value="security">
+            Security
+        </Tab>
+        <Tab value="billing" :disabled="isBillingDisabled">
+            Billing
+        </Tab>
     </template>
     <template #panels>
-        <TabPanel value="profile">Profile settings</TabPanel>
-        <TabPanel value="security">Security settings</TabPanel>
-        <TabPanel value="billing">Billing settings</TabPanel>
+        <TabPanel value="profile">
+            Profile settings
+        </TabPanel>
+        <TabPanel value="security">
+            Security settings
+        </TabPanel>
+        <TabPanel value="billing">
+            Billing settings
+        </TabPanel>
     </template>
 </Tabs>
 ```

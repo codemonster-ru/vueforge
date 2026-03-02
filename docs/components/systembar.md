@@ -27,9 +27,17 @@ Render a compact top status/utility strip for global environment, tenant, or sys
 
 ```vue
 <SystemBar sticky>
-    <template #start>Production</template>
-    <template #center>EU-Central • 99.98% uptime</template>
-    <template #end><Button size="sm">Status</Button></template>
+    <template #start>
+        Production
+    </template>
+    <template #center>
+        EU-Central • 99.98% uptime
+    </template>
+    <template #end>
+        <Button size="sm">
+            Status
+        </Button>
+    </template>
 </SystemBar>
 ```
 

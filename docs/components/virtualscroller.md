@@ -32,7 +32,9 @@ Support filtering, navigation, and bulk workflows used in core SaaS backoffice s
 ```vue
 <VirtualScroller :items="users" :item-height="44" height="320px" :overscan="6" key-field="id">
     <template #default="{ item, index }">
-        <div>{{ index + 1 }}. {{ item.name }}</div>
+        <div>
+            {{ index + 1 }}. {{ item.name }}
+        </div>
     </template>
 </VirtualScroller>
 ```

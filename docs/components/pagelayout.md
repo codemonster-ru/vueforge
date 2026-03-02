@@ -43,9 +43,15 @@
 
 ```vue
 <PageLayout v-model:sidebar-collapsed="sidebarCollapsed" v-model:aside-collapsed="asideCollapsed">
-    <template #sidebar>Navigation</template>
-    <template #default>Main content</template>
-    <template #aside>Context panel</template>
+    <template #sidebar>
+        Navigation
+    </template>
+    <template #default>
+        Main content
+    </template>
+    <template #aside>
+        Context panel
+    </template>
 </PageLayout>
 ```
 

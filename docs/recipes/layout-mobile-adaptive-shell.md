@@ -16,7 +16,7 @@ Combine `Show`/`Hide` with layout presets to deliver mobile-first shell behavior
                 <NavigationRail :items="navItems" />
             </template>
             <template #default>
-                <StickyRegion as="header">Page actions</StickyRegion>
+                <StickyRegion as="header"> Page actions </StickyRegion>
                 <router-view />
             </template>
         </PageLayout>

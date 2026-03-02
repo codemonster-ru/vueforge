@@ -39,7 +39,9 @@ Inline page-level announcement surface for important context, status updates, an
 <Banner severity="info" title="Billing update" closable>
     Prices will be updated on March 1.
     <template #actions>
-        <Button size="sm">Review</Button>
+        <Button size="sm">
+            Review
+        </Button>
     </template>
 </Banner>
 ```

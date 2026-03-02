@@ -28,14 +28,18 @@ Render compact status/count overlays on top of actionable icons, buttons, or ava
 
 ```vue
 <OverlayBadge :value="8" severity="info">
-    <button type="button" aria-label="Inbox">📥</button>
+    <button type="button" aria-label="Inbox">
+        📥
+    </button>
 </OverlayBadge>
 ```
 
 Directive usage:
 
 ```vue
-<button v-overlay-badge="{ value: 3, severity: 'warn' }" type="button">Alerts</button>
+<button v-overlay-badge="{ value: 3, severity: 'warn' }" type="button">
+    Alerts
+</button>
 ```
 
 ## Theming

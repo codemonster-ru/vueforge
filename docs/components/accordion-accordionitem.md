@@ -53,7 +53,7 @@ Props (AccordionItem):
 ## Examples
 
 ```vue
-<Accordion v-model="faq">
+<Accordion model-value="shipping">
     <AccordionItem value="shipping" title="Shipping">
         Shipping details
     </AccordionItem>
@@ -68,19 +68,29 @@ Props (AccordionItem):
 ### FAQ disclosure with single-open behavior
 
 ```vue
-<Accordion v-model="activeFaq" aria-label="Frequently asked questions">
-    <AccordionItem value="shipping" title="Shipping">Shipping details</AccordionItem>
-    <AccordionItem value="returns" title="Returns">Returns policy</AccordionItem>
-    <AccordionItem value="warranty" title="Warranty">Warranty terms</AccordionItem>
+<Accordion model-value="shipping" aria-label="Frequently asked questions">
+    <AccordionItem value="shipping" title="Shipping">
+        Shipping details
+    </AccordionItem>
+    <AccordionItem value="returns" title="Returns">
+        Returns policy
+    </AccordionItem>
+    <AccordionItem value="warranty" title="Warranty">
+        Warranty terms
+    </AccordionItem>
 </Accordion>
 ```
 
 ### Multi-open policy sections
 
 ```vue
-<Accordion v-model="openSections" multiple>
-    <AccordionItem value="privacy" title="Privacy">Privacy policy</AccordionItem>
-    <AccordionItem value="terms" title="Terms">Terms of service</AccordionItem>
+<Accordion :model-value="['privacy']" multiple>
+    <AccordionItem value="privacy" title="Privacy">
+        Privacy policy
+    </AccordionItem>
+    <AccordionItem value="terms" title="Terms">
+        Terms of service
+    </AccordionItem>
 </Accordion>
 ```
 
@@ -88,20 +98,25 @@ Props (AccordionItem):
 
 ```vue
 <Accordion
-    v-model="openPanels"
+    :model-value="['policy']"
     grouped
     dense
     group-title="Access controls"
     group-description="Policy and approval settings"
     analytics
     analytics-context="security-settings"
-    @analytics="trackAccordion"
 >
     <template #group-actions>
-        <Button size="small">Manage roles</Button>
+        <Button size="small">
+            Manage roles
+        </Button>
     </template>
-    <AccordionItem value="policy" title="Policy rules">...</AccordionItem>
-    <AccordionItem value="approvals" title="Approval matrix">...</AccordionItem>
+    <AccordionItem value="policy" title="Policy rules">
+        ...
+    </AccordionItem>
+    <AccordionItem value="approvals" title="Approval matrix">
+        ...
+    </AccordionItem>
 </Accordion>
 ```
 

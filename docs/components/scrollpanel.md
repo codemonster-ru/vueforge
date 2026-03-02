@@ -27,7 +27,9 @@ Provide a styled scrollable container for long content blocks and side panels.
 
 ```vue
 <ScrollPanel height="18rem" aria-label="Deployment logs">
-    <pre>{{ logs }}</pre>
+    <pre>
+        {{ logs }}
+    </pre>
 </ScrollPanel>
 ```
 

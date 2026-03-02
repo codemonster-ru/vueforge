@@ -34,7 +34,9 @@ Provide a mobile-first bottom-anchored surface for actions/details in responsive
 ```vue
 <BottomSheet v-model="open" title="Quick actions">
     <template #body>
-        <p>Run mobile-first contextual actions here.</p>
+        <p>
+            Run mobile-first contextual actions here.
+        </p>
     </template>
 </BottomSheet>
 ```

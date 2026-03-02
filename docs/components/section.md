@@ -31,7 +31,9 @@
 
 <Section as="main" background="muted" padding-y="4rem">
     <Container size="lg">
-        <p>Main section content with custom vertical rhythm.</p>
+        <p>
+            Main section content with custom vertical rhythm.
+        </p>
     </Container>
 </Section>
 ```

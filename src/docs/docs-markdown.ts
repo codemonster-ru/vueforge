@@ -1,4 +1,5 @@
 import { resolveDocsSourcePathToRoute } from './docs-structure';
+import { escapeCodeHtml, highlightCodeBlock } from '@codemonster-ru/vue-codeblock';
 
 export type DocsHeading = {
     id: string;
@@ -172,7 +173,8 @@ export const renderDocsMarkdown = (markdown: string, sourcePath: string): DocsRe
 
     const flushCodeFence = () => {
         const className = codeFenceLanguage ? ` class="language-${escapeHtml(codeFenceLanguage)}"` : '';
-        blocks.push(`<pre><code${className}>${escapeHtml(codeFenceLines.join('\n'))}</code></pre>`);
+        const highlightedCode = highlightCodeBlock(codeFenceLanguage, codeFenceLines.join('\n'), true);
+        blocks.push(`<pre><code${className}>${highlightedCode || escapeCodeHtml('')}</code></pre>`);
         codeFenceLanguage = '';
         codeFenceLines = [];
     };

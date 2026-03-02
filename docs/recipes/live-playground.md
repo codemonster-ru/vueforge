@@ -1,28 +1,23 @@
-# Live Playground for Core Components
+# Live Examples in Component Docs
 
-VueForge includes an interactive live playground route for core components:
-
-- route: `/playground`
+VueForge component pages now render examples directly inside the `Features` tab instead of routing users to a separate playground.
 
 ## What it includes
 
-- tabbed playground for:
-    - `Button`
-    - `Input`
-    - `Card`
-    - layout primitives (`Stack` with preview cards)
-- interactive controls for common prop/state combinations
-- immediate preview updates while editing values
+- example sections rendered inline on the page
+- live preview above each code block when the example is template-only
+- automatic reuse of the existing `## Examples` content from component markdown
+- code-first fallback for stateful examples that still rely on local setup logic
 
 ## Why use it
 
-- validate visual and behavior changes quickly during development
-- reproduce prop combinations before writing docs/examples
-- smoke-check core theming and state variants with minimal setup
+- users see the component output immediately without opening another tab
+- visual states and usage snippets stay coupled in one place
+- `Features` becomes the primary discovery surface, while `API` stays reference-focused
 
 ## Suggested workflow
 
 1. Start dev server: `npm run dev`
-2. Open `/playground`
-3. Toggle props/states in controls panel
-4. Mirror finalized combinations in component docs/recipes
+2. Open a component page under `/docs/components/...`
+3. Add or refine the `## Examples` section in the component markdown
+4. Keep simple template snippets previewable; leave stateful examples as code blocks until they need a dedicated live pattern

@@ -45,8 +45,12 @@ Events (`Splitter`):
 
 ```vue
 <Splitter v-model="splitSizes" :min-sizes="[20, 20]" style="height: 280px">
-    <SplitterPanel>Navigation</SplitterPanel>
-    <SplitterPanel>Content</SplitterPanel>
+    <SplitterPanel>
+        Navigation
+    </SplitterPanel>
+    <SplitterPanel>
+        Content
+    </SplitterPanel>
 </Splitter>
 ```
 
@@ -60,11 +64,17 @@ Events (`Splitter`):
 >
     <SplitterPanel>
         <Splitter direction="vertical" :min-sizes="[30, 20]">
-            <SplitterPanel>Explorer</SplitterPanel>
-            <SplitterPanel>Inspector</SplitterPanel>
+            <SplitterPanel>
+                Explorer
+            </SplitterPanel>
+            <SplitterPanel>
+                Inspector
+            </SplitterPanel>
         </Splitter>
     </SplitterPanel>
-    <SplitterPanel>Editor</SplitterPanel>
+    <SplitterPanel>
+        Editor
+    </SplitterPanel>
 </Splitter>
 ```
 

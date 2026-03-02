@@ -39,7 +39,9 @@ Provide a migration-friendly alias over `Drawer` for sidebar-style overlays.
 ```vue
 <Sidebar v-model:visible="sidebarOpen" title="Filters" position="left">
     <template #body>
-        <p>Sidebar content</p>
+        <p>
+            Sidebar content
+        </p>
     </template>
 </Sidebar>
 ```

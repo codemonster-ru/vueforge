@@ -45,7 +45,9 @@ Provide a floating action menu pattern for quick, high-priority actions in app s
 
 ```vue
 <SpeedDial v-model="open" :actions="actions" direction="left">
-    <template #trigger="{ open }">{{ open ? 'Close' : 'Quick' }}</template>
+    <template #trigger="{ open }">
+        {{ open ? 'Close' : 'Quick' }}
+    </template>
 </SpeedDial>
 ```
 

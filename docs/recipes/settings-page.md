@@ -14,7 +14,7 @@ Build a settings page with grouped sections, toggles, and save/cancel actions.
                 <PageHeader title="Settings" subtitle="Manage account and notifications" divider />
 
                 <Card>
-                    <template #header>Profile</template>
+                    <template #header> Profile </template>
                     <template #body>
                         <Stack gap="0.75rem">
                             <FormField label="Display name">
@@ -32,15 +32,15 @@ Build a settings page with grouped sections, toggles, and save/cancel actions.
                 </Card>
 
                 <Card>
-                    <template #header>Notifications</template>
+                    <template #header> Notifications </template>
                     <template #body>
                         <Stack gap="0.75rem">
                             <Inline justify="space-between" align="center">
-                                <span>Email alerts</span>
+                                <span> Email alerts </span>
                                 <Switch model-value />
                             </Inline>
                             <Inline justify="space-between" align="center">
-                                <span>Weekly summary</span>
+                                <span> Weekly summary </span>
                                 <Switch :model-value="false" />
                             </Inline>
                         </Stack>

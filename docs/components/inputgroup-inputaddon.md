@@ -35,7 +35,9 @@ Props (`InputAddon`):
 
 ```vue
 <InputGroup>
-    <InputAddon>$</InputAddon>
+    <InputAddon>
+        $
+    </InputAddon>
     <NumberInput v-model="price" :min="0" :step="0.5" />
     <Button label="Apply" />
 </InputGroup>

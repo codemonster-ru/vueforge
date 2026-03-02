@@ -34,7 +34,9 @@ Centralize close policies, focus management, and stack/layer contracts for compl
 ```vue
 <Modal v-model="open" title="Confirm action" size="sm">
     <template #body>
-        <p>Are you sure?</p>
+        <p>
+            Are you sure?
+        </p>
     </template>
     <template #footer>
         <Button label="Cancel" severity="secondary" @click="open = false" />

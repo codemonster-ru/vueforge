@@ -31,7 +31,9 @@ Provide reusable feedback primitives for dashboards, tables, and long-running op
 
 ```vue
 <Chip label="New" />
-<Chip severity="info" closable>Info</Chip>
+<Chip severity="info" closable>
+    Info
+</Chip>
 ```
 
 ## Theming

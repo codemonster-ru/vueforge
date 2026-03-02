@@ -1,6 +1,6 @@
 {
     "name": "@codemonster-ru/vueforge",
-    "version": "0.98.0",
+    "version": "0.99.0",
     "description": "Open source UI components for Vue.js.",
     "license": "MIT",
     "author": "Kirill Kolesnikov",
@@ -41,7 +41,10 @@
         }
     },
     "files": [
-        "dist"
+        "dist",
+        "!dist/docs",
+        "!dist/src/docs",
+        "!dist/src/**/__tests__"
     ],
     "scripts": {
         "dev": "vite dev --force --mode development",
@@ -68,6 +71,7 @@
         }
     },
     "devDependencies": {
+        "@codemonster-ru/vue-codeblock": "^1.0.0",
         "@types/node": "^20.14.10",
         "@typescript-eslint/eslint-plugin": "^8.54.0",
         "@vitejs/plugin-vue": "^5.0.5",

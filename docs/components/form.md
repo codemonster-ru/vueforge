@@ -70,7 +70,9 @@ Standardize selection controls and grouped input patterns used across product se
 >
     <template #default="{ values, errors, isSubmitting, setFieldValue }">
         <Input :model-value="String(values.email ?? '')" @update:model-value="v => setFieldValue('email', v)" />
-        <p>{{ errors._form }}</p>
+        <p>
+            {{ errors._form }}
+        </p>
         <Button type="submit" :loading="isSubmitting" label="Save" />
     </template>
 </Form>

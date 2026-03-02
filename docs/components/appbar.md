@@ -32,11 +32,17 @@
 ```vue
 <AppBar title="Operations">
     <template #start>
-        <button type="button">Menu</button>
+        <button type="button">
+            Menu
+        </button>
     </template>
     <template #actions>
-        <button type="button">Invite</button>
-        <button type="button">Create</button>
+        <button type="button">
+            Invite
+        </button>
+        <button type="button">
+            Create
+        </button>
     </template>
 </AppBar>
 ```

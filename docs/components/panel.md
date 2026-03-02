@@ -36,14 +36,22 @@ Group related content with optional heading actions and collapsible body.
 ```vue
 <Panel v-model="open" title="Project Summary" subtitle="Sprint 12" collapsible>
     <template #actions>
-        <Button size="small">Edit</Button>
-        <Button size="small" variant="outlined">Share</Button>
+        <Button size="small">
+            Edit
+        </Button>
+        <Button size="small" variant="outlined">
+            Share
+        </Button>
     </template>
 
-    <p>Delivery status and risks for current sprint.</p>
+    <p>
+        Delivery status and risks for current sprint.
+    </p>
 
     <template #footer>
-        <small>Last updated 5 min ago</small>
+        <small>
+            Last updated 5 min ago
+        </small>
     </template>
 </Panel>
 ```

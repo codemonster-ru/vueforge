@@ -105,9 +105,16 @@ describe('DateRangePicker', () => {
 
         await wrapper.find('.vf-daterangepicker__control').trigger('click');
         await nextTick();
-        await wrapper.find('[data-date="2026-02-14"]').trigger('click');
+        const firstAvailableDay = wrapper
+            .findAll('.vf-daterangepicker__day')
+            .find(day => day.attributes('disabled') === undefined);
 
-        expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([['2026-02-14', null]]);
+        expect(firstAvailableDay).toBeTruthy();
+        const selectedDate = firstAvailableDay!.attributes('data-date');
+
+        await firstAvailableDay!.trigger('click');
+
+        expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([[selectedDate, null]]);
     });
 
     it('normalizes range when second pick is before start', async () => {

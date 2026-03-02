@@ -36,7 +36,9 @@
         <Breadcrumbs :items="breadcrumbItems" />
     </template>
     <template #meta>
-        <Badge severity="info" variant="soft">24 active</Badge>
+        <Badge severity="info" variant="soft">
+            24 active
+        </Badge>
         <Chip label="Last sync: 2m ago" />
     </template>
     <template #actions>

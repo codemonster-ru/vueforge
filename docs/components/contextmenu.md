@@ -33,7 +33,9 @@ Note: For custom menu content, add `data-context-menu-close` to clickable elemen
 
 ```vue
 <ContextMenu :items="menuItems">
-    <div class="surface">Right-click here</div>
+    <div class="surface">
+        Right-click here
+    </div>
 </ContextMenu>
 ```
 

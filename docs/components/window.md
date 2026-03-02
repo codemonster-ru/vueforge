@@ -36,9 +36,15 @@ Stateful pager container for switching between content panes with keyboard and t
 ```vue
 <Window v-model="step" :items="steps" :loop="false">
     <template #item="{ value }">
-        <div v-if="value === 'profile'">Profile pane</div>
-        <div v-else-if="value === 'billing'">Billing pane</div>
-        <div v-else>Confirm pane</div>
+        <div v-if="value === 'profile'">
+            Profile pane
+        </div>
+        <div v-else-if="value === 'billing'">
+            Billing pane
+        </div>
+        <div v-else>
+            Confirm pane
+        </div>
     </template>
 </Window>
 ```

@@ -25,7 +25,9 @@ Provide reusable feedback primitives for dashboards, tables, and long-running op
 
 ```vue
 <Badge label="Beta" />
-<Badge severity="success" variant="outline">Active</Badge>
+<Badge severity="success" variant="outline">
+    Active
+</Badge>
 ```
 
 ## Theming

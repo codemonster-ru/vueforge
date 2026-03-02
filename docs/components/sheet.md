@@ -24,10 +24,16 @@ Generic surface container for grouped content blocks with `elevated`, `flat`, `o
 
 ```vue
 <Sheet variant="outlined" bordered>
-    <template #header>Summary</template>
-    <p>Reusable neutral surface for compact content sections.</p>
+    <template #header>
+        Summary
+    </template>
+    <p>
+        Reusable neutral surface for compact content sections.
+    </p>
     <template #footer>
-        <Button size="sm">Action</Button>
+        <Button size="sm">
+            Action
+        </Button>
     </template>
 </Sheet>
 ```

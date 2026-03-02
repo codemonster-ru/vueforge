@@ -39,8 +39,12 @@ Display sequential slides with keyboard navigation, touch swipe, and optional au
 <Carousel v-model="activeSlide" :items="slides">
     <template #item="{ item }">
         <article class="promo-slide">
-            <h3>{{ item.title }}</h3>
-            <p>{{ item.description }}</p>
+            <h3>
+                {{ item.title }}
+            </h3>
+            <p>
+                {{ item.description }}
+            </p>
         </article>
     </template>
 </Carousel>

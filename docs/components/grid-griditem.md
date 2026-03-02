@@ -42,20 +42,32 @@ See Grid Props and GridItem Props below.
 ```vue
 <Grid :columns="12" gap="1rem" :breakpoints="{ md: { columns: 6 }, lg: { columns: 12, gap: '1.25rem' } }">
     <GridItem :span="12" :breakpoints="{ md: { span: 3 } }">
-        <Card>Sidebar</Card>
+        <Card>
+            Sidebar
+        </Card>
     </GridItem>
     <GridItem :span="12" :breakpoints="{ md: { span: 3 } }">
-        <Card>Main content</Card>
+        <Card>
+            Main content
+        </Card>
     </GridItem>
 </Grid>
 ```
 
 ```vue
 <Grid columns="repeat(8, minmax(0, 1fr))" column-gap="0.75rem" row-gap="0.75rem">
-    <GridItem :start="1" :end="5">A</GridItem>
-    <GridItem :start="5" :end="9">B</GridItem>
-    <GridItem :span="2">C</GridItem>
-    <GridItem :span="6">D</GridItem>
+    <GridItem :start="1" :end="5">
+        A
+    </GridItem>
+    <GridItem :start="5" :end="9">
+        B
+    </GridItem>
+    <GridItem :span="2">
+        C
+    </GridItem>
+    <GridItem :span="6">
+        D
+    </GridItem>
 </Grid>
 ```
 

@@ -31,8 +31,12 @@
 </Inline>
 
 <Inline as="section" align="center" justify="space-between" wrap="nowrap">
-    <span>Status</span>
-    <Badge severity="success">Healthy</Badge>
+    <span>
+        Status
+    </span>
+    <Badge severity="success">
+        Healthy
+    </Badge>
 </Inline>
 ```
 

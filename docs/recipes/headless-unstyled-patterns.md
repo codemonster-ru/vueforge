@@ -20,8 +20,12 @@ Show practical usage patterns for `pt` and `unstyled` when integrating VueForge 
 >
     <template #item="{ item }">
         <article class="brand-card">
-            <h3>{{ item.title }}</h3>
-            <p>{{ item.summary }}</p>
+            <h3>
+                {{ item.title }}
+            </h3>
+            <p>
+                {{ item.summary }}
+            </p>
         </article>
     </template>
 </Carousel>
@@ -68,7 +72,9 @@ Show practical usage patterns for `pt` and `unstyled` when integrating VueForge 
     }"
 >
     <template #action="{ action }">
-        <span>{{ action.label }}</span>
+        <span>
+            {{ action.label }}
+        </span>
     </template>
 </SpeedDial>
 ```

@@ -1,13 +1,29 @@
 # Changelog
 
-## [Unreleased]
+## [0.99.0] - 2026-03-02
 
+- Semver checklist:
+    - [x] Semver impact classified (`minor`)
+    - [x] Breaking-change assessment completed (`no`)
+    - [x] Deprecations documented (N/A)
+    - [x] Migration notes added when required (N/A)
+    - [x] Catalog mapping sync completed (`yes`)
+    - [x] Bundle-size check completed (`npm run build && npm run verify:bundle-size`)
 - Docs deployment:
     - Switched docs deployment from `release.published` to `workflow_run` after a successful `publish to NPM`, because GitHub Releases created inside the publish workflow do not trigger downstream release-based workflows.
     - Added Apache SPA fallback via docs `.htaccess` so hosted docs routes survive direct refresh/navigation on shared hosting.
 - Docs shell:
     - Restored VueForge plugin/theme initialization in the docs runtime after removing the legacy `src/example` entry, fixing docs-only layout/theme regressions.
     - Added the current package version to the docs header as non-clickable metadata next to the `vueforge` brand.
+    - Reworked component docs `Features` pages to render inline live examples from `## Examples` blocks and removed the public `Playground` tab from the docs shell.
+    - Refined desktop and mobile docs navigation, `On this page`, preview/code block presentation, and responsive docs header/drawer behavior.
+- Component theme API:
+    - Extended `PanelMenu` theme tokens with separate active state controls for group triggers vs leaf links, plus item typography, chevron size, and group padding hooks.
+    - Added `Tabs` theme tokens for default and active tab font weight, and aligned default tab list underline treatment with the docs styling baseline.
+    - Adjusted default `ThemeModeSwitch` segment font weight to a regular weight for calmer header/control presentation.
+- Testing:
+    - Stabilized `DateRangePicker` null-range coverage by removing dependence on a fixed calendar month in the unit test.
+    - Updated docs preview regression coverage to keep number-prop inference checked while allowing the current textarea preview runtime warning behavior.
 
 ## [0.98.0] - 2026-02-27
 

@@ -1,5 +1,6 @@
 import { createApp } from 'vue';
 import { createRouter, createWebHistory } from 'vue-router';
+import '@codemonster-ru/vue-codeblock/style.css';
 import { DefaultTheme, VueForge } from '@/index';
 import App from './App.vue';
 import DocsAppView from './DocsAppView.vue';

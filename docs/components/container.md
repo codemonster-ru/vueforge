@@ -27,7 +27,9 @@
     <PageHeader title="Projects" subtitle="Manage active projects and team workload." />
 </Container>
 <Container as="main" max-width="90rem" padding-x="2rem">
-    <div>Custom width and horizontal padding</div>
+    <div>
+        Custom width and horizontal padding
+    </div>
 </Container>
 ```
 

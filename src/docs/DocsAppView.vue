@@ -1,6 +1,16 @@
 <template>
     <div class="vf-docs" :class="`vf-docs_theme-${effectiveTheme}`" data-testid="vf-docs-app">
         <header class="vf-docs__header" data-testid="vf-docs-header">
+            <button
+                type="button"
+                class="vf-docs__mobile-toggle"
+                :aria-expanded="isMobileNavOpen ? 'true' : 'false'"
+                aria-controls="vf-docs-mobile-nav"
+                data-testid="vf-docs-mobile-toggle"
+                @click="toggleMobileNav"
+            >
+                <span class="vf-docs__mobile-toggle-icon" aria-hidden="true">≡</span>
+            </button>
             <div class="vf-docs__brand-wrap">
                 <RouterLink :to="firstDocsRoute" class="vf-docs__brand" aria-label="Go to docs home">
                     <span class="vf-docs__logo" aria-hidden="true">VF</span>
@@ -25,16 +35,6 @@
                     data-testid="vf-docs-theme-switch"
                 />
             </div>
-            <button
-                type="button"
-                class="vf-docs__mobile-toggle"
-                :aria-expanded="isMobileNavOpen ? 'true' : 'false'"
-                aria-controls="vf-docs-mobile-nav"
-                data-testid="vf-docs-mobile-toggle"
-                @click="toggleMobileNav"
-            >
-                {{ isMobileNavOpen ? 'Close navigation' : 'Open navigation' }}
-            </button>
         </header>
 
         <div class="vf-docs__layout">
@@ -48,29 +48,52 @@
                     @item-click="onSidebarItemClick"
                 />
             </aside>
-            <div
-                v-if="isMobileNavOpen"
-                class="vf-docs__mobile-backdrop"
-                data-testid="vf-docs-mobile-backdrop"
-                @click="closeMobileNav"
-            />
-            <aside
-                v-if="isMobileNavOpen"
-                id="vf-docs-mobile-nav"
-                class="vf-docs__mobile-drawer"
-                data-testid="vf-docs-mobile-drawer"
-                tabindex="-1"
-                @keydown.esc="closeMobileNav"
-            >
-                <PanelMenu
-                    v-model:expanded-keys="sidebarExpandedKeys"
-                    :items="sidebarMenuItems"
-                    aria-label="Documentation mobile sidebar"
-                    :multiple="false"
-                    :sync-active-from-route="false"
-                    @item-click="onSidebarItemClick"
+            <Transition name="vf-docs-mobile-backdrop">
+                <div
+                    v-if="isMobileNavOpen"
+                    class="vf-docs__mobile-backdrop"
+                    data-testid="vf-docs-mobile-backdrop"
+                    @click="closeMobileNav"
                 />
-            </aside>
+            </Transition>
+            <Transition name="vf-docs-mobile-drawer">
+                <aside
+                    v-if="isMobileNavOpen"
+                    id="vf-docs-mobile-nav"
+                    class="vf-docs__mobile-drawer"
+                    data-testid="vf-docs-mobile-drawer"
+                    tabindex="-1"
+                    @keydown.esc="closeMobileNav"
+                >
+                    <div class="vf-docs__mobile-drawer-search">
+                        <input
+                            id="vf-docs-search-input-mobile"
+                            v-model="searchQuery"
+                            data-testid="vf-docs-search-mobile"
+                            class="vf-docs__search-input vf-docs__mobile-search-input"
+                            type="search"
+                            placeholder="Search docs pages"
+                            aria-label="Search docs pages"
+                        />
+                    </div>
+                    <div class="vf-docs__mobile-drawer-theme">
+                        <ThemeModeSwitch
+                            v-model="themeMode"
+                            aria-label="Theme mode switch"
+                            class="vf-docs__theme-switch vf-docs__theme-switch_mobile"
+                            data-testid="vf-docs-theme-switch-mobile"
+                        />
+                    </div>
+                    <PanelMenu
+                        v-model:expanded-keys="sidebarExpandedKeys"
+                        :items="sidebarMenuItems"
+                        aria-label="Documentation mobile sidebar"
+                        :multiple="false"
+                        :sync-active-from-route="false"
+                        @item-click="onSidebarItemClick"
+                    />
+                </aside>
+            </Transition>
 
             <main class="vf-docs__content" data-testid="vf-docs-content">
                 <article class="vf-docs__article">
@@ -82,7 +105,6 @@
                     >
                         <template #tabs>
                             <Tab v-for="tab in componentTabs" :key="tab.key" :value="tab.key" :label="tab.label" />
-                            <Tab value="playground" label="Playground" />
                         </template>
                         <template #panels>
                             <TabPanel v-for="tab in componentTabs" :key="`panel-${tab.key}`" :value="tab.key">
@@ -100,8 +122,15 @@
                                         <p v-if="tab.key === 'features'" class="vf-docs__source">
                                             Source: {{ currentPage.sourcePath }}
                                         </p>
+                                        <DocsFeaturesContent
+                                            v-if="tab.key === 'features'"
+                                            :markdown="tab.markdown"
+                                            :source-path="currentPage.sourcePath"
+                                            :active="activeComponentTab === tab.key"
+                                        />
                                         <!-- eslint-disable vue/no-v-html -->
                                         <div
+                                            v-else
                                             class="vf-docs__markdown"
                                             data-testid="vf-docs-markdown"
                                             :data-active-tab="activeComponentTab === tab.key ? 'true' : 'false'"
@@ -119,7 +148,10 @@
                                             <li
                                                 v-for="heading in currentPageHeadings"
                                                 :key="heading.id"
-                                                :class="{ 'vf-docs__toc-item_active': activeHeadingId === heading.id }"
+                                                :class="[
+                                                    `vf-docs__toc-item_level-${heading.level}`,
+                                                    { 'vf-docs__toc-item_active': activeHeadingId === heading.id },
+                                                ]"
                                             >
                                                 <a :href="`#${heading.id}`" @click.prevent="onTocLinkClick(heading.id)">
                                                     {{ heading.text }}
@@ -129,16 +161,6 @@
                                     </aside>
                                 </div>
                             </TabPanel>
-                            <TabPanel value="playground">
-                                <h2 class="vf-docs__title vf-docs__title_tab">
-                                    {{ getComponentTabTitle('playground') }}
-                                </h2>
-                                <DocsLivePreview
-                                    :route-path="currentPage.routePath"
-                                    :page-title="currentPage.title"
-                                    :markdown="currentPage.markdown"
-                                />
-                            </TabPanel>
                         </template>
                     </Tabs>
                     <div v-else class="vf-docs__body">
@@ -146,11 +168,6 @@
                             <h2 class="vf-docs__title">{{ currentPage.title }}</h2>
                             <p v-if="showCurrentPageSummary" class="vf-docs__summary">{{ currentPage.summary }}</p>
                             <p class="vf-docs__source">Source: {{ currentPage.sourcePath }}</p>
-                            <DocsLivePreview
-                                :route-path="currentPage.routePath"
-                                :page-title="currentPage.title"
-                                :markdown="currentPage.markdown"
-                            />
                             <!-- eslint-disable vue/no-v-html -->
                             <div
                                 class="vf-docs__markdown"
@@ -166,7 +183,10 @@
                                 <li
                                     v-for="heading in currentPageHeadings"
                                     :key="heading.id"
-                                    :class="{ 'vf-docs__toc-item_active': activeHeadingId === heading.id }"
+                                    :class="[
+                                        `vf-docs__toc-item_level-${heading.level}`,
+                                        { 'vf-docs__toc-item_active': activeHeadingId === heading.id },
+                                    ]"
                                 >
                                     <a :href="`#${heading.id}`" @click.prevent="onTocLinkClick(heading.id)">
                                         {{ heading.text }}
@@ -228,17 +248,18 @@ import TabPanel from '@/package/components/tab-panel.vue';
 import Tabs from '@/package/components/tabs.vue';
 import ThemeModeSwitch from '@/package/components/theme-mode-switch.vue';
 import { docsGroups, findDocsPageByPath, firstDocsRoute, getDocsAdjacentPages } from './docs-structure';
+import DocsFeaturesContent from './DocsFeaturesContent.vue';
+import { renderDocsFeaturesMarkdown } from './docs-features';
 import { renderDocsMarkdown } from './docs-markdown';
-import DocsLivePreview from './DocsLivePreview.vue';
 
 type ComponentTabKey = 'features' | 'api' | 'theming' | 'pass-through';
-type DocsTabKey = ComponentTabKey | 'playground';
+type DocsTabKey = ComponentTabKey;
 type ScrollMode = 'auto' | 'smooth' | 'instant';
 type ComponentTabItem = {
     key: ComponentTabKey;
     label: string;
     markdown: string;
-    html: string;
+    html?: string;
     headings: Array<{ id: string; level: number; text: string }>;
 };
 
@@ -384,11 +405,7 @@ const resolveComponentTabKey = (heading: string): ComponentTabKey => {
     return 'features';
 };
 const isDocsTabKey = (value: string): value is DocsTabKey =>
-    value === 'features' ||
-    value === 'api' ||
-    value === 'theming' ||
-    value === 'pass-through' ||
-    value === 'playground';
+    value === 'features' || value === 'api' || value === 'theming' || value === 'pass-through';
 
 const parseRouteTabKey = (value: unknown): DocsTabKey | null => {
     if (typeof value !== 'string') {
@@ -434,7 +451,7 @@ const renderedContent = computed(() => renderDocsMarkdown(currentPage.value.mark
 const isComponentPage = computed(() => currentPage.value.groupKey === 'components' && !currentPage.value.isIndex);
 const showComponentTabs = computed(() => isComponentPage.value);
 const allowedComponentTabs = computed<Set<DocsTabKey>>(
-    () => new Set<DocsTabKey>(['playground', ...componentTabs.value.map(tab => tab.key)]),
+    () => new Set<DocsTabKey>(componentTabs.value.map(tab => tab.key)),
 );
 const componentTabs = computed<Array<ComponentTabItem>>(() => {
     if (!isComponentPage.value) {
@@ -464,13 +481,16 @@ const componentTabs = computed<Array<ComponentTabItem>>(() => {
         .filter(tab => buckets[tab.key].length > 0)
         .map(tab => {
             const markdown = buckets[tab.key].join('\n\n');
-            const rendered = renderDocsMarkdown(markdown, currentPage.value.sourcePath);
+            const rendered =
+                tab.key === 'features'
+                    ? renderDocsFeaturesMarkdown(markdown, currentPage.value.sourcePath)
+                    : renderDocsMarkdown(markdown, currentPage.value.sourcePath);
 
             return {
                 key: tab.key,
                 label: tab.label,
                 markdown,
-                html: rendered.html,
+                html: 'html' in rendered ? rendered.html : undefined,
                 headings: rendered.headings,
             };
         });
@@ -480,14 +500,9 @@ const activeComponentTabData = computed(() => {
     return active ?? componentTabs.value[0] ?? null;
 });
 const currentPageHtml = computed(() => activeComponentTabData.value?.html ?? renderedContent.value.html);
-const currentPageHeadings = computed(() => {
-    if (showComponentTabs.value && activeComponentTab.value === 'playground') {
-        return [];
-    }
-
-    const source = activeComponentTabData.value?.headings ?? renderedContent.value.headings;
-    return source.filter(heading => heading.level <= 3);
-});
+const currentPageHeadings = computed(() =>
+    (activeComponentTabData.value?.headings ?? renderedContent.value.headings).filter(heading => heading.level <= 3),
+);
 const effectiveTheme = computed<'light' | 'dark'>(() =>
     themeMode.value === 'system' ? systemTheme.value : themeMode.value,
 );
@@ -623,7 +638,6 @@ const getComponentTabTitle = (tabKey: DocsTabKey) => {
         api: 'API',
         theming: 'Theming',
         'pass-through': 'Pass Through',
-        playground: 'Playground',
     };
 
     return `${currentPage.value.title} ${suffixMap[tabKey as Exclude<DocsTabKey, 'features'>]}`;
@@ -807,13 +821,30 @@ watch(themeMode, value => {
 });
 
 watch(
+    effectiveTheme,
+    value => {
+        if (typeof document === 'undefined') {
+            return;
+        }
+
+        if (value === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            return;
+        }
+
+        document.documentElement.removeAttribute('data-theme');
+    },
+    { immediate: true },
+);
+
+watch(
     componentTabs,
     tabs => {
         if (!showComponentTabs.value) {
             return;
         }
 
-        const allowed = new Set<DocsTabKey>(['playground', ...tabs.map(tab => tab.key)]);
+        const allowed = new Set<DocsTabKey>(tabs.map(tab => tab.key));
         const routeTab = parseRouteTabKey(route.query.tab);
 
         if (routeTab && allowed.has(routeTab) && routeTab !== activeComponentTab.value) {
@@ -825,7 +856,7 @@ watch(
             return;
         }
 
-        activeComponentTab.value = tabs[0]?.key ?? 'playground';
+        activeComponentTab.value = tabs[0]?.key ?? 'features';
     },
     { immediate: true },
 );
@@ -906,11 +937,25 @@ watch(activeComponentTab, tab => {
     --vf-docs-overlay-backdrop: rgba(15, 23, 42, 0.35);
     --vf-docs-control-bg: #ffffff;
     --vf-docs-control-text: #0f172a;
-    --vf-docs-control-border: #cbd5e1;
+    --vf-docs-control-border: var(--vf-docs-border-strong);
     --vf-docs-control-placeholder: #64748b;
     --vf-docs-inline-code-bg: #e2e8f0;
-    --vf-docs-code-block-bg: #0f172a;
-    --vf-docs-code-block-text: #e2e8f0;
+    --vf-docs-code-block-bg: #f8fbff;
+    --vf-docs-code-block-text: #0f172a;
+    --vf-docs-token-tag: #0f4c81;
+    --vf-docs-token-selector: #0f4c81;
+    --vf-docs-token-keyword: #8b2fc9;
+    --vf-docs-token-string: #0f7b45;
+    --vf-docs-token-number: #c2410c;
+    --vf-docs-token-comment: #64748b;
+    --vf-docs-token-variable: #0f4c81;
+    --vf-docs-token-component: #0369a1;
+    --vf-docs-token-attribute: #7c3aed;
+    --vf-docs-token-directive: #a21caf;
+    --vf-docs-token-identifier: #0369a1;
+    --vf-docs-token-function: #1d4ed8;
+    --vf-docs-token-property: #6d28d9;
+    --vf-docs-token-operator: #be185d;
     --vf-docs-blockquote-border: #7dd3fc;
     --vf-docs-blockquote-bg: rgba(186, 230, 253, 0.3);
     --vf-docs-pager-disabled-bg: #f1f5f9;
@@ -925,6 +970,12 @@ watch(activeComponentTab, tab => {
     --vf-docs-logo-grad-start: #0284c7;
     --vf-docs-logo-grad-end: #0ea5e9;
     --vf-docs-logo-text: #e2e8f0;
+    --vf-docs-panel-radius: 1rem;
+    --vf-docs-panel-border: var(--vf-docs-border-strong);
+    --vf-docs-panel-bg: #ffffff;
+    --vf-docs-panel-shadow: 0 10px 26px rgba(15, 23, 42, 0.05), 0 1px 0 rgba(255, 255, 255, 0.9) inset;
+    --vf-docs-panel-inset-bg: #f8fbff;
+    --vf-docs-panel-inset-border: var(--vf-docs-border-strong);
     --vf-theme-mode-switch-background-color: var(--vf-docs-control-bg);
     --vf-theme-mode-switch-border-color: var(--vf-docs-control-border);
     --vf-theme-mode-switch-text-color: var(--vf-docs-control-text);
@@ -973,6 +1024,10 @@ watch(activeComponentTab, tab => {
     flex: 0 0 auto;
 }
 
+.vf-docs__theme-switch_mobile {
+    display: none;
+}
+
 .vf-docs__brand {
     display: flex;
     align-items: center;
@@ -1015,12 +1070,28 @@ watch(activeComponentTab, tab => {
 
 .vf-docs__mobile-toggle {
     display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    min-width: 2rem;
+    height: 2rem;
     border: 1px solid var(--vf-docs-control-border);
-    border-radius: 0.55rem;
+    border-radius: 0.5rem;
     background-color: var(--vf-docs-control-bg);
     color: var(--vf-docs-control-text);
-    padding: 0.4rem 0.65rem;
+    padding: 0 0.6rem;
     font-size: 0.8rem;
+    box-sizing: border-box;
+}
+
+.vf-docs__mobile-toggle-icon {
+    font-size: 1rem;
+    line-height: 1;
+    transform: translateY(-0.02em);
+}
+
+.vf-docs__mobile-toggle-label {
+    line-height: 1;
 }
 
 .vf-docs__layout {
@@ -1064,6 +1135,7 @@ watch(activeComponentTab, tab => {
     border-radius: 0.45rem;
     padding: 0.45rem 0.55rem;
     font-size: 0.85rem;
+    font-weight: 400;
     background-color: var(--vf-docs-control-bg);
     color: var(--vf-docs-control-text);
 }
@@ -1079,6 +1151,16 @@ watch(activeComponentTab, tab => {
     background-color: var(--vf-docs-overlay-backdrop);
 }
 
+.vf-docs-mobile-backdrop-enter-active,
+.vf-docs-mobile-backdrop-leave-active {
+    transition: opacity 180ms ease;
+}
+
+.vf-docs-mobile-backdrop-enter-from,
+.vf-docs-mobile-backdrop-leave-to {
+    opacity: 0;
+}
+
 .vf-docs__mobile-drawer {
     position: fixed;
     top: 0;
@@ -1092,7 +1174,40 @@ watch(activeComponentTab, tab => {
     background-color: var(--vf-docs-surface-muted);
 }
 
+.vf-docs-mobile-drawer-enter-active,
+.vf-docs-mobile-drawer-leave-active {
+    transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform;
+}
+
+.vf-docs-mobile-drawer-enter-from,
+.vf-docs-mobile-drawer-leave-to {
+    transform: translateX(calc(-100% - 1.5rem));
+}
+
+.vf-docs__mobile-drawer-search,
+.vf-docs__mobile-drawer-theme {
+    padding-bottom: 0.9rem;
+    border-bottom: 1px solid var(--vf-docs-border-strong);
+}
+
+.vf-docs__mobile-drawer-search {
+    margin-bottom: 0.85rem;
+}
+
+.vf-docs__mobile-search-input {
+    width: 100%;
+}
+
 .vf-docs__sidebar :deep(.vf-panelmenu) {
+    --vf-panelmenu-item-text-color: var(--vf-docs-link-text);
+    --vf-panelmenu-item-hover-background-color: var(--vf-docs-link-hover-bg);
+    --vf-panelmenu-trigger-active-background-color: transparent;
+    --vf-panelmenu-trigger-active-text-color: var(--vf-docs-text);
+    --vf-panelmenu-trigger-active-font-weight: 600;
+    --vf-panelmenu-link-active-background-color: var(--vf-docs-link-active-bg);
+    --vf-panelmenu-link-active-text-color: var(--vf-docs-link-active-text);
+    --vf-panelmenu-link-active-font-weight: 400;
     border: 0;
     background-color: transparent;
     padding: 0;
@@ -1100,49 +1215,35 @@ watch(activeComponentTab, tab => {
     box-shadow: none;
 }
 
-.vf-docs__sidebar :deep(.vf-panelmenu-node__trigger),
-.vf-docs__sidebar :deep(.vf-panelmenu-node__link) {
-    color: var(--vf-docs-link-text);
-    font-size: 0.9rem;
-}
-
-.vf-docs__sidebar :deep(.vf-panelmenu-node__trigger:not(:disabled)) {
-    cursor: pointer;
-}
-
-.vf-docs__sidebar :deep(.vf-panelmenu-node__trigger:disabled) {
-    cursor: not-allowed;
-}
-
 .vf-docs__sidebar :deep(.vf-panelmenu-node__chevron) {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 1.25rem;
     text-align: center;
 }
 
-.vf-docs__sidebar :deep(.vf-panelmenu-node__trigger:hover),
-.vf-docs__sidebar :deep(.vf-panelmenu-node__link:hover) {
-    background-color: var(--vf-docs-link-hover-bg);
-}
-
-.vf-docs__sidebar :deep(.vf-panelmenu-node__trigger.is-active) {
-    background-color: transparent;
-    color: var(--vf-docs-text);
-    font-weight: 600;
-}
-
-.vf-docs__sidebar :deep(.vf-panelmenu-node__link.is-active) {
-    background-color: var(--vf-docs-link-active-bg);
-    color: var(--vf-docs-link-active-text);
-}
-
 .vf-docs__mobile-drawer :deep(.vf-panelmenu) {
+    --vf-panelmenu-item-text-color: var(--vf-docs-link-text);
+    --vf-panelmenu-item-hover-background-color: var(--vf-docs-link-hover-bg);
+    --vf-panelmenu-trigger-active-background-color: transparent;
+    --vf-panelmenu-trigger-active-text-color: var(--vf-docs-text);
+    --vf-panelmenu-trigger-active-font-weight: 600;
+    --vf-panelmenu-link-active-background-color: var(--vf-docs-link-active-bg);
+    --vf-panelmenu-link-active-text-color: var(--vf-docs-link-active-text);
+    --vf-panelmenu-link-active-font-weight: 400;
     border: 0;
     background-color: transparent;
+    padding: 0;
+    margin-top: 0.45rem;
     border-radius: 0;
     box-shadow: none;
+}
+
+.vf-docs__mobile-drawer :deep(.vf-panelmenu-node__chevron) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
 .vf-docs__content {
@@ -1172,6 +1273,7 @@ watch(activeComponentTab, tab => {
 .vf-docs__title {
     margin: 0 0 1rem;
     font-size: clamp(1.6rem, 2.4vw, 2.2rem);
+    color: var(--vf-docs-heading-strong);
 }
 
 .vf-docs__summary {
@@ -1196,7 +1298,9 @@ watch(activeComponentTab, tab => {
     margin-top: 0;
     width: 100%;
     --vf-tabs-panel-padding: 0;
-    --vf-tabs-list-border-color: var(--vf-docs-border);
+    --vf-tabs-list-border-width: 2px;
+    --vf-tabs-list-border-color: var(--vf-docs-border-strong);
+    --vf-tabs-tab-active-border-width: 2px;
     --vf-tabs-tab-text-color: var(--vf-docs-secondary-text);
     --vf-tabs-tab-hover-background-color: transparent;
     --vf-tabs-tab-active-text-color: var(--vf-docs-text);
@@ -1205,7 +1309,7 @@ watch(activeComponentTab, tab => {
 }
 
 .vf-docs__component-tabs :deep(.vf-tab) {
-    font-weight: 500;
+    margin-bottom: calc(-1 * var(--vf-tabs-list-border-width));
 }
 
 .vf-docs__component-tabs :deep(.vf-tab:not(.vf-tab_active)) {
@@ -1216,10 +1320,6 @@ watch(activeComponentTab, tab => {
     border-bottom-color: color-mix(in srgb, var(--vf-docs-accent) 45%, transparent);
 }
 
-.vf-docs__component-tabs :deep(.vf-tab_active) {
-    font-weight: 600;
-}
-
 .vf-docs__markdown :deep(h2),
 .vf-docs__markdown :deep(h3),
 .vf-docs__markdown :deep(h4),
@@ -1228,6 +1328,7 @@ watch(activeComponentTab, tab => {
     margin: 1.5rem 0 0.75rem;
     line-height: 1.35;
     scroll-margin-top: calc(var(--vf-docs-header-height) + 1rem);
+    color: var(--vf-docs-heading-strong);
 }
 
 .vf-docs__markdown :deep(p) {
@@ -1251,18 +1352,82 @@ watch(activeComponentTab, tab => {
     font-size: 0.85em;
 }
 
-.vf-docs__markdown :deep(pre) {
+.vf-docs__markdown :deep(pre code) {
+    padding: 0;
+    border-radius: 0;
+    background-color: transparent;
+    font-size: inherit;
+}
+
+.vf-docs__markdown :deep(.vcb__token_tag) {
+    color: var(--vf-docs-token-tag);
+}
+
+.vf-docs__markdown :deep(.vcb__token_selector) {
+    color: var(--vf-docs-token-selector);
+}
+
+.vf-docs__markdown :deep(.vcb__token_keyword) {
+    color: var(--vf-docs-token-keyword);
+}
+
+.vf-docs__markdown :deep(.vcb__token_string) {
+    color: var(--vf-docs-token-string);
+}
+
+.vf-docs__markdown :deep(.vcb__token_number) {
+    color: var(--vf-docs-token-number);
+}
+
+.vf-docs__markdown :deep(.vcb__token_comment) {
+    color: var(--vf-docs-token-comment);
+}
+
+.vf-docs__markdown :deep(.vcb__token_variable) {
+    color: var(--vf-docs-token-variable);
+}
+
+.vf-docs__markdown :deep(.vcb__token_component) {
+    color: var(--vf-docs-token-component);
+}
+
+.vf-docs__markdown :deep(.vcb__token_attribute) {
+    color: var(--vf-docs-token-attribute);
+}
+
+.vf-docs__markdown :deep(.vcb__token_directive) {
+    color: var(--vf-docs-token-directive);
+}
+
+.vf-docs__markdown :deep(.vcb__token_identifier) {
+    color: var(--vf-docs-token-identifier);
+}
+
+.vf-docs__markdown :deep(.vcb__token_function) {
+    color: var(--vf-docs-token-function);
+}
+
+.vf-docs__markdown :deep(.vcb__token_property) {
+    color: var(--vf-docs-token-property);
+}
+
+.vf-docs__markdown :deep(.vcb__token_operator) {
+    color: var(--vf-docs-token-operator);
+}
+
+.vf-docs__markdown :deep(pre:not(.vcb__pre)) {
     overflow-x: auto;
     margin: 1rem 0;
     padding: 0.9rem 1rem;
-    border-radius: 0.7rem;
-    border: 1px solid var(--vf-docs-border);
-    background-color: var(--vf-docs-code-block-bg);
-    color: var(--vf-docs-code-block-text);
+    font-size: 0.875rem;
+    line-height: 1.55;
+    border-radius: 0.45rem;
+    border: 1px solid var(--vf-docs-panel-border);
+    background-color: var(--vf-docs-panel-bg);
+    color: color-mix(in srgb, var(--vf-docs-code-block-text) 88%, var(--vf-docs-secondary-text));
 }
 
-.vf-docs__markdown :deep(pre code) {
-    padding: 0;
+.vf-docs__markdown :deep(pre:not(.vcb__pre) code) {
     background: transparent;
     color: inherit;
 }
@@ -1287,17 +1452,18 @@ watch(activeComponentTab, tab => {
 
 .vf-docs__toc {
     margin-top: 0;
-    padding: 0.85rem;
-    border: 1px solid var(--vf-docs-border);
-    border-radius: 0.65rem;
-    background-color: var(--vf-docs-surface);
+    padding: 0.9rem 0.95rem;
+    border: 1px solid var(--vf-docs-panel-border);
+    border-radius: 0.45rem;
+    background: var(--vf-docs-panel-bg);
+    box-shadow: none;
     position: sticky;
     top: calc(var(--vf-docs-header-height) + 1rem);
 }
 
 .vf-docs__toc-title {
-    margin: 0 0 0.5rem;
-    font-size: 0.8rem;
+    margin: 0 0 0.4rem;
+    font-size: 0.88rem;
     color: var(--vf-docs-secondary-text);
     font-weight: 600;
 }
@@ -1313,21 +1479,38 @@ watch(activeComponentTab, tab => {
 }
 
 .vf-docs__toc-list a {
-    display: inline-block;
-    margin: 0.2rem 0;
+    display: block;
+    margin: 0.08rem 0;
+    padding: 0.45rem 0.6rem;
+    border-radius: 0.35rem;
     font-size: 0.85rem;
-    color: var(--vf-docs-muted-text);
+    color: var(--vf-docs-link-text);
     text-decoration: none;
+    transition:
+        background-color 140ms ease,
+        color 140ms ease;
 }
 
 .vf-docs__toc-list a:hover {
-    color: var(--vf-docs-accent);
-    text-decoration: underline;
+    background-color: var(--vf-docs-link-hover-bg);
+    color: var(--vf-docs-link-text);
 }
 
 .vf-docs__toc-item_active a {
-    color: var(--vf-docs-accent);
-    font-weight: 600;
+    background-color: var(--vf-docs-link-active-bg);
+    color: var(--vf-docs-link-active-text);
+    font-weight: 400;
+}
+
+.vf-docs__toc-list .vf-docs__toc-item_level-3 a {
+    margin-left: 0.7rem;
+    padding-left: 0.7rem;
+    font-size: 0.85rem;
+    color: var(--vf-docs-secondary-text);
+}
+
+.vf-docs__toc-list .vf-docs__toc-item_level-3.vf-docs__toc-item_active a {
+    color: var(--vf-docs-link-active-text);
 }
 
 .vf-docs__pager {
@@ -1341,8 +1524,8 @@ watch(activeComponentTab, tab => {
     display: inline-flex;
     align-items: center;
     padding: 0.5rem 0.625rem;
-    border: 1px solid var(--vf-docs-border);
-    border-radius: 0.625rem;
+    border: 1px solid var(--vf-docs-border-strong);
+    border-radius: 0.45rem;
     color: var(--vf-docs-text);
     text-decoration: none;
     font-size: 0.85rem;
@@ -1350,8 +1533,9 @@ watch(activeComponentTab, tab => {
 }
 
 .vf-docs__pager-link:hover {
-    border-color: var(--vf-docs-link-active-bg);
-    color: var(--vf-docs-pager-hover-text);
+    border-color: var(--vf-docs-panel-border);
+    background-color: var(--vf-docs-link-hover-bg);
+    color: var(--vf-docs-link-text);
 }
 
 .vf-docs__pager-link_disabled {
@@ -1403,11 +1587,25 @@ watch(activeComponentTab, tab => {
     --vf-docs-overlay-backdrop: rgba(15, 23, 42, 0.35);
     --vf-docs-control-bg: #0f172a;
     --vf-docs-control-text: #e2e8f0;
-    --vf-docs-control-border: #334155;
+    --vf-docs-control-border: var(--vf-docs-border-strong);
     --vf-docs-control-placeholder: #64748b;
     --vf-docs-inline-code-bg: #1e293b;
-    --vf-docs-code-block-bg: #020617;
+    --vf-docs-code-block-bg: #0a1425;
     --vf-docs-code-block-text: #e2e8f0;
+    --vf-docs-token-tag: #93c5fd;
+    --vf-docs-token-selector: #93c5fd;
+    --vf-docs-token-keyword: #c084fc;
+    --vf-docs-token-string: #86efac;
+    --vf-docs-token-number: #fca5a5;
+    --vf-docs-token-comment: #94a3b8;
+    --vf-docs-token-variable: #bfdbfe;
+    --vf-docs-token-component: #67e8f9;
+    --vf-docs-token-attribute: #c4b5fd;
+    --vf-docs-token-directive: #f0abfc;
+    --vf-docs-token-identifier: #7dd3fc;
+    --vf-docs-token-function: #93c5fd;
+    --vf-docs-token-property: #a5b4fc;
+    --vf-docs-token-operator: #f0abfc;
     --vf-docs-blockquote-border: #22d3ee;
     --vf-docs-blockquote-bg: rgba(15, 23, 42, 0.7);
     --vf-docs-pager-disabled-bg: #111827;
@@ -1422,6 +1620,11 @@ watch(activeComponentTab, tab => {
     --vf-docs-logo-grad-start: #0f3b7a;
     --vf-docs-logo-grad-end: #1553a6;
     --vf-docs-logo-text: #dbeafe;
+    --vf-docs-panel-border: var(--vf-docs-border-strong);
+    --vf-docs-panel-bg: var(--vf-docs-surface);
+    --vf-docs-panel-shadow: 0 22px 56px rgba(2, 6, 23, 0.34);
+    --vf-docs-panel-inset-bg: var(--vf-docs-code-block-bg);
+    --vf-docs-panel-inset-border: var(--vf-docs-border-strong);
 }
 
 .vf-docs_theme-dark .vf-docs__header,
@@ -1473,9 +1676,13 @@ watch(activeComponentTab, tab => {
     color: var(--vf-docs-code-block-text);
 }
 
-.vf-docs_theme-dark .vf-docs__markdown :deep(pre) {
-    border-color: var(--vf-docs-border);
-    background-color: var(--vf-docs-code-block-bg);
+.vf-docs_theme-dark .vf-docs__markdown :deep(pre code) {
+    background-color: transparent;
+}
+
+.vf-docs_theme-dark .vf-docs__markdown :deep(pre:not(.vcb__pre)) {
+    border-color: var(--vf-docs-panel-border);
+    background-color: var(--vf-docs-panel-bg);
     color: var(--vf-docs-code-block-text);
 }
 
@@ -1493,8 +1700,8 @@ watch(activeComponentTab, tab => {
 }
 
 .vf-docs_theme-dark .vf-docs__toc {
-    background-color: var(--vf-docs-surface);
-    border-color: var(--vf-docs-border);
+    background: var(--vf-docs-panel-bg);
+    border-color: var(--vf-docs-panel-border);
 }
 
 .vf-docs_theme-dark .vf-docs__toc-title {
@@ -1502,22 +1709,24 @@ watch(activeComponentTab, tab => {
 }
 
 .vf-docs_theme-dark .vf-docs__toc-list a {
-    color: var(--vf-docs-muted-text);
+    color: var(--vf-docs-link-text);
 }
 
 .vf-docs_theme-dark .vf-docs__toc-item_active a {
-    color: var(--vf-docs-accent);
+    background-color: var(--vf-docs-link-active-bg);
+    color: var(--vf-docs-link-active-text);
 }
 
 .vf-docs_theme-dark .vf-docs__pager-link {
     background-color: var(--vf-docs-surface);
-    border-color: var(--vf-docs-border);
+    border-color: var(--vf-docs-panel-border);
     color: var(--vf-docs-text);
 }
 
 .vf-docs_theme-dark .vf-docs__pager-link:hover {
-    border-color: var(--vf-docs-blockquote-border);
-    color: var(--vf-docs-pager-hover-text);
+    border-color: var(--vf-docs-panel-border);
+    background-color: var(--vf-docs-link-hover-bg);
+    color: var(--vf-docs-link-text);
 }
 
 .vf-docs_theme-dark .vf-docs__pager-link_disabled {
@@ -1563,16 +1772,33 @@ watch(activeComponentTab, tab => {
 }
 
 @media (max-width: 960px) {
-    .vf-docs__header-controls {
-        margin-left: 0;
-        width: 100%;
-        order: 3;
+    .vf-docs__header {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 0.75rem;
     }
 
-    .vf-docs__header-search-input {
-        min-width: 0;
-        max-width: none;
-        flex: 1 1 auto;
+    .vf-docs__header::after {
+        content: '';
+        width: 2.3rem;
+        height: 1px;
+    }
+
+    .vf-docs__brand-wrap {
+        justify-self: center;
+    }
+
+    .vf-docs__brand-version {
+        display: none;
+    }
+
+    .vf-docs__header-controls {
+        display: none;
+    }
+
+    .vf-docs__theme-switch {
+        display: none;
     }
 
     .vf-docs__layout {
@@ -1592,31 +1818,41 @@ watch(activeComponentTab, tab => {
     }
 
     .vf-docs__toc {
-        position: static;
+        display: none;
     }
 
     .vf-docs__mobile-toggle {
         display: inline-flex;
-        align-items: center;
-        justify-content: center;
+        justify-self: start;
+    }
+
+    .vf-docs__theme-switch_mobile {
+        display: inline-flex;
     }
 }
 
 @media (max-width: 700px) {
-    .vf-docs__header,
     .vf-docs__footer {
         flex-direction: column;
         align-items: flex-start;
     }
 
-    .vf-docs__header-controls {
-        flex-direction: column;
-        align-items: stretch;
-        width: 100%;
+    .vf-docs__header {
+        grid-template-columns: auto minmax(0, 1fr) auto;
+        grid-template-areas: 'toggle brand spacer';
     }
 
-    .vf-docs__theme-switch {
-        align-self: flex-start;
+    .vf-docs__mobile-toggle {
+        grid-area: toggle;
+    }
+
+    .vf-docs__brand-wrap {
+        grid-area: brand;
+        justify-self: center;
+    }
+
+    .vf-docs__header::after {
+        grid-area: spacer;
     }
 }
 </style>

@@ -29,7 +29,7 @@ import { Button, ThemeProvider } from '@codemonster-ru/vueforge';
             components: { button: { backgroundColor: '#7c3aed' } },
         }"
     >
-        <Button>Scoped Themed Action</Button>
+        <Button> Scoped Themed Action </Button>
     </ThemeProvider>
 </template>
 ```

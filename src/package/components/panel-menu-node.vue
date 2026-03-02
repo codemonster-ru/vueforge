@@ -167,6 +167,8 @@ const onAfterLeave = (element: Element) => {
     border: 0;
     background: transparent;
     color: var(--vf-panelmenu-item-text-color);
+    font-size: var(--vf-panelmenu-item-font-size, inherit);
+    font-weight: var(--vf-panelmenu-item-font-weight, inherit);
     border-radius: var(--vf-panelmenu-item-border-radius);
     padding: var(--vf-panelmenu-item-padding);
     text-decoration: none;
@@ -179,8 +181,37 @@ const onAfterLeave = (element: Element) => {
 
 .vf-panelmenu-node__trigger.is-active,
 .vf-panelmenu-node__link.is-active {
-    color: var(--vf-link-active-color);
-    background: var(--vf-panelmenu-item-hover-background-color);
+    font-weight: var(--vf-panelmenu-item-active-font-weight, var(--vf-panelmenu-item-font-weight, inherit));
+}
+
+.vf-panelmenu-node__trigger.is-active {
+    color: var(
+        --vf-panelmenu-trigger-active-text-color,
+        var(--vf-panelmenu-item-active-text-color, var(--vf-link-active-color))
+    );
+    background: var(
+        --vf-panelmenu-trigger-active-background-color,
+        var(--vf-panelmenu-item-active-background-color, var(--vf-panelmenu-item-hover-background-color))
+    );
+    font-weight: var(
+        --vf-panelmenu-trigger-active-font-weight,
+        var(--vf-panelmenu-item-active-font-weight, var(--vf-panelmenu-item-font-weight, inherit))
+    );
+}
+
+.vf-panelmenu-node__link.is-active {
+    color: var(
+        --vf-panelmenu-link-active-text-color,
+        var(--vf-panelmenu-item-active-text-color, var(--vf-link-active-color))
+    );
+    background: var(
+        --vf-panelmenu-link-active-background-color,
+        var(--vf-panelmenu-item-active-background-color, var(--vf-panelmenu-item-hover-background-color))
+    );
+    font-weight: var(
+        --vf-panelmenu-link-active-font-weight,
+        var(--vf-panelmenu-item-active-font-weight, var(--vf-panelmenu-item-font-weight, inherit))
+    );
 }
 
 .vf-panelmenu-node__loading {
@@ -191,10 +222,15 @@ const onAfterLeave = (element: Element) => {
 .vf-panelmenu-node__group {
     list-style: none;
     margin: 0;
-    padding: 0 0 0 var(--vf-panelmenu-indent);
+    padding: var(--vf-panelmenu-group-padding, 0 0 0 var(--vf-panelmenu-indent));
     display: grid;
     gap: var(--vf-panelmenu-gap);
     will-change: height, opacity;
+}
+
+.vf-panelmenu-node__chevron {
+    width: var(--vf-panelmenu-chevron-size, 1.25rem);
+    min-width: var(--vf-panelmenu-chevron-size, 1.25rem);
 }
 
 .vf-panelmenu-expand-enter-active,

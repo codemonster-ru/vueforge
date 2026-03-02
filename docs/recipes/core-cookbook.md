@@ -39,8 +39,8 @@ const menuItems = [
             <FilterChips v-model="filters" :options="statusOptions" clearable />
         </Inline>
         <Inline gap="0.5rem">
-            <Button variant="outlined" severity="secondary">Export</Button>
-            <Button>Create project</Button>
+            <Button variant="outlined" severity="secondary"> Export </Button>
+            <Button> Create project </Button>
         </Inline>
     </Inline>
 </template>
@@ -63,7 +63,7 @@ const statusOptions = [
 ```vue
 <template>
     <Card>
-        <template #header>Users</template>
+        <template #header> Users </template>
         <template #body>
             <DataTable
                 :rows="rows"
@@ -114,7 +114,7 @@ const onRequest = (payload: unknown) => {
                         />
                     </template>
                 </FormField>
-                <Button type="submit">Save</Button>
+                <Button type="submit"> Save </Button>
             </Stack>
         </template>
     </Form>
@@ -140,14 +140,14 @@ const submit = async (values: Record<string, unknown>) => {
 
 ```vue
 <template>
-    <Button severity="danger" @click="open = true">Delete project</Button>
+    <Button severity="danger" @click="open = true"> Delete project </Button>
 
     <Modal v-model="open" title="Delete project">
         <Stack gap="1rem">
             <p>Are you sure you want to delete this project?</p>
             <Inline justify="end" gap="0.5rem">
-                <Button variant="outlined" severity="secondary" @click="open = false">Cancel</Button>
-                <Button severity="danger" @click="confirmDelete">Delete</Button>
+                <Button variant="outlined" severity="secondary" @click="open = false"> Cancel </Button>
+                <Button severity="danger" @click="confirmDelete"> Delete </Button>
             </Inline>
         </Stack>
     </Modal>
@@ -167,8 +167,8 @@ const confirmDelete = () => {
 ```vue
 <template>
     <Inline gap="0.5rem">
-        <Button @click="notificationsOpen = true">Notifications</Button>
-        <Button @click="commandOpen = true">Open command palette</Button>
+        <Button @click="notificationsOpen = true"> Notifications </Button>
+        <Button @click="commandOpen = true"> Open command palette </Button>
     </Inline>
 
     <NotificationCenter v-model="notificationsOpen" :items="notifications" />

@@ -37,10 +37,18 @@
 
 ```vue
 <AppShell v-model="collapsed">
-    <template #sidebar>Sidebar</template>
-    <template #header>Header</template>
-    <div>Main</div>
-    <template #footer>Footer</template>
+    <template #sidebar>
+        Sidebar
+    </template>
+    <template #header>
+        Header
+    </template>
+    <div>
+        Main
+    </div>
+    <template #footer>
+        Footer
+    </template>
 </AppShell>
 ```
 
@@ -71,7 +79,7 @@
         </Container>
 
         <template #footer>
-            <Container size="xl">Status: All systems operational</Container>
+            <Container size="xl"> Status: All systems operational </Container>
         </template>
     </AppShell>
 </template>

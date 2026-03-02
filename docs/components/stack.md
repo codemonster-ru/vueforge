@@ -25,9 +25,15 @@
 
 ```vue
 <Stack gap="1rem">
-    <Card>Profile</Card>
-    <Card>Security</Card>
-    <Card>Notifications</Card>
+    <Card>
+        Profile
+    </Card>
+    <Card>
+        Security
+    </Card>
+    <Card>
+        Notifications
+    </Card>
 </Stack>
 
 <Stack as="section" gap="0.5rem" align="center" justify="space-between">

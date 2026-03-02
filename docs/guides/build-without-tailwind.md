@@ -68,8 +68,16 @@ Prefer `Container`, `Section`, `Grid`, `Stack`, `Inline` to keep layout consiste
         <Stack gap="1rem">
             <PageHeader title="Dashboard" subtitle="Overview and activity" />
             <Grid :columns="12" gap="1rem">
-                <GridItem :span="12" :breakpoints="{ md: { span: 4 } }"><Card>Left</Card></GridItem>
-                <GridItem :span="12" :breakpoints="{ md: { span: 8 } }"><Card>Right</Card></GridItem>
+                <GridItem :span="12" :breakpoints="{ md: { span: 4 } }">
+                    <Card>
+                        Left
+                    </Card>
+                </GridItem>
+                <GridItem :span="12" :breakpoints="{ md: { span: 8 } }">
+                    <Card>
+                        Right
+                    </Card>
+                </GridItem>
             </Grid>
         </Stack>
     </Container>
