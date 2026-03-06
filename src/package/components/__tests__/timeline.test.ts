@@ -2,7 +2,7 @@ import { mount } from '@vue/test-utils';
 import { vi } from 'vitest';
 
 vi.mock('@codemonster-ru/vueiconify', () => ({
-    CmIcon: {
+    VueIconify: {
         template: '<i class="vf-mock-icon" />',
     },
 }));

@@ -7,13 +7,14 @@
             </div>
         </div>
         <button v-if="closable" class="vf-toast__close" type="button" aria-label="Close toast" @click="close">
-            <slot name="close">&times;</slot>
+            <slot name="close"><Icon size="1em" icon="xmark" aria-hidden="true" role="presentation" /></slot>
         </button>
     </div>
 </template>
 
 <script setup lang="ts">
 import { onBeforeUnmount, watch } from 'vue';
+import { VueIconify as Icon } from '@codemonster-ru/vueiconify';
 
 type ToastSeverity = 'neutral' | 'info' | 'success' | 'warn' | 'danger';
 

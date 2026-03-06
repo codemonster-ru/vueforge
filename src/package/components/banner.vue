@@ -27,13 +27,14 @@
         </div>
 
         <button v-if="closable" type="button" class="vf-banner__close" :aria-label="closeLabel" @click="onClose">
-            <slot name="close">&times;</slot>
+            <slot name="close"><Icon size="1em" icon="xmark" aria-hidden="true" role="presentation" /></slot>
         </button>
     </component>
 </template>
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
+import { VueIconify as Icon } from '@codemonster-ru/vueiconify';
 
 type BannerSeverity = 'neutral' | 'info' | 'success' | 'warn' | 'danger';
 type BannerRole = 'auto' | 'status' | 'alert' | 'region' | 'none';

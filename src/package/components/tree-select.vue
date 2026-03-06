@@ -20,7 +20,7 @@
             <span class="vf-treeselect__label" :class="{ 'vf-treeselect__label_placeholder': !displayLabel }">
                 {{ displayLabel || placeholder }}
             </span>
-            <span class="vf-treeselect__chevron" aria-hidden="true">&#9662;</span>
+            <Icon size="1em" class="vf-treeselect__chevron" icon="chevronDown" aria-hidden="true" role="presentation" />
         </button>
         <button
             v-if="clearable && hasValue && !disabled && !readonly"
@@ -29,7 +29,7 @@
             :aria-label="resolvedClearSelectionAriaLabel"
             @click.stop="clearSelection"
         >
-            &#10005;
+            <Icon size="1em" icon="xmark" aria-hidden="true" role="presentation" />
         </button>
         <Teleport to="body">
             <div
@@ -86,6 +86,7 @@ import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { autoUpdate, computePosition, flip, offset } from '@codemonster-ru/floater.js';
 import Tree, { type TreeItem, type TreeValue } from './tree.vue';
 import { useLocaleText } from '@/package/config/locale-text';
+import { VueIconify as Icon } from '@codemonster-ru/vueiconify';
 
 type Size = 'small' | 'normal' | 'large';
 type Variant = 'filled' | 'outlined';

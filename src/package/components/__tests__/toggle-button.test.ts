@@ -3,7 +3,7 @@ import { vi } from 'vitest';
 import ToggleButton from '../toggle-button.vue';
 
 vi.mock('@codemonster-ru/vueiconify', () => ({
-    CmIcon: {
+    VueIconify: {
         template: '<span class="vf-icon-stub" />',
     },
 }));

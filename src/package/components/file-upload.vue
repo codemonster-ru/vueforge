@@ -52,7 +52,7 @@
                             :aria-label="`Remove ${file.name}`"
                             @click.stop="removeFile(index)"
                         >
-                            &#10005;
+                            <Icon size="1em" icon="xmark" aria-hidden="true" role="presentation" />
                         </button>
                         <button
                             v-if="advanced && getUploadStatus(file, index) === 'failed' && !disabled && !readonly"
@@ -90,6 +90,7 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
+import { VueIconify as Icon } from '@codemonster-ru/vueiconify';
 
 type Size = 'small' | 'normal' | 'large';
 type Variant = 'filled' | 'outlined';

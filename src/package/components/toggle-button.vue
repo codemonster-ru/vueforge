@@ -8,7 +8,14 @@
         :aria-label="resolvedAriaLabel || undefined"
         @click="onToggle"
     >
-        <Icon v-if="resolvedIcon" :icon="resolvedIcon" class="vf-toggle-button__icon" decorative />
+        <Icon
+            v-if="resolvedIcon"
+            size="1em"
+            :icon="resolvedIcon"
+            class="vf-toggle-button__icon"
+            aria-hidden="true"
+            role="presentation"
+        />
         <span v-if="hasLabel" class="vf-toggle-button__label">
             <slot>{{ resolvedLabel }}</slot>
         </span>
@@ -17,7 +24,7 @@
 
 <script setup lang="ts">
 import { computed, useSlots } from 'vue';
-import Icon from './icon.vue';
+import { VueIconify as Icon } from '@codemonster-ru/vueiconify';
 
 type Size = 'small' | 'normal' | 'large';
 type Variant = 'filled' | 'outlined' | 'text';

@@ -4,7 +4,7 @@ import { vi } from 'vitest';
 import SplitButton from '../split-button.vue';
 
 vi.mock('@codemonster-ru/vueiconify', () => ({
-    CmIcon: {
+    VueIconify: {
         template: '<span class="vf-icon-stub" />',
     },
 }));

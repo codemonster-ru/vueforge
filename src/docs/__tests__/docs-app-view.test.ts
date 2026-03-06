@@ -6,7 +6,7 @@ import DocsAppView from '../DocsAppView.vue';
 import { docsRoutes, firstDocsRoute } from '../docs-structure';
 
 vi.mock('@codemonster-ru/vueiconify', () => ({
-    CmIcon: {
+    VueIconify: {
         template: '<span class="vf-icon-stub" />',
     },
 }));

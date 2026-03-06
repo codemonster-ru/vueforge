@@ -14,7 +14,7 @@ Render a floating utility button that scrolls the page or a container back to to
 - `zIndex?: number | string` (default `60`)
 - `showLabel?: boolean` (default `false`)
 - `label?: string` (default `Top`)
-- `icon?: string` (default `↑`)
+- `icon?: string` (default `arrowUp`)
 - `ariaLabel?: string` (default `Scroll to top`)
 - `alwaysVisible?: boolean` (default `false`)
 - `disabled?: boolean` (default `false`)

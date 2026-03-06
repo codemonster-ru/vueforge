@@ -1,6 +1,6 @@
 {
     "name": "@codemonster-ru/vueforge",
-    "version": "0.99.0",
+    "version": "0.100.0",
     "description": "Open source UI components for Vue.js.",
     "license": "MIT",
     "author": "Kirill Kolesnikov",
@@ -60,7 +60,7 @@
         "verify:semver": "node --import tsx ./scripts/verify-semver-checklist.ts"
     },
     "peerDependencies": {
-        "@codemonster-ru/vueiconify": "^0.7.0",
+        "@codemonster-ru/vueiconify": "^1.0.1",
         "chart.js": "^4.0.0",
         "vue": "^3.0.0",
         "vue-router": "^4.4.5"

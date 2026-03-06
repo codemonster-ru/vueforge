@@ -24,6 +24,11 @@ export default defineConfig(({ mode }) => {
             globals: true,
             environment: 'jsdom',
             include: ['src/**/*.test.ts'],
+            server: {
+                deps: {
+                    inline: ['@codemonster-ru/vueiconify'],
+                },
+            },
         },
         build: {
             emptyOutDir: true,

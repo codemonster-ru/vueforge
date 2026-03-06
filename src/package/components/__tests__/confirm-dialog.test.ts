@@ -4,7 +4,7 @@ import { vi } from 'vitest';
 import ConfirmDialog from '../confirm-dialog.vue';
 
 vi.mock('@codemonster-ru/vueiconify', () => ({
-    CmIcon: defineComponent({
+    VueIconify: defineComponent({
         name: 'CmIconStub',
         setup() {
             return () => h('span');

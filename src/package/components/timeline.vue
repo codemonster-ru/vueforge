@@ -30,7 +30,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { CmIcon as VIcon } from '@codemonster-ru/vueiconify';
+import { VueIconify as VIcon } from '@codemonster-ru/vueiconify';
 
 type TimelineOrientation = 'vertical' | 'horizontal';
 type TimelineSize = 'small' | 'normal' | 'large';

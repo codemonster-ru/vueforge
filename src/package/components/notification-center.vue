@@ -40,7 +40,7 @@
                             :aria-label="resolvedCloseLabel"
                             @click="close"
                         >
-                            &times;
+                            <Icon size="1em" icon="xmark" aria-hidden="true" role="presentation" />
                         </button>
                     </div>
                 </header>
@@ -156,6 +156,7 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue';
 import { useLocaleText } from '@/package/config/locale-text';
+import { VueIconify as Icon } from '@codemonster-ru/vueiconify';
 
 type NotificationSeverity = 'neutral' | 'info' | 'success' | 'warn' | 'danger';
 export type NotificationFilter = 'all' | 'unread' | 'read';

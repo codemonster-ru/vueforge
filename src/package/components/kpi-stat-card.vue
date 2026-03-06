@@ -15,7 +15,13 @@
                 <p class="vf-kpi-stat-card__value">{{ displayValue }}</p>
             </slot>
             <div v-if="showTrendBlock" class="vf-kpi-stat-card__trend">
-                <span class="vf-kpi-stat-card__trend-icon" aria-hidden="true">{{ trendIcon }}</span>
+                <Icon
+                    size="1em"
+                    class="vf-kpi-stat-card__trend-icon"
+                    :icon="trendIcon"
+                    aria-hidden="true"
+                    role="presentation"
+                />
                 <span class="vf-kpi-stat-card__trend-label">{{ resolvedTrendLabel }}</span>
                 <span v-if="showDelta && deltaLabel" class="vf-kpi-stat-card__delta">{{ deltaLabel }}</span>
             </div>
@@ -29,6 +35,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import { VueIconify as Icon } from '@codemonster-ru/vueiconify';
 
 type TrendDirection = 'up' | 'down' | 'neutral' | 'auto';
 type DeltaFormat = 'number' | 'percent';
@@ -77,12 +84,12 @@ const resolvedTrend = computed<'up' | 'down' | 'neutral'>(() => {
 
 const trendIcon = computed(() => {
     if (resolvedTrend.value === 'up') {
-        return '↗';
+        return 'arrowUp';
     }
     if (resolvedTrend.value === 'down') {
-        return '↘';
+        return 'arrowDown';
     }
-    return '→';
+    return 'arrowRight';
 });
 
 const resolvedTrendLabel = computed(() => {

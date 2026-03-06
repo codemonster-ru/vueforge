@@ -25,7 +25,7 @@
                     <template v-if="showClose">
                         <slot name="close" :close="close">
                             <button type="button" class="vf-drawer__close" aria-label="Close" @click="close">
-                                &times;
+                                <Icon size="1em" icon="xmark" aria-hidden="true" role="presentation" />
                             </button>
                         </slot>
                     </template>
@@ -45,6 +45,7 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, ref, useSlots, watch } from 'vue';
 import type { Slots } from 'vue';
+import { VueIconify as Icon } from '@codemonster-ru/vueiconify';
 
 interface Props {
     modelValue?: boolean;

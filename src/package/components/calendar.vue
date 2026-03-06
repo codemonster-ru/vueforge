@@ -8,7 +8,7 @@
                 :disabled="disabled"
                 @click="prevMonth"
             >
-                &#8249;
+                <Icon size="1em" icon="chevronLeft" aria-hidden="true" role="presentation" />
             </button>
             <span class="vf-calendar__month-label">{{ monthLabel }}</span>
             <button
@@ -18,7 +18,7 @@
                 :disabled="disabled"
                 @click="nextMonth"
             >
-                &#8250;
+                <Icon size="1em" icon="chevronRight" aria-hidden="true" role="presentation" />
             </button>
         </div>
         <div class="vf-calendar__weekdays" role="row">
@@ -54,6 +54,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
 import { useDateTimeLocale } from '../config/date-time-locale';
+import { VueIconify as Icon } from '@codemonster-ru/vueiconify';
 
 type Size = 'small' | 'normal' | 'large';
 type Variant = 'filled' | 'outlined';

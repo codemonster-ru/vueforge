@@ -20,7 +20,13 @@
         >
             <span>{{ item.label }}</span>
             <span v-if="item.loading" class="vf-panelmenu-node__loading" aria-hidden="true">...</span>
-            <span class="vf-panelmenu-node__chevron" aria-hidden="true">{{ expanded ? '-' : '+' }}</span>
+            <Icon
+                size="1em"
+                class="vf-panelmenu-node__chevron"
+                :icon="expanded ? 'minus' : 'plus'"
+                aria-hidden="true"
+                role="presentation"
+            />
         </button>
         <Link
             v-else
@@ -71,6 +77,7 @@
 import { computed } from 'vue';
 import type { PanelMenuItem } from './panel-menu.vue';
 import Link from './link.vue';
+import { VueIconify as Icon } from '@codemonster-ru/vueiconify';
 
 interface Props {
     item: PanelMenuItem;

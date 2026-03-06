@@ -21,7 +21,7 @@
             <span class="vf-timepicker__label" :class="{ 'vf-timepicker__label_placeholder': !selectedLabel }">
                 {{ selectedLabel || placeholder }}
             </span>
-            <span class="vf-timepicker__chevron" aria-hidden="true">&#9662;</span>
+            <Icon size="1em" class="vf-timepicker__chevron" icon="chevronDown" aria-hidden="true" role="presentation" />
         </button>
         <Teleport to="body">
             <div
@@ -58,6 +58,7 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { autoUpdate, computePosition, flip, offset } from '@codemonster-ru/floater.js';
+import { VueIconify as Icon } from '@codemonster-ru/vueiconify';
 
 type Size = 'small' | 'normal' | 'large';
 type Variant = 'filled' | 'outlined';

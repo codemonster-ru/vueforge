@@ -22,7 +22,7 @@
                 tabindex="-1"
                 @click.stop="onToggleClick"
             >
-                {{ expanded ? '-' : '+' }}
+                <Icon size="1em" :icon="expanded ? 'minus' : 'plus'" aria-hidden="true" role="presentation" />
             </button>
             <div class="vf-org-chart__content">
                 <slot
@@ -65,6 +65,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import type { OrgChartNodeItem, OrgChartValue } from './org-chart.vue';
+import { VueIconify as Icon } from '@codemonster-ru/vueiconify';
 
 interface Props {
     node: OrgChartNodeItem;

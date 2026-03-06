@@ -9,7 +9,7 @@ import NotificationCenter from '../notification-center.vue';
 import VirtualScroller from '../virtual-scroller.vue';
 
 vi.mock('@codemonster-ru/vueiconify', () => ({
-    CmIcon: {
+    VueIconify: {
         template: '<span class="vf-icon-stub" />',
     },
 }));

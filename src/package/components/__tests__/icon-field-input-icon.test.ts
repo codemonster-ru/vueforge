@@ -4,7 +4,7 @@ import IconField from '../icon-field.vue';
 import InputIcon from '../input-icon.vue';
 
 vi.mock('@codemonster-ru/vueiconify', () => ({
-    CmIcon: {
+    VueIconify: {
         template: '<span class="vf-icon-stub" />',
     },
 }));

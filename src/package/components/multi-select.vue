@@ -33,11 +33,17 @@
                         @mousedown.prevent.stop
                         @click.stop="removeOption(option.value)"
                     >
-                        ×
+                        <Icon size="1em" icon="xmark" aria-hidden="true" role="presentation" />
                     </span>
                 </span>
             </span>
-            <span class="vf-multiselect__chevron" aria-hidden="true">&#9662;</span>
+            <Icon
+                size="1em"
+                class="vf-multiselect__chevron"
+                icon="chevronDown"
+                aria-hidden="true"
+                role="presentation"
+            />
         </button>
         <button
             v-if="clearable && selectedValues.length > 0 && !disabled && !readonly"
@@ -46,7 +52,7 @@
             :aria-label="resolvedClearSelectionAriaLabel"
             @click.stop="clearSelection"
         >
-            &#10005;
+            <Icon size="1em" icon="xmark" aria-hidden="true" role="presentation" />
         </button>
         <Teleport to="body">
             <div
@@ -92,9 +98,9 @@
                         @click="toggleOption(option)"
                     >
                         <span class="vf-multiselect__option-label">{{ option.label }}</span>
-                        <span v-if="isActive(option)" class="vf-multiselect__option-check" aria-hidden="true"
-                            >&#10003;</span
-                        >
+                        <span v-if="isActive(option)" class="vf-multiselect__option-check" aria-hidden="true">
+                            <Icon size="1em" icon="check" aria-hidden="true" role="presentation" />
+                        </span>
                     </button>
                 </template>
                 <div v-else class="vf-multiselect__empty">{{ resolvedEmptyText }}</div>
@@ -107,6 +113,7 @@
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { autoUpdate, computePosition, flip, offset } from '@codemonster-ru/floater.js';
 import { useLocaleText } from '@/package/config/locale-text';
+import { VueIconify as Icon } from '@codemonster-ru/vueiconify';
 
 type Size = 'small' | 'normal' | 'large';
 type Variant = 'filled' | 'outlined';

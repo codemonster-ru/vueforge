@@ -23,14 +23,14 @@
             :aria-label="resolvedCloseLabel"
             @click="onClose"
         >
-            <slot name="close">&times;</slot>
+            <slot name="close"><v-icon icon="xmark" /></slot>
         </button>
     </span>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { CmIcon as VIcon } from '@codemonster-ru/vueiconify';
+import { VueIconify as VIcon } from '@codemonster-ru/vueiconify';
 import { useLocaleText } from '@/package/config/locale-text';
 
 type ChipVariant = 'solid' | 'soft' | 'outline';

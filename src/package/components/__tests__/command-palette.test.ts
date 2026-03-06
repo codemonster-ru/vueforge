@@ -5,7 +5,7 @@ import CommandPalette from '../command-palette.vue';
 import { setLocaleText } from '@/package/config/locale-text';
 
 vi.mock('@codemonster-ru/vueiconify', () => ({
-    CmIcon: {
+    VueIconify: {
         template: '<span class="vf-icon-stub" />',
     },
 }));

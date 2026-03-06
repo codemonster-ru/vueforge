@@ -15,13 +15,14 @@
             <slot name="actions" />
         </div>
         <button v-if="closable" class="vf-alert__close" type="button" aria-label="Close" @click="close">
-            <slot name="close">&times;</slot>
+            <slot name="close"><Icon size="1em" icon="xmark" aria-hidden="true" role="presentation" /></slot>
         </button>
     </div>
 </template>
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
+import { VueIconify as Icon } from '@codemonster-ru/vueiconify';
 
 type AlertSeverity = 'neutral' | 'info' | 'success' | 'warn' | 'danger';
 

@@ -18,7 +18,7 @@
                 aria-label="Previous media"
                 @click="goPrev('button')"
             >
-                &#8249;
+                <Icon size="1em" icon="chevronLeft" aria-hidden="true" role="presentation" />
             </button>
 
             <figure class="vf-galleria__figure">
@@ -41,7 +41,7 @@
                 aria-label="Next media"
                 @click="goNext('button')"
             >
-                &#8250;
+                <Icon size="1em" icon="chevronRight" aria-hidden="true" role="presentation" />
             </button>
         </div>
 
@@ -92,6 +92,7 @@
 
 <script setup lang="ts">
 import { computed, onBeforeUnmount, ref, watch } from 'vue';
+import { VueIconify as Icon } from '@codemonster-ru/vueiconify';
 
 type ChangeSource = 'button' | 'thumbnail' | 'indicator' | 'keyboard' | 'autoplay';
 

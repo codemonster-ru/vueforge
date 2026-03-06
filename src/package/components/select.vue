@@ -19,7 +19,14 @@
             <span class="vf-select__label" :class="{ 'vf-select__label_placeholder': !selectedLabel }">
                 {{ selectedLabel || placeholder }}
             </span>
-            <span v-if="!showClear" class="vf-select__chevron" aria-hidden="true">&#9662;</span>
+            <Icon
+                v-if="!showClear"
+                size="1em"
+                class="vf-select__chevron"
+                icon="chevronDown"
+                aria-hidden="true"
+                role="presentation"
+            />
         </button>
         <button
             v-if="showClear"
@@ -28,7 +35,7 @@
             :aria-label="clearLabel"
             @click.stop="clearValue"
         >
-            ×
+            <Icon size="1em" class="vf-select__clear-icon" icon="xmark" aria-hidden="true" role="presentation" />
         </button>
         <Teleport to="body">
             <div
@@ -75,6 +82,7 @@
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { autoUpdate, computePosition, flip, offset } from '@codemonster-ru/floater.js';
 import { useLocaleText } from '@/package/config/locale-text';
+import { VueIconify as Icon } from '@codemonster-ru/vueiconify';
 
 type Size = 'small' | 'normal' | 'large';
 type Variant = 'filled' | 'outlined';

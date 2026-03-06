@@ -34,7 +34,7 @@
             @mousedown.prevent
             @click="clearValue"
         >
-            &#10005;
+            <Icon size="1em" icon="xmark" aria-hidden="true" role="presentation" />
         </button>
         <button
             class="vf-combobox__chevron"
@@ -45,7 +45,7 @@
             @mousedown.prevent
             @click="togglePanel"
         >
-            &#9662;
+            <Icon size="1em" icon="chevronDown" aria-hidden="true" role="presentation" />
         </button>
         <Teleport to="body">
             <div
@@ -88,6 +88,7 @@
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { autoUpdate, computePosition, flip, offset } from '@codemonster-ru/floater.js';
 import { useLocaleText } from '@/package/config/locale-text';
+import { VueIconify as Icon } from '@codemonster-ru/vueiconify';
 
 type Size = 'small' | 'normal' | 'large';
 type Variant = 'filled' | 'outlined';

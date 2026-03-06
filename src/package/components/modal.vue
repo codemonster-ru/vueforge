@@ -23,7 +23,9 @@
                 </div>
                 <template v-if="showClose">
                     <slot name="close" :close="close">
-                        <button type="button" class="vf-modal__close" aria-label="Close" @click="close">&times;</button>
+                        <button type="button" class="vf-modal__close" aria-label="Close" @click="close">
+                            <Icon size="1em" icon="xmark" aria-hidden="true" role="presentation" />
+                        </button>
                     </slot>
                 </template>
                 <div v-if="$slots.body || $slots.default" :id="bodyId" class="vf-modal__body">
@@ -41,6 +43,7 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, ref, useAttrs, useSlots, watch } from 'vue';
 import type { Slots } from 'vue';
+import { VueIconify as Icon } from '@codemonster-ru/vueiconify';
 
 export interface Props {
     modelValue?: boolean;

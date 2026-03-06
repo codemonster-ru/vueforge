@@ -12,7 +12,7 @@
             :aria-pressed="collapsed ? 'true' : 'false'"
             @click="onToggle"
         >
-            {{ collapsed ? expandIcon : collapseIcon }}
+            <Icon size="1em" :icon="collapsed ? expandIcon : collapseIcon" aria-hidden="true" role="presentation" />
         </button>
 
         <ul class="vf-navigation-rail__list" role="menu" aria-orientation="vertical">
@@ -44,7 +44,14 @@
                         :active="isItemActive(item, index)"
                         :collapsed="collapsed"
                     >
-                        <Icon v-if="item.icon" :icon="item.icon" class="vf-navigation-rail__icon" decorative />
+                        <Icon
+                            v-if="item.icon"
+                            size="1em"
+                            :icon="item.icon"
+                            class="vf-navigation-rail__icon"
+                            aria-hidden="true"
+                            role="presentation"
+                        />
                         <span v-if="!collapsed" class="vf-navigation-rail__label">{{ item.label }}</span>
                     </slot>
                 </Link>
@@ -68,7 +75,7 @@ import {
     type Router,
 } from 'vue-router';
 import Link from './link.vue';
-import Icon from './icon.vue';
+import { VueIconify as Icon } from '@codemonster-ru/vueiconify';
 
 type NavigationRailSide = 'left' | 'right';
 type NavigationRailKey = string | number;
@@ -111,8 +118,8 @@ const props = withDefaults(defineProps<Props>(), {
     ariaLabel: 'Primary navigation',
     collapseLabel: 'Collapse navigation',
     expandLabel: 'Expand navigation',
-    collapseIcon: '<',
-    expandIcon: '>',
+    collapseIcon: 'chevronLeft',
+    expandIcon: 'chevronRight',
     syncActiveFromRoute: true,
 });
 

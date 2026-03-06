@@ -10,7 +10,7 @@
         @click="onClick"
     >
         <slot>
-            <span class="vf-scrolltop__icon" aria-hidden="true">{{ icon }}</span>
+            <Icon size="1em" class="vf-scrolltop__icon" :icon="icon" aria-hidden="true" role="presentation" />
             <span v-if="showLabel" class="vf-scrolltop__label">{{ label }}</span>
         </slot>
     </button>
@@ -18,6 +18,7 @@
 
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { VueIconify as Icon } from '@codemonster-ru/vueiconify';
 
 type ScrollTopVariant = 'filled' | 'outlined';
 type ScrollToBehavior = 'auto' | 'smooth';
@@ -47,7 +48,7 @@ const props = withDefaults(defineProps<Props>(), {
     zIndex: '60',
     showLabel: false,
     label: 'Top',
-    icon: '\u2191',
+    icon: 'arrowUp',
     ariaLabel: 'Scroll to top',
     alwaysVisible: false,
     disabled: false,

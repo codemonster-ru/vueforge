@@ -17,7 +17,7 @@
             aria-label="Previous slide"
             @click="goPrev()"
         >
-            <slot name="prevIcon">&#8249;</slot>
+            <slot name="prevIcon"><Icon size="1em" icon="chevronLeft" aria-hidden="true" role="presentation" /></slot>
         </button>
 
         <div v-bind="viewportAttrs" @touchstart="onTouchStart" @touchend="onTouchEnd">
@@ -47,7 +47,7 @@
             aria-label="Next slide"
             @click="goNext()"
         >
-            <slot name="nextIcon">&#8250;</slot>
+            <slot name="nextIcon"><Icon size="1em" icon="chevronRight" aria-hidden="true" role="presentation" /></slot>
         </button>
 
         <div
@@ -76,6 +76,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { resolvePassThrough, withPartClass, type PassThroughOptions } from '@/package/config/pass-through';
+import { VueIconify as Icon } from '@codemonster-ru/vueiconify';
 
 type ChangeSource = 'next' | 'prev' | 'indicator' | 'autoplay' | 'keyboard' | 'swipe';
 

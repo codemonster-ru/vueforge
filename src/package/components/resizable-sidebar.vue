@@ -12,7 +12,12 @@
             :aria-pressed="currentCollapsed ? 'true' : 'false'"
             @click="toggleCollapsed"
         >
-            {{ currentCollapsed ? expandIcon : collapseIcon }}
+            <Icon
+                size="1em"
+                :icon="currentCollapsed ? expandIcon : collapseIcon"
+                aria-hidden="true"
+                role="presentation"
+            />
         </button>
 
         <div class="vf-resizable-sidebar__content" :aria-hidden="currentCollapsed ? 'true' : 'false'">
@@ -40,6 +45,7 @@
 
 <script setup lang="ts">
 import { computed, onBeforeUnmount, ref, watch } from 'vue';
+import { VueIconify as Icon } from '@codemonster-ru/vueiconify';
 
 interface Props {
     modelValue?: number;
@@ -77,8 +83,8 @@ const props = withDefaults(defineProps<Props>(), {
     ariaLabel: 'Sidebar',
     collapseLabel: 'Collapse sidebar',
     expandLabel: 'Expand sidebar',
-    collapseIcon: '<',
-    expandIcon: '>',
+    collapseIcon: 'chevronLeft',
+    expandIcon: 'chevronRight',
 });
 
 const emits = defineEmits<{

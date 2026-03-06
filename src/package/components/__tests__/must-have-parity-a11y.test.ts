@@ -16,7 +16,7 @@ import SpeedDial from '../speed-dial.vue';
 import TreeTable from '../tree-table.vue';
 
 vi.mock('@codemonster-ru/vueiconify', () => ({
-    CmIcon: {
+    VueIconify: {
         template: '<span class="vf-icon-stub" />',
     },
 }));

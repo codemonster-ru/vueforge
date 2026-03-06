@@ -4,7 +4,7 @@ import { vi } from 'vitest';
 import BottomNavigation from '../bottom-navigation.vue';
 
 vi.mock('@codemonster-ru/vueiconify', () => ({
-    CmIcon: {
+    VueIconify: {
         template: '<span class="vf-icon-stub" />',
     },
 }));

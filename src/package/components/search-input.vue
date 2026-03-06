@@ -44,13 +44,14 @@
             aria-label="Clear search"
             @click="clearValue"
         >
-            ×
+            <Icon size="1em" icon="xmark" aria-hidden="true" role="presentation" />
         </button>
     </div>
 </template>
 
 <script setup lang="ts">
 import { computed, onBeforeUnmount, ref, watch } from 'vue';
+import { VueIconify as Icon } from '@codemonster-ru/vueiconify';
 
 type Size = 'small' | 'normal' | 'large';
 type Variant = 'filled' | 'outlined';

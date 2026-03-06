@@ -38,7 +38,7 @@
 <script setup lang="ts">
 import { computed, inject } from 'vue';
 import Link from '@/package/components/link.vue';
-import { CmIcon as VIcon } from '@codemonster-ru/vueiconify';
+import { VueIconify as VIcon } from '@codemonster-ru/vueiconify';
 import { buttonGroupContextKey } from '@/package/components/button-group-context';
 
 type ButtonType = 'button' | 'submit' | 'reset';

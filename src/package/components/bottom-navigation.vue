@@ -27,7 +27,14 @@
                     @click="onSelect(item, index, $event)"
                     @keydown="onItemKeydown(index, $event)"
                 >
-                    <Icon v-if="item.icon" :icon="item.icon" class="vf-bottom-navigation__icon" decorative />
+                    <Icon
+                        v-if="item.icon"
+                        size="1em"
+                        :icon="item.icon"
+                        class="vf-bottom-navigation__icon"
+                        aria-hidden="true"
+                        role="presentation"
+                    />
                     <span v-if="showLabels" class="vf-bottom-navigation__label">{{ item.label }}</span>
                     <span
                         v-if="item.badge != null"
@@ -55,7 +62,7 @@ import {
     type RouteLocationNormalizedLoadedGeneric,
     type Router,
 } from 'vue-router';
-import Icon from '@/package/components/icon.vue';
+import { VueIconify as Icon } from '@codemonster-ru/vueiconify';
 import Link from '@/package/components/link.vue';
 
 type BottomNavigationKey = string | number;

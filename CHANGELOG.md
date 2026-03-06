@@ -1,5 +1,28 @@
 # Changelog
 
+## [0.100.0] - 2026-03-06
+
+- Semver checklist:
+    - [x] Semver impact classified (`minor`)
+    - [x] Breaking-change assessment completed (`yes`)
+    - [x] Deprecations documented (N/A)
+    - [x] Migration notes added when required (`yes`)
+    - [x] Catalog mapping sync completed (`yes`)
+    - [x] Bundle-size check completed (`npm run build && npm run verify:bundle-size`)
+- Icon stack update:
+    - Updated peer dependency to `@codemonster-ru/vueiconify@^1.0.1`.
+    - Removed VueForge `Icon` component/export and switched internal icon rendering to direct `VueIconify` imports.
+    - Migrated icon provider API usage from `CmIcon` to `VueIconify` across components and tests.
+    - Replaced symbol-based UI glyphs (`×`, `‹`, `›`, `▾`, `+`, `-`, arrows) with VueIconify icon names where applicable.
+    - Updated `ScrollTop` default icon from `↑` to `arrowUp` and synced component docs.
+- Testing/runtime:
+    - Updated Vitest config to inline `@codemonster-ru/vueiconify` deps so CSS imports from the icon package resolve in test runtime.
+- Migration notes:
+    - Install `@codemonster-ru/vueiconify@^1.0.1` in consuming apps.
+    - If you reference the icon package directly, switch imports from `CmIcon` to `VueIconify`.
+    - Replace `import { Icon } from '@codemonster-ru/vueforge'` with `import { VueIconify } from '@codemonster-ru/vueiconify'`.
+    - If you relied on symbol defaults for icon props (`'<'`, `'>'`, `'↑'`, `'×'`), use VueIconify icon names instead (for example `chevronLeft`, `chevronRight`, `arrowUp`, `xmark`).
+
 ## [0.99.0] - 2026-03-02
 
 - Semver checklist:

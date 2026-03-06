@@ -88,7 +88,7 @@
                         :aria-label="prevLabel"
                         @click="goPrev"
                     >
-                        &#8249;
+                        <Icon size="1em" icon="chevronLeft" aria-hidden="true" role="presentation" />
                     </button>
                     <button
                         v-if="hasPreviewGroup"
@@ -98,10 +98,10 @@
                         :aria-label="nextLabel"
                         @click="goNext"
                     >
-                        &#8250;
+                        <Icon size="1em" icon="chevronRight" aria-hidden="true" role="presentation" />
                     </button>
                     <button type="button" v-bind="closeAttrs" :aria-label="closeLabel" @click="closePreview('button')">
-                        &times;
+                        <Icon size="1em" icon="xmark" aria-hidden="true" role="presentation" />
                     </button>
                     <img
                         v-bind="previewAttrs"
@@ -119,6 +119,7 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue';
 import { resolvePassThrough, withPartClass, type PassThroughOptions } from '@/package/config/pass-through';
+import { VueIconify as Icon } from '@codemonster-ru/vueiconify';
 
 type ObjectFit = 'contain' | 'cover' | 'fill' | 'none' | 'scale-down';
 type CloseReason = 'overlay' | 'esc' | 'button';

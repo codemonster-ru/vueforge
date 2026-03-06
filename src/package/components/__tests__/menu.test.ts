@@ -4,7 +4,7 @@ import { vi } from 'vitest';
 import Menu from '../menu.vue';
 
 vi.mock('@codemonster-ru/vueiconify', () => ({
-    CmIcon: {
+    VueIconify: {
         template: '<span class="vf-icon-stub" />',
     },
 }));

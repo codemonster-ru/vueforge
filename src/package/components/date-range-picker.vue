@@ -20,7 +20,13 @@
             <span class="vf-daterangepicker__label" :class="{ 'vf-daterangepicker__label_placeholder': isEmpty }">
                 {{ displayLabel || placeholder }}
             </span>
-            <span class="vf-daterangepicker__chevron" aria-hidden="true">&#9662;</span>
+            <Icon
+                size="1em"
+                class="vf-daterangepicker__chevron"
+                icon="chevronDown"
+                aria-hidden="true"
+                role="presentation"
+            />
         </button>
         <Teleport to="body">
             <div
@@ -41,7 +47,7 @@
                         :disabled="disabled || readonly"
                         @click="prevMonth"
                     >
-                        &#8249;
+                        <Icon size="1em" icon="chevronLeft" aria-hidden="true" role="presentation" />
                     </button>
                     <span class="vf-daterangepicker__month-label">{{ monthLabel }}</span>
                     <button
@@ -51,7 +57,7 @@
                         :disabled="disabled || readonly"
                         @click="nextMonth"
                     >
-                        &#8250;
+                        <Icon size="1em" icon="chevronRight" aria-hidden="true" role="presentation" />
                     </button>
                 </div>
                 <div class="vf-daterangepicker__weekdays" role="row">
@@ -93,6 +99,7 @@
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { autoUpdate, computePosition, flip, offset } from '@codemonster-ru/floater.js';
 import { useDateTimeLocale } from '../config/date-time-locale';
+import { VueIconify as Icon } from '@codemonster-ru/vueiconify';
 
 type Size = 'small' | 'normal' | 'large';
 type Variant = 'filled' | 'outlined';

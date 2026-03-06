@@ -29,7 +29,7 @@
                         :aria-label="closeLabel"
                         @click.stop="hide()"
                     >
-                        &times;
+                        <Icon size="1em" icon="xmark" aria-hidden="true" role="presentation" />
                     </button>
                 </div>
             </template>
@@ -52,6 +52,7 @@
 import { computed, ref } from 'vue';
 import Popover from '@/package/components/popover.vue';
 import { resolvePassThrough, withPartClass, type PassThroughOptions } from '@/package/config/pass-through';
+import { VueIconify as Icon } from '@codemonster-ru/vueiconify';
 
 type Placement = 'bottom' | 'top' | 'bottom-start' | 'bottom-end' | 'top-start' | 'top-end';
 

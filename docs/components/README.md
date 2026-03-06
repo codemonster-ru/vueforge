@@ -81,7 +81,6 @@ Detailed API pages generated from the current package reference.
 - [Inplace](inplace.md)
 - [InfiniteScroll](infinitescroll.md)
 - [Input](input.md)
-- [Icon](icon.md)
 - [Input Shared Props Matrix](input-shared-props.md)
 - [IconField / InputIcon](iconfield-inputicon.md)
 - [InputGroup / InputAddon](inputgroup-inputaddon.md)

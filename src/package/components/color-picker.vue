@@ -14,7 +14,13 @@
         >
             <span class="vf-color-picker__swatch" :style="{ backgroundColor: previewColor }" />
             <span class="vf-color-picker__value">{{ displayValue }}</span>
-            <span class="vf-color-picker__chevron">▾</span>
+            <Icon
+                size="1em"
+                class="vf-color-picker__chevron"
+                icon="chevronDown"
+                aria-hidden="true"
+                role="presentation"
+            />
         </button>
         <div
             v-if="open"
@@ -74,6 +80,7 @@
 
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { VueIconify as Icon } from '@codemonster-ru/vueiconify';
 
 type Size = 'small' | 'normal' | 'large';
 type Variant = 'filled' | 'outlined';

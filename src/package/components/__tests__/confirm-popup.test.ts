@@ -4,7 +4,7 @@ import { vi } from 'vitest';
 import ConfirmPopup from '../confirm-popup.vue';
 
 vi.mock('@codemonster-ru/vueiconify', () => ({
-    CmIcon: {
+    VueIconify: {
         template: '<span class="vf-icon-stub" />',
     },
 }));

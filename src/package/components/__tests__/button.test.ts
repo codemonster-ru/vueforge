@@ -3,7 +3,7 @@ import { vi } from 'vitest';
 import Button from '../button.vue';
 
 vi.mock('@codemonster-ru/vueiconify', () => ({
-    CmIcon: {
+    VueIconify: {
         template: '<i class="mock-icon" />',
     },
 }));

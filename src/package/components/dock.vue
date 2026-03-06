@@ -20,7 +20,14 @@
                     @keydown="onItemKeydown(index, $event)"
                 >
                     <slot name="item" :item="item" :index="index" :active="isItemActive(item, index)">
-                        <Icon v-if="item.icon" v-bind="iconAttrs(item, index)" :icon="item.icon" decorative />
+                        <Icon
+                            v-if="item.icon"
+                            size="1em"
+                            v-bind="iconAttrs(item, index)"
+                            :icon="item.icon"
+                            aria-hidden="true"
+                            role="presentation"
+                        />
                         <span v-bind="labelAttrs(item, index)">{{ item.label }}</span>
                     </slot>
                 </Link>
@@ -40,7 +47,7 @@ import {
     type Router,
 } from 'vue-router';
 import Link from './link.vue';
-import Icon from './icon.vue';
+import { VueIconify as Icon } from '@codemonster-ru/vueiconify';
 import { resolvePassThrough, withPartClass, type PassThroughOptions } from '@/package/config/pass-through';
 
 type DockPosition = 'bottom' | 'top' | 'left' | 'right';

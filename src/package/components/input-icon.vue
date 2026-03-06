@@ -7,13 +7,20 @@
         :aria-label="decorative ? undefined : ariaLabel || undefined"
     >
         <slot>
-            <Icon v-if="icon" :icon="icon" :decorative="decorative" />
+            <Icon
+                v-if="icon"
+                size="1em"
+                :icon="icon"
+                :aria-hidden="decorative ? 'true' : undefined"
+                :role="decorative ? 'presentation' : 'img'"
+                :aria-label="decorative ? undefined : ariaLabel || undefined"
+            />
         </slot>
     </component>
 </template>
 
 <script setup lang="ts">
-import Icon from './icon.vue';
+import { VueIconify as Icon } from '@codemonster-ru/vueiconify';
 
 type Side = 'start' | 'end';
 

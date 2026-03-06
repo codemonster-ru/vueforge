@@ -62,7 +62,7 @@
 </template>
 
 <script setup lang="ts">
-import { CmIcon as VIcon } from '@codemonster-ru/vueiconify';
+import { VueIconify as VIcon } from '@codemonster-ru/vueiconify';
 import Link from '@/package/components/link.vue';
 import { nextTick, ref, watch } from 'vue';
 
