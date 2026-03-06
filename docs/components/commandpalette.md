@@ -1,151 +1,162 @@
 # CommandPalette
 
-## Purpose
+CommandPalette provides a searchable global action launcher with scopes, recent commands, keyboard navigation, and optional entity search.
 
-Provide advanced task-focused interactions for authoring, media/input control, and guided workflows.
-Enable product features that require richer interaction than basic form controls.
+## Import
 
-## Props
-
-- `modelValue?: boolean` (v-model)
-- `items?: Array<{ label: string; value?: string | number; description?: string; shortcut?: string; group?: string; scope?: string; disabled?: boolean; keywords?: Array<string>; entityType?: string; entityId?: string | number; entityKeywords?: Array<string>; command?: () => void }>`
-- `placeholder?: string` (default `Type a command or search...`)
-- `emptyText?: string` (default `No commands found`)
-- `ariaLabel?: string` (default `Command palette`)
-- `closeOnOverlay?: boolean` (default `true`)
-- `closeOnEsc?: boolean` (default `true`)
-- `closeOnSelect?: boolean` (default `true`)
-- `filter?: boolean` (default `true`)
-- `enableShortcut?: boolean` (default `true`)
-- `shortcutKey?: string` (default `k`)
-- `scopes?: Array<{ id: string; label: string; aliases?: string[] }>`
-- `scope?: string` (default `all`)
-- `showScopeTabs?: boolean` (default `true`)
-- `showRecent?: boolean` (default `true`)
-- `recentLimit?: number` (default `6`)
-- `recentStorageKey?: string`
-- `entitySearch?: boolean` (default `true`)
-
-## Events
-
-- `update:modelValue`
-- `update:scope`
-- `update:recent`
-- `open`
-- `close`
-- `select`
-- `search`
-- `scopeChange`
-- `entitySearch`
-
-## Slots
-
-- This component does not expose named slots.
+```ts
+import CommandPalette from '@/package/components/command-palette.vue';
+```
 
 ## Examples
+
+### Basic
+
+Use CommandPalette for app-wide navigation, quick actions, and fuzzy command lookup.
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const open = ref(false);
+const scope = ref('all');
+const items = [
+    { label: 'Open docs', value: 'docs', group: 'Navigation', scope: 'project' },
+    { label: 'Save and publish', value: 'publish', group: 'Actions', scope: 'project', shortcut: 'Ctrl+Enter' },
+];
+</script>
+
+<template>
+    <CommandPalette v-model="open" v-model:scope="scope" :items="items" @select="onCommand" />
+</template>
+```
+
+### Scoped Commands
+
+Use scopes and scope tabs when the same palette serves multiple product domains.
 
 ```vue
 <CommandPalette
     v-model="open"
     v-model:scope="scope"
-    :items="[
-        { label: 'Open docs', value: 'docs', group: 'Navigation', scope: 'project' },
-        {
-            label: 'Open customer',
-            value: 'customer-42',
-            group: 'Entities',
-            scope: 'project',
-            entityType: 'Customer',
-            entityId: 42,
-        },
-        { label: 'Save and publish', value: 'publish', group: 'Actions', scope: 'project', shortcut: 'Ctrl+Enter' },
-    ]"
+    :items="items"
     :scopes="[
         { id: 'project', label: 'Project', aliases: ['p'] },
         { id: 'billing', label: 'Billing', aliases: ['b'] },
     ]"
+/>
+```
+
+### Recent Commands
+
+Persist recent usage locally to surface common actions before the user starts typing.
+
+```vue
+<CommandPalette
+    v-model="open"
+    :items="items"
+    show-recent
     recent-storage-key="workspace.commandPalette.recent"
-    @select="onCommand"
+/>
+```
+
+### Entity Search
+
+Use entity metadata when the palette should search live records in addition to static commands.
+
+```vue
+<CommandPalette
+    v-model="open"
+    :items="entityResults"
+    entity-search
+    @search="onSearch"
     @entitySearch="onEntitySearch"
 />
 ```
 
-## Recipes
+## API
 
-- Global app command launcher: bind to `Ctrl/Cmd+K` and group commands by domain (`Navigation`, `Actions`).
-- Admin shortcuts: attach `command` callbacks for direct side effects plus `select` event analytics.
-- Search-only mode: keep `filter=true`, feed dynamic `items` from server, and use `search` for debounced fetch.
-- Scoped commands: use scope tabs and query prefix (`p:deploy`, `b:invoice`) for domain-specific command sets.
-- Recent actions: set `recentStorageKey` to persist last-used commands and surface them first when query is empty.
-- Entity search: emit `entitySearch` to fetch entities and pass results as `items` with `entityType` metadata.
+### Types
+
+```ts
+interface CommandPaletteItem {
+    label: string;
+    value?: string | number;
+    description?: string;
+    shortcut?: string;
+    group?: string;
+    scope?: string;
+    disabled?: boolean;
+    keywords?: string[];
+    entityType?: string;
+    entityId?: string | number;
+    entityKeywords?: string[];
+    command?: () => void;
+}
+
+interface CommandPaletteScope {
+    id: string;
+    label: string;
+    aliases?: string[];
+}
+```
+
+### Props
+
+| Name | Type | Default |
+| --- | --- | --- |
+| `modelValue` | `boolean \| undefined` | `undefined` |
+| `items` | `CommandPaletteItem[]` | `[]` |
+| `placeholder` | `string \| undefined` | `undefined` |
+| `emptyText` | `string \| undefined` | `undefined` |
+| `ariaLabel` | `string \| undefined` | `undefined` |
+| `closeOnOverlay` | `boolean` | `true` |
+| `closeOnEsc` | `boolean` | `true` |
+| `closeOnSelect` | `boolean` | `true` |
+| `filter` | `boolean` | `true` |
+| `enableShortcut` | `boolean` | `true` |
+| `shortcutKey` | `string` | `'k'` |
+| `scopes` | `CommandPaletteScope[]` | `[]` |
+| `scope` | `string` | `'all'` |
+| `showScopeTabs` | `boolean` | `true` |
+| `showRecent` | `boolean` | `true` |
+| `recentLimit` | `number` | `6` |
+| `recentStorageKey` | `string \| undefined` | `undefined` |
+| `entitySearch` | `boolean` | `true` |
+
+### Events
+
+| Name | Payload |
+| --- | --- |
+| `update:modelValue` | `boolean` |
+| `update:scope` | `string` |
+| `update:recent` | recent keys payload |
+| `open` | none |
+| `close` | none |
+| `select` | selected item payload |
+| `search` | query string |
+| `scopeChange` | scope id |
+| `entitySearch` | entity search payload |
 
 ## Theming
 
-- Override via theme component overrides for each component documented on this page.
+Override component tokens through `theme.overrides.components.commandPalette`.
 
 ## Tokens
 
-Component tokens (override via `theme.overrides.components.commandPalette`):
+- Panel: `width`, `maxWidth`, `maxHeight`, `padding`, `borderRadius`, `borderColor`, `backgroundColor`, `textColor`, `overlayBackgroundColor`, `shadow`, `zIndex`
+- Header and input: `headerGap`, `inputPadding`, `inputBorderRadius`, `inputBorderColor`, `inputBackgroundColor`, `inputTextColor`, `inputPlaceholderColor`, `inputFocusBorderColor`, `inputFocusRingShadow`
+- Groups and items: `listGap`, `groupGap`, `groupLabelPadding`, `groupLabelColor`, `groupLabelFontSize`, `itemPadding`, `itemBorderRadius`, `itemGap`, `itemTextColor`, `itemDescriptionColor`, `itemDescriptionFontSize`, `itemActiveBackgroundColor`, `itemActiveTextColor`, `itemDisabledOpacity`
+- Shortcut and empty state: `shortcutPadding`, `shortcutBorderRadius`, `shortcutBorderColor`, `shortcutBackgroundColor`, `shortcutTextColor`, `shortcutFontSize`, `emptyPadding`, `emptyColor`
 
-- `width`, `maxWidth`, `maxHeight`
-- `padding`, `borderRadius`, `borderColor`
-- `backgroundColor`, `textColor`, `overlayBackgroundColor`
-- `shadow`, `zIndex`, `headerGap`
-- `inputPadding`, `inputBorderRadius`, `inputBorderColor`
-- `inputBackgroundColor`, `inputTextColor`, `inputPlaceholderColor`
-- `inputFocusBorderColor`, `inputFocusRingShadow`
-- `listGap`, `groupGap`
-- `groupLabelPadding`, `groupLabelColor`, `groupLabelFontSize`
-- `itemPadding`, `itemBorderRadius`, `itemGap`
-- `itemTextColor`, `itemDescriptionColor`, `itemDescriptionFontSize`
-- `itemActiveBackgroundColor`, `itemActiveTextColor`, `itemDisabledOpacity`
-- `shortcutPadding`, `shortcutBorderRadius`, `shortcutBorderColor`
-- `shortcutBackgroundColor`, `shortcutTextColor`, `shortcutFontSize`
-- `emptyPadding`, `emptyColor`
+## Recipes
 
-## Responsive
-
-Verify control affordances, panel sizing, and gesture/mouse interactions across device classes.
-Ensure compact layouts preserve clarity for actions, handles, and contextual hints.
-
-## SSR/Hydration
-
-Keep initial value and panel-closed/base state stable between server and client output.
-Hydrate client-only interaction engines (editor, drag, command layers) without DOM mismatch.
-
-## Testing
-
-Cover core interaction loops, boundary conditions, and value/state synchronization.
-Add accessibility tests for keyboard alternatives, labelling, and focus behavior.
+- Use CommandPalette for `Cmd/Ctrl+K` app launchers, command-driven navigation, and search-first admin workflows.
+- Keep `closeOnSelect` enabled for action palettes; disable it for search-style palettes that should stay open between selections.
 
 ## Accessibility
 
-- Panel uses `role="dialog"` and command list uses `listbox` + `option`.
-- On open, focus moves to search input; on close, focus restores to previously active element.
-- Keyboard navigation supports `ArrowUp`/`ArrowDown`, `Enter` selection, and `Escape` close.
+- CommandPalette renders a `dialog` and a `listbox`-style command list.
+- Opening focuses the search input and closing restores focus to the previously active element.
+- Keyboard support includes shortcut open, arrow navigation, `Enter` selection, and `Escape` dismissal.
 
-## Interaction Contract
-
-- Open paths:
-    - external `modelValue=true`
-    - shortcut (`Ctrl/Cmd + shortcutKey`) when `enableShortcut=true`
-- On open:
-    - emits `open`
-    - clears query and resets active item to first enabled option
-    - focuses input
-- Selection:
-    - `Enter` selects active enabled item
-    - emits `select`
-    - runs item `command` callback when provided
-    - closes when `closeOnSelect=true`
-- Dismiss:
-    - overlay click closes when `closeOnOverlay=true`
-    - `Escape` closes when `closeOnEsc=true`
-    - emits `close`
-
-## Z-Index Policy
-
-- Uses `--vf-command-palette-z-index` (default `110`).
-- Default layer intent:
-    - above modal/drawer (`100`)
-    - below toast/tour (`120`) and notification center (`125`)

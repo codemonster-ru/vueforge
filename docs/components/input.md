@@ -1,9 +1,76 @@
 # Input
 
-## Purpose
+Capture single-line text and numeric values with a lightweight, form-friendly API.
 
-Capture user text and numeric input with consistent API, validation hooks, and theming behavior.
-Support high-frequency form entry scenarios in SaaS settings, auth, and CRUD flows.
+## Import
+
+```ts
+import { Input } from '@codemonster-ru/vueforge';
+```
+
+## Examples
+
+Keep input examples close to real forms: short placeholders, clear state differences, and only the adornments users actually need.
+
+### Basic
+
+Use the default filled input for simple text entry in settings, auth, and CRUD forms.
+
+```vue
+<template>
+    <Input v-model="email" type="email" placeholder="Email address" autocomplete="email" />
+</template>
+```
+
+### Outlined
+
+Use `outlined` when the surrounding surface is already visually heavy and the field should feel lighter.
+
+```vue
+<template>
+    <Input v-model="search" variant="outlined" placeholder="Search projects" />
+</template>
+```
+
+### Prefix And Suffix
+
+Prefix and suffix slots work well for currency, domain, and compact search patterns.
+
+```vue
+<template>
+    <Input v-model="workspace" placeholder="Workspace slug">
+        <template #prefix>https://</template>
+        <template #suffix>.vueforge.app</template>
+    </Input>
+</template>
+```
+
+### Sizes
+
+Adjust density with `size` while keeping the interaction model unchanged.
+
+```vue
+<template>
+    <div style="display: grid; gap: 0.75rem;">
+        <Input v-model="smallValue" size="small" placeholder="Small input" />
+        <Input v-model="normalValue" placeholder="Default input" />
+        <Input v-model="largeValue" size="large" placeholder="Large input" />
+    </div>
+</template>
+```
+
+### Disabled And Readonly
+
+Use `disabled` for unavailable controls and `readonly` when the value should remain selectable but not editable.
+
+```vue
+<template>
+    <div style="display: grid; gap: 0.75rem;">
+        <Input v-model="disabledValue" disabled placeholder="Disabled input" />
+        <Input v-model="readonlyValue" readonly />
+    </div>
+</template>
+```
 
 ## Props
 
@@ -38,44 +105,25 @@ Support high-frequency form entry scenarios in SaaS settings, auth, and CRUD flo
 - `prefix`
 - `suffix`
 
-## Examples
-
-```vue
-<Input v-model="email" placeholder="Email" />
-<Input v-model="query" variant="outlined">
-    <template #prefix>
-        🔎
-    </template>
-</Input>
-```
-
 ## Theming
 
-- Override via theme component overrides for each component documented on this page.
+- Override via `theme.overrides.components.input`.
 
 ## Tokens
 
-Override via `theme.overrides.components.input`.
+Override via `theme.overrides.components.input`:
+
+- `gap`, `fontSize`, `padding`, `borderRadius`
+- `borderColor`, `backgroundColor`, `textColor`, `placeholderColor`
+- `focusBorderColor`, `focusRingShadow`, `hoverBorderColor`, `disabledOpacity`
+- `small.padding`, `small.fontSize`
+- `large.padding`, `large.fontSize`
 
 ## Recipes
 
-- Start with the examples above as baseline usage for this component.
-- Add product-specific variants (loading/error/dense/mobile) in consuming app docs when needed.
-
-## Responsive
-
-Validate control height, helper/error text wrapping, and icon/addon placement across breakpoints.
-Ensure virtual keyboards and touch interaction do not clip labels, hints, or action icons.
-
-## SSR/Hydration
-
-Keep initial value, disabled, and readonly states identical between server and client render.
-Avoid hydration mismatches from client-only formatting or masking initialization.
-
-## Testing
-
-Cover v-model updates, input/change/blur events, and validation edge cases.
-Add accessibility tests for labeling, error semantics, and keyboard interaction contracts.
+- Use `type`, `autocomplete`, and `inputmode` together so mobile keyboards and browser autofill behave correctly.
+- Prefer prefix or suffix content only when it shortens the task, not when it duplicates the label.
+- Keep input formatting and validation messages outside the field unless the UX explicitly requires inline masking.
 
 ## Accessibility
 

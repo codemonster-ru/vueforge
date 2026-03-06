@@ -1,41 +1,18 @@
 # QueryBuilder
 
-## Purpose
+QueryBuilder builds nested `AND` and `OR` filter groups for complex list and report queries.
 
-Build nested filter expressions for list/report endpoints with explicit `AND/OR` group logic.
-Supports rule editing, nested groups, and stable JSON serialization for URL/API handoff.
+## Import
 
-## Props
-
-- `modelValue?: QueryBuilderGroupNode | null` (v-model)
-- `fields?: Array<{ key: string; label: string; type?: 'text' | 'number' | 'date' | 'boolean' | 'select'; operators?: string[]; options?: Array<{ label: string; value: string | number | boolean }> }>`
-- `maxDepth?: number` (default `5`)
-- `disabled?: boolean` (default `false`)
-- `ariaLabel?: string` (default `Query builder`)
-- `andLabel?: string` (default `AND`)
-- `orLabel?: string` (default `OR`)
-- `addRuleLabel?: string` (default `+ Rule`)
-- `addGroupLabel?: string` (default `+ Group`)
-- `removeRuleLabel?: string` (default `Remove`)
-- `removeGroupLabel?: string` (default `Remove group`)
-- `combinatorLabel?: string` (default `Match`)
-
-## Events
-
-- `update:modelValue`
-- `change`
-
-## Slots
-
-- This component does not expose named slots.
-
-## Exposed Methods
-
-- `serialize(): string` - returns JSON string of current group tree.
-- `deserialize(payload: string): boolean` - applies JSON model and emits updates (`false` for invalid payload).
-- `getModel(): QueryBuilderGroupNode` - returns cloned current model.
+```ts
+import QueryBuilder from '@/package/components/query-builder.vue';
+```
 
 ## Examples
+
+### Basic
+
+Use `QueryBuilder` when advanced users need explicit combinators and nested rules.
 
 ```vue
 <QueryBuilder
@@ -48,24 +25,69 @@ Supports rule editing, nested groups, and stable JSON serialization for URL/API 
 />
 ```
 
+### Controlled Depth
+
+Limit nesting when the product should discourage overly complex user-built logic.
+
+```vue
+<QueryBuilder
+    v-model="filters"
+    :fields="fields"
+    :max-depth="3"
+/>
+```
+
+## API
+
+### Props
+
+| Name | Type | Default |
+| --- | --- | --- |
+| `modelValue` | `QueryBuilderGroupNode \| null` | `null` |
+| `fields` | `QueryBuilderField[]` | `[]` |
+| `maxDepth` | `number` | `5` |
+| `disabled` | `boolean` | `false` |
+| `ariaLabel` | `string` | `'Query builder'` |
+| `andLabel` | `string` | `'AND'` |
+| `orLabel` | `string` | `'OR'` |
+| `addRuleLabel` | `string` | `'+ Rule'` |
+| `addGroupLabel` | `string` | `'+ Group'` |
+| `removeRuleLabel` | `string` | `'Remove'` |
+| `removeGroupLabel` | `string` | `'Remove group'` |
+| `combinatorLabel` | `string` | `'Match'` |
+
+### Events
+
+| Name | Payload |
+| --- | --- |
+| `update:modelValue` | `QueryBuilderGroupNode` |
+| `change` | `QueryBuilderGroupNode` |
+
+### Exposed Methods
+
+| Name | Description |
+| --- | --- |
+| `serialize()` | Returns the current query tree as JSON. |
+| `deserialize(payload)` | Applies a serialized query tree and returns success. |
+| `getModel()` | Returns a cloned current model. |
+
 ## Theming
 
-- Override via theme component overrides for each component documented on this page.
+Override component tokens through `theme.overrides.components.queryBuilder`.
 
 ## Tokens
 
-Component tokens (override via `theme.overrides.components.queryBuilder`):
+- Base surface: `fontSize`, `padding`, `borderColor`, `borderRadius`, `backgroundColor`, `textColor`, `secondaryTextColor`
+- Layout: `rowGap`, `nestedOffset`, `groupGap`, `groupPadding`, `groupBorderRadius`, `groupBorderColor`, `groupBackgroundColor`
+- Controls: `controlHeight`, `controlBorderRadius`, `controlBorderColor`, `controlBackgroundColor`, `controlFocusBorderColor`, `controlFocusRing`
+- States: `dangerTextColor`, `dangerBorderColor`, `disabledOpacity`
 
-- `fontSize`, `padding`, `borderColor`, `borderRadius`, `backgroundColor`, `textColor`, `secondaryTextColor`
-- `rowGap`, `nestedOffset`
-- `groupGap`, `groupPadding`, `groupBorderRadius`, `groupBorderColor`, `groupBackgroundColor`
-- `controlHeight`, `controlBorderRadius`, `controlBorderColor`, `controlBackgroundColor`
-- `controlFocusBorderColor`, `controlFocusRing`
-- `dangerTextColor`, `dangerBorderColor`
-- `disabledOpacity`
+## Recipes
+
+- Use stable field keys and backend-aligned operators so serialized queries can be sent directly to APIs.
+- Keep the first query-builder field meaningful, because it becomes the default in new rules.
 
 ## Accessibility
 
-- Root container uses `role="group"` with configurable `ariaLabel`.
-- Controls are native form elements (`button`, `select`, `input`) for keyboard support.
-- Ensure field labels and value semantics match backend filtering contracts for screen-reader clarity.
+- The root uses `role="group"` with a configurable label.
+- Native buttons, selects, and inputs keep rule editing keyboard-friendly.

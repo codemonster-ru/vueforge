@@ -1,71 +1,110 @@
 # DiffViewer
 
-## Purpose
+DiffViewer compares two values in inline or split mode and can format them as plain text or JSON.
 
-Compare text or JSON payloads in `inline` or `split` mode for audit/debug and review workflows.
+## Import
 
-## Props
-
-- `before?: unknown`
-- `after?: unknown`
-- `mode?: 'inline' | 'split'` (default `inline`)
-- `format?: 'auto' | 'text' | 'json'` (default `auto`)
-- `showToolbar?: boolean` (default `true`)
-- `copyable?: boolean` (default `true`)
-- `disabled?: boolean` (default `false`)
-- `ariaLabel?: string` (default `Diff viewer`)
-- `emptyText?: string` (default `No diff data.`)
-- `inlineLabel?: string` (default `Inline`)
-- `splitLabel?: string` (default `Split`)
-- `beforeLabel?: string` (default `Before`)
-- `afterLabel?: string` (default `After`)
-- `copyLabel?: string` (default `Copy diff`)
-
-## Events
-
-- `update:mode`
-- `copy({ text })`
-
-## Slots
-
-- N/A
+```ts
+import DiffViewer from '@/package/components/diff-viewer.vue';
+```
 
 ## Examples
 
+### Basic
+
+Use `DiffViewer` for config changes, revision history, or review tooling.
+
 ```vue
-<DiffViewer :before="previousPayload" :after="nextPayload" mode="split" format="json" />
+<script setup lang="ts">
+const before = { retries: 3, region: 'eu-west-1', enabled: false };
+const after = { retries: 5, region: 'eu-west-1', enabled: true };
+</script>
+
+<template>
+    <DiffViewer :before="before" :after="after" format="json" />
+</template>
 ```
+
+### Split Mode
+
+Use split mode when reviewers need side-by-side comparison instead of compact inline output.
+
+```vue
+<DiffViewer
+    :before="before"
+    :after="after"
+    format="json"
+    mode="split"
+/>
+```
+
+### Text Diff
+
+Switch to text mode for release notes, markdown, or source snippets that should not be parsed as JSON.
+
+```vue
+<DiffViewer
+    before="Status: pending"
+    after="Status: approved"
+    format="text"
+/>
+```
+
+### Toolbar And Copy
+
+Keep the toolbar visible when operators need fast mode switching or copy actions.
+
+```vue
+<DiffViewer
+    :before="before"
+    :after="after"
+    show-toolbar
+    copyable
+    @copy="({ text }) => console.log(text)"
+/>
+```
+
+## API
+
+### Props
+
+| Name | Type | Default |
+| --- | --- | --- |
+| `before` | `unknown` | `undefined` |
+| `after` | `unknown` | `undefined` |
+| `mode` | `'inline' \| 'split'` | `'inline'` |
+| `format` | `'auto' \| 'text' \| 'json'` | `'auto'` |
+| `showToolbar` | `boolean` | `false` |
+| `copyable` | `boolean` | `false` |
+| `disabled` | `boolean` | `false` |
+| `inlineLabel` | `string` | `'Inline diff'` |
+| `splitLabel` | `string` | `'Split diff'` |
+| `copyLabel` | `string` | `'Copy diff'` |
+
+### Events
+
+| Name | Payload |
+| --- | --- |
+| `update:mode` | `'inline' \| 'split'` |
+| `copy` | `{ text }` |
 
 ## Theming
 
-- Override via `theme.overrides.components.diffViewer`.
+Override component tokens through `theme.overrides.components.diffViewer`.
 
 ## Tokens
 
-- Layout/surface: `gap`, `padding`, `borderColor`, `borderRadius`, `backgroundColor`, `textColor`
+- Layout and surface: `padding`, `borderRadius`, `borderColor`, `backgroundColor`
 - Typography: `fontFamily`, `fontSize`, `lineHeight`
-- Toolbar/controls: `toolbarGap`, `toolbarGroupGap`, `control*`, `controlActive*`
-- Rows/cells: `dividerColor`, `cellPadding`, `rowGap`, `cellGap`, `rowBorderRadius`, `lineColor`, `markerColor`
-- States: `addedBackgroundColor`, `removedBackgroundColor`, `changedBackgroundColor`, `emptyColor`
+- Toolbar: `toolbarGap`, `toolbarPadding`, `toolbarButtonBackgroundColor`, `toolbarButtonTextColor`
+- Diff rows and cells: `addedBackgroundColor`, `removedBackgroundColor`, `changedBackgroundColor`, `gutterTextColor`, `separatorColor`
 
 ## Recipes
 
-- Use `format="json"` for payload/object diffs in audit pages.
-- Use `mode="inline"` for compact side panels and `split` for desktop detail drawers.
+- Prefer `format="json"` for API payloads and configuration objects so structure stays readable.
+- Use inline mode for compact history views and split mode for focused review tasks.
 
 ## Accessibility
 
-- Mode toggles expose `aria-pressed` and remain keyboard reachable.
-- Split mode renders semantic table structure for line comparison.
-
-## Responsive
-
-- Inline mode stays compact on narrow panels; split mode is suited for wider layouts.
-
-## SSR/Hydration
-
-- Deterministic rendering from `before`/`after` values and selected mode.
-
-## Testing
-
-- Cover mode switch, JSON formatting, line state rendering, and copy action events.
+- Mode controls should keep clear labels when restyled or replaced through pass-through APIs.
+- Long diffs still need surrounding summary text so screen-reader users understand the overall change before traversing rows.

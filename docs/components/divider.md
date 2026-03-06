@@ -1,9 +1,70 @@
 # Divider
 
-## Purpose
+Separate adjacent content groups with consistent horizontal or vertical visual rhythm.
 
-- Separate content groups visually in forms, panels, menus, and page sections.
-- Offer consistent horizontal/vertical separation semantics.
+## Import
+
+```ts
+import { Divider } from '@codemonster-ru/vueforge';
+```
+
+## Examples
+
+Use `Divider` to clarify grouping, not as decoration for its own sake.
+
+### Basic
+
+Use a horizontal divider between stacked sections.
+
+```vue
+<template>
+    <Stack gap="1rem">
+        <p>Current plan: Pro</p>
+        <Divider />
+        <p>Billing cycle: Monthly</p>
+    </Stack>
+</template>
+```
+
+### With Label
+
+Use a label when the separator marks an explicit branch in the flow.
+
+```vue
+<template>
+    <Divider label="OR" />
+</template>
+```
+
+### Vertical
+
+Use a vertical divider inside inline toolbars or compact metadata rows.
+
+```vue
+<template>
+    <div style="height: 32px; display: flex; align-items: center; gap: 8px">
+        <span>Overview</span>
+        <Divider orientation="vertical" />
+        <span>Usage</span>
+        <Divider orientation="vertical" />
+        <span>Audit log</span>
+    </div>
+</template>
+```
+
+### Variants And Inset
+
+Adjust the line style or inset when the surrounding surface calls for lighter separation.
+
+```vue
+<template>
+    <Stack gap="0.75rem">
+        <Divider variant="solid" />
+        <Divider variant="dashed" inset />
+        <Divider variant="dotted" />
+    </Stack>
+</template>
+```
 
 ## Props
 
@@ -19,23 +80,7 @@
 
 ## Slots
 
-- `default` (optional) - custom label content (horizontal mode only)
-
-## Examples
-
-```vue
-<Divider />
-<Divider label="OR" />
-<div style="height: 32px; display: flex; align-items: center; gap: 8px">
-    <span>
-        Left
-    </span>
-    <Divider orientation="vertical" />
-    <span>
-        Right
-    </span>
-</div>
-```
+- `default` - custom label content in horizontal mode
 
 ## Theming
 
@@ -51,25 +96,11 @@ Component tokens (override via `theme.overrides.components.divider`):
 
 ## Recipes
 
-- Horizontal section separator between content groups.
-- Centered label separator (`label="OR"`) for auth/social blocks.
-- Vertical separator inside compact inline toolbars.
-
-## Responsive
-
-- Ensure divider orientation and spacing remain correct in wrapped/stacked layouts.
-- Validate contrast in compact/mobile density contexts.
-
-## SSR/Hydration
-
-- Divider is render-only and should hydrate one-to-one with server output.
-- No client-side state mutation should alter divider structure.
-
-## Testing
-
-- Cover orientation, inset/variant props, and optional label content.
-- Add snapshot coverage for high-density layouts.
+- Use vertical dividers sparingly and only when adjacent content is clearly related.
+- Labelled dividers work well in auth or branch-choice flows.
+- Prefer spacing alone when the separation is already obvious.
 
 ## Accessibility
 
-- Ensure keyboard access, visible focus state, and sufficient color contrast in usage contexts.
+- Renders with `role="separator"` and exposes orientation semantics.
+- Keep labels concise when using labelled dividers.

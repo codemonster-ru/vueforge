@@ -1,9 +1,72 @@
 # Section
 
-## Purpose
+Define vertical page bands with consistent spacing, optional backgrounds, and border separation.
 
-- Define vertical page sections with consistent spacing and optional heading metadata.
-- Compose dashboards/settings pages into readable content blocks.
+## Import
+
+```ts
+import { Section } from '@codemonster-ru/vueforge';
+```
+
+## Examples
+
+Use `Section` for vertical rhythm and page banding. It is usually paired with `Container` inside.
+
+### Basic
+
+Use the default transparent section to separate logical page blocks without changing the page surface.
+
+```vue
+<template>
+    <Section>
+        <Container>
+            <p>Default section content</p>
+        </Container>
+    </Section>
+</template>
+```
+
+### Background Variants
+
+Switch backgrounds to create alternating page bands or emphasize a specific block.
+
+```vue
+<template>
+    <div style="display: grid; gap: 0.75rem;">
+        <Section background="surface"><Container><Card>Surface section</Card></Container></Section>
+        <Section background="muted"><Container><Card>Muted section</Card></Container></Section>
+        <Section background="elevated"><Container><Card>Elevated section</Card></Container></Section>
+    </div>
+</template>
+```
+
+### Bordered
+
+Use `bordered` when adjacent sections need a stronger visual boundary.
+
+```vue
+<template>
+    <Section background="surface" bordered>
+        <Container>
+            <PageHeader title="Projects" subtitle="Overview and team activity." />
+        </Container>
+    </Section>
+</template>
+```
+
+### Semantic Main Section
+
+Use `as="main"` when a section should also define the main landmark for the current page view.
+
+```vue
+<template>
+    <Section as="main" background="muted" padding-y="4rem">
+        <Container size="lg">
+            <p>Main section content with custom vertical rhythm.</p>
+        </Container>
+    </Section>
+</template>
+```
 
 ## Props
 
@@ -19,24 +82,6 @@
 ## Slots
 
 - `default`
-
-## Examples
-
-```vue
-<Section background="surface" bordered>
-    <Container size="xl">
-        <PageHeader title="Projects" subtitle="Overview and team activity." />
-    </Container>
-</Section>
-
-<Section as="main" background="muted" padding-y="4rem">
-    <Container size="lg">
-        <p>
-            Main section content with custom vertical rhythm.
-        </p>
-    </Container>
-</Section>
-```
 
 ## Composition with Container
 
@@ -57,23 +102,9 @@ Component tokens (override via `theme.overrides.components.section`):
 
 ## Recipes
 
-- Alternating page bands: alternate `background="surface"` and `background="muted"` between sections.
-- Hero section: `as="main"` with larger `padding-y` and nested `Container` for readable width.
-
-## Responsive
-
-- Verify section spacing scales correctly across breakpoints and density modes.
-- Ensure heading/subtitle wrapping does not break layout on small screens.
-
-## SSR/Hydration
-
-- Section is render-only and should hydrate without interactive deltas.
-- Confirm semantic tag output is identical between server and client.
-
-## Testing
-
-- Test spacing variants, heading slot rendering, and semantic tag output.
-- Add snapshot coverage for compact and comfortable spacing combinations.
+- Alternate `surface` and `muted` backgrounds to build readable long-form settings and dashboard pages.
+- Use `paddingY` overrides sparingly for hero bands or unusually dense admin sections.
+- Keep `Section` responsible for page rhythm and leave width constraints to `Container`.
 
 ## Accessibility
 

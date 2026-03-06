@@ -1,9 +1,73 @@
 # EmptyState
 
-## Purpose
+Present no-data and no-results scenarios with clear explanation and next actions.
 
-- Communicate no-data/no-results/no-access scenarios with clear guidance and actions.
-- Standardize empty experiences across tables, dashboards, and detail views.
+## Import
+
+```ts
+import { EmptyState } from '@codemonster-ru/vueforge';
+```
+
+## Examples
+
+Use `EmptyState` when the user needs orientation and a next step, not just a plain "no results" string.
+
+### Basic
+
+Use title and description props for straightforward empty scenarios.
+
+```vue
+<template>
+    <EmptyState
+        title="No projects yet"
+        description="Create your first project to get started."
+        icon="folder"
+    />
+</template>
+```
+
+### With Actions
+
+Use the `actions` slot when the user can recover immediately from the empty condition.
+
+```vue
+<template>
+    <EmptyState title="No projects yet" description="Create your first project to get started.">
+        <template #actions>
+            <Button label="Create project" size="small" />
+            <Button label="Import" size="small" variant="outline" />
+        </template>
+    </EmptyState>
+</template>
+```
+
+### Outlined Variant
+
+Use `outlined` when the empty state sits on a busy surface and should feel lighter.
+
+```vue
+<template>
+    <EmptyState
+        variant="outlined"
+        title="No matching environments"
+        description="Try adjusting the selected filters."
+    />
+</template>
+```
+
+### Sizes
+
+Adjust size for compact panels or larger dashboard canvases.
+
+```vue
+<template>
+    <Stack gap="1rem">
+        <EmptyState size="small" title="No notes" description="Add a note to get started." />
+        <EmptyState title="No data" description="Pick a date range to load metrics." />
+        <EmptyState size="large" title="No dashboards" description="Create your first dashboard." />
+    </Stack>
+</template>
+```
 
 ## Props
 
@@ -24,20 +88,9 @@
 - `icon` (optional)
 - `actions` (optional)
 
-## Examples
-
-```vue
-<EmptyState title="No projects yet" description="Create your first project to get started." icon="??">
-    <template #actions>
-        <Button label="Create project" size="small" />
-        <Button label="Import" size="small" severity="secondary" />
-    </template>
-</EmptyState>
-```
-
 ## Theming
 
-- Override via theme component overrides for each component documented on this page.
+- Override via `theme.overrides.components.emptyState`.
 
 ## Tokens
 
@@ -54,24 +107,11 @@ Component tokens (override via `theme.overrides.components.emptyState`):
 
 ## Recipes
 
-- Start with the examples above as baseline usage for this component.
-- Add product-specific variants (loading/error/dense/mobile) in consuming app docs when needed.
-
-## Responsive
-
-- Verify illustration/text/action layout remains readable on small screens.
-- Ensure call-to-action buttons wrap without breaking hierarchy.
-
-## SSR/Hydration
-
-- Empty state content should be deterministic from server data state.
-- Avoid hydration mismatch between loading and empty branches.
-
-## Testing
-
-- Cover content variants (empty/filter/error-like messaging) and action slots.
-- Add tests for localization length expansion and responsive wrapping.
+- Use empty states to explain why content is missing and what the user can do next.
+- Prefer explicit next actions over passive copy when a recovery path exists.
+- Keep icon choice supportive, not decorative noise.
 
 ## Accessibility
 
-- Ensure keyboard access, visible focus state, and sufficient color contrast in usage contexts.
+- Empty state renders `role="status"` with polite announcement behavior.
+- Ensure actions remain keyboard reachable and text stays descriptive without relying on icons.

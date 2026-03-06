@@ -1,145 +1,45 @@
 # DataTable
 
-## Purpose
+Render high-density operational datasets with sorting, selection, grouping, expansion, and server handoff hooks.
 
-Render and manage high-density operational data with scalable interaction patterns.
-Support filtering, navigation, and bulk workflows used in core SaaS backoffice screens.
+## Import
 
-## Props
-
-- `rows?: Array<Record<string, unknown>>`
-- `columns?: Array<{ field: string; header?: string; sortable?: boolean; resizable?: boolean; align?: 'left' | 'center' | 'right'; width?: string; minWidth?: string; sticky?: 'left' | 'right'; formatter?: (row, value, column) => string | number }>`
-- `rowKey?: string | ((row, index) => string | number)`
-- `sortable?: boolean`
-- `sortField?: string | null`
-- `sortOrder?: 'asc' | 'desc' | null`
-- `loading?: boolean`
-- `loadingText?: string` (default `Loading...`)
-- `emptyText?: string` (default `No data`)
-- `striped?: boolean` (default `false`)
-- `hover?: boolean` (default `true`)
-- `size?: 'small' | 'normal' | 'large'` (default `normal`)
-- `variant?: 'filled' | 'outlined'` (default `filled`)
-- `showHeader?: boolean` (default `true`)
-- `ariaLabel?: string` (default `Data table`)
-- `server?: boolean` (default `false`) - enables server-mode handoff
-- `page?: number` (default `1`) - current server-side page
-- `pageSize?: number` (default `10`) - current server-side page size
-- `filters?: Record<string, unknown>` (default `{}`) - current server-side filters
-- `selectionMode?: 'single' | 'multiple' | null` (default `null`)
-- `selection?: string | number | Array<string | number> | null` (default `null`)
-- `bulkActions?: Array<{ label: string; value: string; disabled?: boolean }>` (default `[]`)
-- `pendingBulkActions?: Array<string>` (default `[]`)
-- `actionsLocked?: boolean` (default `false`)
-- `pendingActionText?: string` (default `Running...`)
-- `selectAllAriaLabel?: string` (default `Select all rows`)
-- `selectRowAriaLabel?: string` (default `Select row`)
-- `stickyHeader?: boolean` (default `false`)
-- `columnResize?: boolean` (default `false`) - enables drag-to-resize for header columns
-- `minColumnWidth?: number` (default `80`) - minimum width in pixels for resized columns
-- `columnReorder?: boolean` (default `false`) - enables drag-and-drop column reordering
-- `columnOrder?: Array<string>` (default `[]`) - controlled ordered list of column fields
-- `rowGroupBy?: string | ((row, index) => string | number | null | undefined)` - enables row grouping by field/computed key
-- `rowGroupLabel?: string` (default `Group`) - fallback group label for empty keys
-- `rowExpansion?: boolean` (default `false`) - enables expandable detail rows
-- `expandedRows?: Array<string | number>` (default `[]`) - controlled expanded row keys
-- `rowExpandable?: (row, index) => boolean` - controls which rows can expand
-- `expandOnRowClick?: boolean` (default `false`) - toggles row expansion on row click
-- `expandRowAriaLabel?: string` (default `Expand row`)
-- `collapseRowAriaLabel?: string` (default `Collapse row`)
-- `visibleColumns?: Array<string>` (default `[]`) - controlled visible column fields (`[]` means all)
-- `columnVisibilityManager?: boolean` (default `false`) - built-in column visibility UI
-- `columnVisibilityLabel?: string` (default `Columns`) - label for visibility manager toggle
-- `savedFilters?: Array<{ id: string | number; label: string; filters: Record<string, unknown>; disabled?: boolean }>` (default `[]`)
-- `activeSavedFilterId?: string | number | null` (default `null`)
-- `showSavedFilters?: boolean` (default `false`)
-- `savedFiltersLabel?: string` (default `Saved filters`)
-- `savedFiltersPlaceholder?: string` (default `Choose filter`)
-- `exportActions?: Array<{ label: string; value: string; disabled?: boolean }>` (default `[]`)
-- `pendingExportActions?: Array<string>` (default `[]`)
-- `showExportActions?: boolean` (default `false`)
-- `exportLabel?: string` (default `Export`)
-
-## Events
-
-- `update:sortField`
-- `update:sortOrder`
-- `sort`
-- `rowClick`
-- `update:page`
-- `update:pageSize`
-- `update:filters`
-- `page`
-- `filter`
-- `request` - payload: `{ sortField, sortOrder, page, pageSize, filters }`
-- `update:selection`
-- `selectionChange`
-- `bulkAction` - payload: `(action, selectedKeys, selectedRows)`
-- `exportAction` - payload: `(action, query, selectedKeys, selectedRows, activeSavedFilterId)`
-- `update:activeSavedFilterId`
-- `savedFilterChange` - payload: `(id | null, filters)`
-- `columnResize` - payload: `{ field, width, widthPx }`
-- `update:columnOrder`
-- `columnReorder` - payload: `{ fromField, toField, order }`
-- `update:expandedRows`
-- `rowExpand` - payload: `(row, index, event?)`
-- `rowCollapse` - payload: `(row, index, event?)`
-- `update:visibleColumns`
-- `columnVisibilityChange` - payload: `Array<string>`
-
-## Slots
-
-- `header-{field}`
-- `cell-{field}`
-- `empty`
-- `loading`
-- `bulk-actions` - slot props: `{ selectedKeys, selectedRows, clearSelection, applyAction }`
-- `group-header` - slot props: `{ group, rows }`
-- `row-expansion` - slot props: `{ row, index }`
+```ts
+import { DataTable } from '@codemonster-ru/vueforge';
+```
 
 ## Examples
 
+Use `DataTable` for dense management and backoffice screens where rows behave like structured records rather than cards.
+
+### Basic
+
+Use columns and rows for a straightforward sortable table.
+
 ```vue
-<DataTable
-    :columns="[
-        { field: 'name', header: 'Name', sortable: true },
-        { field: 'role', header: 'Role' },
-        { field: 'age', header: 'Age', align: 'right', sortable: true },
-    ]"
-    :rows="[
-        { id: 1, name: 'Alice', role: 'Developer', age: 29 },
-        { id: 2, name: 'Bob', role: 'Designer', age: 34 },
-    ]"
-    row-key="id"
-    sortable
-    striped
-/>
+<template>
+    <DataTable
+        :columns="[
+            { field: 'name', header: 'Name', sortable: true },
+            { field: 'role', header: 'Role' },
+            { field: 'age', header: 'Age', align: 'right', sortable: true }
+        ]"
+        :rows="[
+            { id: 1, name: 'Alice', role: 'Developer', age: 29 },
+            { id: 2, name: 'Bob', role: 'Designer', age: 34 }
+        ]"
+        row-key="id"
+        sortable
+        striped
+    />
+</template>
 ```
 
-### Server-side table handoff
+### Server Handoff
+
+Use `server` mode when sorting, paging, and filtering are owned by the backend.
 
 ```vue
-<script setup lang="ts">
-import { ref } from 'vue';
-
-const rows = ref([]);
-const sortField = ref<string | null>(null);
-const sortOrder = ref<'asc' | 'desc' | null>(null);
-const page = ref(1);
-const pageSize = ref(20);
-const filters = ref<Record<string, unknown>>({ search: '' });
-
-const onRequest = async (query: {
-    sortField: string | null;
-    sortOrder: 'asc' | 'desc' | null;
-    page: number;
-    pageSize: number;
-    filters: Record<string, unknown>;
-}) => {
-    // Send query to backend and replace rows with server response.
-};
-</script>
-
 <template>
     <DataTable
         :columns="columns"
@@ -151,29 +51,16 @@ const onRequest = async (query: {
         :page="page"
         :page-size="pageSize"
         :filters="filters"
-        @update:sort-field="sortField = $event"
-        @update:sort-order="sortOrder = $event"
-        @update:page="page = $event"
-        @update:page-size="pageSize = $event"
-        @update:filters="filters = $event"
         @request="onRequest"
     />
 </template>
 ```
 
-### Selectable table with bulk actions
+### Selection And Bulk Actions
+
+Use multi-selection for batch workflows.
 
 ```vue
-<script setup lang="ts">
-import { ref } from 'vue';
-
-const selection = ref<Array<string | number>>([]);
-
-const onBulkAction = (action: string, keys: Array<string | number>) => {
-    // Handle bulk action for selected keys.
-};
-</script>
-
 <template>
     <DataTable
         :columns="columns"
@@ -182,7 +69,7 @@ const onBulkAction = (action: string, keys: Array<string | number>) => {
         :selection="selection"
         :bulk-actions="[
             { label: 'Archive', value: 'archive' },
-            { label: 'Delete', value: 'delete' },
+            { label: 'Delete', value: 'delete' }
         ]"
         @update:selection="selection = $event"
         @bulk-action="onBulkAction"
@@ -190,117 +77,115 @@ const onBulkAction = (action: string, keys: Array<string | number>) => {
 </template>
 ```
 
-### SaaS ops mode (saved filters + export hooks)
+### Grouping And Expansion
+
+Use row grouping or expansion when records need secondary detail without leaving the table.
 
 ```vue
-<DataTable
-    server
-    :columns="columns"
-    :rows="rows"
-    :filters="filters"
-    :saved-filters="savedFilters"
-    :active-saved-filter-id="activeSavedFilterId"
-    show-saved-filters
-    :export-actions="[
-        { label: 'CSV', value: 'csv' },
-        { label: 'XLSX', value: 'xlsx' },
-    ]"
-    :pending-export-actions="pendingExports"
-    :pending-bulk-actions="pendingBulkActions"
-    show-export-actions
-    @update:filters="filters = $event"
-    @update:active-saved-filter-id="activeSavedFilterId = $event"
-    @export-action="onExport"
-/>
-```
-
-### Sticky header and sticky columns
-
-```vue
-<DataTable
-    :columns="[
-        { field: 'name', header: 'Name', sticky: 'left', width: '180px' },
-        { field: 'role', header: 'Role' },
-        { field: 'age', header: 'Age', align: 'right', sticky: 'right', width: '100px' },
-    ]"
-    :rows="rows"
-    sticky-header
-/>
-```
-
-### Column resize
-
-```vue
-<DataTable
-    column-resize
-    :min-column-width="96"
-    :columns="[
-        { field: 'name', header: 'Name', width: '180px', resizable: true },
-        { field: 'role', header: 'Role', resizable: true },
-        { field: 'age', header: 'Age', align: 'right', resizable: false },
-    ]"
-    :rows="rows"
-    @column-resize="payload => console.log(payload)"
-/>
-```
-
-### Column reorder
-
-```vue
-<script setup lang="ts">
-import { ref } from 'vue';
-
-const order = ref(['name', 'role', 'age']);
-</script>
-
 <template>
     <DataTable
-        column-reorder
-        :column-order="order"
-        :columns="[
-            { field: 'name', header: 'Name' },
-            { field: 'role', header: 'Role' },
-            { field: 'age', header: 'Age', align: 'right', sortable: true },
-        ]"
+        row-expansion
+        row-group-by="team"
+        :expanded-rows="expandedRows"
+        :columns="columns"
         :rows="rows"
-        @update:column-order="order = $event"
+        @update:expanded-rows="expandedRows = $event"
+    >
+        <template #group-header="{ group, rows: groupRows }">
+            <strong>{{ group }}</strong> ({{ groupRows.length }})
+        </template>
+        <template #row-expansion="{ row }">
+            <div>Details for {{ row.name }}</div>
+        </template>
+    </DataTable>
+</template>
+```
+
+### Column Management
+
+Use reorder, resize, and visibility management for user-customizable dense tables.
+
+```vue
+<template>
+    <DataTable
+        column-resize
+        column-reorder
+        column-visibility-manager
+        :column-order="columnOrder"
+        :visible-columns="visibleColumns"
+        :columns="columns"
+        :rows="rows"
+        @update:column-order="columnOrder = $event"
+        @update:visible-columns="visibleColumns = $event"
     />
 </template>
 ```
 
-### Row grouping and row expansion
+## Key Props
 
-```vue
-<DataTable
-    row-expansion
-    row-group-by="team"
-    :expanded-rows="expandedRows"
-    :columns="columns"
-    :rows="rows"
-    @update:expanded-rows="expandedRows = $event"
->
-    <template #group-header="{ group, rows: groupRows }">
-        <strong>{{ group }}</strong> ({{ groupRows.length }})
-    </template>
-    <template #row-expansion="{ row }">
-        <div>
-            Details for {{ row.name }}
-        </div>
-    </template>
-</DataTable>
-```
+- `rows?: Array<Record<string, unknown>>`
+- `columns?: Array<{ field: string; header?: string; sortable?: boolean; resizable?: boolean; align?: 'left' | 'center' | 'right'; width?: string; minWidth?: string; sticky?: 'left' | 'right'; formatter?: (row, value, column) => string | number }>`
+- `rowKey?: string | ((row, index) => string | number)` (default `id`)
+- `sortable?: boolean` (default `false`)
+- `sortField?: string | null`
+- `sortOrder?: 'asc' | 'desc' | null`
+- `loading?: boolean` (default `false`)
+- `emptyText?: string`
+- `striped?: boolean` (default `false`)
+- `hover?: boolean` (default `true`)
+- `size?: 'small' | 'normal' | 'large'` (default `normal`)
+- `variant?: 'filled' | 'outlined'` (default `filled`)
+- `showHeader?: boolean` (default `true`)
+- `ariaLabel?: string` (default `Data table`)
+- `server?: boolean` (default `false`)
+- `page?: number` (default `1`)
+- `pageSize?: number` (default `10`)
+- `filters?: Record<string, unknown>` (default `{}`)
+- `selectionMode?: 'single' | 'multiple' | null` (default `null`)
+- `selection?: string | number | Array<string | number> | null`
+- `bulkActions?: Array<{ label: string; value: string; disabled?: boolean }>`
+- `pendingBulkActions?: Array<string>`
+- `actionsLocked?: boolean` (default `false`)
+- `stickyHeader?: boolean` (default `false`)
+- `columnResize?: boolean` (default `false`)
+- `minColumnWidth?: number` (default `80`)
+- `columnReorder?: boolean` (default `false`)
+- `columnOrder?: Array<string>`
+- `rowGroupBy?: string | ((row, index) => string | number | null | undefined)`
+- `rowExpansion?: boolean` (default `false`)
+- `expandedRows?: Array<string | number>`
+- `rowExpandable?: (row, index) => boolean`
+- `expandOnRowClick?: boolean` (default `false`)
+- `visibleColumns?: Array<string>`
+- `columnVisibilityManager?: boolean` (default `false`)
+- `savedFilters?: Array<{ id: string | number; label: string; filters: Record<string, unknown>; disabled?: boolean }>`
+- `activeSavedFilterId?: string | number | null`
+- `showSavedFilters?: boolean` (default `false`)
+- `exportActions?: Array<{ label: string; value: string; disabled?: boolean }>`
+- `pendingExportActions?: Array<string>`
+- `showExportActions?: boolean` (default `false`)
 
-### Column visibility manager
+## Key Events
 
-```vue
-<DataTable
-    column-visibility-manager
-    :visible-columns="visibleColumns"
-    :columns="columns"
-    :rows="rows"
-    @update:visible-columns="visibleColumns = $event"
-/>
-```
+- `update:sortField`, `update:sortOrder`, `sort`
+- `rowClick`
+- `update:page`, `update:pageSize`, `update:filters`
+- `page`, `filter`, `request`
+- `update:selection`, `selectionChange`, `bulkAction`
+- `exportAction`, `update:activeSavedFilterId`, `savedFilterChange`
+- `columnResize`, `update:columnOrder`, `columnReorder`
+- `update:expandedRows`, `rowExpand`, `rowCollapse`
+- `update:visibleColumns`, `columnVisibilityChange`
+
+## Slots
+
+- `header-{field}`
+- `cell-{field}`
+- `empty`
+- `loading`
+- `bulk-actions`
+- `group-header`
+- `row-expansion`
 
 ## Theming
 
@@ -323,34 +208,12 @@ Component tokens (override via `theme.overrides.components.datatable`):
 
 ## Recipes
 
-- Client-side sortable table with striped rows for management screens.
-- Server-side handoff using `request` payload for backend-driven pagination/sorting/filtering.
-- Multi-select table with `bulkActions` for batch operations.
-- Sticky header/columns for wide datasets.
-- Column-resize mode for dense/variable datasets.
-- Column reorder mode for user-customizable table layouts.
-- Row grouping for team/status segmented datasets.
-- Row expansion for master-detail tables.
-- Built-in column visibility manager for per-user table views.
-
-## Responsive
-
-Validate table/list density, horizontal overflow strategy, and virtualization behavior across breakpoints.
-Ensure row/item actions remain accessible and discoverable on touch devices.
-
-## SSR/Hydration
-
-Render initial viewport slice and structural wrappers deterministically to avoid hydration drift.
-Defer measurement-driven virtualization logic until client mount.
-
-## Testing
-
-Cover sorting/filtering/selection/navigation flows and large-dataset edge cases.
-Cover row grouping/expansion and column visibility state management.
-Add performance-sensitive regression tests and ARIA verification for interactive data regions.
+- Use `server` mode as soon as sort, page, or filter state is owned by an API rather than local memory.
+- Keep row keys stable, especially when combining selection, expansion, and reordering features.
+- Add complexity incrementally: selection, grouping, expansion, and column management all make sense, but not every table needs all of them at once.
 
 ## Accessibility
 
-- Table uses semantic `<table>` structure and supports sortable header states via `aria-sort`.
-- Use `ariaLabel` for contextual table naming in screen readers.
-- Provide meaningful empty/loading slot text for assistive technologies.
+- Uses semantic table markup and exposes `aria-sort` on sortable headers.
+- Provide an `ariaLabel` when the surrounding context does not already name the table.
+- Make sure loading and empty states stay meaningful in assistive technologies through slot content or text props.

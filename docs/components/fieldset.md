@@ -1,65 +1,131 @@
 # Fieldset
 
-## Purpose
+Fieldset provides semantic form grouping with native `fieldset` and `legend` structure, plus optional collapse behavior.
 
-Provide semantic form grouping with optional collapse/toggle and legend actions.
+## Import
 
-## Props
+```ts
+import Fieldset from '@/package/components/fieldset.vue';
+```
 
-- `modelValue?: boolean` (default `true`) - expanded state (`v-model`)
-- `legend?: string` (default `Details`)
-- `variant?: 'filled' | 'outlined'` (default `filled`)
-- `collapsible?: boolean` (default `false`)
-- `disabled?: boolean` (default `false`)
-- `actionsAriaLabel?: string` (default `Fieldset actions`)
-- `expandLabel?: string` (default `Expand`)
-- `collapseLabel?: string` (default `Collapse`)
+## Examples
 
-## Events
+### Basic
 
-- `update:modelValue`
-- `toggle` (payload: `boolean`, `event`)
-
-## Slots
-
-- `default`
-- `legend`
-- `actions`
-
-## Example
+Use Fieldset to group related form controls under a clear legend.
 
 ```vue
-<Fieldset v-model="advancedOpen" legend="Advanced Filters" collapsible>
+<Fieldset legend="Billing details">
+    <Stack gap="md">
+        <Input label="Company" />
+        <Input label="Tax ID" />
+    </Stack>
+</Fieldset>
+```
+
+### Collapsible
+
+Enable `collapsible` for advanced or optional groups that should stay hidden by default.
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const advancedOpen = ref(true);
+</script>
+
+<template>
+    <Fieldset v-model="advancedOpen" legend="Advanced filters" collapsible>
+        <Grid>
+            <GridItem cols="6"><Input label="Owner" /></GridItem>
+            <GridItem cols="6"><Select :items="statuses" label="Status" /></GridItem>
+        </Grid>
+    </Fieldset>
+</template>
+```
+
+### Legend Actions
+
+Use the `actions` slot for reset, helper, or auxiliary controls tied to the group.
+
+```vue
+<Fieldset legend="Advanced filters" collapsible>
     <template #actions>
-        <Button size="small" variant="outlined">
+        <Button size="sm" variant="outlined">
             Reset
         </Button>
     </template>
 
-    <Grid>
-        <GridItem cols="6"><Input label="Owner" /></GridItem>
-        <GridItem cols="6"><Select :items="statuses" label="Status" /></GridItem>
-    </Grid>
+    <FilterPanel />
 </Fieldset>
 ```
 
+### Custom Legend
+
+Override the legend slot when the group title needs richer content.
+
+```vue
+<Fieldset>
+    <template #legend>
+        <span>
+            Team access
+            <Badge value="Required" />
+        </span>
+    </template>
+
+    <Checkbox label="Allow workspace invites" />
+</Fieldset>
+```
+
+## API
+
+### Props
+
+| Name | Type | Default |
+| --- | --- | --- |
+| `modelValue` | `boolean` | `true` |
+| `legend` | `string` | `'Details'` |
+| `variant` | `'filled' \| 'outlined'` | `'filled'` |
+| `collapsible` | `boolean` | `false` |
+| `disabled` | `boolean` | `false` |
+| `actionsAriaLabel` | `string` | `'Fieldset actions'` |
+| `expandLabel` | `string` | `'Expand'` |
+| `collapseLabel` | `string` | `'Collapse'` |
+
+### Events
+
+| Name | Payload |
+| --- | --- |
+| `update:modelValue` | `boolean` |
+| `toggle` | `expanded: boolean, event: Event` |
+
+### Slots
+
+| Name | Description |
+| --- | --- |
+| `default` | Fieldset content. |
+| `legend` | Replaces the legend label. |
+| `actions` | Controls rendered beside the legend. |
+
 ## Theming
 
-- Override via `theme.overrides.components.fieldset`.
+Override component tokens through `theme.overrides.components.fieldset`.
 
 ## Tokens
 
-- `borderColor`, `borderRadius`, `backgroundColor`, `textColor`
-- `padding`, `legendPadding`, `legendFontSize`, `legendFontWeight`, `legendColor`
-- `contentPadding`, `headerGap`, `actionsGap`
-- `toggleSize`, `toggleRadius`, `toggleBorderColor`, `toggleBackgroundColor`, `toggleTextColor`, `toggleHoverBackgroundColor`
-- `disabledOpacity`
+- Surface: `borderColor`, `borderRadius`, `backgroundColor`, `textColor`
+- Legend and content: `padding`, `legendPadding`, `legendFontSize`, `legendFontWeight`, `legendColor`, `contentPadding`
+- Header actions: `headerGap`, `actionsGap`
+- Toggle button: `toggleSize`, `toggleRadius`, `toggleBorderColor`, `toggleBackgroundColor`, `toggleTextColor`, `toggleHoverBackgroundColor`
+- State: `disabledOpacity`
+
+## Recipes
+
+- Use Fieldset for semantically related form controls, filter groups, and settings clusters.
+- Prefer `Panel` when the content is not primarily a form group and does not benefit from `fieldset` semantics.
 
 ## Accessibility
 
-- Uses native `fieldset` and `legend` semantics.
-- Collapse button exposes `aria-expanded` and `aria-controls`.
+- Fieldset preserves native `fieldset` and `legend` semantics for screen readers and forms.
+- The collapse button exposes `aria-expanded` and `aria-controls` when disclosure is enabled.
 
-## Testing
-
-- Cover collapse state updates and semantic legend rendering.

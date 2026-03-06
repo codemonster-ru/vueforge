@@ -1,9 +1,121 @@
 # Combobox
 
-## Purpose
+Combine free typing with option picking when users may search, select, or commit a custom value.
 
-Enable fast option discovery and selection for forms, filters, and table toolbars.
-Cover both small curated lists and async/large datasets with consistent selection semantics.
+## Import
+
+```ts
+import { Combobox } from '@codemonster-ru/vueforge';
+```
+
+## Examples
+
+Use `Combobox` when the typed query matters as much as the selected value, or when custom creation is allowed.
+
+### Basic
+
+Use a strict combobox when users should search and then choose an existing option.
+
+```vue
+<template>
+    <Combobox
+        v-model="countryId"
+        v-model:inputValue="countryQuery"
+        placeholder="Pick a country"
+        :options="[
+            { label: 'Canada', value: 'ca' },
+            { label: 'Germany', value: 'de' },
+            { label: 'Japan', value: 'jp' },
+            { label: 'United States', value: 'us' }
+        ]"
+    />
+</template>
+```
+
+### Create New Value
+
+Use `allowCreate` when users may commit a custom value that is not yet present in the options list.
+
+```vue
+<template>
+    <Combobox
+        v-model="tag"
+        v-model:inputValue="tagQuery"
+        allow-create
+        :strict="false"
+        placeholder="Add or choose a tag"
+        :options="[
+            { label: 'Backend', value: 'backend' },
+            { label: 'Design', value: 'design' },
+            { label: 'Frontend', value: 'frontend' }
+        ]"
+    />
+</template>
+```
+
+### Clearable
+
+Turn on `clearable` when both the selected value and the typed query should be reset quickly.
+
+```vue
+<template>
+    <Combobox
+        v-model="ownerId"
+        v-model:inputValue="ownerQuery"
+        clearable
+        placeholder="Choose an owner"
+        :options="[
+            { label: 'Ava Patel', value: 'ava' },
+            { label: 'Maksim Ivanov', value: 'maksim' },
+            { label: 'Wei Chen', value: 'wei' }
+        ]"
+    />
+</template>
+```
+
+### Loading
+
+Use the loading state while remote suggestions are still being resolved for the current query.
+
+```vue
+<template>
+    <Combobox
+        v-model="repository"
+        v-model:inputValue="repositoryQuery"
+        loading
+        loading-text="Searching repositories..."
+        placeholder="Search repositories"
+        :options="[]"
+    />
+</template>
+```
+
+### Disabled And Readonly
+
+Use `disabled` when the control is unavailable and `readonly` when the current value must remain visible but not changeable.
+
+```vue
+<template>
+    <div style="display: grid; gap: 0.75rem;">
+        <Combobox
+            v-model="disabledValue"
+            v-model:inputValue="disabledQuery"
+            disabled
+            placeholder="Disabled combobox"
+            :options="[{ label: 'Enterprise', value: 'enterprise' }]"
+        />
+        <Combobox
+            v-model="readonlyValue"
+            v-model:inputValue="readonlyQuery"
+            readonly
+            :options="[
+                { label: 'Weekly', value: 'weekly' },
+                { label: 'Monthly', value: 'monthly' }
+            ]"
+        />
+    </div>
+</template>
+```
 
 ## Props
 
@@ -42,17 +154,11 @@ Cover both small curated lists and async/large datasets with consistent selectio
 
 - This component does not expose named slots.
 
-## Examples
-
-```vue
-<Combobox v-model="countryId" v-model:inputValue="countryQuery" :options="countries" placeholder="Pick country" />
-```
-
 More recipes: [`Selection Patterns`](selection-patterns.md).
 
 ## Theming
 
-- Override via theme component overrides for each component documented on this page.
+- Override via `theme.overrides.components.combobox`.
 
 ## Tokens
 
@@ -74,23 +180,9 @@ Component tokens (override via `theme.overrides.components.combobox`):
 
 ## Recipes
 
-- Start with the examples above as baseline usage for this component.
-- Add product-specific variants (loading/error/dense/mobile) in consuming app docs when needed.
-
-## Responsive
-
-Verify popup width, option density, and chip/tag wrapping on mobile and tablet breakpoints.
-Ensure touch hit targets and scroll behavior remain stable in long option lists.
-
-## SSR/Hydration
-
-Render initial value and selected option state deterministically in SSR output.
-Defer async option fetching and client-only positioning logic until after hydration.
-
-## Testing
-
-Cover keyboard navigation, selection, clear/reset flows, and disabled/readonly states.
-Add tests for filtering/search behavior, async loading states, and ARIA combobox/listbox contracts.
+- Use `Combobox` instead of `Autocomplete` when you need separate control over typed query and committed value.
+- Keep `strict=true` when only known options are valid; relax it only when custom values are truly supported downstream.
+- Pair `allowCreate` with explicit `create` handling so newly committed values are not lost after selection.
 
 ## Accessibility
 

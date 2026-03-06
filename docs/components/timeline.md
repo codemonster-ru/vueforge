@@ -1,28 +1,18 @@
 # Timeline
 
-## Purpose
+Timeline presents ordered events, milestones, or status changes in vertical or horizontal form.
 
-Communicate system and domain state through inline status, metadata markers, loaders, and empty experiences.
-Provide reusable feedback primitives for dashboards, tables, and long-running operations.
+## Import
 
-## Props
-
-- `items?: Array<{ id?: string | number; title?: string; description?: string; date?: string; icon?: string; status?: 'neutral' | 'info' | 'success' | 'warn' | 'danger' }>` (default `[]`)
-- `orientation?: 'vertical' | 'horizontal'` (default `vertical`)
-- `size?: 'small' | 'normal' | 'large'` (default `normal`)
-- `ariaLabel?: string`
-- `ariaLabelledby?: string`
-
-## Events
-
-- This component does not emit component-specific events.
-
-## Slots
-
-- `marker` (props: `item`, `index`)
-- `item` (props: `item`, `index`)
+```ts
+import Timeline from '@/package/components/timeline.vue';
+```
 
 ## Examples
+
+### Basic
+
+Use Timeline for audit steps, release milestones, and process history.
 
 ```vue
 <Timeline
@@ -32,48 +22,98 @@ Provide reusable feedback primitives for dashboards, tables, and long-running op
         { title: 'Done', description: 'Issue closed', date: '2026-02-19', status: 'success' },
     ]"
 />
+```
+
+### Horizontal
+
+Switch to `horizontal` when the timeline acts more like a compact milestone strip.
+
+```vue
 <Timeline :items="events" orientation="horizontal" size="small" />
 ```
 
+### Custom Marker
+
+Use the `marker` slot to render custom icons, badges, or avatars.
+
+```vue
+<Timeline :items="events">
+    <template #marker="{ item }">
+        <StatusBadge :severity="item.status" />
+    </template>
+</Timeline>
+```
+
+### Custom Item Content
+
+Override the `item` slot when each step needs richer content than title, date, and description.
+
+```vue
+<Timeline :items="events">
+    <template #item="{ item }">
+        <article>
+            <time>{{ item.date }}</time>
+            <h4>{{ item.title }}</h4>
+            <p>{{ item.description }}</p>
+            <Button size="sm" variant="text">Inspect</Button>
+        </article>
+    </template>
+</Timeline>
+```
+
+## API
+
+### Types
+
+```ts
+type TimelineStatus = 'neutral' | 'info' | 'success' | 'warn' | 'danger';
+
+interface TimelineItem {
+    id?: string | number;
+    title?: string;
+    description?: string;
+    date?: string;
+    icon?: string;
+    status?: TimelineStatus;
+}
+```
+
+### Props
+
+| Name | Type | Default |
+| --- | --- | --- |
+| `items` | `TimelineItem[]` | `[]` |
+| `orientation` | `'vertical' \| 'horizontal'` | `'vertical'` |
+| `size` | `'small' \| 'normal' \| 'large'` | `'normal'` |
+| `ariaLabel` | `string` | `''` |
+| `ariaLabelledby` | `string` | `''` |
+
+### Slots
+
+| Name | Description |
+| --- | --- |
+| `marker` | Custom marker with `{ item, index }`. |
+| `item` | Custom content with `{ item, index }`. |
+
 ## Theming
 
-- Override via theme component overrides for each component documented on this page.
+Override component tokens through `theme.overrides.components.timeline`.
 
 ## Tokens
 
-Component tokens (override via `theme.overrides.components.timeline`):
-
-- `gap`, `itemGap`
-- `markerSize`, `markerBorderRadius`, `markerBorderWidth`, `markerBackgroundColor`, `markerBorderColor`, `markerTextColor`, `markerIconSize`, `dotSize`
-- `lineThickness`, `lineLength`, `lineColor`
-- `titleFontSize`, `titleColor`, `descriptionFontSize`, `descriptionColor`, `dateFontSize`, `dateColor`
-- `info.markerBackgroundColor`, `info.markerBorderColor`, `info.markerTextColor`, `info.lineColor`
-- `success.markerBackgroundColor`, `success.markerBorderColor`, `success.markerTextColor`, `success.lineColor`
-- `warn.markerBackgroundColor`, `warn.markerBorderColor`, `warn.markerTextColor`, `warn.lineColor`
-- `danger.markerBackgroundColor`, `danger.markerBorderColor`, `danger.markerTextColor`, `danger.lineColor`
-- `small.itemGap`, `small.markerSize`, `small.markerIconSize`, `small.dotSize`, `small.lineLength`, `small.dateFontSize`, `small.titleFontSize`, `small.descriptionFontSize`
-- `large.itemGap`, `large.markerSize`, `large.markerIconSize`, `large.dotSize`, `large.lineLength`, `large.dateFontSize`, `large.titleFontSize`, `large.descriptionFontSize`
+- Layout: `gap`, `itemGap`
+- Marker: `markerSize`, `markerBorderRadius`, `markerBorderWidth`, `markerBackgroundColor`, `markerBorderColor`, `markerTextColor`, `markerIconSize`, `dotSize`
+- Line and text: `lineThickness`, `lineLength`, `lineColor`, `titleFontSize`, `titleColor`, `descriptionFontSize`, `descriptionColor`, `dateFontSize`, `dateColor`
+- Status variants: `info.*`, `success.*`, `warn.*`, `danger.*`
+- Size variants: `small.*`, `large.*`
 
 ## Recipes
 
-- Start with the examples above as baseline usage for this component.
-- Add product-specific variants (loading/error/dense/mobile) in consuming app docs when needed.
-
-## Responsive
-
-Verify text/icon/indicator layout and density at mobile/tablet/desktop breakpoints.
-Ensure status content remains legible and non-overlapping in constrained containers.
-
-## SSR/Hydration
-
-Keep initial status/loading state deterministic in server-rendered output.
-Start animations or timers only after hydration to avoid markup mismatch.
-
-## Testing
-
-Cover severity/variant rendering, visibility lifecycle, and accessibility announcements where relevant.
-Add visual regression tests for key state combinations and contrast-sensitive variants.
+- Use Timeline for issue history, deployment milestones, order tracking, and workflow progress snapshots.
+- Prefer `ActivityFeed` when entries behave like operator-facing feed items with actors and actions.
 
 ## Accessibility
 
-- Ensure keyboard access, visible focus state, and sufficient color contrast in usage contexts.
+- Timeline can be labeled via `ariaLabel` or `ariaLabelledby` depending on surrounding headings.
+- Custom marker and item slots should preserve sufficient contrast and readable ordering in both orientations.
+

@@ -1,84 +1,109 @@
 # ColorPicker
 
-## Purpose
+ColorPicker provides a compact color input with presets, text entry, and optional alpha control.
 
-Provide advanced task-focused interactions for authoring, media/input control, and guided workflows.
-Enable product features that require richer interaction than basic form controls.
+## Import
 
-## Props
-
-- `modelValue?: string` (v-model)
-- `format?: 'hex' | 'rgb' | 'hsl'` (default `hex`)
-- `alpha?: boolean` (default `false`)
-- `presets?: string[]` (default `[]`)
-- `placeholder?: string`
-- `disabled?: boolean`
-- `readonly?: boolean`
-- `size?: 'small' | 'normal' | 'large'` (default `normal`)
-- `variant?: 'filled' | 'outlined'` (default `filled`)
-- `ariaLabel?: string` (default `Color picker`)
-
-## Events
-
-- `update:modelValue`
-- `change`
-- `open`
-- `close`
-
-## Slots
-
-- This component does not expose named slots.
+```ts
+import ColorPicker from '@/package/components/color-picker.vue';
+```
 
 ## Examples
 
+### Basic
+
+Use `ColorPicker` for theme settings, tag colors, and visual annotation tools.
+
 ```vue
-<ColorPicker v-model="brandColor" />
-<ColorPicker v-model="brandColorRgba" format="rgb" alpha variant="outlined" />
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const brandColor = ref('#3b82f6');
+</script>
+
+<template>
+    <ColorPicker v-model="brandColor" />
+</template>
 ```
+
+### RGB With Alpha
+
+Use `format="rgb"` and `alpha` when transparency is part of the authoring workflow.
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const brandColorRgba = ref('rgba(59, 130, 246, 0.8)');
+</script>
+
+<template>
+    <ColorPicker v-model="brandColorRgba" format="rgb" alpha variant="outlined" />
+</template>
+```
+
+### Presets
+
+Use presets when the product should guide users toward a controlled palette.
+
+```vue
+<ColorPicker
+    v-model="brandColor"
+    :presets="['#2563eb', '#0f766e', '#dc2626', '#f59e0b']"
+/>
+```
+
+### Readonly
+
+Keep the control focusable but non-editable with `readonly`.
+
+```vue
+<ColorPicker model-value="#111827" readonly />
+```
+
+## API
+
+### Props
+
+| Name | Type | Default |
+| --- | --- | --- |
+| `modelValue` | `string` | `'#3b82f6'` |
+| `format` | `'hex' \| 'rgb' \| 'hsl'` | `'hex'` |
+| `alpha` | `boolean` | `false` |
+| `presets` | `string[]` | `[]` |
+| `placeholder` | `string` | `'#3b82f6'` |
+| `disabled` | `boolean` | `false` |
+| `readonly` | `boolean` | `false` |
+| `size` | `'small' \| 'normal' \| 'large'` | `'normal'` |
+| `variant` | `'filled' \| 'outlined'` | `'filled'` |
+| `ariaLabel` | `string` | `'Color picker'` |
+
+### Events
+
+| Name | Payload |
+| --- | --- |
+| `update:modelValue` | `string` |
+| `change` | `string` |
+| `open` | none |
+| `close` | none |
 
 ## Theming
 
-- Override via theme component overrides for each component documented on this page.
+Override component tokens through `theme.overrides.components.colorPicker`.
 
 ## Tokens
 
-Component tokens (override via `theme.overrides.components.colorPicker`):
-
-- `minWidth`, `gap`, `fontSize`, `padding`
-- `borderRadius`, `borderColor`
-- `backgroundColor`, `textColor`, `placeholderColor`
-- `focusBorderColor`, `focusRingShadow`, `hoverBorderColor`
-- `disabledOpacity`
-- `swatchSize`, `swatchRadius`
-- `panelPadding`, `panelBorderColor`, `panelBackgroundColor`, `panelShadow`, `panelGap`
-- `rangeAccentColor`
-- `presetSize`, `presetRadius`, `presetBorderColor`, `presetHoverBorderColor`
-- `small.padding`, `small.fontSize`, `small.swatchSize`, `small.presetSize`
-- `large.padding`, `large.fontSize`, `large.swatchSize`, `large.presetSize`
+- Field: `minWidth`, `gap`, `fontSize`, `padding`, `borderRadius`, `borderColor`, `backgroundColor`, `textColor`, `placeholderColor`
+- States: `focusBorderColor`, `focusRingShadow`, `hoverBorderColor`, `disabledOpacity`
+- Swatch and panel: `swatchSize`, `swatchRadius`, `panelPadding`, `panelBorderColor`, `panelBackgroundColor`, `panelShadow`, `panelGap`, `rangeAccentColor`
+- Presets and sizes: `presetSize`, `presetRadius`, `presetBorderColor`, `presetHoverBorderColor`, `small.*`, `large.*`
 
 ## Recipes
 
-- Start with the examples above as baseline usage for this component.
-- Add product-specific variants (loading/error/dense/mobile) in consuming app docs when needed.
-
-## Responsive
-
-Verify control affordances, panel sizing, and gesture/mouse interactions across device classes.
-Ensure compact layouts preserve clarity for actions, handles, and contextual hints.
-
-## SSR/Hydration
-
-Keep initial value and panel-closed/base state stable between server and client output.
-Hydrate client-only interaction engines (editor, drag, command layers) without DOM mismatch.
-
-## Testing
-
-Cover core interaction loops, boundary conditions, and value/state synchronization.
-Add accessibility tests for keyboard alternatives, labelling, and focus behavior.
+- Use presets when color choice should stay aligned with brand or severity systems.
+- Keep free-form formats for editor-like tools where arbitrary values are expected.
 
 ## Accessibility
 
-- Control uses `aria-expanded`, `aria-controls`, and `aria-haspopup="dialog"` when toggling the panel.
-- Panel supports `Escape` to close and keeps focus behavior predictable for keyboard users.
-- `readonly` keeps the control focusable but blocks panel opening and value changes (`aria-disabled="true"`).
-- Ensure sufficient contrast for swatch/preset borders and visible focus styles in custom themes.
+- The trigger uses `aria-haspopup="dialog"` and exposes `aria-expanded` while the panel is open.
+- `readonly` keeps the control focusable but prevents panel interaction and value changes.

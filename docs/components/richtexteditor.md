@@ -1,43 +1,18 @@
 # RichTextEditor
 
-## Purpose
+RichTextEditor is a lightweight textarea-based authoring surface with formatting actions, markdown or HTML output, counters, and paste sanitization.
 
-Provide advanced task-focused interactions for authoring, media/input control, and guided workflows.
-Enable product features that require richer interaction than basic form controls.
+## Import
 
-## Props
-
-- `modelValue?: string` (v-model)
-- `placeholder?: string`
-- `disabled?: boolean`
-- `readonly?: boolean`
-- `size?: 'small' | 'normal' | 'large'` (default `normal`)
-- `variant?: 'filled' | 'outlined'` (default `filled`)
-- `format?: 'markdown' | 'html'` (default `markdown`)
-- `rows?: number` (default `6`)
-- `maxLength?: number` (default `0`, disabled when `0`)
-- `showToolbar?: boolean` (default `true`)
-- `toolbar?: Array<'bold' | 'italic' | 'underline' | 'link' | 'bulletList' | 'orderedList' | 'code'>`
-- `toolbarLabel?: string` (default `Text formatting toolbar`)
-- `ariaLabel?: string` (default `Rich text editor`)
-- `sanitizeOnPaste?: boolean` (default `true`)
-- `sanitizationProfile?: 'none' | 'basic' | 'strict'` (default `basic`)
-
-## Events
-
-- `update:modelValue`
-- `input`
-- `change`
-- `focus`
-- `blur`
-- `action` (payload: `action`, `nextValue`)
-- `pasteSanitized` (payload: `{ profile, changed, format }`)
-
-## Slots
-
-- This component does not expose named slots.
+```ts
+import RichTextEditor from '@/package/components/rich-text-editor.vue';
+```
 
 ## Examples
+
+### Markdown Editing
+
+Use markdown mode for comment systems, docs tooling, and lightweight editorial inputs.
 
 ```vue
 <RichTextEditor
@@ -49,45 +24,105 @@ Enable product features that require richer interaction than basic form controls
 />
 ```
 
+### HTML Editing
+
+Switch to `html` when downstream rendering expects sanitized HTML fragments.
+
 ```vue
-<RichTextEditor v-model="htmlBody" format="html" sanitization-profile="strict" :sanitize-on-paste="true" />
+<RichTextEditor
+    v-model="htmlBody"
+    format="html"
+    sanitization-profile="strict"
+    :sanitize-on-paste="true"
+/>
 ```
 
-Paste sanitization profiles:
+### Minimal Toolbar
 
-- `none`: do not alter pasted content.
-- `basic`: remove dangerous tags/attributes (`script`, inline event handlers, `javascript:`/`data:` URLs).
-- `strict`: `basic` + allowlist-based html reduction for safer rendered output.
+Restrict toolbar actions when the content model is intentionally simple.
+
+```vue
+<RichTextEditor
+    v-model="summary"
+    :toolbar="['bold', 'italic', 'link']"
+    toolbar-label="Summary formatting"
+/>
+```
+
+### Readonly Review
+
+Use `readonly` to preserve content visibility while disabling edits and toolbar interactions.
+
+```vue
+<RichTextEditor v-model="content" readonly :show-toolbar="false" aria-label="Review content" />
+```
+
+## API
+
+### Types
+
+```ts
+type RichTextEditorAction =
+    | 'bold'
+    | 'italic'
+    | 'underline'
+    | 'link'
+    | 'bulletList'
+    | 'orderedList'
+    | 'code';
+```
+
+### Props
+
+| Name | Type | Default |
+| --- | --- | --- |
+| `modelValue` | `string` | `''` |
+| `placeholder` | `string` | `''` |
+| `disabled` | `boolean` | `false` |
+| `readonly` | `boolean` | `false` |
+| `size` | `'small' \| 'normal' \| 'large'` | `'normal'` |
+| `variant` | `'filled' \| 'outlined'` | `'filled'` |
+| `format` | `'markdown' \| 'html'` | `'markdown'` |
+| `rows` | `number` | `6` |
+| `maxLength` | `number` | `0` |
+| `showToolbar` | `boolean` | `true` |
+| `toolbar` | `RichTextEditorAction[]` | full default set |
+| `toolbarLabel` | `string` | `'Text formatting toolbar'` |
+| `ariaLabel` | `string` | `'Rich text editor'` |
+| `sanitizeOnPaste` | `boolean` | `true` |
+| `sanitizationProfile` | `'none' \| 'basic' \| 'strict'` | `'basic'` |
+
+### Events
+
+| Name | Payload |
+| --- | --- |
+| `update:modelValue` | `string` |
+| `input` | input event |
+| `change` | change event |
+| `focus` | focus event |
+| `blur` | blur event |
+| `action` | `action, nextValue` |
+| `pasteSanitized` | `{ profile, changed, format }` |
 
 ## Theming
 
-- Override via theme component overrides for each component documented on this page.
+Override component tokens through `theme.overrides.components.richTextEditor`.
 
 ## Tokens
 
-- Use `theme.overrides.components` to customize this component where token support is available.
+- Surface: `gap`, `fontSize`, `padding`, `borderRadius`, `borderColor`, `backgroundColor`, `textColor`, `placeholderColor`, `focusBorderColor`, `focusRingShadow`, `hoverBorderColor`, `disabledOpacity`, `minHeight`, `resize`
+- Toolbar: `toolbarGap`, `toolbarPadding`, `toolbarBorderColor`, `toolbarBackgroundColor`, `toolbarButtonMinWidth`, `toolbarButtonPadding`, `toolbarButtonRadius`, `toolbarButtonBorderColor`, `toolbarButtonBackgroundColor`, `toolbarButtonTextColor`, `toolbarButtonHoverBackgroundColor`, `toolbarButtonActiveBackgroundColor`
+- Counter: `counterFontSize`, `counterColor`, `counterDangerColor`
+- Size variants: `small.*`, `large.*`
 
 ## Recipes
 
-- Start with the examples above as baseline usage for this component.
-- Add product-specific variants (loading/error/dense/mobile) in consuming app docs when needed.
-
-## Responsive
-
-Verify control affordances, panel sizing, and gesture/mouse interactions across device classes.
-Ensure compact layouts preserve clarity for actions, handles, and contextual hints.
-
-## SSR/Hydration
-
-Keep initial value and panel-closed/base state stable between server and client output.
-Hydrate client-only interaction engines (editor, drag, command layers) without DOM mismatch.
-
-## Testing
-
-Cover core interaction loops, boundary conditions, and value/state synchronization.
-Add accessibility tests for keyboard alternatives, labelling, and focus behavior.
+- Use RichTextEditor for lightweight comments, internal docs, templates, and sanitized HTML fragments.
+- Prefer `CodeEditor` when the content model is structured code rather than prose with inline formatting.
 
 ## Accessibility
 
-- Ensure keyboard access, visible focus state, and sufficient color contrast in usage contexts.
-- Paste handling keeps caret position and emits updates consistently for assistive tech state tracking.
+- The toolbar uses `role="toolbar"` and the editing surface remains a native textarea.
+- Paste sanitization preserves selection and emits explicit state for consumers that need auditing or analytics.
+- Counter-based limits are visual only unless you pair them with form validation.
+

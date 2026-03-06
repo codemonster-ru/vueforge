@@ -1,13 +1,79 @@
 # AppShell
 
-## Purpose
+Compose the top-level application frame with sidebar, header, main, and optional footer regions.
 
-- Provide top-level application frame (header/sidebar/main regions) for SaaS pages.
-- Centralize shell composition and avoid one-off page chrome implementations.
+## Import
+
+```ts
+import { AppShell } from '@codemonster-ru/vueforge';
+```
+
+## Examples
+
+Use `AppShell` as the outer layout for SaaS-style workspaces rather than hand-building shell chrome on each page.
+
+### Basic
+
+Use sidebar, header, and main regions for a standard application frame.
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const collapsed = ref(false);
+</script>
+
+<template>
+    <AppShell v-model="collapsed">
+        <template #sidebar="{ collapsed: isCollapsed }">
+            <NavigationRail v-model:collapsed="isCollapsed" :items="railItems" />
+        </template>
+
+        <template #header="{ toggleSidebar }">
+            <AppBar title="Workspace">
+                <template #start>
+                    <Button size="small" variant="text" @click="toggleSidebar">Menu</Button>
+                </template>
+            </AppBar>
+        </template>
+
+        <Section>
+            Main content
+        </Section>
+    </AppShell>
+</template>
+```
+
+### With Footer
+
+Use the footer slot for persistent shell status or utility content.
+
+```vue
+<template>
+    <AppShell>
+        <template #sidebar>Sidebar</template>
+        <template #header>Header</template>
+        <div>Main</div>
+        <template #footer>
+            <Inline gap="0.5rem">Status: All systems operational</Inline>
+        </template>
+    </AppShell>
+</template>
+```
+
+### Mobile Breakpoint
+
+Adjust `mobileBreakpoint` when the shell should switch earlier or later into overlay-sidebar mode.
+
+```vue
+<template>
+    <AppShell :mobile-breakpoint="960" />
+</template>
+```
 
 ## Props
 
-- `modelValue?: boolean` (v-model collapsed state on desktop)
+- `modelValue?: boolean` (v-model desktop collapsed state, default `false`)
 - `sidebarWidth?: string` (default `16rem`)
 - `sidebarCollapsedWidth?: string` (default `4.25rem`)
 - `mobileBreakpoint?: number` (default `1024`)
@@ -17,7 +83,7 @@
 - `closeOnEsc?: boolean` (default `true`)
 - `toggleLabel?: string` (default `Toggle sidebar`)
 - `closeSidebarLabel?: string` (default `Close sidebar`)
-- `toggleIcon?: string` (default `?`)
+- `toggleIcon?: string` (default `☰`)
 - `mainAriaLabel?: string` (default `Main content`)
 
 ## Events
@@ -28,66 +94,14 @@
 
 ## Slots
 
-- `sidebar` (optional) - slot props `{ mobile, collapsed }`
-- `header` (optional) - slot props `{ mobile, collapsed, mobileSidebarOpen, toggleSidebar }`
-- `default` - main content
-- `footer` (optional) - slot props `{ mobile, collapsed }`
-
-## Examples
-
-```vue
-<AppShell v-model="collapsed">
-    <template #sidebar>
-        Sidebar
-    </template>
-    <template #header>
-        Header
-    </template>
-    <div>
-        Main
-    </div>
-    <template #footer>
-        Footer
-    </template>
-</AppShell>
-```
-
-## Recipe: App-level layout composition
-
-```vue
-<template>
-    <AppShell v-model="collapsed" :mobile-breakpoint="960">
-        <template #sidebar="{ collapsed }">
-            <nav aria-label="Primary navigation">
-                <Menu :items="menuItems" :collapsed="collapsed" />
-            </nav>
-        </template>
-
-        <template #header="{ toggleSidebar }">
-            <Container size="xl">
-                <Inline align="center" justify="space-between" wrap="nowrap">
-                    <h1>Workspace</h1>
-                    <Button label="Toggle sidebar" @click="toggleSidebar" />
-                </Inline>
-            </Container>
-        </template>
-
-        <Container size="xl">
-            <Section>
-                <router-view />
-            </Section>
-        </Container>
-
-        <template #footer>
-            <Container size="xl"> Status: All systems operational </Container>
-        </template>
-    </AppShell>
-</template>
-```
+- `sidebar` with `{ mobile, collapsed }`
+- `header` with `{ mobile, collapsed, mobileSidebarOpen, toggleSidebar }`
+- `default`
+- `footer` with `{ mobile, collapsed }`
 
 ## Theming
 
-- Override via theme component overrides for each component documented on this page.
+- Override via `theme.overrides.components.appShell`.
 
 ## Tokens
 
@@ -103,27 +117,12 @@ Component tokens (override via `theme.overrides.components.appShell`):
 
 ## Recipes
 
-- Start with the examples above as baseline usage for this component.
-- Add product-specific variants (loading/error/dense/mobile) in consuming app docs when needed.
-
-## Responsive
-
-- Verify shell region behavior for desktop sidebar and mobile collapsed navigation.
-- Confirm content area remains scrollable and accessible with sticky regions.
-
-## SSR/Hydration
-
-- Ensure initial open/collapsed shell state is deterministic for SSR to prevent hydration mismatch.
-- Avoid client-only region insertion/removal before hydration completes.
-
-## Testing
-
-- Cover region slot rendering, shell state toggles, and layout token variants.
-- Add SSR smoke tests for default shell state and responsive visual regressions.
+- Keep `AppShell` controlled from app state when collapse state should persist across routes.
+- Use the header slot for shell chrome and the main slot for page-level layout components.
+- Let the sidebar slot provide its own `nav` semantics rather than hardcoding navigation inside the shell.
 
 ## Accessibility
 
-- AppShell uses landmark elements (`aside`, `header`, `main`, `footer`) to provide structural navigation.
-- Keep a single primary page `main` landmark active in the application view.
-- Use semantic navigation inside the sidebar slot (for example `nav` with `aria-label`).
-- Ensure keyboard access, visible focus state, and sufficient color contrast in usage contexts.
+- Uses structural landmarks such as `aside`, `header`, `main`, and `footer`.
+- Keep one primary `main` landmark active for the current application view.
+- Use semantic navigation inside the sidebar slot, for example `nav` with an explicit label.

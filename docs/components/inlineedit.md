@@ -1,17 +1,54 @@
 # InlineEdit
 
-## Purpose
+Edit a single scalar value inline with built-in save and cancel controls.
 
-Deliver reusable UI building blocks with stable API contracts for SaaS application development.
-Keep behavior consistent across pages, themes, and interaction contexts.
+## Import
+
+```ts
+import { InlineEdit } from '@codemonster-ru/vueforge';
+```
+
+## Examples
+
+Use `InlineEdit` when one text or numeric value should flip directly into edit mode without custom slot wiring.
+
+### Basic
+
+Use it for quick text edits like project names or titles.
+
+```vue
+<template>
+    <InlineEdit v-model="projectName" placeholder="No project name" />
+</template>
+```
+
+### Numeric Value
+
+Use `type="number"` for compact numeric editing.
+
+```vue
+<template>
+    <InlineEdit v-model="budget" type="number" variant="outlined" />
+</template>
+```
+
+### Small Dense Layout
+
+Use the small size for tables or compact summary rows.
+
+```vue
+<template>
+    <InlineEdit model-value="Owner" size="small" />
+</template>
+```
 
 ## Props
 
-- `modelValue?: string | number | null` (v-model)
+- `modelValue?: string | number | null`
 - `type?: 'text' | 'number'` (default `text`)
 - `placeholder?: string`
-- `disabled?: boolean`
-- `readonly?: boolean`
+- `disabled?: boolean` (default `false`)
+- `readonly?: boolean` (default `false`)
 - `size?: 'small' | 'normal' | 'large'` (default `normal`)
 - `variant?: 'filled' | 'outlined'` (default `filled`)
 - `editLabel?: string` (default `Edit`)
@@ -32,16 +69,9 @@ Keep behavior consistent across pages, themes, and interaction contexts.
 
 - This component does not expose named slots.
 
-## Examples
-
-```vue
-<InlineEdit v-model="projectName" placeholder="No project name" />
-<InlineEdit v-model="budget" type="number" variant="outlined" />
-```
-
 ## Theming
 
-- Override via theme component overrides for each component documented on this page.
+- Override via `theme.overrides.components.inlineEdit`.
 
 ## Tokens
 
@@ -60,26 +90,12 @@ Component tokens (override via `theme.overrides.components.inlineEdit`):
 
 ## Recipes
 
-- Start with the examples above as baseline usage for this component.
-- Add product-specific variants (loading/error/dense/mobile) in consuming app docs when needed.
-
-## Responsive
-
-Verify behavior across mobile/tablet/desktop breakpoints including touch and overflow handling.
-Ensure component layout and actions remain usable in constrained containers.
-
-## SSR/Hydration
-
-Keep initial render state deterministic and hydration-safe for interactive features.
-Defer client-only calculations until after mount when needed.
-
-## Testing
-
-Cover render, interaction, and regression-sensitive scenarios for the component API surface.
-Add accessibility checks and visual/SSR assertions where behavior is dynamic.
+- Use `InlineEdit` for single-value edits that should stay embedded in the surrounding view.
+- Prefer `Inplace` when the active state needs custom content, multiple controls, or custom actions.
+- Keep labels explicit so edit, save, and cancel actions remain understandable in repetitive lists.
 
 ## Accessibility
 
-- Editing flow supports keyboard-first interactions: `Enter` to save and `Escape` to cancel.
-- Keep `editLabel`/`saveLabel`/`cancelLabel` explicit for screen-reader clarity in contextual inline actions.
-- In `readonly` mode, editing controls are hidden and value remains non-interactive.
+- Editing flow supports keyboard-first interaction with `Enter` to save and `Escape` to cancel.
+- In `readonly` mode, the value remains visible and non-interactive.
+- Keep button labels clear, especially when many inline editors appear in one view.

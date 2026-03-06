@@ -1,18 +1,77 @@
 # FormField
 
-## Purpose
+Wrap a single field with its label, hint, error text, and ARIA wiring contract.
 
-Compose complete form workflows with predictable field state, validation, and submission behavior.
-Standardize selection controls and grouped input patterns used across product settings and onboarding.
+## Import
+
+```ts
+import { FormField } from '@codemonster-ru/vueforge';
+```
+
+## Examples
+
+Use `FormField` when a control needs consistent label, hint, and error presentation without re-implementing ID wiring each time.
+
+### Basic
+
+Use the default slot props to connect a control to the generated ids.
+
+```vue
+<template>
+    <FormField label="Email" hint="We never share it" :error="emailError">
+        <template #default="{ id, describedBy, ariaInvalid, ariaRequired }">
+            <Input
+                :id="id"
+                v-model="email"
+                :aria-describedby="describedBy"
+                :aria-invalid="ariaInvalid"
+                :aria-required="ariaRequired"
+                placeholder="name@example.com"
+            />
+        </template>
+    </FormField>
+</template>
+```
+
+### Required Field
+
+Use `required` so the label marker and ARIA state stay aligned.
+
+```vue
+<template>
+    <FormField label="Workspace name" required>
+        <template #default="{ id, describedBy, ariaRequired }">
+            <Input :id="id" :aria-describedby="describedBy" :aria-required="ariaRequired" />
+        </template>
+    </FormField>
+</template>
+```
+
+### Custom Hint And Error
+
+Override hint and error rendering with slots when the content needs formatting.
+
+```vue
+<template>
+    <FormField label="Password" error="Password is too short">
+        <template #default="{ id, describedBy, ariaInvalid }">
+            <PasswordInput :id="id" :aria-describedby="describedBy" :aria-invalid="ariaInvalid" />
+        </template>
+        <template #hint>
+            Use at least 12 characters.
+        </template>
+    </FormField>
+</template>
+```
 
 ## Props
 
-- `id?: string` (used in `label for` and slot props)
+- `id?: string`
 - `label?: string`
 - `hint?: string`
 - `error?: string`
-- `required?: boolean`
-- `disabled?: boolean`
+- `required?: boolean` (default `false`)
+- `disabled?: boolean` (default `false`)
 - `size?: 'small' | 'normal' | 'large'` (default `normal`)
 
 ## Events
@@ -21,31 +80,10 @@ Standardize selection controls and grouped input patterns used across product se
 
 ## Slots
 
-- `default` - form control wrapper slot props:
-  `{ id, describedBy, invalid, required, ariaInvalid, ariaRequired }`
-- `label` (optional)
-- `hint` (optional)
-- `error` (optional)
-
-## Examples
-
-```vue
-<FormField label="Email" hint="We never share it" :error="emailError">
-    <template #default="{ id, describedBy, ariaInvalid, ariaRequired }">
-        <Input
-            :id="id"
-            v-model="email"
-            :aria-describedby="describedBy"
-            :aria-invalid="ariaInvalid"
-            :aria-required="ariaRequired"
-            placeholder="name@example.com"
-        />
-    </template>
-</FormField>
-```
-
-When `error` is set, `FormField` applies invalid-state border highlighting to nested form controls.
-Customize these colors via `theme.overrides.components.formField.errorBorderColor` and `errorFocusBorderColor`.
+- `default` with `{ id, describedBy, invalid, required, ariaInvalid, ariaRequired }`
+- `label`
+- `hint`
+- `error`
 
 ## Theming
 
@@ -53,56 +91,24 @@ Customize these colors via `theme.overrides.components.formField.errorBorderColo
 
 ## Tokens
 
-- Use `theme.overrides.components` to customize this component where token support is available.
+Component tokens (override via `theme.overrides.components.formField`):
+
+- `gap`, `textColor`
+- `labelFontSize`, `labelColor`, `requiredColor`
+- `hintFontSize`, `hintColor`
+- `errorColor`, `errorBorderColor`, `errorFocusBorderColor`
+- `disabledOpacity`
+- `small.gap`, `small.labelFontSize`, `small.hintFontSize`
+- `large.gap`, `large.labelFontSize`, `large.hintFontSize`
 
 ## Recipes
 
-- Standard labeled input row with hint/error linkage through slot props.
-- Required field row with explicit `required` and mapped `aria-required`/`aria-invalid` on control.
-- Compact field rows using `size="small"` in dense forms.
-
-## Responsive
-
-Verify label/control alignment, helper text, and error presentation on narrow layouts.
-Ensure grouped controls wrap cleanly and retain usable spacing for touch input.
-
-## SSR/Hydration
-
-Preserve initial form values, touched/error state defaults, and disabled/read-only semantics in SSR markup.
-Hydrate without mutating field structure before first interaction.
-
-## Testing
-
-Cover submission lifecycle (valid/invalid/async), reset flows, and field-level state propagation.
-Add tests for keyboard toggling, group navigation, and ARIA semantics for selection controls.
+- Always forward `describedBy`, `ariaInvalid`, and `ariaRequired` to the actual control when relevant.
+- Use `FormField` as the canonical field wrapper instead of hand-assembling label and error markup repeatedly.
+- Keep error messages short and actionable.
 
 ## Accessibility
 
-- `FormField` wires `label for` and passes generated ids to controls through slot props.
-- Use `describedBy` on controls so hint/error text is announced by assistive technologies.
-- Error message region uses `role="alert"` and should contain short actionable text.
-
-## Do / Don't
-
-```vue
-<!-- Do -->
-<FormField label="Email" hint="Work email only" :error="errors.email" required>
-    <template #default="{ id, describedBy, ariaInvalid, ariaRequired }">
-        <Input
-            :id="id"
-            v-model="values.email"
-            :aria-describedby="describedBy"
-            :aria-invalid="ariaInvalid"
-            :aria-required="ariaRequired"
-        />
-    </template>
-</FormField>
-
-<!-- Don't -->
-<FormField label="Email" :error="errors.email">
-    <template #default="{ id }">
-        <Input :id="id" v-model="values.email" />
-        <!-- Missing aria-describedby and invalid/required aria mapping -->
-    </template>
-</FormField>
-```
+- Wires `label for` and generated hint or error ids through slot props.
+- Error content uses `role="alert"` so validation feedback is announced.
+- Hint and error linkage should be forwarded to the nested control via `aria-describedby`.

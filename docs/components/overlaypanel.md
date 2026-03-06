@@ -1,98 +1,124 @@
 # OverlayPanel
 
-## Purpose
+OverlayPanel is a compatibility alias for `Popover` with legacy compatibility prop and event names.
 
-Provide a compatibility alias for `Popover` with `OverlayPanel`-style API names, backed by the same overlay positioning and dismiss behavior.
+## Import
 
-## Compatibility Mapping
-
-- `dismissable` -> mapped to `Popover.closeOnOutside`
-- `closeOnEscape` -> mapped to `Popover.closeOnEsc`
-- `showCloseIcon` -> renders close button in header slot
-- Theming uses `popover` tokens (also available via `overlaypanel` alias in theme overrides).
-
-## Props
-
-- `modelValue?: boolean`
-- `placement?: 'bottom' | 'top' | 'bottom-start' | 'bottom-end' | 'top-start' | 'top-end'` (default `bottom`)
-- `offset?: number` (default `8`)
-- `disabled?: boolean` (default `false`)
-- `dismissable?: boolean` (default `true`)
-- `closeOnEscape?: boolean` (default `true`)
-- `showCloseIcon?: boolean` (default `false`)
-- `closeLabel?: string` (default `Close overlay panel`)
-- `pt?: PassThroughOptions`
-- `unstyled?: boolean` (default `false`)
-
-## Events
-
-- `update:modelValue`
-- `show`
-- `hide`
-- `onShow`
-- `onHide`
-- `click`
-- `onClick`
-
-## Slots
-
-- `trigger` / `button`
-- `default`
-- `header` / `popoverHeader`
-- `body` / `popoverBody`
-- `footer` / `popoverFooter`
-
-## Exposes
-
-- `show()`
-- `hide()`
-- `toggle()`
+```ts
+import OverlayPanel from '@/package/components/overlay-panel.vue';
+```
 
 ## Examples
 
+### Basic
+
+Use `OverlayPanel` when you need legacy `OverlayPanel` naming over the shared `Popover` implementation.
+
 ```vue
-<OverlayPanel :dismissable="false" showCloseIcon>
+<OverlayPanel>
     <template #trigger>
         <Button label="Open overlay" />
     </template>
-    <template #header>
-        Quick actions
-    </template>
-    <template #default>
-        Panel content
-    </template>
+
+    Panel content
 </OverlayPanel>
 ```
 
+### Close Icon
+
+Enable `show-close-icon` for explicit dismissal in denser utility surfaces.
+
+```vue
+<OverlayPanel :dismissable="false" show-close-icon>
+    <template #trigger>
+        <Button label="Quick actions" />
+    </template>
+
+    <template #header>
+        Quick actions
+    </template>
+
+    Panel content
+</OverlayPanel>
+```
+
+### Controlled
+
+Use controlled mode when open state must stay synchronized with surrounding workflow state.
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const open = ref(false);
+</script>
+
+<template>
+    <OverlayPanel v-model="open" placement="bottom-end" />
+</template>
+```
+
+## API
+
+### Props
+
+| Name | Type | Default |
+| --- | --- | --- |
+| `modelValue` | `boolean \| undefined` | `undefined` |
+| `placement` | `'bottom' \| 'top' \| 'bottom-start' \| 'bottom-end' \| 'top-start' \| 'top-end'` | `'bottom'` |
+| `offset` | `number` | `8` |
+| `disabled` | `boolean` | `false` |
+| `dismissable` | `boolean` | `true` |
+| `closeOnEscape` | `boolean` | `true` |
+| `showCloseIcon` | `boolean` | `false` |
+| `closeLabel` | `string` | `'Close overlay panel'` |
+| `pt` | `PassThroughOptions \| undefined` | `undefined` |
+| `unstyled` | `boolean` | `false` |
+
+### Events
+
+| Name | Payload |
+| --- | --- |
+| `update:modelValue` | `boolean` |
+| `show` | none |
+| `hide` | none |
+| `onShow` | none |
+| `onHide` | none |
+| `click` | none |
+| `onClick` | none |
+
+### Slots
+
+| Name | Description |
+| --- | --- |
+| `trigger` / `button` | Trigger content. |
+| `default` | Main overlay content. |
+| `header` / `popoverHeader` | Header content. |
+| `body` / `popoverBody` | Body content. |
+| `footer` / `popoverFooter` | Footer content. |
+
+### Exposed Methods
+
+| Name | Description |
+| --- | --- |
+| `show()` | Opens the overlay. |
+| `hide()` | Closes the overlay. |
+| `toggle()` | Toggles the overlay. |
+
 ## Theming
 
-- Override via `theme.overrides.components.popover`.
-- Alias override is also accepted via `theme.overrides.components.overlaypanel`.
+`OverlayPanel` inherits `Popover` theming. Override `theme.overrides.components.popover`, and this repo also accepts the alias `theme.overrides.components.overlaypanel`.
 
 ## Tokens
 
-- Uses `Popover` token set:
-  `borderRadius`, `borderColor`, `backgroundColor`, `shadow`, `zIndex`
+- Uses the `Popover` token contract, including `borderRadius`, `borderColor`, `backgroundColor`, `shadow`, and `zIndex`
 
 ## Recipes
 
-- Migration bridge from legacy `OverlayPanel` naming to `Popover` implementation.
-- Compact contextual action surface with explicit close icon.
+- Prefer `Popover` for new docs and canonical usage.
+- Keep `OverlayPanel` only where compatibility with existing API names matters.
 
 ## Accessibility
 
-- Inherits `Popover` keyboard and ARIA behavior.
-- Supports `Escape` dismiss when `closeOnEscape=true`.
-
-## Responsive
-
-- Inherits `Popover` placement/flip behavior with viewport collision handling.
-
-## SSR/Hydration
-
-- Inherits `Popover` SSR-safe closed/open rendering and post-mount positioning logic.
-
-## Testing
-
-- Cover compatibility mappings for `dismissable` and `closeOnEscape`.
-- Verify close-icon behavior and controlled `modelValue` flow.
+- Inherits `Popover` keyboard and ARIA behavior, including outside dismissal and `Escape` handling when enabled.
+- If you add a custom header close action, keep its accessible label explicit.

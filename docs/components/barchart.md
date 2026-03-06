@@ -1,81 +1,36 @@
 # BarChart
 
-## Purpose
+BarChart is a typed wrapper over `Chart` for grouped, stacked, and horizontal bar visualizations.
 
-Provide a typed bar-chart component on top of VueForge `Chart`, with built-in grouped/stacked/horizontal variants.
+## Import
 
-## Props
-
-- `labels?: Array<string | number>` - axis labels.
-- `series?: Array<BarChartSeries>` - bar series data.
-- `adapter?: ChartAdapter` - rendering adapter (for example, `createChartJsAdapter`).
-- `options?: Record<string, unknown>` - chart-engine options override.
-- `grouped?: boolean` (default `true`) - apply grouped dataset behavior.
-- `stacked?: boolean` (default `false`) - stack bars across axes.
-- `horizontal?: boolean` (default `false`) - switch index axis to horizontal bars.
-- `width?: number` (default `640`)
-- `height?: number` (default `320`)
-- `loading?: boolean` (default `false`)
-- `loadingText?: string` (default `Loading chart...`)
-- `emptyText?: string` (default `No chart data`)
-- `ariaLabel?: string` (default `Bar chart`)
-- `lazy?: boolean` (default `true`)
-- `lazyRootMargin?: string` (default `200px`)
-- `lazyThreshold?: number` (default `0`)
-- `pt?: PassThroughOptions`
-- `unstyled?: boolean` (default `false`)
-
-### `BarChartSeries`
-
-- `label: string`
-- `data: Array<number | null>`
-- `backgroundColor?: string`
-- `borderColor?: string`
-- `borderWidth?: number`
-- `stack?: string`
-- `grouped?: boolean`
-- `...rest` - additional dataset fields are passed to the chart adapter.
-
-## Events
-
-- `ready` (`ChartAdapterInstance`)
-- `error` (`Error`)
-
-## Slots
-
-- `loading`
-- `empty`
-
-## Example
-
-```vue
-<script setup lang="ts">
-import { BarChart, createChartJsAdapter } from '@codemonster-ru/vueforge';
-import ChartJs from 'chart.js/auto';
-
-const adapter = createChartJsAdapter(ChartJs);
-</script>
-
-<template>
-    <BarChart
-        :adapter="adapter"
-        :labels="['Q1', 'Q2', 'Q3', 'Q4']"
-        :series="[
-            { label: 'North', data: [120, 160, 140, 190], backgroundColor: '#2f80ed' },
-            { label: 'South', data: [90, 130, 150, 170], backgroundColor: '#27ae60' },
-        ]"
-    />
-</template>
+```ts
+import BarChart from '@/package/components/bar-chart.vue';
 ```
 
-## Stacked Horizontal Variant
+## Examples
+
+### Basic
+
+```vue
+<BarChart
+    :adapter="adapter"
+    :labels="['Q1', 'Q2', 'Q3', 'Q4']"
+    :series="[
+        { label: 'North', data: [120, 160, 140, 190] },
+        { label: 'South', data: [90, 130, 150, 170] },
+    ]"
+/>
+```
+
+### Stacked Horizontal
 
 ```vue
 <BarChart
     :adapter="adapter"
     :labels="['Enterprise', 'SMB', 'Self-serve']"
-    :horizontal="true"
-    :stacked="true"
+    horizontal
+    stacked
     :series="[
         { label: 'New', data: [42, 58, 76], stack: 'pipeline' },
         { label: 'Expansion', data: [21, 33, 29], stack: 'pipeline' },
@@ -83,26 +38,63 @@ const adapter = createChartJsAdapter(ChartJs);
 />
 ```
 
-## Accessibility
+## API
 
-- Uses `role="img"` via base `Chart` canvas and supports custom `ariaLabel`.
-- For critical metrics, provide a nearby data table summary.
+### Types
+
+```ts
+interface BarChartSeries {
+    label: string;
+    data: Array<number | null>;
+    backgroundColor?: string;
+    borderColor?: string;
+    borderWidth?: number;
+    stack?: string;
+    grouped?: boolean;
+    [key: string]: unknown;
+}
+```
+
+### Props
+
+| Name | Type | Default |
+| --- | --- | --- |
+| `labels` | `(string \| number)[]` | `[]` |
+| `series` | `BarChartSeries[]` | `[]` |
+| `adapter` | `ChartAdapter \| undefined` | `undefined` |
+| `options` | `Record<string, unknown>` | `{}` |
+| `grouped` | `boolean` | `true` |
+| `stacked` | `boolean` | `false` |
+| `horizontal` | `boolean` | `false` |
+| `width` | `number` | `640` |
+| `height` | `number` | `320` |
+| `loading` | `boolean` | `false` |
+| `loadingText` | `string` | `'Loading chart...'` |
+| `emptyText` | `string` | `'No chart data'` |
+| `ariaLabel` | `string` | `'Bar chart'` |
+| `lazy` | `boolean` | `true` |
+| `lazyRootMargin` | `string` | `'200px'` |
+| `lazyThreshold` | `number` | `0` |
+| `pt` | `PassThroughOptions \| undefined` | `undefined` |
+| `unstyled` | `boolean` | `false` |
+
+### Events
+
+| Name | Payload |
+| --- | --- |
+| `ready` | `ChartAdapterInstance` |
+| `error` | `Error` |
 
 ## Theming
 
-- Inherits chart token set via `theme.overrides.components.chart`.
+BarChart inherits the shared chart token set from `theme.overrides.components.chart`.
 
-## Responsive
+## Recipes
 
-- Uses responsive base chart options and stretches to container width.
-- Use grid/container constraints to avoid overflow in narrow cards.
+- Use BarChart for categorical comparison, stacked contribution, and rank-like horizontal layouts.
+- Prefer `LineChart` or `AreaChart` when the x-axis primarily represents time or continuous progression.
 
-## SSR/Hydration
+## Accessibility
 
-- Adapter mount happens only on client mount and respects `lazy` viewport rendering.
-- Loading/empty states are deterministic for hydration-safe markup.
+- BarChart inherits the accessibility contract of `Chart`, including ARIA labeling and optional data-table fallback when you need it at the base layer.
 
-## Testing
-
-- Cover dataset mapping and grouped/stacked/horizontal options.
-- Cover error propagation and exposed `resize`/`refresh` methods.

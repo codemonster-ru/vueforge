@@ -1,62 +1,111 @@
 # BlockUI
 
-## Purpose
+BlockUI prevents interaction with a surface or the full viewport while background work is in progress.
 
-Block interaction on a local region or the full viewport while loading async operations.
+## Import
 
-## Props
-
-- `modelValue?: boolean` (default `false`) - blocked state (`v-model`)
-- `fullScreen?: boolean` (default `false`) - render overlay on viewport via `Teleport`
-- `showSpinner?: boolean` (default `true`)
-- `label?: string`
-- `ariaLabel?: string` (default `Loading`)
-- `zIndex?: number | string | null` (default `null`) - overrides overlay z-index
-- `variant?: 'soft' | 'dim'` (default `soft`)
-- `blur?: boolean` (default `false`)
-
-## Events
-
-- `block`
-- `unblock`
-
-## Slots
-
-- `default` - wrapped content to protect/block
-- `overlay` - custom overlay content
-
-## Example
-
-```vue
-<BlockUI v-model="saving" label="Saving changes...">
-    <DataTable :columns="columns" :rows="rows" />
-</BlockUI>
+```ts
+import BlockUI from '@/package/components/block-ui.vue';
 ```
 
+## Examples
+
+### Basic
+
+Use `BlockUI` to disable a card, form, or pane while keeping its content visible.
+
 ```vue
-<BlockUI v-model="loadingApp" full-screen variant="dim" :z-index="120">
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const blocked = ref(true);
+</script>
+
+<template>
+    <BlockUI v-model="blocked" label="Saving changes">
+        <div style="padding: 1rem; min-height: 10rem;">Form content</div>
+    </BlockUI>
+</template>
+```
+
+### Full Screen
+
+Enable `full-screen` when the whole application shell should be blocked during critical operations.
+
+```vue
+<BlockUI v-model="blocked" full-screen label="Deploying release" />
+```
+
+### Soft Overlay
+
+Use the default soft variant when content should remain legible underneath the overlay.
+
+```vue
+<BlockUI v-model="blocked" variant="soft" :blur="2" />
+```
+
+### Custom Overlay
+
+Override the overlay slot when a richer blocking state needs custom messaging or actions.
+
+```vue
+<BlockUI v-model="blocked" :show-spinner="false">
     <template #overlay>
-        <Spinner size="large" label="Preparing workspace..." />
+        <div style="display: grid; gap: 0.5rem; text-align: center;">
+            <strong>Sync in progress</strong>
+            <span>Please wait while we update workspace data.</span>
+        </div>
     </template>
+
+    <div style="padding: 1rem; min-height: 10rem;">Dashboard content</div>
 </BlockUI>
 ```
+
+## API
+
+### Props
+
+| Name | Type | Default |
+| --- | --- | --- |
+| `modelValue` | `boolean` | `false` |
+| `fullScreen` | `boolean` | `false` |
+| `showSpinner` | `boolean` | `true` |
+| `label` | `string` | `''` |
+| `ariaLabel` | `string` | `'Blocked content'` |
+| `zIndex` | `number` | `1000` |
+| `variant` | `'soft' \| 'dim'` | `'soft'` |
+| `blur` | `number` | `0` |
+
+### Events
+
+| Name | Payload |
+| --- | --- |
+| `block` | none |
+| `unblock` | none |
+
+### Slots
+
+| Name | Description |
+| --- | --- |
+| `default` | Content that becomes blocked. |
+| `overlay` | Custom overlay content. |
 
 ## Theming
 
-- Override via `theme.overrides.components.blockui`.
+Override component tokens through `theme.overrides.components.blockUi`.
 
 ## Tokens
 
-- `zIndex`, `gap`, `textColor`
-- `labelFontSize`, `labelFontWeight`
-- `overlayBackgroundColor`, `overlayDimBackgroundColor`
-- `blurSize`
+- Overlay layout: `zIndex`, `gap`, `padding`
+- Overlay surface: `softBackgroundColor`, `dimBackgroundColor`, `blur`
+- Text and indicators: `textColor`, `labelFontSize`
+
+## Recipes
+
+- Use `BlockUI` for short, blocking operations where interaction must stop but context should remain visible.
+- Prefer non-blocking feedback such as `Spinner` or `Toast` when users can continue working elsewhere.
 
 ## Accessibility
 
-- Root reflects loading state with `aria-busy`.
-- Default overlay uses spinner semantics with accessible loading label.
-
-## Testing
-
-- Cover local/fullscreen overlay rendering, custom slot, and block/unblock event emission.
+- Blocking overlays should explain what is happening, especially for operations that last more than a moment.
+- For full-screen blocking states, make sure product code also prevents accidental background shortcuts or conflicting actions.

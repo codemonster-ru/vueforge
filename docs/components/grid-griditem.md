@@ -1,116 +1,101 @@
 # Grid / GridItem
 
-## Purpose
+Grid and `GridItem` provide responsive two-dimensional layout primitives for cards, forms, and workspace shells.
 
-- Build responsive two-dimensional layouts for cards, forms, and workspace shells.
-- Control placement with spans/start/end while keeping layout concerns separate from content components.
+## Import
 
-## Props
-
-See Grid Props and GridItem Props below.
-
-## Grid Props
-
-- `as?: string` (default `div`)
-- `columns?: number | string` (default from theme token)
-- `gap?: string` (optional runtime override)
-- `columnGap?: string` (optional runtime override)
-- `rowGap?: string` (optional runtime override)
-- `align?: 'start' | 'center' | 'end' | 'stretch'` (default `stretch`)
-- `justify?: 'start' | 'center' | 'end' | 'stretch'` (default `stretch`)
-- `breakpoints?: { sm?, md?, lg?, xl? }` where each item supports `columns`, `gap`, `columnGap`, `rowGap`, `align`, `justify`
-
-## GridItem Props
-
-- `as?: string` (default `div`)
-- `span?: number | string`
-- `start?: number | string`
-- `end?: number | string`
-- `breakpoints?: { sm?, md?, lg?, xl? }` where each item supports `span`, `start`, `end`
-
-## Events
-
-- No emitted events.
-
-## Slots
-
-- `Grid`: `default`
-- `GridItem`: `default`
+```ts
+import Grid from '@/package/components/grid.vue';
+import GridItem from '@/package/components/grid-item.vue';
+```
 
 ## Examples
 
+### Basic
+
+Use a fixed column count for dashboard and application layouts.
+
 ```vue
-<Grid :columns="12" gap="1rem" :breakpoints="{ md: { columns: 6 }, lg: { columns: 12, gap: '1.25rem' } }">
+<Grid :columns="12" gap="1rem">
+    <GridItem :span="3">Sidebar</GridItem>
+    <GridItem :span="9">Main content</GridItem>
+</Grid>
+```
+
+### Breakpoint Spans
+
+Use breakpoint overrides to stack on mobile and spread across columns on larger screens.
+
+```vue
+<Grid :columns="12" gap="1rem">
     <GridItem :span="12" :breakpoints="{ md: { span: 3 } }">
-        <Card>
-            Sidebar
-        </Card>
+        Sidebar
     </GridItem>
-    <GridItem :span="12" :breakpoints="{ md: { span: 3 } }">
-        <Card>
-            Main content
-        </Card>
+    <GridItem :span="12" :breakpoints="{ md: { span: 9 } }">
+        Main content
     </GridItem>
 </Grid>
 ```
+
+### Explicit Placement
+
+Use `start` and `end` when a layout needs more exact placement than simple spans.
 
 ```vue
 <Grid columns="repeat(8, minmax(0, 1fr))" column-gap="0.75rem" row-gap="0.75rem">
-    <GridItem :start="1" :end="5">
-        A
-    </GridItem>
-    <GridItem :start="5" :end="9">
-        B
-    </GridItem>
-    <GridItem :span="2">
-        C
-    </GridItem>
-    <GridItem :span="6">
-        D
-    </GridItem>
+    <GridItem :start="1" :end="5">A</GridItem>
+    <GridItem :start="5" :end="9">B</GridItem>
 </Grid>
 ```
 
+## API
+
+### Grid Props
+
+| Name | Type | Default |
+| --- | --- | --- |
+| `as` | `string` | `'div'` |
+| `columns` | `number \| string` | theme default |
+| `gap` | `string` | `''` |
+| `columnGap` | `string` | `''` |
+| `rowGap` | `string` | `''` |
+| `align` | `'start' \| 'center' \| 'end' \| 'stretch'` | `'stretch'` |
+| `justify` | `'start' \| 'center' \| 'end' \| 'stretch'` | `'stretch'` |
+| `breakpoints` | `Partial<Record<'sm' \| 'md' \| 'lg' \| 'xl', GridBreakpointConfig>>` | `{}` |
+
+### GridItem Props
+
+| Name | Type | Default |
+| --- | --- | --- |
+| `as` | `string` | `'div'` |
+| `span` | `number \| string` | `''` |
+| `start` | `number \| string` | `''` |
+| `end` | `number \| string` | `''` |
+| `breakpoints` | `Partial<Record<'sm' \| 'md' \| 'lg' \| 'xl', GridItemBreakpointConfig>>` | `{}` |
+
 ## Theming
 
-- Override via `theme.overrides.components.grid`.
+Override component tokens through `theme.overrides.components.grid`.
 
 ## Tokens
 
-Component tokens (override via `theme.overrides.components.grid`):
-
 - `columns`
-- `gap`, `columnGap`, `rowGap`
-- `alignItems`, `justifyItems`
-- `breakpointSm`, `breakpointMd`, `breakpointLg`, `breakpointXl`
+- `gap`
+- `columnGap`
+- `rowGap`
+- `alignItems`
+- `justifyItems`
+- `breakpointSm`
+- `breakpointMd`
+- `breakpointLg`
+- `breakpointXl`
 
 ## Recipes
 
-- 12-column desktop and stacked mobile:
-    - base: `columns=1`
-    - `md`: `columns=12`
-    - each item uses breakpoint `span` for desktop widths
-- Dashboard shell:
-    - sidebar item: `md span=3`
-    - main item: `md span=9`
-    - adjust dense mode via `gap`, `columnGap`, `rowGap`
-
-## Responsive
-
-- Verify breakpoint overrides (columns, gap, span, start, end) across mobile/tablet/desktop.
-- Check reflow behavior when content exceeds expected width.
-
-## SSR/Hydration
-
-- Grid uses deterministic style/class output and should not diverge at hydration.
-- Ensure breakpoint configuration does not rely on client-only measurements for initial render.
-
-## Testing
-
-- Cover base and breakpoint prop merging for Grid and GridItem.
-- Add regression tests for span/start/end combinations and overflow-safe layouts.
+- Use Grid for layout only and keep content semantics on the child components.
+- Prefer span-based placement first; drop to explicit `start` and `end` only when the layout truly requires it.
 
 ## Accessibility
 
-- `Grid` and `GridItem` are layout primitives and do not add interactive behavior.
-- Keep semantic structure with `as` (`section`, `article`, `main`) where needed.
+- `Grid` and `GridItem` are non-interactive layout primitives.
+- Use `as` to preserve surrounding semantics such as `section`, `article`, or `main`.

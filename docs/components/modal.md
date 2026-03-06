@@ -1,19 +1,96 @@
 # Modal
 
-## Purpose
+Present blocking dialogs for confirmation, forms, and focused workflows in a centered overlay.
 
-Handle layered interactions (dialogs, overlays, contextual actions, and transient notifications) with consistent behavior.
-Centralize close policies, focus management, and stack/layer contracts for complex SaaS screens.
+## Import
+
+```ts
+import { Modal } from '@codemonster-ru/vueforge';
+```
+
+## Examples
+
+Use `Modal` for blocking tasks that require full user attention before returning to the page.
+
+### Basic
+
+Use a small modal for short confirmation or informational flows.
+
+```vue
+<template>
+    <Modal v-model="open" title="Confirm action" size="sm">
+        <template #body>
+            <p>Are you sure?</p>
+        </template>
+        <template #footer>
+            <Button label="Cancel" severity="secondary" @click="open = false" />
+            <Button label="Confirm" @click="open = false" />
+        </template>
+    </Modal>
+</template>
+```
+
+### Form Modal
+
+Use the default medium size for embedded forms and multi-control flows.
+
+```vue
+<template>
+    <Modal v-model="open" title="Create project">
+        <template #body>
+            <Stack gap="0.75rem">
+                <Input placeholder="Project name" />
+                <Textarea placeholder="Description" :rows="4" />
+            </Stack>
+        </template>
+        <template #footer>
+            <Button label="Cancel" variant="outlined" severity="secondary" @click="open = false" />
+            <Button label="Create" @click="open = false" />
+        </template>
+    </Modal>
+</template>
+```
+
+### Custom Header And Close Slot
+
+Slots let the product replace the built-in title area and close control.
+
+```vue
+<template>
+    <Modal v-model="open" :show-close="true">
+        <template #header>
+            <h3 style="margin: 0;">Workspace notice</h3>
+        </template>
+        <template #body>
+            Custom modal content.
+        </template>
+    </Modal>
+</template>
+```
+
+### Strict Dismiss Policy
+
+Disable overlay and Escape dismissal when the user must make an explicit choice.
+
+```vue
+<template>
+    <Modal v-model="open" title="Finish setup" :close-on-overlay="false" :close-on-esc="false">
+        <template #body>
+            Complete the required fields before continuing.
+        </template>
+    </Modal>
+</template>
+```
 
 ## Props
 
 - `modelValue?: boolean` (v-model)
 - `title?: string`
 - `size?: 'sm' | 'md' | 'lg'`
-- `closeOnOverlay?: boolean` (default true)
-- `closeOnEsc?: boolean` (default true)
-- `showClose?: boolean` (default true)
-- `lockScroll?: boolean` (default true)
+- `closeOnOverlay?: boolean` (default `true`)
+- `closeOnEsc?: boolean` (default `true`)
+- `showClose?: boolean` (default `true`)
+- `lockScroll?: boolean` (default `true`)
 
 ## Events
 
@@ -28,22 +105,6 @@ Centralize close policies, focus management, and stack/layer contracts for compl
 - `default` (optional) - modal content if `body` slot is not used
 - `footer` (optional)
 - `close` (optional) - custom close button; slot props: `{ close }`
-
-## Examples
-
-```vue
-<Modal v-model="open" title="Confirm action" size="sm">
-    <template #body>
-        <p>
-            Are you sure?
-        </p>
-    </template>
-    <template #footer>
-        <Button label="Cancel" severity="secondary" @click="open = false" />
-        <Button label="Confirm" @click="open = false" />
-    </template>
-</Modal>
-```
 
 ## Theming
 
@@ -68,49 +129,12 @@ Component tokens (override via `theme.overrides.components.modal`):
 
 ## Recipes
 
-- Confirmation dialog: small modal with body text and cancel/confirm actions.
-- Form modal: medium modal with primary submit action and `lockScroll=true`.
-- Info modal: close-only flow with `showClose=true` and disabled overlay close if needed.
-
-## Responsive
-
-Verify overlay sizing, placement fallback, and viewport collision handling on mobile/tablet/desktop.
-Ensure gesture/touch close interactions and action buttons remain accessible on small screens.
-
-## SSR/Hydration
-
-Render closed/open initial state deterministically and keep portal/container structure hydration-safe.
-Initialize positioning/focus logic only after mount to avoid server-client markup drift.
-
-## Testing
-
-Cover open/close triggers, escape/outside click behavior, focus trap/restore, and stacking order.
-Add accessibility tests for ARIA roles, labelling, and keyboard navigation in layered UI.
+- Use `Modal` for blocking decisions and tasks; prefer `Popover` or `Drawer` when the page can remain interactive.
+- Keep the title action-oriented so users immediately understand the reason for interruption.
+- Disable passive dismiss only when the product truly requires an explicit outcome.
 
 ## Accessibility
 
 - Focus is trapped while modal is open and restored to the previous element on close.
 - Supports `Escape` close behavior when `closeOnEsc` is enabled.
 - Uses overlay and close controls that should have clear labels/titles in content.
-
-## Interaction Contract
-
-- `modelValue=true`:
-    - emits `open`
-    - moves focus into the modal panel (first focusable element, otherwise panel itself)
-    - traps `Tab`/`Shift+Tab` focus inside panel
-    - locks document scroll when `lockScroll=true`
-- Close triggers (`overlay`, `Escape`, close button/slot):
-    - emit `update:modelValue=false`
-    - emit `close`
-    - restore focus to element active before open
-- Behavior flags:
-    - `closeOnOverlay=false` disables outside click close
-    - `closeOnEsc=false` disables `Escape` close
-    - `lockScroll=false` keeps body scrolling enabled
-
-## Z-Index Policy
-
-- Modal root uses `zIndex` token (`--vf-modal-z-index`, default `100`).
-- Keep modal and drawer overlays in the same layer by default (`modal.zIndex` and `drawer.zIndex` are both `100` in default theme).
-- Raise specific overlays only through theme overrides when a project needs custom stacking order.

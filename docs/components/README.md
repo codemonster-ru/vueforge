@@ -1,6 +1,12 @@
-﻿# Components Docs
+# Components Docs
 
-Detailed API pages generated from the current package reference.
+This index lists the component and reference pages available in the VueForge docs set.
+
+## Structure
+
+- Component pages follow the standard format: short intro, `Import`, practical examples, then API and theming.
+- Reference and pattern pages document shared contracts such as input-family props, selection recipes, and date/time value parsing.
+- Related guides and audits live alongside the component pages and are linked below.
 
 ## Pages
 
@@ -188,7 +194,7 @@ Detailed API pages generated from the current package reference.
 - [Wizard / WizardStep](wizard-wizardstep.md)
 - [Window](window.md)
 
-Related docs:
+## Related Docs
 
 - [Theming](../theming.md)
 - [Browser Support Matrix](../browser-support.md)

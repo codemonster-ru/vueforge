@@ -1,84 +1,133 @@
 # CommentThread
 
-## Purpose
+CommentThread renders discussion threads with nested replies, mention extraction, and resolve or reopen flows.
 
-Render discussion threads with inline replies, mention extraction, and resolve/reopen moderation flows for SaaS detail pages.
+## Import
 
-## Props
-
-- `items?: Array<CommentThreadItem>` (default `[]`)
-- `ariaLabel?: string` (default `Comment thread`)
-- `emptyText?: string` (default `No comments yet.`)
-- `replyLabel?: string` (default `Reply`)
-- `cancelReplyLabel?: string` (default `Cancel`)
-- `sendReplyLabel?: string` (default `Send`)
-- `replyPlaceholder?: string` (default `Write a reply...`)
-- `replyAriaLabel?: string` (default `Reply text`)
-- `resolveLabel?: string` (default `Resolve`)
-- `reopenLabel?: string` (default `Reopen`)
-- `locale?: string` (default `en`)
-- `timeZone?: string` (optional IANA timezone)
-
-`CommentThreadItem`:
-
-- `id: string | number`
-- `author: { id?: string | number; name: string; avatar?: string; meta?: string }`
-- `body: string`
-- `createdAt?: string | number | Date`
-- `resolved?: boolean`
-- `parentId?: string | number | null`
-
-## Events
-
-- `reply({ parent, index, text, mentions })`
-- `resolve({ item, index })`
-- `reopen({ item, index })`
-
-## Slots
-
-- N/A
+```ts
+import CommentThread from '@/package/components/comment-thread.vue';
+```
 
 ## Examples
+
+### Basic
+
+Use CommentThread for issue details, review conversations, and inline collaboration.
 
 ```vue
 <CommentThread :items="comments" @reply="onReply" @resolve="onResolve" @reopen="onReopen" />
 ```
 
+### Threaded Replies
+
+Replies are derived from `parentId`, so flat data can still render as a nested conversation.
+
+```vue
+<script setup lang="ts">
+const comments = [
+    { id: 1, author: { name: 'Anna' }, body: 'Please update the copy.' },
+    { id: 2, parentId: 1, author: { name: 'Max' }, body: 'Updated in the latest commit.' },
+];
+</script>
+
+<template>
+    <CommentThread :items="comments" />
+</template>
+```
+
+### Moderation Flow
+
+Use resolve and reopen actions to mark threads that no longer need attention.
+
+```vue
+<CommentThread
+    :items="comments"
+    resolve-label="Resolve thread"
+    reopen-label="Reopen thread"
+    @resolve="markResolved"
+    @reopen="markOpen"
+/>
+```
+
+### Reply Drafts And Mentions
+
+The `reply` event returns parsed `@mentions` so consumers can attach notification or assignee logic.
+
+```vue
+<CommentThread
+    :items="comments"
+    @reply="({ parent, text, mentions }) => saveReply(parent.id, text, mentions)"
+/>
+```
+
+## API
+
+### Types
+
+```ts
+interface CommentThreadAuthor {
+    id?: string | number;
+    name: string;
+    avatar?: string;
+    meta?: string;
+}
+
+interface CommentThreadItem {
+    id: string | number;
+    author: CommentThreadAuthor;
+    body: string;
+    createdAt?: string | number | Date;
+    resolved?: boolean;
+    parentId?: string | number | null;
+}
+```
+
+### Props
+
+| Name | Type | Default |
+| --- | --- | --- |
+| `items` | `CommentThreadItem[]` | `[]` |
+| `ariaLabel` | `string` | `'Comment thread'` |
+| `emptyText` | `string` | `'No comments yet.'` |
+| `replyLabel` | `string` | `'Reply'` |
+| `cancelReplyLabel` | `string` | `'Cancel'` |
+| `sendReplyLabel` | `string` | `'Send'` |
+| `replyPlaceholder` | `string` | `'Write a reply...'` |
+| `replyAriaLabel` | `string` | `'Reply text'` |
+| `resolveLabel` | `string` | `'Resolve'` |
+| `reopenLabel` | `string` | `'Reopen'` |
+| `locale` | `string` | `'en'` |
+| `timeZone` | `string \| undefined` | `undefined` |
+
+### Events
+
+| Name | Payload |
+| --- | --- |
+| `reply` | `{ parent, index, text, mentions }` |
+| `resolve` | `{ item, index }` |
+| `reopen` | `{ item, index }` |
+
 ## Theming
 
-- Override via `theme.overrides.components.commentThread`.
+Override component tokens through `theme.overrides.components.commentThread`.
 
 ## Tokens
 
-- `gap`, `itemGap`, `indentSize`
-- `borderColor`, `borderRadius`, `backgroundColor`, `padding`
-- `resolvedBackgroundColor`, `resolvedBorderColor`
-- `metaGap`, `authorFontWeight`, `metaColor`, `metaFontSize`
-- `actionsGap`, `actionColor`, `actionFontSize`
-- `replyMinHeight`, `replyBorderColor`, `replyBorderRadius`, `replyBackgroundColor`
-- `disabledOpacity`
+- Layout: `gap`, `itemGap`, `indentSize`
+- Card: `borderColor`, `borderRadius`, `backgroundColor`, `padding`
+- Resolved state: `resolvedBackgroundColor`, `resolvedBorderColor`
+- Meta text: `metaGap`, `authorFontWeight`, `metaColor`, `metaFontSize`
+- Actions: `actionsGap`, `actionColor`, `actionFontSize`
+- Reply editor: `replyMinHeight`, `replyBorderColor`, `replyBorderRadius`, `replyBackgroundColor`
+- State: `disabledOpacity`
 
 ## Recipes
 
-- Use as inline collaboration thread in issue/task/detail pages.
-- Persist `resolve/reopen` on backend and project permission rules (UI state is optimistic by design).
+- Use CommentThread for issue comments, annotation sidebars, and lightweight review discussion.
+- Persist resolve and reopen state in the backend because the component only emits workflow events.
 
 ## Accessibility
 
-- Root uses semantic section labeling via `ariaLabel`.
-- Reply/resolve/reopen actions are native buttons with keyboard accessibility.
-- Reply input is a labeled textarea (`replyAriaLabel`).
+- CommentThread exposes reply and moderation actions as native buttons and labels the reply textarea via `replyAriaLabel`.
+- Timestamp formatting depends on `locale` and `timeZone`, so keep them aligned in SSR environments.
 
-## Responsive
-
-- Nested replies use tokenized indentation and remain readable on narrow surfaces.
-- Reply editor stretches full width and keeps vertical resize for small screens.
-
-## SSR/Hydration
-
-- Thread rendering is deterministic for static item data.
-- Timestamp formatting depends on locale/timezone; keep them consistent between server and client.
-
-## Testing
-
-- Cover nested rendering, reply mention parsing, resolve/reopen event flows, and empty state behavior.

@@ -1,88 +1,85 @@
 # PermissionMatrix
 
-## Purpose
+PermissionMatrix renders a role-versus-capability grid with tri-state permission toggles.
 
-Render role-versus-capability access grid with tri-state controls (`Inherit`, `Allow`, `Deny`) for RBAC configuration screens.
+## Import
 
-## Props
-
-- `modelValue?: PermissionMatrixValue` (default `{}`)
-- `roles?: Array<PermissionMatrixRole>` (default `[]`)
-- `capabilities?: Array<PermissionMatrixCapability>` (default `[]`)
-- `disabled?: boolean` (default `false`)
-- `ariaLabel?: string` (default `Permission matrix`)
-- `stateLabels?: Record<'inherit' | 'allow' | 'deny', string>` (default labels)
-
-`PermissionMatrixRole`:
-
-- `id: string | number`
-- `label: string`
-- `description?: string`
-
-`PermissionMatrixCapability`:
-
-- `id: string | number`
-- `label: string`
-- `description?: string`
-
-`PermissionMatrixValue`:
-
-- `Record<string, Record<string, 'inherit' | 'allow' | 'deny'>>`
-
-## Events
-
-- `update:modelValue`
-- `cellChange({ role, capability, state, previousState })`
-- `change(modelValue)`
-
-## Slots
-
-- N/A
+```ts
+import PermissionMatrix from '@/package/components/permission-matrix.vue';
+```
 
 ## Examples
 
+### Basic
+
+Use `PermissionMatrix` for RBAC configuration screens where multiple roles must be compared side by side.
+
 ```vue
-<PermissionMatrix v-model="permissionMap" :roles="roles" :capabilities="capabilities" @cellChange="onCellChange" />
+<PermissionMatrix
+    v-model="permissionMap"
+    :roles="roles"
+    :capabilities="capabilities"
+/>
 ```
+
+### Change Tracking
+
+Listen to `cell-change` when the parent screen needs audit or save-dirty tracking.
+
+```vue
+<PermissionMatrix
+    v-model="permissionMap"
+    :roles="roles"
+    :capabilities="capabilities"
+    @cell-change="onCellChange"
+/>
+```
+
+## API
+
+### Types
+
+```ts
+type PermissionMatrixState = 'inherit' | 'allow' | 'deny';
+type PermissionMatrixValue = Record<string, Record<string, PermissionMatrixState>>;
+```
+
+### Props
+
+| Name | Type | Default |
+| --- | --- | --- |
+| `modelValue` | `PermissionMatrixValue` | `{}` |
+| `roles` | `PermissionMatrixRole[]` | `[]` |
+| `capabilities` | `PermissionMatrixCapability[]` | `[]` |
+| `disabled` | `boolean` | `false` |
+| `ariaLabel` | `string` | `'Permission matrix'` |
+| `stateLabels` | `Record<'inherit' \| 'allow' \| 'deny', string>` | default labels |
+
+### Events
+
+| Name | Payload |
+| --- | --- |
+| `update:modelValue` | `PermissionMatrixValue` |
+| `cellChange` | `{ role, capability, state, previousState }` |
+| `change` | `PermissionMatrixValue` |
 
 ## Theming
 
-- Override via `theme.overrides.components.permissionMatrix`.
+Override component tokens through `theme.overrides.components.permissionMatrix`.
 
 ## Tokens
 
-- `borderColor`, `borderRadius`, `backgroundColor`, `textColor`
-- `dividerColor`, `headerBackgroundColor`, `stickyBackgroundColor`
-- `cellPadding`
-- `labelFontSize`, `labelFontWeight`
-- `descriptionFontSize`, `descriptionColor`
-- `toggleMinWidth`, `toggleBorderColor`, `toggleBorderRadius`, `togglePadding`
-- `toggleBackgroundColor`, `toggleTextColor`, `toggleFontSize`
-- `allowBorderColor`, `allowBackgroundColor`, `allowTextColor`
-- `denyBorderColor`, `denyBackgroundColor`, `denyTextColor`
-- `disabledOpacity`
+- Table surface: `borderColor`, `borderRadius`, `backgroundColor`, `textColor`, `dividerColor`, `headerBackgroundColor`, `stickyBackgroundColor`
+- Labels: `cellPadding`, `labelFontSize`, `labelFontWeight`, `descriptionFontSize`, `descriptionColor`
+- Toggles: `toggleMinWidth`, `toggleBorderColor`, `toggleBorderRadius`, `togglePadding`, `toggleBackgroundColor`, `toggleTextColor`, `toggleFontSize`
+- States: `allowBorderColor`, `allowBackgroundColor`, `allowTextColor`, `denyBorderColor`, `denyBackgroundColor`, `denyTextColor`, `disabledOpacity`
 
 ## Recipes
 
-- Bind `modelValue` to backend RBAC map and persist via explicit save action in parent screen.
-- Use `cellChange` to collect audit payloads for who changed which permission cell.
-- Treat emitted state as UI intent only; enforce authorization in backend handlers (see `docs/guides/rbac-api-boundaries.md`).
+- Treat matrix state as UI intent only; authorization enforcement still belongs in backend policy code.
+- Use `cellChange` to construct audit payloads instead of diffing the whole matrix after every click.
 
 ## Accessibility
 
-- Uses semantic table with row/column headers and button controls per cell.
-- Each cell control has contextual aria label (`Role Capability: State`).
-- Tri-state cycle is keyboard-accessible through native button interaction.
-
-## Responsive
-
-- Matrix container supports horizontal overflow for small screens.
-- Sticky role column preserves row context while scrolling capabilities.
-
-## SSR/Hydration
-
-- Pure deterministic render from props; no DOM-specific logic in setup.
-
-## Testing
-
-- Cover tri-state cycle, disabled behavior, modelValue emission, and aria labeling.
+- The grid uses semantic table markup with row and column headers.
+- Each cell button exposes a contextual label of role, capability, and current state.

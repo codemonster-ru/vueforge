@@ -1,9 +1,69 @@
 # Inline
 
-## Purpose
+Arrange content horizontally with controlled gaps, alignment, and wrapping.
 
-- Arrange controls and metadata in horizontal flows with controlled wrap behavior.
-- Standardize toolbar and header micro-layout patterns.
+## Import
+
+```ts
+import { Inline } from '@codemonster-ru/vueforge';
+```
+
+## Examples
+
+Use `Inline` for rows of controls, chips, badges, and compact metadata where horizontal flow matters.
+
+### Basic
+
+Use the default wrapping row for chip collections and compact metadata groups.
+
+```vue
+<template>
+    <Inline gap="0.5rem">
+        <Chip label="Frontend" />
+        <Chip label="Backend" />
+        <Chip label="Design" />
+    </Inline>
+</template>
+```
+
+### Toolbar Row
+
+Use `justify="space-between"` and `wrap="nowrap"` for toolbar-like layouts with left and right regions.
+
+```vue
+<template>
+    <Inline align="center" justify="space-between" wrap="nowrap">
+        <span>Status</span>
+        <Badge severity="success">Healthy</Badge>
+    </Inline>
+</template>
+```
+
+### Wrapping Actions
+
+Allow wrapping when action groups must stay usable on smaller widths.
+
+```vue
+<template>
+    <Inline gap="0.75rem" wrap="wrap">
+        <Button label="Export" variant="outlined" />
+        <Button label="Archive" severity="secondary" />
+        <Button label="Create report" />
+    </Inline>
+</template>
+```
+
+### Semantic Row
+
+Use `as` when the inline row should also define a semantic region.
+
+```vue
+<template>
+    <Inline as="section" gap="0.5rem" align="center">
+        <Breadcrumbs :items="[{ label: 'Home', to: '/' }, { label: 'Projects', active: true }]" />
+    </Inline>
+</template>
+```
 
 ## Props
 
@@ -21,25 +81,6 @@
 
 - `default`
 
-## Examples
-
-```vue
-<Inline gap="0.5rem">
-    <Chip label="Frontend" />
-    <Chip label="Backend" />
-    <Chip label="Design" />
-</Inline>
-
-<Inline as="section" align="center" justify="space-between" wrap="nowrap">
-    <span>
-        Status
-    </span>
-    <Badge severity="success">
-        Healthy
-    </Badge>
-</Inline>
-```
-
 ## Theming
 
 - Override via `theme.overrides.components.inline`.
@@ -55,23 +96,9 @@ Component tokens (override via `theme.overrides.components.inline`):
 
 ## Recipes
 
-- Toolbar row: `wrap="nowrap"` with `justify="space-between"` for label/action alignment.
-- Tag cloud: default `wrap="wrap"` and small `gap` for compact chip collections.
-
-## Responsive
-
-- Validate wrap, alignment, and gap under narrow breakpoints.
-- Ensure touch-target spacing remains sufficient when rows wrap.
-
-## SSR/Hydration
-
-- Inline layout is static and should hydrate without DOM/state differences.
-- Verify server-rendered wrapping hints match client behavior.
-
-## Testing
-
-- Cover wrap/no-wrap modes, alignment options, and spacing variants.
-- Add responsive tests for multi-line wrapping with long labels.
+- Use `Inline` for horizontal composition instead of sprinkling left/right margins across children.
+- Prefer wrapping rows by default; reserve `nowrap` for compact toolbars where clipping is unacceptable.
+- Combine `Inline` and `Stack` instead of introducing one-off CSS wrappers for every header or control row.
 
 ## Accessibility
 

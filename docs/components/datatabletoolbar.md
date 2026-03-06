@@ -1,9 +1,52 @@
 # DataTableToolbar
 
-## Purpose
+Provide a unified control surface for table search, filters, presets, density, and export actions.
 
-Provide a unified table control surface for search, filters, column presets, density, and export actions.
-Designed for SaaS list pages and operational grids with server/client data workflows.
+## Import
+
+```ts
+import { DataTableToolbar } from '@codemonster-ru/vueforge';
+```
+
+## Examples
+
+Use `DataTableToolbar` above `DataTable` when a list page needs one compact row of controls.
+
+### Basic
+
+Use search and filter count for a standard operational list page.
+
+```vue
+<template>
+    <DataTableToolbar
+        :search="search"
+        :filter-count="activeFiltersCount"
+        @update:search="search = $event"
+        @filters-click="showFilters = true"
+    />
+</template>
+```
+
+### With Presets And Export
+
+Use presets, density, and export actions for heavier backoffice screens.
+
+```vue
+<template>
+    <DataTableToolbar
+        :search="search"
+        :column-presets="columnPresetOptions"
+        :export-options="[
+            { id: 'csv', label: 'CSV' },
+            { id: 'xlsx', label: 'Excel' }
+        ]"
+        density="compact"
+        @update:search="search = $event"
+        @filters-click="showFilters = true"
+        @export="startExport"
+    />
+</template>
+```
 
 ## Props
 
@@ -42,26 +85,9 @@ Designed for SaaS list pages and operational grids with server/client data workf
 
 - This component does not expose named slots.
 
-## Examples
-
-```vue
-<DataTableToolbar
-    :search="search"
-    :filter-count="activeFiltersCount"
-    :column-presets="columnPresetOptions"
-    :export-options="[
-        { id: 'csv', label: 'CSV' },
-        { id: 'xlsx', label: 'Excel' },
-    ]"
-    @update:search="search = $event"
-    @filters-click="showFilters = true"
-    @export="startExport"
-/>
-```
-
 ## Theming
 
-- Override via theme component overrides for each component documented on this page.
+- Override via `theme.overrides.components.dataTableToolbar`.
 
 ## Tokens
 
@@ -74,8 +100,13 @@ Component tokens (override via `theme.overrides.components.dataTableToolbar`):
 - `focusBorderColor`, `focusRing`
 - `disabledOpacity`
 
+## Recipes
+
+- Keep the toolbar focused on table-level controls, not row-level actions.
+- Use filter count as a summary cue rather than listing every active filter inline.
+- Pair it with route-synced table state if search and preset choices should survive reloads.
+
 ## Accessibility
 
 - Root uses `role="region"` with configurable `ariaLabel`.
-- Search, selectors, and actions use native controls for keyboard compatibility.
-- Keep export labels explicit (for example `CSV`, `Excel`) for clearer assistive announcements.
+- Search, selects, and buttons use native form controls for keyboard compatibility.

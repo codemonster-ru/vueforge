@@ -1,22 +1,85 @@
 # TagInput
 
-## Purpose
+Capture multiple selected or custom tokens inside one editable control.
 
-Enable fast option discovery and selection for forms, filters, and table toolbars.
-Cover both small curated lists and async/large datasets with consistent selection semantics.
+## Import
+
+```ts
+import { TagInput } from '@codemonster-ru/vueforge';
+```
+
+## Examples
+
+Use `TagInput` for skills, labels, recipients, and lightweight multi-value filter entry.
+
+### Basic
+
+Use options and allow custom tag creation when the field supports both known and ad hoc values.
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const skills = ref<Array<string | number>>(['vue']);
+</script>
+
+<template>
+    <TagInput
+        v-model="skills"
+        :options="[
+            { label: 'Vue', value: 'vue' },
+            { label: 'TypeScript', value: 'ts' },
+            { label: 'Vitest', value: 'vitest' }
+        ]"
+        placeholder="Add skills"
+        clearable
+    />
+</template>
+```
+
+### Fixed Options Only
+
+Disable custom creation when values must come from a known set.
+
+```vue
+<template>
+    <TagInput
+        :model-value="['frontend']"
+        :options="[
+            { label: 'Frontend', value: 'frontend' },
+            { label: 'Backend', value: 'backend' }
+        ]"
+        :allow-custom="false"
+    />
+</template>
+```
+
+### Max Tags
+
+Use `maxTags` and `reject` when the field should stay bounded.
+
+```vue
+<template>
+    <TagInput
+        :model-value="['ops', 'infra']"
+        :max-tags="3"
+        @reject="onReject"
+    />
+</template>
+```
 
 ## Props
 
-- `modelValue?: Array<string | number>` (v-model)
+- `modelValue?: Array<string | number>`
 - `options?: Array<{ label: string; value: string | number; disabled?: boolean }>`
 - `optionLabel?: string` (default `label`)
 - `optionValue?: string` (default `value`)
 - `placeholder?: string`
-- `disabled?: boolean`
-- `readonly?: boolean`
-- `loading?: boolean`
-- `loadingText?: string` (default `Loading...`)
-- `emptyText?: string` (default `No results`)
+- `disabled?: boolean` (default `false`)
+- `readonly?: boolean` (default `false`)
+- `loading?: boolean` (default `false`)
+- `loadingText?: string`
+- `emptyText?: string`
 - `filter?: boolean` (default `true`)
 - `allowCustom?: boolean` (default `true`)
 - `maxTags?: number`
@@ -30,9 +93,9 @@ Cover both small curated lists and async/large datasets with consistent selectio
 - `update:modelValue`
 - `change`
 - `search`
-- `add` (payload: `{ value: string | number; source: 'option' | 'custom' }`)
+- `add`
 - `remove`
-- `reject` (payload: `{ reason: 'duplicate' | 'maxTags' | 'invalid' | 'readonly'; value: string }`)
+- `reject`
 - `focus`
 - `blur`
 
@@ -40,17 +103,9 @@ Cover both small curated lists and async/large datasets with consistent selectio
 
 - This component does not expose named slots.
 
-## Examples
-
-```vue
-<TagInput v-model="skills" :options="skillOptions" placeholder="Add skills" clearable />
-```
-
-More recipes: [`Selection Patterns`](selection-patterns.md).
-
 ## Theming
 
-- Override via theme component overrides for each component documented on this page.
+- Override via `theme.overrides.components.taginput`.
 
 ## Tokens
 
@@ -75,27 +130,12 @@ Component tokens (override via `theme.overrides.components.taginput`):
 
 ## Recipes
 
-- Start with the examples above as baseline usage for this component.
-- Add product-specific variants (loading/error/dense/mobile) in consuming app docs when needed.
-
-## Responsive
-
-Verify popup width, option density, and chip/tag wrapping on mobile and tablet breakpoints.
-Ensure touch hit targets and scroll behavior remain stable in long option lists.
-
-## SSR/Hydration
-
-Render initial value and selected option state deterministically in SSR output.
-Defer async option fetching and client-only positioning logic until after hydration.
-
-## Testing
-
-Cover keyboard navigation, selection, clear/reset flows, and disabled/readonly states.
-Add tests for filtering/search behavior, async loading states, and ARIA combobox/listbox contracts.
+- Use `TagInput` when multiple values should remain visible and editable in-place.
+- Disable custom tags when the field must stay normalized to a known taxonomy.
+- Use `reject` to surface duplicate, invalid, readonly, or max-limit feedback in surrounding form logic.
 
 ## Accessibility
 
-- Keyboard token creation is supported by `Enter`, `Tab`, and comma (`,`).
-- Keyboard token removal is supported via `Backspace` when query is empty.
-- Chip remove buttons and `clearable` action provide explicit removal flows.
-- In `readonly` mode, token mutation and open/search interactions are blocked.
+- Supports combobox and listbox interaction for suggestion browsing.
+- Keyboard token creation is available through `Enter`, `Tab`, and comma.
+- Backspace can remove the previous tag when the query is empty, and explicit remove buttons are available for each tag.

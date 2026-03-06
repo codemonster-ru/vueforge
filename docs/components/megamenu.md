@@ -1,27 +1,89 @@
 # MegaMenu
 
-## Purpose
+Provide multi-column navigation panels for grouped top-level product destinations.
 
-Provide multi-column navigation content for product areas that need richer grouped links than a simple dropdown menu.
+## Import
+
+```ts
+import { MegaMenu } from '@codemonster-ru/vueforge';
+```
+
+## Examples
+
+Use `MegaMenu` when a top-level area opens into several grouped destinations and a simple dropdown is no longer enough.
+
+### Basic
+
+Use grouped sections to present multiple product areas under one root trigger.
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const active = ref<number | null>(null);
+</script>
+
+<template>
+    <MegaMenu
+        v-model="active"
+        :items="[
+            {
+                label: 'Products',
+                sections: [
+                    {
+                        label: 'Commerce',
+                        items: [
+                            { label: 'Catalog', to: '/catalog' },
+                            { label: 'Pricing', to: '/pricing' }
+                        ]
+                    },
+                    {
+                        label: 'Operations',
+                        items: [{ label: 'Orders', to: '/orders' }]
+                    }
+                ]
+            },
+            {
+                label: 'Docs',
+                items: [{ label: 'Guides', to: '/guides' }]
+            }
+        ]"
+    />
+</template>
+```
+
+### Controlled Active Root
+
+Control the open root explicitly when the surrounding shell owns open state.
+
+```vue
+<template>
+    <MegaMenu :model-value="0" :items="items" />
+</template>
+```
+
+### Lazy Root Content
+
+Use `lazy` when a root section should load its grouped links on first open.
+
+```vue
+<template>
+    <MegaMenu
+        :items="[
+            { label: 'Integrations', lazy: true, sections: [] }
+        ]"
+        @lazy-load="onLazyLoad"
+    />
+</template>
+```
 
 ## Props
 
 - `items?: Array<MegaMenuItem>`
-- `modelValue?: number | null` - active top-level item index.
+- `modelValue?: number | null`
 - `disabled?: boolean` (default `false`)
 - `ariaLabel?: string` (default `Mega menu`)
-- `syncActiveFromRoute?: boolean` (default `true`) - auto-open root item containing active route link.
-
-`MegaMenuItem`:
-
-- `label: string`
-- `disabled?: boolean`
-- `active?: boolean`
-- `exact?: boolean`
-- `url?: string`
-- `command?: () => void`
-- `sections?: Array<{ label?: string; items: Array<{ label: string; to?: string; href?: string; disabled?: boolean }> }>`
-- `items?: Array<{ label: string; to?: string; href?: string; disabled?: boolean }>` (single-section shortcut)
+- `syncActiveFromRoute?: boolean` (default `true`)
 
 ## Events
 
@@ -29,42 +91,20 @@ Provide multi-column navigation content for product areas that need richer group
 - `open`
 - `close`
 - `linkClick`
-- `navigate` (`{ to, href, link }`) - emitted when router navigation is triggered for a `to` link.
-- `lazyLoad` (`{ index, item }`) - emitted when opening `lazy` root item without loaded sections/items.
+- `navigate`
+- `lazyLoad`
 
 ## Slots
 
-- N/A (baseline API renders structured sections and links).
-
-## Examples
-
-```vue
-<MegaMenu
-    v-model="active"
-    :items="[
-        {
-            label: 'Products',
-            sections: [
-                {
-                    label: 'Commerce',
-                    items: [
-                        { label: 'Catalog', to: '/catalog' },
-                        { label: 'Pricing', to: '/pricing' },
-                    ],
-                },
-                { label: 'Operations', items: [{ label: 'Orders', to: '/orders' }] },
-            ],
-        },
-        { label: 'Docs', items: [{ label: 'Guides', to: '/guides' }] },
-    ]"
-/>
-```
+- This component does not expose named slots.
 
 ## Theming
 
 - Override via `theme.overrides.components.megamenu`.
 
 ## Tokens
+
+Component tokens (override via `theme.overrides.components.megamenu`):
 
 - `borderColor`, `borderRadius`, `backgroundColor`, `padding`
 - `rootGap`
@@ -76,26 +116,12 @@ Provide multi-column navigation content for product areas that need richer group
 
 ## Recipes
 
-- Use for top navigation where each product area has multiple grouped destinations.
-- Keep section count and link density balanced to avoid oversized dropdown panels.
+- Use `MegaMenu` only when grouped navigation actually improves discovery; otherwise prefer `Menu` or `TabMenu`.
+- Keep section count and link density balanced so the panel stays scannable.
+- On narrow screens, switch to a drawer or simpler vertical navigation rather than forcing the mega menu pattern.
 
 ## Accessibility
 
-- Uses `nav` landmark and root `menubar` semantics with `menuitem` triggers.
-- Active triggers expose `aria-expanded` and connect to panel via `aria-controls`.
-- Keyboard supports `Enter`/`Space` toggle, `ArrowLeft`/`ArrowRight` item traversal, and `Escape` close.
-- Active route links receive `aria-current="page"` when `syncActiveFromRoute` is enabled.
-
-## Responsive
-
-- For narrow screens, collapse into drawer or simpler vertical menu patterns.
-- Limit panel width and section count to prevent horizontal overflow.
-
-## SSR/Hydration
-
-- Hydration-safe controlled state via `modelValue`; no direct DOM-only branching in setup.
-
-## Testing
-
-- Cover trigger open/close, multi-column rendering, keyboard traversal, and link-click close behavior.
-- Cover router navigation handoff (`to` links), active-route sync, and `lazyLoad` handoff for deferred sections.
+- Uses a navigation landmark with root menubar semantics.
+- Active triggers expose `aria-expanded` and connect to their panels via `aria-controls`.
+- Keyboard support includes root traversal and `Escape` to close the open panel.

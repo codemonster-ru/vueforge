@@ -1,66 +1,97 @@
 # CascadeSelect
 
-## Purpose
+CascadeSelect extends `TreeSelect` with async branch loading for deep hierarchies where children arrive on demand.
 
-Provide hierarchical option selection with optional async branch loading for deep trees.
-Targets SaaS forms and filters where child options are fetched on-demand by branch.
+## Import
 
-## Props
-
-- `items?: Array<{ key: string | number; label: string; disabled?: boolean; hasChildren?: boolean; children?: Array<...> }>`
-- `modelValue?: string | number | Array<string | number>` (v-model)
-- `expandedKeys?: Array<string | number>` (`v-model:expandedKeys`)
-- `multiple?: boolean` (default `false`)
-- `selectable?: boolean` (default `true`)
-- `expandOnClick?: boolean` (default `true`)
-- `disabled?: boolean`
-- `readonly?: boolean`
-- `loading?: boolean`
-- `loadingText?: string`
-- `loadingBranchText?: string` (default `(loading...)`)
-- `emptyText?: string`
-- `placeholder?: string`
-- `searchPlaceholder?: string`
-- `filter?: boolean` (default `true`)
-- `clearable?: boolean` (default `false`)
-- `size?: 'small' | 'normal' | 'large'`
-- `variant?: 'filled' | 'outlined'`
-- `autoLoadOnExpand?: boolean` (default `true`)
-- `loadChildren?: (node) => Promise<Array<CascadeSelectItem>>`
-
-## Events
-
-- `update:modelValue`
-- `change`
-- `update:expandedKeys`
-- `toggle`
-- `nodeClick`
-- `search`
-- `focus`
-- `blur`
-- `branchLoadStart`
-- `branchLoad`
-- `branchLoadError`
-
-## Slots
-
-- `label` - slot props from `TreeSelect` plus `loading` flag: `{ node, level, selected, expanded, disabled, loading }`
+```ts
+import CascadeSelect from '@/package/components/cascade-select.vue';
+```
 
 ## Examples
 
+### Basic
+
 ```vue
-<CascadeSelect v-model="selectedNode" v-model:expandedKeys="expanded" :items="rootNodes" :load-children="loadBranch" />
+<CascadeSelect
+    v-model="selectedNode"
+    v-model:expandedKeys="expanded"
+    :items="rootNodes"
+    :load-children="loadBranch"
+/>
 ```
+
+### Async Branch Labels
+
+```vue
+<CascadeSelect :items="rootNodes" :load-children="loadBranch">
+    <template #label="{ node, loading }">
+        <span>{{ node.label }}</span>
+        <small v-if="loading">Loading...</small>
+    </template>
+</CascadeSelect>
+```
+
+## API
+
+### Props
+
+| Name | Type | Default |
+| --- | --- | --- |
+| `items` | `CascadeSelectItem[]` | `[]` |
+| `modelValue` | `TreeValue \| TreeValue[] \| undefined` | `undefined` |
+| `expandedKeys` | `TreeValue[]` | `[]` |
+| `multiple` | `boolean` | `false` |
+| `selectable` | `boolean` | `true` |
+| `expandOnClick` | `boolean` | `true` |
+| `disabled` | `boolean` | `false` |
+| `readonly` | `boolean` | `false` |
+| `loading` | `boolean` | `false` |
+| `loadingText` | `string \| undefined` | `undefined` |
+| `loadingBranchText` | `string` | `' (loading...)'` |
+| `emptyText` | `string \| undefined` | `undefined` |
+| `placeholder` | `string` | `''` |
+| `searchPlaceholder` | `string \| undefined` | `undefined` |
+| `filter` | `boolean` | `true` |
+| `clearable` | `boolean` | `false` |
+| `variant` | `'filled' \| 'outlined'` | `'filled'` |
+| `size` | `'small' \| 'normal' \| 'large'` | `'normal'` |
+| `autoLoadOnExpand` | `boolean` | `true` |
+| `loadChildren` | `((node) => Promise<CascadeSelectItem[]>) \| undefined` | `undefined` |
+
+### Events
+
+| Name | Payload |
+| --- | --- |
+| `update:modelValue` | selected value payload |
+| `change` | `value, node, event` |
+| `update:expandedKeys` | expanded keys array |
+| `toggle` | `key, expanded, node, event` |
+| `nodeClick` | `node, event` |
+| `search` | query string |
+| `focus` | `FocusEvent` |
+| `blur` | `FocusEvent` |
+| `branchLoadStart` | node |
+| `branchLoad` | `node, children` |
+| `branchLoadError` | `node, error` |
+
+### Slots
+
+| Name | Description |
+| --- | --- |
+| `label` | Tree label slot with `{ node, level, selected, expanded, disabled, loading }`. |
 
 ## Theming
 
-- Override via `theme.overrides.components.cascadeSelect` (same token shape as `treeselect`).
+CascadeSelect uses the same token contract as `TreeSelect` and is intended to share `theme.overrides.components.treeselect`.
 
-## Tokens
+## Recipes
 
-- Uses `TreeSelectTokens` contract (`padding`, `border`, `panel`, `search`, `clear`, size variants, etc.).
+- Use CascadeSelect when a hierarchy is too large to materialize upfront and branch expansion should trigger fetching.
+- Prefer TreeSelect when the full tree is already available client-side.
 
 ## Accessibility
 
-- Inherits trigger/tree keyboard and ARIA contracts from `TreeSelect`.
-- Async branch loading keeps tree semantics and exposes loading status in label slot (`loading`).
+- CascadeSelect inherits the trigger, popup, and tree semantics of `TreeSelect`.
+- Async branch loading preserves the hierarchy and surfaces loading state through the label slot.
+

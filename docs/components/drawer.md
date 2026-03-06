@@ -1,9 +1,79 @@
 # Drawer
 
-## Purpose
+Present slide-in panels for filters, secondary navigation, and contextual workflows.
 
-Handle layered interactions (dialogs, overlays, contextual actions, and transient notifications) with consistent behavior.
-Centralize close policies, focus management, and stack/layer contracts for complex SaaS screens.
+## Import
+
+```ts
+import { Drawer } from '@codemonster-ru/vueforge';
+```
+
+## Examples
+
+Use `Drawer` when the page should stay recognizable in the background and the task belongs to a side panel.
+
+### Basic
+
+Use a right-side drawer for filters or detail panels.
+
+```vue
+<template>
+    <Drawer v-model="open" title="Filters" position="right">
+        <template #body>
+            <p>Drawer content</p>
+        </template>
+        <template #footer>
+            <Button label="Reset" severity="secondary" size="small" />
+            <Button label="Apply" size="small" @click="open = false" />
+        </template>
+    </Drawer>
+</template>
+```
+
+### Left Navigation Drawer
+
+Use `position="left"` for secondary navigation or workspace tools.
+
+```vue
+<template>
+    <Drawer v-model="open" title="Navigation" position="left">
+        <template #body>
+            <Menu :items="[{ label: 'Overview', to: '/' }, { label: 'Members', to: '/members' }]" />
+        </template>
+    </Drawer>
+</template>
+```
+
+### Bottom Drawer
+
+Use `position="bottom"` for compact mobile-first flows or short task panels.
+
+```vue
+<template>
+    <Drawer v-model="open" title="Quick actions" position="bottom" size="sm">
+        <template #body>
+            <Stack gap="0.75rem">
+                <Button label="Duplicate" />
+                <Button label="Archive" severity="secondary" />
+            </Stack>
+        </template>
+    </Drawer>
+</template>
+```
+
+### Overlay And Scroll Policy
+
+Control whether the drawer behaves like a blocking overlay or a lighter utility panel.
+
+```vue
+<template>
+    <Drawer v-model="open" :overlay="false" :lock-scroll="false" title="Inspector">
+        <template #body>
+            Non-blocking utility panel
+        </template>
+    </Drawer>
+</template>
+```
 
 ## Props
 
@@ -31,22 +101,6 @@ Centralize close policies, focus management, and stack/layer contracts for compl
 - `footer` (optional)
 - `close` (optional) - custom close button; slot props: `{ close }`
 
-## Examples
-
-```vue
-<Drawer v-model="open" title="Filters" position="right">
-    <template #body>
-        <p>
-            Drawer content
-        </p>
-    </template>
-    <template #footer>
-        <Button label="Reset" severity="secondary" size="small" />
-        <Button label="Apply" size="small" @click="open = false" />
-    </template>
-</Drawer>
-```
-
 ## Theming
 
 - Override via `theme.overrides.components.drawer`.
@@ -69,50 +123,12 @@ Component tokens (override via `theme.overrides.components.drawer`):
 
 ## Recipes
 
-- Filter drawer: right-side drawer with apply/reset footer actions.
-- Mobile bottom sheet: `position="bottom"` with compact content and `size="sm"`.
-- Secondary navigation: left drawer with section links and optional persistent overlay.
-
-## Responsive
-
-Verify overlay sizing, placement fallback, and viewport collision handling on mobile/tablet/desktop.
-Ensure gesture/touch close interactions and action buttons remain accessible on small screens.
-
-## SSR/Hydration
-
-Render closed/open initial state deterministically and keep portal/container structure hydration-safe.
-Initialize positioning/focus logic only after mount to avoid server-client markup drift.
-
-## Testing
-
-Cover open/close triggers, escape/outside click behavior, focus trap/restore, and stacking order.
-Add accessibility tests for ARIA roles, labelling, and keyboard navigation in layered UI.
+- Use drawers for secondary tasks that still need more structure than a popover.
+- Choose side based on context: left for navigation, right for details/filters, bottom for mobile quick flows.
+- Turn off overlay only for clearly non-blocking utility panels.
 
 ## Accessibility
 
 - Focus is trapped while drawer is open and restored to the previous element on close.
 - Supports `Escape` close behavior when `closeOnEsc` is enabled.
 - For top/bottom drawers, ensure content headings are descriptive for screen readers.
-
-## Interaction Contract
-
-- `modelValue=true`:
-    - emits `open`
-    - moves focus into drawer panel (first focusable element, otherwise panel)
-    - traps `Tab`/`Shift+Tab` focus inside panel
-    - locks document scroll when `lockScroll=true`
-- Close triggers (`overlay`, `Escape`, close button/slot):
-    - emit `update:modelValue=false`
-    - emit `close`
-    - restore focus to element active before open
-- Behavior flags:
-    - `overlay=false` hides overlay entirely
-    - `closeOnOverlay=false` keeps drawer open on overlay click
-    - `closeOnEsc=false` disables `Escape` close
-    - `lockScroll=false` keeps body scrolling enabled
-
-## Z-Index Policy
-
-- Drawer root uses `zIndex` token (`--vf-drawer-z-index`, default `100`).
-- Drawer and modal share default overlay layer (`100`) and are expected to be ordered by mount sequence unless overridden.
-- Prefer project-level theme overrides for custom stacking rules instead of hardcoded component styles.

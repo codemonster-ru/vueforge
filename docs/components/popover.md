@@ -1,9 +1,88 @@
 # Popover
 
-## Purpose
+Display contextual overlay content anchored to a trigger without blocking the whole page.
 
-Handle layered interactions (dialogs, overlays, contextual actions, and transient notifications) with consistent behavior.
-Centralize close policies, focus management, and stack/layer contracts for complex SaaS screens.
+## Import
+
+```ts
+import { Popover } from '@codemonster-ru/vueforge';
+```
+
+## Examples
+
+Use `Popover` for short contextual tasks and richer helper content that should stay attached to a trigger.
+
+### Basic
+
+Use the default slot for compact informational content.
+
+```vue
+<template>
+    <Popover placement="bottom-start" :offset="10">
+        <template #button>
+            <Button label="Open popover" />
+        </template>
+        <template #default>
+            Popover content
+        </template>
+    </Popover>
+</template>
+```
+
+### Structured Content
+
+Use header/body/footer slots when the popover needs a small card-like structure.
+
+```vue
+<template>
+    <Popover>
+        <template #button>
+            <Button label="Project info" variant="outlined" />
+        </template>
+        <template #header>Workspace notice</template>
+        <template #body>
+            New teammates can view dashboards immediately.
+        </template>
+        <template #footer>
+            <Button label="Dismiss" size="small" />
+        </template>
+    </Popover>
+</template>
+```
+
+### Controlled State
+
+Use `v-model` when visible state must stay coordinated with surrounding UI.
+
+```vue
+<template>
+    <Popover v-model="open">
+        <template #button>
+            <Button label="Controlled popover" />
+        </template>
+        <template #default>
+            Controlled overlay content
+        </template>
+    </Popover>
+</template>
+```
+
+### Dismiss Policy
+
+Disable outside click dismissal when the content contains a task that should not close accidentally.
+
+```vue
+<template>
+    <Popover :close-on-outside="false">
+        <template #button>
+            <Button label="Review changes" />
+        </template>
+        <template #default>
+            Confirm the values before closing this card.
+        </template>
+    </Popover>
+</template>
+```
 
 ## Props
 
@@ -36,19 +115,6 @@ Centralize close policies, focus management, and stack/layer contracts for compl
 - `hide()`
 - `toggle()`
 
-## Examples
-
-```vue
-<Popover placement="bottom-start" :offset="10">
-    <template #button>
-        <Button label="Open popover" />
-    </template>
-    <template #default>
-        Popover content
-    </template>
-</Popover>
-```
-
 ## Theming
 
 - Override via `theme.overrides.components.popover`.
@@ -61,24 +127,9 @@ Override via `theme.overrides.components.popover`:
 
 ## Recipes
 
-- Info popover anchored to icon button with short helper content.
-- Compact action card with header/body/footer slots.
-- Controlled popover (`v-model`) coordinated with external state.
-
-## Responsive
-
-Verify overlay sizing, placement fallback, and viewport collision handling on mobile/tablet/desktop.
-Ensure gesture/touch close interactions and action buttons remain accessible on small screens.
-
-## SSR/Hydration
-
-Render closed/open initial state deterministically and keep portal/container structure hydration-safe.
-Initialize positioning/focus logic only after mount to avoid server-client markup drift.
-
-## Testing
-
-Cover open/close triggers, escape/outside click behavior, focus trap/restore, and stacking order.
-Add accessibility tests for ARIA roles, labelling, and keyboard navigation in layered UI.
+- Use popovers for contextual help, compact review cards, and lightweight anchored actions.
+- Prefer `Modal` when the task is blocking and `Tooltip` when the content is purely supplemental.
+- Keep popover bodies concise; once the content becomes a full workflow, move it to a drawer or modal.
 
 ## Accessibility
 
@@ -86,23 +137,3 @@ Add accessibility tests for ARIA roles, labelling, and keyboard navigation in la
 - Supports `Escape` dismiss when `closeOnEsc` is enabled.
 - Restores focus to the previously active element on dismiss.
 - If popover contains interactive controls, ensure keyboard focus order is logical.
-
-## Interaction Contract
-
-- Trigger behavior:
-    - `click`, `Enter`, `Space` toggle visibility
-    - emits legacy `click`/`onClick` on trigger interaction
-- Dismiss behavior:
-    - outside click dismisses when `closeOnOutside=true`
-    - `Escape` dismisses when `closeOnEsc=true`
-    - dismiss restores focus to element active before opening
-- Controlled mode:
-    - with `modelValue`, component emits `update:modelValue` and delegates visible state to parent
-- Positioning:
-    - popup is teleported to `body`
-    - `placement` + `offset` are applied via floating positioning with flip fallback
-
-## Z-Index Policy
-
-- Popover layer uses `--vf-popover-z-index` (default token: `70`).
-- It is intentionally above dropdown (`50`) and below modal/drawer overlays (`100`) in default theme.

@@ -1,33 +1,16 @@
 # Lazy
 
-## Purpose
+Lazy defers mounting of heavy subtree content until it becomes visible, with optional placeholder, delay, and one-time activation behavior.
 
-Deferred mount/render wrapper for heavy subtree content.
+## Import
 
-## Props
+```ts
+import Lazy from '@/package/components/lazy.vue';
+```
 
-- `as?: string` (default `div`)
-- `when?: boolean` (default `true`)
-- `disabled?: boolean` (default `false`)
-- `eager?: boolean` (default `false`) - render immediately, bypass observer
-- `once?: boolean` (default `true`) - keep mounted after first visibility trigger
-- `delay?: number` (default `0`) - defer mount after visibility
-- `rootMargin?: string` (default `200px`)
-- `threshold?: number` (default `0`)
-- `placeholderTag?: string` (default `div`)
-- `ariaLabel?: string`
+## Examples
 
-## Events
-
-- `enter`
-- `leave` (only when `once=false` and content becomes non-visible)
-
-## Slots
-
-- `default`
-- `placeholder`
-
-## Example
+### Basic
 
 ```vue
 <Lazy :once="true" root-margin="250px">
@@ -38,16 +21,75 @@ Deferred mount/render wrapper for heavy subtree content.
 </Lazy>
 ```
 
-## Tokens
+### Eager Fallback
 
-Override via `theme.overrides.components.lazy`:
+Use `eager` to bypass intersection logic while still keeping the same wrapper API.
+
+```vue
+<Lazy eager>
+    <ExpensiveSection />
+</Lazy>
+```
+
+### Re-Enter Behavior
+
+Set `once="false"` when the content should mount and unmount as visibility changes.
+
+```vue
+<Lazy :once="false" @enter="trackVisible" @leave="trackHidden">
+    <VideoPreview />
+</Lazy>
+```
+
+## API
+
+### Props
+
+| Name | Type | Default |
+| --- | --- | --- |
+| `as` | `string` | `'div'` |
+| `when` | `boolean` | `true` |
+| `disabled` | `boolean` | `false` |
+| `eager` | `boolean` | `false` |
+| `once` | `boolean` | `true` |
+| `delay` | `number` | `0` |
+| `rootMargin` | `string` | `'200px'` |
+| `threshold` | `number` | `0` |
+| `placeholderTag` | `string` | `'div'` |
+| `ariaLabel` | `string` | `''` |
+
+### Events
+
+| Name | Payload |
+| --- | --- |
+| `enter` | none |
+| `leave` | none |
+
+### Slots
+
+| Name | Description |
+| --- | --- |
+| `default` | Content mounted when active. |
+| `placeholder` | Fallback content before activation. |
+
+## Theming
+
+Override component tokens through `theme.overrides.components.lazy`.
+
+## Tokens
 
 - `placeholderMinHeight`
 - `placeholderBorderRadius`
 - `placeholderBackgroundColor`
 - `disabledOpacity`
 
-## Notes
+## Recipes
 
-- Falls back to immediate mount when `IntersectionObserver` is unavailable.
-- `when=false` always suppresses rendered content.
+- Use Lazy for charts, code editors, media previews, and other expensive subtrees below the fold.
+- Prefer route-level code splitting for whole-page boundaries; use Lazy for in-page deferral.
+
+## Accessibility
+
+- Placeholder content should remain meaningful when the deferred content is important for page comprehension.
+- When `IntersectionObserver` is unavailable, Lazy falls back to immediate mount instead of failing silently.
+

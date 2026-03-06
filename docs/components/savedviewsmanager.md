@@ -1,46 +1,18 @@
 # SavedViewsManager
 
-## Purpose
+SavedViewsManager manages reusable filter and view presets for operational list pages.
 
-Manage reusable list-page view configurations with save/rename/share/default actions.
-Helps teams persist common filter states for backoffice and analytics workflows.
+## Import
 
-## Props
-
-- `modelValue?: string | null` (selected view id)
-- `items?: Array<{ id: string; name: string; state?: unknown; shared?: boolean; isDefault?: boolean; updatedAt?: string }>`
-- `currentState?: unknown`
-- `allowShare?: boolean` (default `true`)
-- `disabled?: boolean` (default `false`)
-- `ariaLabel?: string` (default `Saved views manager`)
-- `viewsLabel?: string` (default `Saved views`)
-- `noViewLabel?: string` (default `No view selected`)
-- `defaultBadgeLabel?: string` (default `default`)
-- `namePlaceholder?: string` (default `View name`)
-- `saveLabel?: string` (default `Save current`)
-- `renameLabel?: string` (default `Rename`)
-- `setDefaultLabel?: string` (default `Set default`)
-- `shareLabel?: string` (default `Share`)
-- `unshareLabel?: string` (default `Unshare`)
-- `deleteLabel?: string` (default `Delete`)
-
-## Events
-
-- `update:modelValue`
-- `update:items`
-- `select`
-- `save`
-- `rename`
-- `setDefault`
-- `share`
-- `delete`
-- `change`
-
-## Slots
-
-- This component does not expose named slots.
+```ts
+import SavedViewsManager from '@/package/components/saved-views-manager.vue';
+```
 
 ## Examples
+
+### Basic
+
+Use `SavedViewsManager` when users need to persist list filters, columns, or search state.
 
 ```vue
 <SavedViewsManager
@@ -51,23 +23,73 @@ Helps teams persist common filter states for backoffice and analytics workflows.
 />
 ```
 
+### Shared Views
+
+Enable sharing when teams need common presets like "Escalated tickets" or "My approvals".
+
+```vue
+<SavedViewsManager
+    v-model="activeViewId"
+    :items="savedViews"
+    :current-state="currentFilters"
+    allow-share
+/>
+```
+
+## API
+
+### Props
+
+| Name | Type | Default |
+| --- | --- | --- |
+| `modelValue` | `string \| null` | `null` |
+| `items` | `SavedViewItem[]` | `[]` |
+| `currentState` | `unknown` | `undefined` |
+| `allowShare` | `boolean` | `true` |
+| `disabled` | `boolean` | `false` |
+| `ariaLabel` | `string` | `'Saved views manager'` |
+| `viewsLabel` | `string` | `'Saved views'` |
+| `noViewLabel` | `string` | `'No view selected'` |
+| `defaultBadgeLabel` | `string` | `'default'` |
+| `namePlaceholder` | `string` | `'View name'` |
+| `saveLabel` | `string` | `'Save current'` |
+| `renameLabel` | `string` | `'Rename'` |
+| `setDefaultLabel` | `string` | `'Set default'` |
+| `shareLabel` | `string` | `'Share'` |
+| `unshareLabel` | `string` | `'Unshare'` |
+| `deleteLabel` | `string` | `'Delete'` |
+
+### Events
+
+| Name | Payload |
+| --- | --- |
+| `update:modelValue` | `string \| null` |
+| `update:items` | `SavedViewItem[]` |
+| `select` | `SavedViewItem \| null` |
+| `save` | `SavedViewItem` |
+| `rename` | `SavedViewItem` |
+| `setDefault` | `SavedViewItem` |
+| `share` | `(view, shared)` |
+| `delete` | `SavedViewItem` |
+| `change` | `SavedViewItem[]` |
+
 ## Theming
 
-- Override via theme component overrides for each component documented on this page.
+Override component tokens through `theme.overrides.components.savedViewsManager`.
 
 ## Tokens
 
-Component tokens (override via `theme.overrides.components.savedViewsManager`):
+- Surface: `gap`, `padding`, `borderColor`, `borderRadius`, `backgroundColor`, `textColor`, `secondaryTextColor`
+- Layout: `rowGap`, `labelFontSize`
+- Controls: `controlHeight`, `controlBorderColor`, `controlBorderRadius`, `controlBackgroundColor`
+- States: `focusBorderColor`, `focusRing`, `dangerTextColor`, `dangerBorderColor`, `disabledOpacity`
 
-- `gap`, `padding`, `borderColor`, `borderRadius`, `backgroundColor`, `textColor`, `secondaryTextColor`
-- `rowGap`, `labelFontSize`
-- `controlHeight`, `controlBorderColor`, `controlBorderRadius`, `controlBackgroundColor`
-- `focusBorderColor`, `focusRing`
-- `dangerTextColor`, `dangerBorderColor`
-- `disabledOpacity`
+## Recipes
+
+- Treat saved views as durable user data, not just ephemeral UI state.
+- Keep names explicit and non-duplicative so users can distinguish similar presets quickly.
 
 ## Accessibility
 
-- Root uses `role="region"` with configurable `ariaLabel`.
-- Selection and actions rely on native `select`/`input`/`button` controls.
-- Keep view names explicit (avoid duplicates) for clear assistive-tech announcements.
+- The root uses `role="region"` with a configurable label.
+- Selection and editing rely on native select, input, and button controls.

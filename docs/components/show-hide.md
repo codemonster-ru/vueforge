@@ -1,47 +1,70 @@
 # Show / Hide
 
-## Purpose
+Show and Hide are breakpoint-aware rendering helpers for responsive visibility.
 
-- Provide breakpoint-aware rendering helpers for responsive visibility.
+## Import
 
-## Shared Props
+```ts
+import Show from '@/package/components/show.vue';
+import Hide from '@/package/components/hide.vue';
+```
 
-- `as?: string` (default `div`)
-- `from?: 'sm' | 'md' | 'lg' | 'xl'`
-- `to?: 'sm' | 'md' | 'lg' | 'xl'`
-- `when?: boolean` (default `true`)
+## Examples
 
-Breakpoints:
-
-- `sm=640`, `md=768`, `lg=1024`, `xl=1280` (px, min-width).
-
-## Behavior
-
-- `Show`: renders only inside the selected range (`from <= width < to`).
-- `Hide`: inverse helper for hide rules:
-    - hides on/above `from`
-    - hides below `to`
-
-## Example
+### Show On Desktop
 
 ```vue
 <Show from="md">
     <Toolbar />
 </Show>
+```
 
+### Hide On Desktop
+
+```vue
 <Hide from="md">
     <BottomSheet />
 </Hide>
 ```
 
-## Responsive
+### Bounded Range
 
-- Helpers listen to viewport resize and update render result immediately.
+```vue
+<Show from="sm" to="lg">
+    <TabletOnlyPanel />
+</Show>
+```
 
-## SSR/Hydration
+## API
 
-- On server, visibility defaults to rendered output; client width finalizes state after hydration.
+### Shared Props
 
-## Testing
+| Name | Type | Default |
+| --- | --- | --- |
+| `as` | `string` | `'div'` |
+| `from` | `'sm' \| 'md' \| 'lg' \| 'xl' \| undefined` | `undefined` |
+| `to` | `'sm' \| 'md' \| 'lg' \| 'xl' \| undefined` | `undefined` |
+| `when` | `boolean` | `true` |
 
-- Covers `from`/`to` range checks, custom tags, and explicit `when=false`.
+### Breakpoints
+
+- `sm = 640`
+- `md = 768`
+- `lg = 1024`
+- `xl = 1280`
+
+### Behavior
+
+- `Show` renders only when `from <= width < to` within the provided range.
+- `Hide` inverts the same range logic and suppresses content inside the matching window.
+
+## Recipes
+
+- Use Show and Hide for responsive-only fragments where CSS alone is not enough because the subtree should not render at all.
+- Prefer CSS visibility helpers when render cost is low and you only need visual hiding.
+
+## Accessibility
+
+- Because these helpers add or remove DOM entirely, avoid using them for content that should remain available to assistive technology across breakpoints.
+- Server output renders by default and final visibility is resolved after hydration using viewport width.
+

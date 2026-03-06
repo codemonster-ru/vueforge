@@ -1,81 +1,103 @@
 # Rating
 
-## Purpose
+Rating captures or displays a score across a fixed number of steps, including fractional values.
 
-Provide advanced task-focused interactions for authoring, media/input control, and guided workflows.
-Enable product features that require richer interaction than basic form controls.
+## Import
 
-## Props
-
-- `modelValue?: number` (v-model)
-- `max?: number` (default `5`)
-- `allowHalf?: boolean` (default `false`)
-- `precision?: number` (optional, `0 < precision <= 1`)
-- `clearable?: boolean` (default `false`)
-- `readonly?: boolean`
-- `disabled?: boolean`
-- `size?: 'small' | 'normal' | 'large'` (default `normal`)
-- `ariaLabel?: string`
-
-## Events
-
-- `update:modelValue`
-- `change`
-- `focus`
-- `blur`
-
-## Slots
-
-- This component does not expose named slots.
+```ts
+import Rating from '@/package/components/rating.vue';
+```
 
 ## Examples
 
+### Basic
+
+Use `Rating` for reviews, quality scores, and lightweight preference input.
+
 ```vue
-<Rating v-model="score" />
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const score = ref(3);
+</script>
+
+<template>
+    <Rating v-model="score" />
+</template>
+```
+
+### Half Steps
+
+Enable `allow-half` when users need finer control than whole-star increments.
+
+```vue
 <Rating v-model="score" allow-half size="large" />
+```
+
+### Precision Display
+
+Use `precision` with `readonly` for review summaries that need decimal accuracy.
+
+```vue
 <Rating :model-value="3.7" precision="0.1" readonly />
 ```
 
+### Clearable Input
+
+Enable `clearable` when users should be able to remove a previously selected score.
+
+```vue
+<Rating v-model="score" clearable />
+```
+
+## API
+
+### Props
+
+| Name | Type | Default |
+| --- | --- | --- |
+| `modelValue` | `number` | `0` |
+| `max` | `number` | `5` |
+| `size` | `'small' \| 'normal' \| 'large'` | `'normal'` |
+| `allowHalf` | `boolean` | `false` |
+| `precision` | `number \| undefined` | `undefined` |
+| `clearable` | `boolean` | `false` |
+| `readonly` | `boolean` | `false` |
+| `disabled` | `boolean` | `false` |
+| `ariaLabel` | `string` | `''` |
+
+### Events
+
+| Name | Payload |
+| --- | --- |
+| `update:modelValue` | `number` |
+| `change` | `number` |
+| `focus` | `FocusEvent` |
+| `blur` | `FocusEvent` |
+
+### Slots
+
+| Name | Description |
+| --- | --- |
+| `icon` | Replaces the empty icon. |
+| `active-icon` | Replaces the filled icon. |
+
 ## Theming
 
-- Override via theme component overrides for each component documented on this page.
+Override component tokens through `theme.overrides.components.rating`.
 
 ## Tokens
 
-Component tokens (override via `theme.overrides.components.rating`):
-
-- `gap`, `size`, `color`, `activeColor`, `hoverColor`
-- `focusRingShadow`, `focusRadius`, `disabledOpacity`
-- `small.size`
-- `large.size`
+- Base: `gap`, `size`, `color`, `activeColor`, `hoverColor`
+- States: `focusRingShadow`, `focusRadius`, `disabledOpacity`
+- Sizes: `small.size`, `large.size`
 
 ## Recipes
 
-- Start with the examples above as baseline usage for this component.
-- Add product-specific variants (loading/error/dense/mobile) in consuming app docs when needed.
-- Use `precision` for review displays (`readonly`) where half steps are not enough (for example `3.7`).
-- Use `clearable` for form flows that allow removing a previously selected score from keyboard (`Delete`/`Backspace`) or repeated click.
-
-## Responsive
-
-Verify control affordances, panel sizing, and gesture/mouse interactions across device classes.
-Ensure compact layouts preserve clarity for actions, handles, and contextual hints.
-
-## SSR/Hydration
-
-Keep initial value and panel-closed/base state stable between server and client output.
-Hydrate client-only interaction engines (editor, drag, command layers) without DOM mismatch.
-
-## Testing
-
-Cover core interaction loops, boundary conditions, and value/state synchronization.
-Add accessibility tests for keyboard alternatives, labelling, and focus behavior.
+- Use `precision` for display-oriented ratings and `allowHalf` for interactive scoring that should stay simple.
+- Use `clearable` when the form model distinguishes between no rating and a low rating.
 
 ## Accessibility
 
-- Keyboard support:
-    - `ArrowLeft` / `ArrowRight` / `ArrowUp` / `ArrowDown` adjust value by `precision` step.
-    - `Home` sets `0`, `End` sets max.
-    - number keys (`0`-`9`) jump to rating value.
-    - `Delete` / `Backspace` clears value when `clearable`.
-- Horizontal arrows respect RTL direction.
+- The component uses `radiogroup` and `radio` semantics with keyboard support for arrows, `Home`, `End`, number keys, and clear shortcuts.
+- Horizontal arrow behavior respects RTL layout direction.

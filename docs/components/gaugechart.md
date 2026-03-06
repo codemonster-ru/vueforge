@@ -1,81 +1,66 @@
 # GaugeChart
 
-## Purpose
+GaugeChart is a typed wrapper over `Chart` for a single radial KPI with center content and value clamping.
 
-Provide a single KPI radial gauge on top of VueForge `Chart`.
+## Import
 
-## Props
-
-- `value?: number` (default `0`)
-- `min?: number` (default `0`)
-- `max?: number` (default `100`)
-- `label?: string` - metric label used in tooltip.
-- `formatter?: (value: number, ratio: number) => string` - center value formatter.
-- `trackColor?: string` (default `#e5e7eb`)
-- `valueColor?: string` (default `#2563eb`)
-- `cutout?: string | number` (default `72%`)
-- `adapter?: ChartAdapter`
-- `options?: Record<string, unknown>`
-- `width?: number` (default `640`)
-- `height?: number` (default `320`)
-- `loading?: boolean` (default `false`)
-- `loadingText?: string` (default `Loading chart...`)
-- `emptyText?: string` (default `No chart data`)
-- `ariaLabel?: string` (default `Gauge chart`)
-- `lazy?: boolean` (default `true`)
-- `lazyRootMargin?: string` (default `200px`)
-- `lazyThreshold?: number` (default `0`)
-- `pt?: PassThroughOptions`
-- `unstyled?: boolean` (default `false`)
-
-## Events
-
-- `ready` (`ChartAdapterInstance`)
-- `error` (`Error`)
-
-## Slots
-
-- `loading`
-- `empty`
-- `center` (`{ value, ratio }`)
-
-## Example
-
-```vue
-<script setup lang="ts">
-import { GaugeChart, createChartJsAdapter } from '@codemonster-ru/vueforge';
-import ChartJs from 'chart.js/auto';
-
-const adapter = createChartJsAdapter(ChartJs);
-</script>
-
-<template>
-    <GaugeChart
-        :adapter="adapter"
-        :value="87"
-        label="SLA"
-        :formatter="(value, ratio) => `${value} (${Math.round(ratio * 100)}%)`"
-    />
-</template>
+```ts
+import GaugeChart from '@/package/components/gauge-chart.vue';
 ```
 
-## Accessibility
+## Examples
 
-- Uses `role="img"` via base `Chart` canvas and supports custom `ariaLabel`.
-- For critical KPI decisions, provide nearby textual/tablular fallback.
+### Basic
+
+```vue
+<GaugeChart :adapter="adapter" :value="87" label="SLA" />
+```
+
+### Custom Center
+
+```vue
+<GaugeChart :adapter="adapter" :value="87" label="SLA">
+    <template #center="{ value, ratio }">
+        <strong>{{ value }}</strong>
+        <span>{{ Math.round(ratio * 100) }}%</span>
+    </template>
+</GaugeChart>
+```
+
+## API
+
+### Props
+
+| Name | Type | Default |
+| --- | --- | --- |
+| `value` | `number` | `0` |
+| `min` | `number` | `0` |
+| `max` | `number` | `100` |
+| `label` | `string` | `''` |
+| `formatter` | `((value: number, ratio: number) => string) \| undefined` | `undefined` |
+| `trackColor` | `string` | `'#e5e7eb'` |
+| `valueColor` | `string` | `'#2563eb'` |
+| `cutout` | `string \| number` | `'72%'` |
+| `adapter` | `ChartAdapter \| undefined` | `undefined` |
+| `options` | `Record<string, unknown>` | `{}` |
+| chart base props | same as `Chart` | |
+
+### Events
+
+| Name | Payload |
+| --- | --- |
+| `ready` | `ChartAdapterInstance` |
+| `error` | `Error` |
+
+### Slots
+
+| Name | Description |
+| --- | --- |
+| `loading` | Replaces the loading state. |
+| `empty` | Replaces the empty state. |
+| `center` | Center overlay content with `{ value, ratio }`. |
 
 ## Theming
 
-- Inherits chart token set via `theme.overrides.components.chart`.
+GaugeChart inherits the shared chart token set from `theme.overrides.components.chart`.
 
-## Responsive
-
-- Uses responsive base chart options and centered overlay label.
-
-## SSR/Hydration
-
-- Adapter mount happens only on client mount and respects `lazy`.
-
-## Testing
-
-- Cover clamping behavior, radial config, formatter/tooltip contract, and adapter error/expose behavior.

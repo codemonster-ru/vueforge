@@ -1,70 +1,90 @@
 # Avatar
 
-## Purpose
+Avatar renders a user or entity image, initials fallback, and optional presence status.
 
-Communicate system and domain state through inline status, metadata markers, loaders, and empty experiences.
-Provide reusable feedback primitives for dashboards, tables, and long-running operations.
+## Import
 
-## Props
-
-- `src?: string`
-- `alt?: string`
-- `name?: string`
-- `size?: 'small' | 'normal' | 'large'` (default `normal`)
-- `shape?: 'circle' | 'rounded'` (default `circle`)
-- `status?: 'online' | 'offline' | 'busy' | 'away'`
-
-## Events
-
-- This component does not emit component-specific events.
-
-## Slots
-
-- `default` - custom avatar content
+```ts
+import Avatar from '@/package/components/avatar.vue';
+```
 
 ## Examples
 
+### Initials
+
+Use name-driven initials when image data is unavailable or unnecessary.
+
 ```vue
 <Avatar name="Ada Lovelace" />
-<Avatar src="/img/ada.png" alt="Ada Lovelace" size="large" />
-<Avatar name="Ada Lovelace" status="online" />
 ```
+
+### Image
+
+Pass `src` and `alt` when the avatar should display a real profile image.
+
+```vue
+<Avatar src="/img/ada.png" alt="Ada Lovelace" size="large" />
+```
+
+### Status
+
+Use `status` for lightweight presence or activity indicators in messaging and collaboration surfaces.
+
+```vue
+<div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+    <Avatar name="Ada Lovelace" status="online" />
+    <Avatar name="Alan Turing" status="busy" />
+    <Avatar name="Grace Hopper" status="away" />
+</div>
+```
+
+### Shape And Size
+
+Adjust shape and size to match list items, cards, and denser admin layouts.
+
+```vue
+<div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
+    <Avatar name="Small" size="small" />
+    <Avatar name="Rounded" shape="rounded" />
+    <Avatar name="Large" size="large" />
+</div>
+```
+
+## API
+
+### Props
+
+| Name | Type | Default |
+| --- | --- | --- |
+| `src` | `string` | `''` |
+| `alt` | `string` | `''` |
+| `name` | `string` | `''` |
+| `size` | `'small' \| 'normal' \| 'large'` | `'normal'` |
+| `shape` | `'circle' \| 'rounded'` | `'circle'` |
+| `status` | `'online' \| 'offline' \| 'busy' \| 'away' \| undefined` | `undefined` |
+
+### Slots
+
+| Name | Description |
+| --- | --- |
+| `default` | Replaces the default image or initials content. |
 
 ## Theming
 
-- Override via theme component overrides for each component documented on this page.
+Override component tokens through `theme.overrides.components.avatar`.
 
 ## Tokens
 
-Component tokens (override via `theme.overrides.components.avatar`):
-
-- `size`, `fontSize`, `fontWeight`
-- `backgroundColor`, `textColor`, `borderColor`, `borderWidth`, `borderRadius`
-- `statusSize`, `statusBorderWidth`, `statusBorderColor`
-- `statusOnlineColor`, `statusOfflineColor`, `statusBusyColor`, `statusAwayColor`
-- `small.size`, `small.fontSize`, `small.statusSize`
-- `large.size`, `large.fontSize`, `large.statusSize`
+- Base avatar: `size`, `fontSize`, `fontWeight`, `backgroundColor`, `textColor`, `borderColor`, `borderWidth`, `borderRadius`
+- Status indicator: `statusSize`, `statusBorderWidth`, `statusBorderColor`, `statusOnlineColor`, `statusOfflineColor`, `statusBusyColor`, `statusAwayColor`
+- Sizes: `small.size`, `small.fontSize`, `small.statusSize`, `large.size`, `large.fontSize`, `large.statusSize`
 
 ## Recipes
 
-- Start with the examples above as baseline usage for this component.
-- Add product-specific variants (loading/error/dense/mobile) in consuming app docs when needed.
-
-## Responsive
-
-Verify text/icon/indicator layout and density at mobile/tablet/desktop breakpoints.
-Ensure status content remains legible and non-overlapping in constrained containers.
-
-## SSR/Hydration
-
-Keep initial status/loading state deterministic in server-rendered output.
-Start animations or timers only after hydration to avoid markup mismatch.
-
-## Testing
-
-Cover severity/variant rendering, visibility lifecycle, and accessibility announcements where relevant.
-Add visual regression tests for key state combinations and contrast-sensitive variants.
+- Use initials fallback whenever image URLs are optional or user-provided.
+- Keep presence indicators for truly live status, not generic metadata.
 
 ## Accessibility
 
-- Ensure keyboard access, visible focus state, and sufficient color contrast in usage contexts.
+- The root exposes `role="img"` and derives its accessible label from `alt` or `name`.
+- If you fully override the default slot, preserve equivalent meaning for non-visual users.

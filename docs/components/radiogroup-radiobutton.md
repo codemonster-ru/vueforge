@@ -1,33 +1,105 @@
 # RadioGroup / RadioButton
 
-## Purpose
+Capture one choice from a small predefined set with native radio semantics.
 
-Compose complete form workflows with predictable field state, validation, and submission behavior.
-Standardize selection controls and grouped input patterns used across product settings and onboarding.
+## Import
 
-## Overview
+```ts
+import { RadioButton, RadioGroup } from '@codemonster-ru/vueforge';
+```
 
-Props (RadioGroup):
+## Examples
+
+Use `RadioGroup` when exactly one option from a short list may be selected.
+
+### Basic
+
+Use a vertical group for straightforward settings and form sections.
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const plan = ref('pro');
+</script>
+
+<template>
+    <RadioGroup v-model="plan" name="plan">
+        <RadioButton value="starter">Starter</RadioButton>
+        <RadioButton value="pro">Pro</RadioButton>
+        <RadioButton value="enterprise">Enterprise</RadioButton>
+    </RadioGroup>
+</template>
+```
+
+### Horizontal Layout
+
+Use horizontal direction when the option count is small and labels are short.
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const density = ref('comfortable');
+</script>
+
+<template>
+    <RadioGroup v-model="density" direction="horizontal" name="density">
+        <RadioButton value="compact">Compact</RadioButton>
+        <RadioButton value="comfortable">Comfortable</RadioButton>
+        <RadioButton value="spacious">Spacious</RadioButton>
+    </RadioGroup>
+</template>
+```
+
+### Outlined Variant
+
+Use `outlined` when the radios sit on a filled surface and need lighter chrome.
+
+```vue
+<template>
+    <RadioGroup model-value="weekly" variant="outlined" name="digest">
+        <RadioButton value="daily">Daily</RadioButton>
+        <RadioButton value="weekly">Weekly</RadioButton>
+        <RadioButton value="never">Never</RadioButton>
+    </RadioGroup>
+</template>
+```
+
+### Standalone RadioButton
+
+Use standalone mode only when integrating a single radio into an existing form abstraction.
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const selected = ref('a');
+</script>
+
+<template>
+    <RadioButton v-model="selected" value="a" name="standalone" label="Standalone option" />
+</template>
+```
+
+## RadioGroup Props
 
 - `modelValue?: string | number | boolean` (v-model)
 - `name?: string`
-- `disabled?: boolean`
+- `disabled?: boolean` (default `false`)
 - `variant?: 'filled' | 'outlined'` (default `filled`)
 - `direction?: 'vertical' | 'horizontal'` (default `vertical`)
 - `ariaLabel?: string`
 - `ariaLabelledby?: string`
 
-Props (RadioButton):
+## RadioButton Props
 
+- `modelValue?: string | number | boolean` (standalone mode)
 - `value?: string | number | boolean`
 - `label?: string`
-- `disabled?: boolean`
+- `disabled?: boolean` (default `false`)
 - `name?: string`
 - `variant?: 'filled' | 'outlined'` (default `filled`)
-
-## Props
-
-- No additional props documented for this component at the moment.
 
 ## Events
 
@@ -36,52 +108,31 @@ Props (RadioButton):
 
 ## Slots
 
-- `RadioGroup`: default slot for `RadioButton` items
-- `RadioButton`: default slot for label content
-
-## Examples
-
-```vue
-<RadioGroup v-model="plan" direction="horizontal">
-    <RadioButton value="basic">
-        Basic
-    </RadioButton>
-    <RadioButton value="pro">
-        Pro
-    </RadioButton>
-</RadioGroup>
-```
+- `RadioGroup`: `default` for `RadioButton` items
+- `RadioButton`: `default` - label content (fallbacks to `label`)
 
 ## Theming
 
-- Override via theme component overrides for each component documented on this page.
+- Override via `theme.overrides.components.radio`.
 
 ## Tokens
 
-- Use `theme.overrides.components` to customize this component where token support is available.
+Component tokens (override via `theme.overrides.components.radio`):
+
+- `size`, `dotSize`, `gap`, `groupGap`
+- `borderRadius`, `dotBorderRadius`
+- `borderColor`, `backgroundColor`
+- `checkedBackgroundColor`, `checkedBorderColor`, `dotColor`
+- `textColor`, `disabledOpacity`
 
 ## Recipes
 
-- Start with the examples above as baseline usage for this component.
-- Add product-specific variants (loading/error/dense/mobile) in consuming app docs when needed.
-
-## Responsive
-
-Verify label/control alignment, helper text, and error presentation on narrow layouts.
-Ensure grouped controls wrap cleanly and retain usable spacing for touch input.
-
-## SSR/Hydration
-
-Preserve initial form values, touched/error state defaults, and disabled/read-only semantics in SSR markup.
-Hydrate without mutating field structure before first interaction.
-
-## Testing
-
-Cover submission lifecycle (valid/invalid/async), reset flows, and field-level state propagation.
-Add tests for keyboard toggling, group navigation, and ARIA semantics for selection controls.
+- Use radios when the user should compare mutually exclusive options side by side.
+- Keep option labels short and parallel so scanning the set is easy.
+- Prefer `RadioGroup` over standalone radios whenever the options belong to one decision.
 
 ## Accessibility
 
-- `RadioGroup` uses `role="radiogroup"` and supports group labels via `ariaLabel`/`ariaLabelledby`.
-- Native radio inputs preserve expected keyboard behavior and checked-state semantics.
-- Keep visible focus styles and contrast for radio indicator and label text.
+- `RadioGroup` uses `role="radiogroup"` and supports group labels via `ariaLabel` or `ariaLabelledby`.
+- Native radio inputs preserve expected arrow-key, tab, and checked-state behavior.
+- Keep visible focus styles and contrast for both the indicator and label text.

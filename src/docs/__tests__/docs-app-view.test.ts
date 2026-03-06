@@ -75,11 +75,11 @@ describe('DocsAppView', () => {
         expect(wrapper.find('.vf-docs__title').text()).toBe('Button');
         expect(wrapper.find('.vf-panelmenu-node__link.is-active').text()).toBe('Button');
         expect(wrapper.find('[data-testid="vf-docs-markdown"]').text()).toContain(
-            'Execute primary and secondary actions with consistent visual hierarchy and interaction semantics.',
+            'Trigger actions with a clear visual hierarchy, optional icons, loading feedback, and link-style navigation.',
         );
         expect(wrapper.find('[data-testid="vf-docs-markdown"] pre code').exists()).toBe(true);
         expect(wrapper.find('[data-testid="vf-docs-example-block"]').exists()).toBe(true);
-        expect(wrapper.find('[data-testid="vf-docs-example-preview"]').text()).toContain('Primary');
+        expect(wrapper.find('[data-testid="vf-docs-example-preview"]').text()).toContain('Save');
     });
 
     it('resolves internal markdown links to docs routes', async () => {
@@ -166,7 +166,7 @@ describe('DocsAppView', () => {
         expect(wrapper.find('[data-testid="vf-docs-example-block"]').exists()).toBe(true);
     });
 
-    it('renders textarea examples without preview number prop warnings', async () => {
+    it('renders textarea examples without preview warnings', async () => {
         const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
         const router = createTestRouter('/docs/components/textarea');
         router.push('/docs/components/textarea');
@@ -187,6 +187,7 @@ describe('DocsAppView', () => {
         expect(
             warnings.some(message => message.includes('Expected Number with value 4, got String with value "4"')),
         ).toBe(false);
+        expect(warnings.some(message => message.includes('Property undefined was accessed during render'))).toBe(false);
 
         warnSpy.mockRestore();
     });

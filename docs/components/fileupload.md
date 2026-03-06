@@ -1,53 +1,39 @@
 # FileUpload
 
-## Purpose
+FileUpload handles file selection, drag and drop, validation limits, and an optional chunked upload pipeline with retry state.
 
-Provide advanced task-focused interactions for authoring, media/input control, and guided workflows.
-Enable product features that require richer interaction than basic form controls.
+## Import
 
-## Props
-
-- `modelValue?: File | File[] | null` (v-model)
-- `multiple?: boolean`
-- `accept?: string`
-- `disabled?: boolean`
-- `readonly?: boolean`
-- `maxSize?: number` (bytes)
-- `maxFiles?: number`
-- `placeholder?: string`
-- `buttonLabel?: string` (default `Browse`)
-- `size?: 'small' | 'normal' | 'large'` (default `normal`)
-- `variant?: 'filled' | 'outlined'` (default `filled`)
-- `advanced?: boolean` (default `false`) - enables upload pipeline with chunk/retry/status UI
-- `autoUpload?: boolean` (default `false`) - starts upload automatically after file selection
-- `chunkSize?: number` (default `5_000_000`) - chunk size in bytes for advanced mode
-- `maxRetries?: number` (default `2`) - retries per failed chunk
-- `uploadButtonLabel?: string` (default `Upload`)
-- `signedUrlResolver?: (chunkContext) => Promise<{ url: string; method?: string; headers?: Record<string, string> } | null>`
-- `uploadRequest?: (chunkContext) => Promise<void>` - custom transport for chunk upload
-
-## Events
-
-- `update:modelValue`
-- `change`
-- `reject` (payload: `Array<{ file: File; reason: 'maxSize' | 'maxFiles'; maxSize?: number; maxFiles?: number }>` )
-- `focus`
-- `blur`
-- `uploadStart` (payload: `file`, `{ key, totalChunks, totalBytes }`)
-- `uploadProgress` (payload: `file`, `{ key, uploadedBytes, totalBytes, progress, chunkIndex, totalChunks }`)
-- `uploadSuccess` (payload: `file`, `{ key, uploadedBytes, totalBytes, retries }`)
-- `uploadError` (payload: `file`, `{ key, error, chunkIndex, retries }`)
-- `uploadComplete` (payload: `{ total, success, failed }`)
-
-## Slots
-
-- This component does not expose named slots.
+```ts
+import FileUpload from '@/package/components/file-upload.vue';
+```
 
 ## Examples
+
+### Basic
+
+Use `v-model` for local file selection with size and count limits.
 
 ```vue
 <FileUpload v-model="attachments" multiple :max-files="5" :max-size="10_000_000" />
 ```
+
+### Drag And Drop
+
+The component supports drag and drop by default, so it can act as a dropzone without extra wiring.
+
+```vue
+<FileUpload
+    v-model="files"
+    multiple
+    placeholder="Drop product assets here or click to browse"
+    button-label="Select files"
+/>
+```
+
+### Advanced Upload Pipeline
+
+Enable `advanced` when uploads should show progress, retries, and chunked transport.
 
 ```vue
 <FileUpload
@@ -62,51 +48,80 @@ Enable product features that require richer interaction than basic form controls
 />
 ```
 
-Advanced flow notes:
+### Auto Upload
 
-- Chunking is enabled when `advanced=true`.
-- Resume is chunk-based: retry continues from the last failed chunk, not from byte zero.
-- Signed URL flow is supported by `signedUrlResolver` returning per-chunk request details.
+Use `autoUpload` when selected files should begin uploading immediately.
+
+```vue
+<FileUpload
+    v-model="attachments"
+    multiple
+    advanced
+    auto-upload
+    :upload-request="uploadChunk"
+/>
+```
+
+## API
+
+### Props
+
+| Name | Type | Default |
+| --- | --- | --- |
+| `modelValue` | `File \| File[] \| null` | `null` |
+| `multiple` | `boolean` | `false` |
+| `accept` | `string \| undefined` | `undefined` |
+| `disabled` | `boolean` | `false` |
+| `readonly` | `boolean` | `false` |
+| `maxSize` | `number \| undefined` | `undefined` |
+| `maxFiles` | `number \| undefined` | `undefined` |
+| `placeholder` | `string` | `'Drop files here or click to browse'` |
+| `buttonLabel` | `string` | `'Browse'` |
+| `size` | `'small' \| 'normal' \| 'large'` | `'normal'` |
+| `variant` | `'filled' \| 'outlined'` | `'filled'` |
+| `advanced` | `boolean` | `false` |
+| `autoUpload` | `boolean` | `false` |
+| `chunkSize` | `number` | `5000000` |
+| `maxRetries` | `number` | `2` |
+| `uploadButtonLabel` | `string` | `'Upload'` |
+| `signedUrlResolver` | upload resolver function \| `undefined` | `undefined` |
+| `uploadRequest` | upload transport function \| `undefined` | `undefined` |
+
+### Events
+
+| Name | Payload |
+| --- | --- |
+| `update:modelValue` | `File \| File[] \| null` |
+| `change` | selected file payload |
+| `reject` | `Array<{ file, reason, maxSize?, maxFiles? }>` |
+| `focus` | `FocusEvent` |
+| `blur` | `FocusEvent` |
+| `uploadStart` | `file, { key, totalChunks, totalBytes }` |
+| `uploadProgress` | `file, { key, uploadedBytes, totalBytes, progress, chunkIndex, totalChunks }` |
+| `uploadSuccess` | `file, { key, uploadedBytes, totalBytes, retries }` |
+| `uploadError` | `file, { key, error, chunkIndex, retries }` |
+| `uploadComplete` | `{ total, success, failed }` |
 
 ## Theming
 
-- Override via theme component overrides for each component documented on this page.
+Override component tokens through `theme.overrides.components.fileUpload`.
 
 ## Tokens
 
-Component tokens (override via `theme.overrides.components.fileUpload`):
-
-- `minHeight`, `fontSize`, `gap`, `padding`
-- `borderRadius`, `borderColor`
-- `backgroundColor`, `textColor`, `placeholderColor`
-- `focusBorderColor`, `focusRingShadow`, `hoverBorderColor`
-- `disabledOpacity`, `dragBackgroundColor`
-- `listGap`, `itemPadding`, `itemBorderColor`, `itemBackgroundColor`, `itemRadius`, `itemTextColor`, `sizeTextColor`
-- `buttonPadding`, `buttonRadius`, `buttonBorderColor`, `buttonBackgroundColor`, `buttonTextColor`, `buttonHoverBackgroundColor`
-- `removeSize`, `removeRadius`, `removeHoverBackgroundColor`
-- `small.fontSize`, `small.padding`, `small.buttonPadding`
-- `large.fontSize`, `large.padding`, `large.buttonPadding`
+- Surface and states: `minHeight`, `fontSize`, `gap`, `padding`, `borderRadius`, `borderColor`, `backgroundColor`, `textColor`, `placeholderColor`, `focusBorderColor`, `hoverBorderColor`, `focusRingShadow`, `disabledOpacity`, `dragBackgroundColor`
+- Files and list: `listGap`, `itemPadding`, `itemBorderColor`, `itemBackgroundColor`, `itemRadius`, `itemTextColor`, `sizeTextColor`
+- Buttons: `buttonPadding`, `buttonRadius`, `buttonBorderColor`, `buttonBackgroundColor`, `buttonTextColor`, `buttonHoverBackgroundColor`
+- Remove affordance: `removeSize`, `removeRadius`, `removeHoverBackgroundColor`
+- Size variants: `small.*`, `large.*`
 
 ## Recipes
 
-- Start with the examples above as baseline usage for this component.
-- Add product-specific variants (loading/error/dense/mobile) in consuming app docs when needed.
-
-## Responsive
-
-Verify control affordances, panel sizing, and gesture/mouse interactions across device classes.
-Ensure compact layouts preserve clarity for actions, handles, and contextual hints.
-
-## SSR/Hydration
-
-Keep initial value and panel-closed/base state stable between server and client output.
-Hydrate client-only interaction engines (editor, drag, command layers) without DOM mismatch.
-
-## Testing
-
-Cover core interaction loops, boundary conditions, and value/state synchronization.
-Add accessibility tests for keyboard alternatives, labelling, and focus behavior.
+- Use FileUpload for attachments, asset libraries, import workflows, and chunked uploads to signed URLs.
+- Keep `advanced=false` for simple forms where upload is handled only after form submission.
 
 ## Accessibility
 
-- Ensure keyboard access, visible focus state, and sufficient color contrast in usage contexts.
+- The main control behaves like a focusable button and supports keyboard-triggered file selection.
+- Disabled and readonly states remove interaction while preserving current file list visibility.
+- Rejected files and upload errors should be paired with app-level messaging when the workflow requires explicit user feedback.
+

@@ -1,9 +1,141 @@
 # Autocomplete
 
-## Purpose
+Search and select options with combobox behavior for small lists, grouped data, and larger datasets.
 
-Enable fast option discovery and selection for forms, filters, and table toolbars.
-Cover both small curated lists and async/large datasets with consistent selection semantics.
+## Import
+
+```ts
+import { Autocomplete } from '@codemonster-ru/vueforge';
+```
+
+## Examples
+
+Prefer short, realistic data samples. The best examples show selection behavior directly rather than abstract API shapes.
+
+### Basic
+
+Use a single-value autocomplete for common form fields and toolbar filters.
+
+```vue
+<template>
+    <Autocomplete
+        v-model="country"
+        placeholder="Select a country"
+        :options="[
+            { label: 'Canada', value: 'ca' },
+            { label: 'Germany', value: 'de' },
+            { label: 'Japan', value: 'jp' },
+            { label: 'United States', value: 'us' }
+        ]"
+    />
+</template>
+```
+
+### Multiple
+
+Enable `multiple` to collect tags, assignees, or watchers while keeping selected values visible as chips.
+
+```vue
+<template>
+    <Autocomplete
+        v-model="assignees"
+        multiple
+        placeholder="Assign teammates"
+        :options="[
+            { label: 'Ava Patel', value: 'ava' },
+            { label: 'Maksim Ivanov', value: 'maksim' },
+            { label: 'Nora Smith', value: 'nora' },
+            { label: 'Wei Chen', value: 'wei' }
+        ]"
+    />
+</template>
+```
+
+### Grouped
+
+Use grouped data when options belong to clear categories and the group context helps scanning.
+
+```vue
+<template>
+    <Autocomplete
+        v-model="city"
+        grouped
+        placeholder="Choose a city"
+        :options="[
+            {
+                label: 'North America',
+                items: [
+                    { label: 'New York', value: 'new-york' },
+                    { label: 'Toronto', value: 'toronto' }
+                ]
+            },
+            {
+                label: 'Europe',
+                items: [
+                    { label: 'Berlin', value: 'berlin' },
+                    { label: 'Prague', value: 'prague' }
+                ]
+            }
+        ]"
+    />
+</template>
+```
+
+### States
+
+Use loading, disabled, and readonly states to keep async and permission-driven flows explicit.
+
+```vue
+<template>
+    <div style="display: grid; gap: 0.75rem;">
+        <Autocomplete
+            v-model="loadingValue"
+            loading
+            loading-text="Searching repositories..."
+            placeholder="Loading state"
+            :options="[]"
+        />
+        <Autocomplete
+            v-model="disabledValue"
+            disabled
+            placeholder="Disabled state"
+            :options="[{ label: 'Invoices', value: 'invoices' }]"
+        />
+        <Autocomplete
+            v-model="readonlyValue"
+            readonly
+            placeholder="Readonly state"
+            :options="[{ label: 'Enterprise plan', value: 'enterprise' }]"
+        />
+    </div>
+</template>
+```
+
+### Virtualized Lists
+
+Enable virtualization for long lists to keep scrolling and keyboard navigation responsive.
+
+```vue
+<template>
+    <Autocomplete
+        v-model="metric"
+        virtual
+        :virtual-threshold="5"
+        :virtual-item-height="36"
+        placeholder="Pick a metric"
+        :options="[
+            { label: 'Activation rate', value: 'activation-rate' },
+            { label: 'Average order value', value: 'average-order-value' },
+            { label: 'Bounce rate', value: 'bounce-rate' },
+            { label: 'Churn risk', value: 'churn-risk' },
+            { label: 'Expansion MRR', value: 'expansion-mrr' },
+            { label: 'Gross margin', value: 'gross-margin' },
+            { label: 'Lead velocity', value: 'lead-velocity' },
+            { label: 'Net revenue retention', value: 'net-revenue-retention' }
+        ]"
+    />
+</template>
+```
 
 ## Props
 
@@ -48,48 +180,28 @@ Cover both small curated lists and async/large datasets with consistent selectio
 
 - This component does not expose named slots.
 
-## Examples
-
-```vue
-<Autocomplete v-model="country" :options="countries" placeholder="Find country" />
-<Autocomplete v-model="tags" :options="users" multiple placeholder="Add users" />
-<Autocomplete v-model="city" :options="groupedCities" grouped />
-```
-
 More recipes: [`Selection Patterns`](selection-patterns.md).
 
 ## Theming
 
-- Override via theme component overrides for each component documented on this page.
+- Override via `theme.overrides.components.autocomplete`.
 
 ## Tokens
 
 Override via `theme.overrides.components.autocomplete`:
 
-- Core: `padding`, `borderRadius`, `borderColor`, `backgroundColor`, `textColor`
+- Core: `minWidth`, `fontSize`, `controlGap`, `chevronSize`, `padding`, `borderRadius`, `borderColor`, `backgroundColor`, `textColor`, `placeholderColor`, `focusBorderColor`, `hoverBorderColor`, `disabledOpacity`, `focusRingShadow`
 - Panel/options: `panel*`, `option*`, `empty*`, `loading*`
 - Multiple chips: `chipGap`, `chipPadding`, `chipRadius`, `chipBackgroundColor`, `chipTextColor`, `chipFontSize`
 - Group labels: `groupLabelPadding`, `groupLabelColor`, `groupLabelFontSize`, `groupLabelFontWeight`
+- Size variants: `small.padding`, `small.fontSize`, `large.padding`, `large.fontSize`
 
 ## Recipes
 
-- Start with the examples above as baseline usage for this component.
-- Add product-specific variants (loading/error/dense/mobile) in consuming app docs when needed.
-
-## Responsive
-
-Verify popup width, option density, and chip/tag wrapping on mobile and tablet breakpoints.
-Ensure touch hit targets and scroll behavior remain stable in long option lists.
-
-## SSR/Hydration
-
-Render initial value and selected option state deterministically in SSR output.
-Defer async option fetching and client-only positioning logic until after hydration.
-
-## Testing
-
-Cover keyboard navigation, selection, clear/reset flows, and disabled/readonly states.
-Add tests for filtering/search behavior, async loading states, virtualized rendering windows, `loadMore` handoff, and ARIA combobox/listbox contracts.
+- Use single-select for search-and-pick fields where free text is not the final value.
+- Use `multiple` for compact tag-style selection, but switch to a larger pattern when chips can grow unbounded.
+- Use `grouped` or `groupBy` when users need category context before they can choose an item.
+- Turn on `virtual` for long lists and pair it with `loadMore` for remote pagination flows.
 
 ## Accessibility
 

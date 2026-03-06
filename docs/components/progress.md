@@ -1,9 +1,56 @@
 # Progress
 
-## Purpose
+Visualize determinate or indeterminate task progress in linear or circular form.
 
-- Visualize determinate/indeterminate progress for uploads, jobs, and long-running tasks.
-- Surface task advancement in a compact, reusable primitive.
+## Import
+
+```ts
+import { Progress } from '@codemonster-ru/vueforge';
+```
+
+## Examples
+
+Use `Progress` when the system can communicate advancement or ongoing work more clearly than a generic spinner.
+
+### Linear
+
+Use linear progress for page sections, uploads, and background jobs.
+
+```vue
+<template>
+    <Progress :value="64" />
+</template>
+```
+
+### Circular
+
+Use circular progress for compact status widgets and cards.
+
+```vue
+<template>
+    <Progress variant="circular" :value="42" size="small" />
+</template>
+```
+
+### With Value Label
+
+Use `showValue` when the numeric percentage helps users judge remaining time or completion.
+
+```vue
+<template>
+    <Progress severity="success" showValue :value="85" />
+</template>
+```
+
+### Indeterminate
+
+Omit `value` when the work is ongoing but total progress is unknown.
+
+```vue
+<template>
+    <Progress />
+</template>
+```
 
 ## Props
 
@@ -21,20 +68,11 @@
 
 ## Slots
 
-- This component does not expose named slots.
-
-## Examples
-
-```vue
-<Progress :value="64" />
-<Progress variant="circular" :value="42" size="small" />
-<Progress variant="linear" severity="success" showValue :value="85" />
-<Progress variant="linear" />
-```
+- `default` - overrides the visible label content
 
 ## Theming
 
-- Override via theme component overrides for each component documented on this page.
+- Override via `theme.overrides.components.progress`.
 
 ## Tokens
 
@@ -51,24 +89,11 @@ Component tokens (override via `theme.overrides.components.progress`):
 
 ## Recipes
 
-- Start with the examples above as baseline usage for this component.
-- Add product-specific variants (loading/error/dense/mobile) in consuming app docs when needed.
-
-## Responsive
-
-- Validate bar thickness/label readability on small viewports.
-- Ensure progress components scale in narrow containers and cards.
-
-## SSR/Hydration
-
-- Initial value/indeterminate mode must be consistent across server and client.
-- Animated transitions should start after hydration without structure changes.
-
-## Testing
-
-- Cover min/max/value clamping, indeterminate mode, and ARIA progress semantics.
-- Add regression tests for label formatting and variant rendering.
+- Use determinate progress whenever you can calculate advancement; indeterminate should be the fallback.
+- Prefer linear progress for wide layouts and circular progress for compact summaries.
+- Use visible labels only when they add actual decision value.
 
 ## Accessibility
 
-- Ensure keyboard access, visible focus state, and sufficient color contrast in usage contexts.
+- Progress renders `role="progressbar"` with `aria-valuenow` omitted in indeterminate mode.
+- Provide `ariaLabel` when the surrounding context does not already explain what is progressing.

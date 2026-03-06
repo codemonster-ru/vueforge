@@ -1,28 +1,16 @@
 # Hover
 
-## Purpose
+Hover exposes hover and focus interaction state with keyboard parity and optional controlled mode.
 
-Utility wrapper that exposes hover/focus interaction state with keyboard parity.
+## Import
 
-## Props
+```ts
+import Hover from '@/package/components/hover.vue';
+```
 
-- `as?: string` (default `div`)
-- `modelValue?: boolean` (optional controlled mode)
-- `disabled?: boolean` (default `false`)
-- `openDelay?: number` (default `0`)
-- `closeDelay?: number` (default `0`)
-- `ariaLabel?: string`
+## Examples
 
-## Events
-
-- `update:modelValue` (controlled mode)
-- `change`
-
-## Slots
-
-- `default` scoped slot: `{ hovered, focused, active }`
-
-## Example
+### Basic
 
 ```vue
 <Hover v-slot="{ active }">
@@ -32,12 +20,57 @@ Utility wrapper that exposes hover/focus interaction state with keyboard parity.
 </Hover>
 ```
 
-## Tokens
+### Controlled State
 
-Component tokens (override via `theme.overrides.components.hover`):
+```vue
+<Hover v-model="active" :open-delay="80" :close-delay="120">
+    <template #default="{ active }">
+        <TooltipLikeCard :active="active" />
+    </template>
+</Hover>
+```
+
+## API
+
+### Props
+
+| Name | Type | Default |
+| --- | --- | --- |
+| `as` | `string` | `'div'` |
+| `modelValue` | `boolean \| undefined` | `undefined` |
+| `disabled` | `boolean` | `false` |
+| `openDelay` | `number` | `0` |
+| `closeDelay` | `number` | `0` |
+| `ariaLabel` | `string` | `''` |
+
+### Events
+
+| Name | Payload |
+| --- | --- |
+| `update:modelValue` | `boolean` |
+| `change` | `boolean` |
+
+### Slots
+
+| Name | Description |
+| --- | --- |
+| `default` | Scoped slot with `{ hovered, focused, active }`. |
+
+## Theming
+
+Override component tokens through `theme.overrides.components.hover`.
+
+## Tokens
 
 - `disabledOpacity`
 
+## Recipes
+
+- Use Hover to drive lightweight reveal states, elevated surfaces, and keyboard-parity hover affordances.
+- Prefer explicit state components when the interaction is semantically closer to disclosure than hover.
+
 ## Accessibility
 
-- Keyboard parity: focus enters/leaves the same active lifecycle as pointer hover.
+- Focus enters the same active lifecycle as pointer hover, so keyboard users receive the same affordances.
+- Disabled state clears internal hover state and suppresses delayed activation.
+

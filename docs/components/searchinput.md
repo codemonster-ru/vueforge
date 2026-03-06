@@ -1,9 +1,73 @@
 # SearchInput
 
-## Purpose
+Capture search queries with built-in debounce, loading, and clear interactions.
 
-Capture user text and numeric input with consistent API, validation hooks, and theming behavior.
-Support high-frequency form entry scenarios in SaaS settings, auth, and CRUD flows.
+## Import
+
+```ts
+import { SearchInput } from '@codemonster-ru/vueforge';
+```
+
+## Examples
+
+Use `SearchInput` when typing should produce search intent directly and the field needs its own query-specific affordances.
+
+### Basic
+
+Use a basic search input for toolbar filtering and page-level search.
+
+```vue
+<template>
+    <SearchInput v-model="query" placeholder="Search projects" clearable />
+</template>
+```
+
+### Debounced Search
+
+Increase `debounce` for heavier remote queries to avoid unnecessary backend traffic.
+
+```vue
+<template>
+    <SearchInput v-model="customerQuery" placeholder="Search customers" :debounce="500" />
+</template>
+```
+
+### Loading
+
+Use the loading state while results are still being fetched after the current query.
+
+```vue
+<template>
+    <SearchInput v-model="repositoryQuery" placeholder="Search repositories" loading variant="outlined" />
+</template>
+```
+
+### Sizes
+
+Scale the field to fit compact headers or larger page hero search bars.
+
+```vue
+<template>
+    <div style="display: grid; gap: 0.75rem;">
+        <SearchInput v-model="smallQuery" size="small" placeholder="Small search" />
+        <SearchInput v-model="normalQuery" placeholder="Default search" />
+        <SearchInput v-model="largeQuery" size="large" placeholder="Large search" />
+    </div>
+</template>
+```
+
+### Disabled And Readonly
+
+Use `disabled` when search is unavailable and `readonly` when the current query should remain visible but not editable.
+
+```vue
+<template>
+    <div style="display: grid; gap: 0.75rem;">
+        <SearchInput v-model="disabledQuery" disabled placeholder="Disabled search" />
+        <SearchInput v-model="readonlyQuery" readonly clearable />
+    </div>
+</template>
+```
 
 ## Props
 
@@ -41,16 +105,9 @@ Support high-frequency form entry scenarios in SaaS settings, auth, and CRUD flo
 
 - This component does not expose named slots.
 
-## Examples
-
-```vue
-<SearchInput v-model="query" placeholder="Search..." clearable />
-<SearchInput v-model="query" placeholder="Search..." :debounce="500" loading variant="outlined" />
-```
-
 ## Theming
 
-- Override via theme component overrides for each component documented on this page.
+- Override via `theme.overrides.components.searchInput`.
 
 ## Tokens
 
@@ -69,23 +126,9 @@ Component tokens (override via `theme.overrides.components.searchInput`):
 
 ## Recipes
 
-- Start with the examples above as baseline usage for this component.
-- Add product-specific variants (loading/error/dense/mobile) in consuming app docs when needed.
-
-## Responsive
-
-Validate control height, helper/error text wrapping, and icon/addon placement across breakpoints.
-Ensure virtual keyboards and touch interaction do not clip labels, hints, or action icons.
-
-## SSR/Hydration
-
-Keep initial value, disabled, and readonly states identical between server and client render.
-Avoid hydration mismatches from client-only formatting or masking initialization.
-
-## Testing
-
-Cover v-model updates, input/change/blur events, and validation edge cases.
-Add accessibility tests for labeling, error semantics, and keyboard interaction contracts.
+- Use `SearchInput` instead of generic `Input` when you need debounced `search` events and a dedicated clear action.
+- Keep `debounce` low for local filtering and higher for remote queries.
+- Show `loading` only for the active request; stale loading indicators make search feel broken.
 
 ## Accessibility
 

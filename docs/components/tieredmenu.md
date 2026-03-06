@@ -1,74 +1,93 @@
 # TieredMenu
 
-## Purpose
+Provide a compatibility-oriented hierarchical menu alias over `Menu`.
 
-Provide a migration-friendly hierarchical navigation alias over `Menu` with explicit preset modes.
-Use this when teams need a familiar `TieredMenu` name while keeping `Menu` as canonical rendering core.
+## Import
+
+```ts
+import { TieredMenu } from '@codemonster-ru/vueforge';
+```
+
+## Examples
+
+Use `TieredMenu` when preserving an older API name matters. Prefer `Menu` in new code.
+
+### Sidebar Preset
+
+Use `mode="sidebar-nav"` for vertical hierarchical navigation.
+
+```vue
+<template>
+    <TieredMenu
+        mode="sidebar-nav"
+        :items="[
+            { label: 'Overview', to: '/overview' },
+            {
+                label: 'Management',
+                items: [
+                    { label: 'Users', to: '/management/users' },
+                    { label: 'Roles', to: '/management/roles' }
+                ]
+            }
+        ]"
+    />
+</template>
+```
+
+### Top Navigation Preset
+
+Use `mode="top-nav"` when the same menu data should render horizontally.
+
+```vue
+<template>
+    <TieredMenu
+        mode="top-nav"
+        :items="[
+            { label: 'Products', items: [{ label: 'Catalog', to: '/catalog' }] },
+            { label: 'Docs', items: [{ label: 'Guides', to: '/guides' }] }
+        ]"
+    />
+</template>
+```
 
 ## Props
 
 - `items?: Array<MenuItem>` (default `[]`)
 - `mode?: 'sidebar-nav' | 'top-nav'` (default `sidebar-nav`)
-- `orientation?: 'vertical' | 'horizontal'` (optional override)
-
-`MenuItem` supports:
-
-- `label?: string`
-- `to?: string`
-- `href?: string`
-- `url?: string`
-- `icon?: string`
-- `items?: Array<MenuItem>`
-- `active?: boolean`
-- `disabled?: boolean`
-- `separator?: boolean`
-- `command?: () => void`
+- `orientation?: 'vertical' | 'horizontal'`
 
 ## Events
 
 - `active`
 - `onActive`
-- `itemSelect` (alias event for `active`)
+- `itemSelect`
 
 ## Slots
 
-- Same dynamic item slot contract as `Menu` (`${label|to|href|url}_${index}`).
+- Uses the same dynamic item slot contract as `Menu`.
 
-## Examples
+## Guidance Vs Menu
 
-```vue
-<TieredMenu
-    mode="sidebar-nav"
-    :items="[
-        { label: 'Overview', to: '/overview' },
-        {
-            label: 'Management',
-            items: [
-                { label: 'Users', to: '/management/users' },
-                { label: 'Roles', to: '/management/roles' },
-            ],
-        },
-    ]"
-/>
-```
-
-## Guidance vs Menu
-
-- `Menu` is the canonical component for new code.
-- `TieredMenu` is v1 compatibility preset over `Menu`.
-- `mode='sidebar-nav'` maps to vertical navigation; `mode='top-nav'` maps to horizontal navigation.
+- `Menu` is the canonical component for new implementation.
+- `TieredMenu` exists for migration compatibility and familiar naming.
+- `mode='sidebar-nav'` maps to vertical navigation and `mode='top-nav'` maps to horizontal navigation.
 
 ## Theming
 
-- Override via `theme.overrides.components.tieredMenu` (same token shape as `menu`).
+- Uses the same token contract as `Menu`.
+- Override via `theme.overrides.components.menu` or `theme.overrides.components.tieredMenu` if your project keeps a separate alias entry.
 
 ## Tokens
 
-- Uses `MenuTokens` contract (`iconGap`, item spacing, separator, link/parent states, submenu offset).
+- Uses the `Menu` token contract: `iconGap`, `submenuOffset`, separator tokens, link and parent state colors, and item spacing.
+
+## Recipes
+
+- Prefer `Menu` for all new docs and implementation.
+- Use `TieredMenu` only where a public API or migration path still depends on the older name.
+- Do not create separate visual behavior unless the alias intentionally diverges.
 
 ## Accessibility
 
-- Inherits ARIA and keyboard behavior from `Menu`:
-    - `role="menu"` and orientation semantics
-    - `menuitem` and submenu `aria-expanded` contracts
-    - keyboard open/close navigation for hierarchical items
+- Inherits ARIA and keyboard behavior from `Menu`.
+- This includes menu semantics, submenu expansion contracts, and hierarchical keyboard traversal.

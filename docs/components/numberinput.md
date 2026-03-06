@@ -1,9 +1,80 @@
 # NumberInput
 
-## Purpose
+Capture bounded numeric values with typing, arrow-key stepping, and optional increment controls.
 
-Capture user text and numeric input with consistent API, validation hooks, and theming behavior.
-Support high-frequency form entry scenarios in SaaS settings, auth, and CRUD flows.
+## Import
+
+```ts
+import { NumberInput } from '@codemonster-ru/vueforge';
+```
+
+## Examples
+
+Use `NumberInput` when the value is numeric by definition and the UI should help users stay within a valid range.
+
+### Basic
+
+Use the default control for quantities, seats, retry counts, and similar bounded values.
+
+```vue
+<template>
+    <NumberInput v-model="quantity" :min="0" :max="10" :step="1" placeholder="Quantity" />
+</template>
+```
+
+### Precision
+
+Use `precision` for currency-like or ratio-like fields that must round consistently.
+
+```vue
+<template>
+    <NumberInput
+        v-model="discount"
+        :min="0"
+        :max="1"
+        :step="0.05"
+        :precision="2"
+        placeholder="Discount"
+    />
+</template>
+```
+
+### Without Controls
+
+Hide the step buttons when the layout is tight or the field is primarily typed rather than clicked.
+
+```vue
+<template>
+    <NumberInput v-model="port" :min="1024" :max="65535" :controls="false" placeholder="Port" />
+</template>
+```
+
+### Sizes
+
+Adjust `size` to match dense toolbars or roomier forms without changing behavior.
+
+```vue
+<template>
+    <div style="display: grid; gap: 0.75rem;">
+        <NumberInput v-model="smallValue" size="small" placeholder="Small number input" />
+        <NumberInput v-model="normalValue" placeholder="Default number input" />
+        <NumberInput v-model="largeValue" size="large" placeholder="Large number input" />
+    </div>
+</template>
+```
+
+### Disabled And Readonly
+
+Use `disabled` to block editing entirely and `readonly` when the numeric value should remain visible but fixed.
+
+```vue
+<template>
+    <div style="display: grid; gap: 0.75rem;">
+        <NumberInput v-model="disabledCount" disabled placeholder="Disabled input" />
+        <NumberInput v-model="readonlyCount" readonly />
+    </div>
+</template>
+```
 
 ## Props
 
@@ -39,41 +110,30 @@ Support high-frequency form entry scenarios in SaaS settings, auth, and CRUD flo
 
 ## Slots
 
-- This component does not expose named slots.
-
-## Examples
-
-```vue
-<NumberInput v-model="quantity" :min="0" :max="10" :step="1" />
-```
+- `prefix`
+- `suffix`
 
 ## Theming
 
-- Override via theme component overrides for each component documented on this page.
+- Override via `theme.overrides.components.numberInput`.
 
 ## Tokens
 
-- Use `theme.overrides.components` to customize this component where token support is available.
+Override via `theme.overrides.components.numberInput`:
+
+- `gap`, `fontSize`, `padding`, `borderRadius`
+- `borderColor`, `backgroundColor`, `textColor`, `placeholderColor`
+- `focusBorderColor`, `focusRingShadow`, `hoverBorderColor`, `disabledOpacity`
+- `controlWidth`, `controlGap`, `controlFontSize`, `controlRadius`
+- `controlBackgroundColor`, `controlHoverBackgroundColor`, `controlTextColor`, `controlBorderColor`
+- `small.padding`, `small.fontSize`, `small.controlWidth`, `small.controlFontSize`
+- `large.padding`, `large.fontSize`, `large.controlWidth`, `large.controlFontSize`
 
 ## Recipes
 
-- Start with the examples above as baseline usage for this component.
-- Add product-specific variants (loading/error/dense/mobile) in consuming app docs when needed.
-
-## Responsive
-
-Validate control height, helper/error text wrapping, and icon/addon placement across breakpoints.
-Ensure virtual keyboards and touch interaction do not clip labels, hints, or action icons.
-
-## SSR/Hydration
-
-Keep initial value, disabled, and readonly states identical between server and client render.
-Avoid hydration mismatches from client-only formatting or masking initialization.
-
-## Testing
-
-Cover v-model updates, input/change/blur events, and validation edge cases.
-Add accessibility tests for labeling, error semantics, and keyboard interaction contracts.
+- Use `min`, `max`, `step`, and `precision` together so validation and stepping follow the same business rule.
+- Hide controls when the field appears in dense tables or inline editors.
+- Prefer `NumberInput` over free-form text input whenever the backend expects a real number.
 
 ## Accessibility
 

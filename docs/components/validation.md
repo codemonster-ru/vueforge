@@ -1,15 +1,63 @@
 # Validation
 
-## Purpose
+Provide utility helpers for normalizing validation output and wiring accessible validation state.
 
-Shared validation-state primitives and message wiring helpers used across form contracts.
+## Import
+
+```ts
+import {
+    buildValidationDescribedBy,
+    createValidationMessages,
+    createValidationState,
+    normalizeValidationErrors
+} from '@codemonster-ru/vueforge';
+```
+
+## Examples
+
+Use these helpers when custom form abstractions need the same error normalization and ARIA wiring conventions as `FormField`.
+
+### Normalize Validator Output
+
+Convert boolean, string, or object results into a stable field-error map.
+
+```ts
+import { normalizeValidationErrors } from '@codemonster-ru/vueforge';
+
+const errors = normalizeValidationErrors({ email: 'Required' });
+```
+
+### Build Validation State
+
+Create one object that combines messages, `aria-invalid`, and `aria-describedby` composition.
+
+```ts
+import { createValidationState } from '@codemonster-ru/vueforge';
+
+const state = createValidationState({
+    errors: { email: 'Required' },
+    field: 'email',
+    describedBy: 'email-hint',
+    idPrefix: 'signup',
+});
+```
+
+### Described By Composition
+
+Use `buildValidationDescribedBy` to merge hint and error ids without duplicates.
+
+```ts
+import { buildValidationDescribedBy } from '@codemonster-ru/vueforge';
+
+const describedBy = buildValidationDescribedBy('email-hint', 'email-error');
+```
 
 ## Exports
 
-- `normalizeValidationErrors(result)` - normalize boolean/string/object validator results to `Record<string, string>`
-- `createValidationMessages(errors, options)` - build field/form-scoped message list
-- `buildValidationDescribedBy(...ids)` - deduplicated `aria-describedby` composition
-- `createValidationState(options)` - produce unified state object (`status`, `invalid`, `messages`, `ariaInvalid`, `describedBy`)
+- `normalizeValidationErrors(result, options?)`
+- `createValidationMessages(errors, options?)`
+- `buildValidationDescribedBy(...parts)`
+- `createValidationState(options?)`
 
 ## Types
 
@@ -20,21 +68,19 @@ Shared validation-state primitives and message wiring helpers used across form c
 - `ValidationStatus`
 - `ValidationState`
 
-## Example
+## Behavior Notes
 
-```ts
-import { createValidationState, normalizeValidationErrors } from '@codemonster-ru/vueforge';
+- `normalizeValidationErrors(false)` maps to a form-level error under `_form` by default.
+- `createValidationMessages` can scope to one field or include full form messages.
+- `createValidationState` derives `status`, `invalid`, `pending`, messages, `describedBy`, and `ariaInvalid`.
 
-const errors = normalizeValidationErrors({ email: 'Required' });
-const state = createValidationState({
-    errors,
-    field: 'email',
-    describedBy: 'email-hint',
-    idPrefix: 'signup',
-});
-```
+## Recipes
 
-## Message Wiring
+- Use these utilities inside custom field abstractions or adapter layers for schema validators.
+- Keep validator outputs simple and normalize them once at the boundary.
+- Reuse the same `_form` convention for form-level submit errors to stay consistent with `Form`.
 
-- Use `buildValidationDescribedBy(hintId, errorId)` to keep stable `aria-describedby` mapping.
-- `FormField` uses this contract internally for hint/error linkage.
+## Accessibility
+
+- `buildValidationDescribedBy` helps keep `aria-describedby` stable and deduplicated.
+- `createValidationState` centralizes `aria-invalid` and validation message linkage for custom inputs.

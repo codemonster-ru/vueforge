@@ -1,47 +1,18 @@
 # Tour
 
-## Purpose
+Tour guides users through targeted UI steps with spotlighting, anchored positioning, progress, and explicit skip or complete flows.
 
-Provide advanced task-focused interactions for authoring, media/input control, and guided workflows.
-Enable product features that require richer interaction than basic form controls.
+## Import
 
-## Props
-
-- `modelValue?: boolean` (v-model)
-- `steps?: Array<{ target?: string | HTMLElement; title?: string; content?: string; placement?: 'top' | 'bottom' | 'left' | 'right'; offset?: number }>`
-- `startIndex?: number` (default `0`)
-- `placement?: 'top' | 'bottom' | 'left' | 'right'` (default `bottom`)
-- `offset?: number` (default `10`)
-- `mask?: boolean` (default `true`)
-- `closeOnOverlay?: boolean` (default `true`)
-- `closeOnEsc?: boolean` (default `true`)
-- `showSkip?: boolean` (default `true`)
-- `showProgress?: boolean` (default `true`)
-- `spotlightPadding?: number` (default `6`)
-- `nextLabel?: string` (default `Next`)
-- `prevLabel?: string` (default `Back`)
-- `finishLabel?: string` (default `Finish`)
-- `skipLabel?: string` (default `Skip`)
-- `ariaLabel?: string` (default `Tour`)
-
-## Events
-
-- `update:modelValue`
-- `open`
-- `close` (payload reason: `overlay | esc | complete | skip`)
-- `stepChange`
-- `next`
-- `prev`
-- `complete`
-- `skip`
-
-## Slots
-
-- `default` - step content with slot props `{ step, index }`
-- `title` (optional) - step title with slot props `{ step, index }`
-- `actions` (optional) - custom actions with slot props `{ step, index, isFirst, isLast, prev, next, skip }`
+```ts
+import Tour from '@/package/components/tour.vue';
+```
 
 ## Examples
+
+### Basic
+
+Use Tour for first-run onboarding and guided feature discovery.
 
 ```vue
 <Tour
@@ -53,74 +24,133 @@ Enable product features that require richer interaction than basic form controls
 />
 ```
 
-## Recipes
+### Per-Step Placement
 
-- First-run onboarding: launch tour after account creation with `startIndex=0`.
-- Feature spotlight: pass concrete target selectors and per-step `placement` for complex pages.
-- Progressive walkthrough: persist completion state and reopen only for new feature milestones.
+Override placement or offset for individual steps when targets need different anchoring.
+
+```vue
+<Tour
+    v-model="tourOpen"
+    :steps="[
+        { target: '#nav', title: 'Navigation', content: 'Primary workspace links.', placement: 'right' },
+        { target: '#filters', title: 'Filters', content: 'Refine the list.', placement: 'bottom', offset: 16 },
+    ]"
+/>
+```
+
+### Custom Content
+
+Use slots when the panel needs richer markup or product-specific actions.
+
+```vue
+<Tour v-model="tourOpen" :steps="steps">
+    <template #title="{ step }">
+        <strong>{{ step?.title }}</strong>
+    </template>
+
+    <template #default="{ step, index }">
+        <div>
+            <p>{{ step?.content }}</p>
+            <small>Step {{ index + 1 }}</small>
+        </div>
+    </template>
+</Tour>
+```
+
+### Custom Actions
+
+Use the `actions` slot when the tour should integrate with your own button primitives or analytics hooks.
+
+```vue
+<Tour v-model="tourOpen" :steps="steps">
+    <template #actions="{ isFirst, isLast, prev, next, skip }">
+        <Inline gap="sm">
+            <Button size="sm" variant="text" @click="skip">Skip</Button>
+            <Button size="sm" variant="outlined" :disabled="isFirst" @click="prev">Back</Button>
+            <Button size="sm" @click="next">{{ isLast ? 'Finish' : 'Next' }}</Button>
+        </Inline>
+    </template>
+</Tour>
+```
+
+## API
+
+### Types
+
+```ts
+type Placement = 'top' | 'bottom' | 'left' | 'right';
+
+interface TourStep {
+    target?: string | HTMLElement;
+    title?: string;
+    content?: string;
+    placement?: Placement;
+    offset?: number;
+}
+```
+
+### Props
+
+| Name | Type | Default |
+| --- | --- | --- |
+| `modelValue` | `boolean` | `false` |
+| `steps` | `TourStep[]` | `[]` |
+| `startIndex` | `number` | `0` |
+| `placement` | `'top' \| 'bottom' \| 'left' \| 'right'` | `'bottom'` |
+| `offset` | `number` | `10` |
+| `mask` | `boolean` | `true` |
+| `closeOnOverlay` | `boolean` | `true` |
+| `closeOnEsc` | `boolean` | `true` |
+| `showSkip` | `boolean` | `true` |
+| `showProgress` | `boolean` | `true` |
+| `spotlightPadding` | `number` | `6` |
+| `nextLabel` | `string` | `'Next'` |
+| `prevLabel` | `string` | `'Back'` |
+| `finishLabel` | `string` | `'Finish'` |
+| `skipLabel` | `string` | `'Skip'` |
+| `ariaLabel` | `string` | `'Tour'` |
+
+### Events
+
+| Name | Payload |
+| --- | --- |
+| `update:modelValue` | `boolean` |
+| `open` | none |
+| `close` | `reason: 'overlay' \| 'esc' \| 'complete' \| 'skip'` |
+| `stepChange` | `index, step` |
+| `next` | `index, step` |
+| `prev` | `index, step` |
+| `complete` | current step |
+| `skip` | current step |
+
+### Slots
+
+| Name | Description |
+| --- | --- |
+| `default` | Step content with `{ step, index }`. |
+| `title` | Step title with `{ step, index }`. |
+| `actions` | Custom controls with `{ step, index, isFirst, isLast, prev, next, skip }`. |
 
 ## Theming
 
-- Override via theme component overrides for each component documented on this page.
+Override component tokens through `theme.overrides.components.tour`.
 
 ## Tokens
 
-Component tokens (override via `theme.overrides.components.tour`):
+- Layering and panel: `zIndex`, `overlayBackgroundColor`, `width`, `maxWidth`, `padding`, `borderRadius`, `borderColor`, `backgroundColor`, `textColor`, `shadow`
+- Title and content: `titleGap`, `titleFontSize`, `titleLineHeight`, `titleFontWeight`, `contentGap`, `contentFontSize`, `contentLineHeight`, `contentColor`
+- Progress and actions: `progressGap`, `progressFontSize`, `progressColor`, `actionsGap`
+- Buttons: `buttonMinWidth`, `buttonPadding`, `buttonRadius`, `buttonBorderColor`, `buttonBackgroundColor`, `buttonTextColor`, `buttonHoverBackgroundColor`, `secondaryButtonBorderColor`, `secondaryButtonBackgroundColor`, `secondaryButtonTextColor`, `secondaryButtonHoverBackgroundColor`
+- Spotlight and state: `spotlightRadius`, `spotlightBorderWidth`, `spotlightBorderColor`, `disabledOpacity`
 
-- `zIndex`, `overlayBackgroundColor`
-- `width`, `maxWidth`, `padding`
-- `borderRadius`, `borderColor`
-- `backgroundColor`, `textColor`, `shadow`
-- `titleGap`, `titleFontSize`, `titleLineHeight`, `titleFontWeight`
-- `contentGap`, `contentFontSize`, `contentLineHeight`, `contentColor`
-- `progressGap`, `progressFontSize`, `progressColor`
-- `actionsGap`
-- `buttonMinWidth`, `buttonPadding`, `buttonRadius`
-- `buttonBorderColor`, `buttonBackgroundColor`, `buttonTextColor`, `buttonHoverBackgroundColor`
-- `secondaryButtonBorderColor`, `secondaryButtonBackgroundColor`, `secondaryButtonTextColor`, `secondaryButtonHoverBackgroundColor`
-- `spotlightRadius`, `spotlightBorderWidth`, `spotlightBorderColor`
-- `disabledOpacity`
+## Recipes
 
-## Responsive
-
-Verify control affordances, panel sizing, and gesture/mouse interactions across device classes.
-Ensure compact layouts preserve clarity for actions, handles, and contextual hints.
-
-## SSR/Hydration
-
-Keep initial value and panel-closed/base state stable between server and client output.
-Hydrate client-only interaction engines (editor, drag, command layers) without DOM mismatch.
-
-## Testing
-
-Cover core interaction loops, boundary conditions, and value/state synchronization.
-Add accessibility tests for keyboard alternatives, labelling, and focus behavior.
+- Use Tour for first-run walkthroughs, feature announcements, and contextual training overlays.
+- Prefer lightweight inline hints or `Popover` when users only need one contextual explanation rather than a multi-step flow.
 
 ## Accessibility
 
-- Panel uses `role="dialog"` and `aria-modal="true"`.
-- On open, focus moves to tour panel; on close, focus restores to previously active element.
-- Supports `Escape` close behavior when `closeOnEsc` is enabled.
+- Tour renders a `dialog` with `aria-modal="true"` and restores focus on close.
+- `Escape` dismissal and overlay dismissal are configurable.
+- Spotlighted positioning updates as the target moves or the viewport resizes.
 
-## Interaction Contract
-
-- `modelValue=true`:
-    - emits `open`
-    - emits `stepChange` for initial step
-    - resolves target and positions panel/spotlight
-- Navigation:
-    - `Back`/`Next` move between steps
-    - last `Next` emits `complete` and closes
-    - skip emits `skip` and closes
-- Close reasons emitted via `close` payload: `overlay | esc | complete | skip`
-- Behavior flags:
-    - `closeOnOverlay=false` keeps tour open on mask click
-    - `closeOnEsc=false` disables `Escape` close
-
-## Z-Index Policy
-
-- Tour root uses `--vf-tour-z-index` (default `120`).
-- Spotlight and panel are layered inside tour root (`overlay` < `spotlight` < `panel`).
-- Default intent:
-    - above app content and modal/drawer base (`100`)
-    - below notification center (`125`)

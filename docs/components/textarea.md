@@ -1,9 +1,63 @@
 # Textarea
 
-## Purpose
+Capture multi-line text with the same validation, accessibility, and sizing model as `Input`.
 
-Capture user text and numeric input with consistent API, validation hooks, and theming behavior.
-Support high-frequency form entry scenarios in SaaS settings, auth, and CRUD flows.
+## Import
+
+```ts
+import { Textarea } from '@codemonster-ru/vueforge';
+```
+
+## Examples
+
+Use `Textarea` when the final value is expected to span multiple lines or benefit from visible drafting space.
+
+### Basic
+
+Use the default textarea for descriptions, notes, and free-form comments.
+
+```vue
+<template>
+    <Textarea v-model="bio" placeholder="Tell us about yourself" :rows="4" />
+</template>
+```
+
+### Outlined
+
+Use `outlined` when the surrounding card or panel already has strong visual boundaries.
+
+```vue
+<template>
+    <Textarea v-model="summary" variant="outlined" placeholder="Write a short summary" :rows="3" />
+</template>
+```
+
+### Sizes
+
+Change `size` to align the field with the rest of a dense or spacious form layout.
+
+```vue
+<template>
+    <div style="display: grid; gap: 0.75rem;">
+        <Textarea v-model="smallNote" size="small" placeholder="Small textarea" :rows="3" />
+        <Textarea v-model="normalNote" placeholder="Default textarea" :rows="4" />
+        <Textarea v-model="largeNote" size="large" placeholder="Large textarea" :rows="5" />
+    </div>
+</template>
+```
+
+### Disabled And Readonly
+
+Use `disabled` to fully block editing and `readonly` when users still need to review or copy the content.
+
+```vue
+<template>
+    <div style="display: grid; gap: 0.75rem;">
+        <Textarea v-model="disabledCopy" disabled placeholder="Disabled textarea" :rows="3" />
+        <Textarea v-model="readonlyCopy" readonly :rows="4" />
+    </div>
+</template>
+```
 
 ## Props
 
@@ -37,39 +91,26 @@ Support high-frequency form entry scenarios in SaaS settings, auth, and CRUD flo
 
 - This component does not expose named slots.
 
-## Examples
-
-```vue
-<Textarea v-model="bio" placeholder="Tell us about yourself" rows="4" />
-```
-
 ## Theming
 
-- Override via theme component overrides for each component documented on this page.
+- Override via `theme.overrides.components.textarea`.
 
 ## Tokens
 
-- Use `theme.overrides.components` to customize this component where token support is available.
+Override via `theme.overrides.components.textarea`:
+
+- `gap`, `fontSize`, `padding`, `borderRadius`
+- `borderColor`, `backgroundColor`, `textColor`, `placeholderColor`
+- `focusBorderColor`, `focusRingShadow`, `hoverBorderColor`, `disabledOpacity`
+- `minHeight`, `resize`
+- `small.padding`, `small.fontSize`
+- `large.padding`, `large.fontSize`
 
 ## Recipes
 
-- Start with the examples above as baseline usage for this component.
-- Add product-specific variants (loading/error/dense/mobile) in consuming app docs when needed.
-
-## Responsive
-
-Validate control height, helper/error text wrapping, and icon/addon placement across breakpoints.
-Ensure virtual keyboards and touch interaction do not clip labels, hints, or action icons.
-
-## SSR/Hydration
-
-Keep initial value, disabled, and readonly states identical between server and client render.
-Avoid hydration mismatches from client-only formatting or masking initialization.
-
-## Testing
-
-Cover v-model updates, input/change/blur events, and validation edge cases.
-Add accessibility tests for labeling, error semantics, and keyboard interaction contracts.
+- Keep `rows` aligned with the expected writing task so the field does not feel cramped or oversized.
+- Use `readonly` when content may still need to be copied or reviewed after submission.
+- Leave resizing enabled unless the page layout has a strict height contract that forbids it.
 
 ## Accessibility
 

@@ -1,15 +1,84 @@
 # Wizard / WizardStep
 
-## Purpose
+Coordinate multi-step workflows with step headers, validation gates, and step-specific content panels.
 
-Organize multi-section and multi-step workflows with explicit progression and navigation semantics.
-Support dense information architecture in settings, onboarding, and detail screens.
+## Import
 
-## Overview
+```ts
+import { Wizard, WizardStep } from '@codemonster-ru/vueforge';
+```
 
-Props (`Wizard`):
+## Examples
 
-- `modelValue?: string | number` (v-model active step value)
+Use `Wizard` when the component should own both step navigation and the visible content panels.
+
+### Basic
+
+Use `WizardStep` children to define the content for each configured step.
+
+```vue
+<template>
+    <Wizard v-model="wizardStep" :steps="wizardSteps">
+        <WizardStep value="account">
+            <Input v-model="email" placeholder="Email" />
+        </WizardStep>
+        <WizardStep value="plan">
+            <Select v-model="plan" :options="plans" />
+        </WizardStep>
+        <WizardStep value="confirm">
+            Review and finish
+        </WizardStep>
+    </Wizard>
+</template>
+```
+
+### Linear Validation
+
+Use `validateStep` to block forward movement until the current step is valid.
+
+```vue
+<template>
+    <Wizard
+        v-model="step"
+        :steps="steps"
+        :validate-step="currentStep => (currentStep.value === 'account' && !email ? 'Email is required' : true)"
+        @invalid-step="showError"
+    >
+        <WizardStep value="account">
+            <Input v-model="email" placeholder="Email" />
+        </WizardStep>
+        <WizardStep value="plan">
+            <Select v-model="plan" :options="plans" />
+        </WizardStep>
+        <WizardStep value="confirm">
+            Review and finish
+        </WizardStep>
+    </Wizard>
+</template>
+```
+
+### Custom Actions
+
+Use the `actions` slot when the footer controls should reflect product-specific wording or layout.
+
+```vue
+<template>
+    <Wizard v-model="step" :steps="steps">
+        <template #actions="{ isFirst, isLast, prev, next, complete }">
+            <Button variant="outlined" :disabled="isFirst" @click="prev()">Back</Button>
+            <Button @click="isLast ? complete() : next()">
+                {{ isLast ? 'Finish setup' : 'Continue' }}
+            </Button>
+        </template>
+        <WizardStep value="profile">Profile form</WizardStep>
+        <WizardStep value="review">Review</WizardStep>
+    </Wizard>
+</template>
+```
+
+## Wizard Props
+
+- `modelValue?: string | number`
 - `steps?: Array<{ value: string | number; title?: string; description?: string; optional?: boolean; disabled?: boolean; validate?: (value, index) => boolean | string | Promise<...> }>`
 - `linear?: boolean` (default `true`)
 - `disabled?: boolean` (default `false`)
@@ -20,97 +89,23 @@ Props (`Wizard`):
 - `ariaLabel?: string`
 - `ariaLabelledby?: string`
 
-Props (`WizardStep`):
+## WizardStep Props
 
-- `value: string | number` (must match one of `Wizard.steps[].value`)
-
-Slots (`Wizard`):
-
-- `default` - place `WizardStep` components
-- `indicator` (optional) - slot props `{ step, index }`
-- `actions` (optional) - slot props `{ step, index, isFirst, isLast, next, prev, complete }`
-
-Events (`Wizard`):
-
-- `update:modelValue`
-- `change`
-- `next`
-- `prev`
-- `complete`
-- `invalidStep`
-
-## Props
-
-- No additional props documented for this component at the moment.
+- `value: string | number`
 
 ## Events
 
 - `Wizard`: `update:modelValue`, `change`, `next`, `prev`, `complete`, `invalidStep`
-- `WizardStep`: no emitted events
+- `WizardStep`: this component does not emit component-specific events
 
 ## Slots
 
 - `Wizard`: `default`, `indicator`, `actions`
-- `WizardStep`: default slot for step content
-
-## Examples
-
-```vue
-<Wizard v-model="wizardStep" :steps="wizardSteps">
-    <WizardStep value="account">
-        <Input v-model="email" placeholder="Email" />
-    </WizardStep>
-    <WizardStep value="plan">
-        <Select v-model="plan" :options="plans" />
-    </WizardStep>
-    <WizardStep value="confirm">
-        Review and finish
-    </WizardStep>
-</Wizard>
-```
-
-## Recipes
-
-### Linear onboarding flow with validation
-
-```vue
-<Wizard
-    v-model="step"
-    :steps="steps"
-    :validate-step="currentStep => (currentStep.value === 'account' && !email ? 'Email is required' : true)"
-    @invalid-step="message => showError(message)"
->
-    <WizardStep value="account">
-        <Input v-model="email" placeholder="Email" />
-    </WizardStep>
-    <WizardStep value="plan">
-        <Select v-model="plan" :options="plans" />
-    </WizardStep>
-    <WizardStep value="confirm">
-        Review and finish
-    </WizardStep>
-</Wizard>
-```
-
-### Non-linear edit/review flow
-
-```vue
-<Wizard v-model="step" :steps="steps" :linear="false">
-    <WizardStep value="profile">
-        Profile form
-    </WizardStep>
-    <WizardStep value="notifications">
-        Notification settings
-    </WizardStep>
-    <WizardStep value="review">
-        Review changes
-    </WizardStep>
-</Wizard>
-```
+- `WizardStep`: `default`
 
 ## Theming
 
-- Override via theme component overrides for each component documented on this page.
+- Override via `theme.overrides.components.wizard`.
 
 ## Tokens
 
@@ -130,23 +125,14 @@ Component tokens (override via `theme.overrides.components.wizard`):
 - `secondaryButtonBorderColor`, `secondaryButtonBackgroundColor`, `secondaryButtonTextColor`, `secondaryButtonHoverBackgroundColor`
 - `disabledOpacity`
 
-## Responsive
+## Recipes
 
-Validate tab/step headers for overflow, wrap, and scroll behavior on smaller viewports.
-Ensure active indicator and navigation controls remain clear and tappable on touch devices.
-
-## SSR/Hydration
-
-Preserve initially active section/step state and panel visibility across server and client render.
-Avoid hydration drift from client-only measurement used for indicator positioning.
-
-## Testing
-
-Cover controlled/uncontrolled active state, keyboard navigation, and disabled step/tab behavior.
-Add tests for deep-link/page-state sync when applicable and ARIA tab/step semantics.
+- Use `Wizard` when the component should orchestrate both step state and visible panels.
+- Prefer `Stepper` when you only need progress or navigation headers.
+- Keep `steps[].value` and `WizardStep.value` aligned exactly to avoid silent mismatches.
 
 ## Accessibility
 
-- Step header uses `tablist`/`tab` relationships and step content uses `tabpanel` with label linkage.
-- Keyboard navigation supports `ArrowLeft`/`ArrowRight` and `Home`/`End` across enabled steps.
-- Ensure visible focus state and sufficient color contrast in usage contexts.
+- Step headers use `tablist` and `tab` semantics.
+- Visible content panels use `tabpanel` with label linkage back to the step headers.
+- Keyboard navigation supports arrow traversal and home or end across enabled steps.

@@ -1,55 +1,42 @@
 # NotificationCenter
 
-## Purpose
+NotificationCenter presents a dismissible, focus-managed overlay for notifications, read state, filtering, grouping, and persistence.
 
-Render and manage high-density operational data with scalable interaction patterns.
-Support filtering, navigation, and bulk workflows used in core SaaS backoffice screens.
+## Import
 
-## Props
-
-- `modelValue?: boolean` (v-model)
-- `items?: Array<{ id: string | number; title: string; message?: string; date?: string; read?: boolean; severity?: 'neutral' | 'info' | 'success' | 'warn' | 'danger'; avatar?: string; group?: string; actionLabel?: string; actionHref?: string; actionTarget?: string; actionRel?: string }>`
-- `title?: string` (default `Notifications`)
-- `emptyText?: string` (default `No notifications`)
-- `closeOnOverlay?: boolean` (default `true`)
-- `closeOnEsc?: boolean` (default `true`)
-- `markAllLabel?: string` (default `Mark all as read`)
-- `clearLabel?: string` (default `Clear`)
-- `closeLabel?: string` (default `Close notifications`)
-- `readLabel?: string` (default `Mark as read`)
-- `unreadLabel?: string` (default `Mark as unread`)
-- `showFilters?: boolean` (default `false`)
-- `filter?: 'all' | 'unread' | 'read'`
-- `groupBy?: 'none' | 'date' | 'severity' | 'group'` (default `none`)
-- `persistKey?: string`
-- `persistReadState?: boolean` (default `false`)
-- `persistFilterState?: boolean` (default `false`)
-
-## Events
-
-- `update:modelValue`
-- `update:items`
-- `update:filter`
-- `open`
-- `close`
-- `click`
-- `read`
-- `readAll`
-- `clear`
-- `action`
-- `filterChange`
-- `persist` (payload: `{ filter, readMap, updatedAt }`, reason: `hydrate|filter|toggleRead|markAll|clear`)
-
-## Slots
-
-- `item` (optional) - slot props `{ item, index, toggleRead }`
-- `empty` (optional)
+```ts
+import NotificationCenter from '@/package/components/notification-center.vue';
+```
 
 ## Examples
 
+### Basic
+
+Use `v-model` for visibility and `v-model:items` when the panel manages read state locally.
+
 ```vue
-<NotificationCenter v-model="open" v-model:items="notifications" />
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const open = ref(false);
+const notifications = ref([
+    { id: 1, title: 'Build finished', message: 'Production deployment succeeded.', read: false, severity: 'success' },
+    { id: 2, title: 'Review requested', message: 'Anna mentioned you in API changes.', read: false, severity: 'info' },
+]);
+</script>
+
+<template>
+    <Button @click="open = true">
+        Open notifications
+    </Button>
+
+    <NotificationCenter v-model="open" v-model:items="notifications" />
+</template>
 ```
+
+### Filters And Grouping
+
+Enable filters and grouped rendering for denser operator-facing inboxes.
 
 ```vue
 <NotificationCenter
@@ -57,6 +44,18 @@ Support filtering, navigation, and bulk workflows used in core SaaS backoffice s
     v-model:items="notifications"
     show-filters
     group-by="group"
+/>
+```
+
+### Persistence
+
+Persist read and filter state when the center should remember the last session locally.
+
+```vue
+<NotificationCenter
+    v-model="open"
+    v-model:items="notifications"
+    show-filters
     persist-key="workspace.notifications"
     persist-read-state
     persist-filter-state
@@ -64,75 +63,120 @@ Support filtering, navigation, and bulk workflows used in core SaaS backoffice s
 />
 ```
 
-## Recipes
+### Custom Item Rendering
 
-- Header bell pattern: open panel from a header icon button and sync `items` from app store.
-- Inbox workflow: use `readAll` and `clear` events to trigger API mutations and optimistic UI updates.
-- Non-blocking center: set `closeOnOverlay=false` for persistent side panel behavior during multitasking.
-- SaaS grouping: use `groupBy="group"` (or `date` / `severity`) to partition dense event streams.
-- Action links: provide `actionLabel` + optional `actionHref` per item for deep-link handling from notifications.
-- Persistence contract: use `persist` payload with `persistKey` for local restore; sync to backend store when required.
+Use the `item` slot for branded rows, custom actions, or tighter integration with your navigation model.
+
+```vue
+<NotificationCenter v-model="open" v-model:items="notifications">
+    <template #item="{ item, toggleRead }">
+        <article class="notification-row">
+            <strong>{{ item.title }}</strong>
+            <p>{{ item.message }}</p>
+            <Button size="sm" variant="text" @click="toggleRead()">
+                Toggle read
+            </Button>
+        </article>
+    </template>
+</NotificationCenter>
+```
+
+## API
+
+### Types
+
+```ts
+type NotificationFilter = 'all' | 'unread' | 'read';
+type NotificationGroupBy = 'none' | 'date' | 'severity' | 'group';
+
+interface NotificationCenterItem {
+    id: string | number;
+    title: string;
+    message?: string;
+    date?: string;
+    read?: boolean;
+    severity?: 'neutral' | 'info' | 'success' | 'warn' | 'danger';
+    avatar?: string;
+    group?: string;
+    actionLabel?: string;
+    actionHref?: string;
+    actionTarget?: string;
+    actionRel?: string;
+}
+
+interface NotificationCenterPersistState {
+    filter: NotificationFilter;
+    readMap: Record<string, boolean>;
+    updatedAt: string;
+}
+```
+
+### Props
+
+| Name | Type | Default |
+| --- | --- | --- |
+| `modelValue` | `boolean` | `false` |
+| `items` | `NotificationCenterItem[]` | `[]` |
+| `title` | `string \| undefined` | `undefined` |
+| `emptyText` | `string \| undefined` | `undefined` |
+| `closeOnOverlay` | `boolean` | `true` |
+| `closeOnEsc` | `boolean` | `true` |
+| `markAllLabel` | `string \| undefined` | `undefined` |
+| `clearLabel` | `string \| undefined` | `undefined` |
+| `closeLabel` | `string \| undefined` | `undefined` |
+| `readLabel` | `string \| undefined` | `undefined` |
+| `unreadLabel` | `string \| undefined` | `undefined` |
+| `showFilters` | `boolean` | `false` |
+| `filter` | `NotificationFilter \| undefined` | `undefined` |
+| `groupBy` | `NotificationGroupBy` | `'none'` |
+| `persistKey` | `string \| undefined` | `undefined` |
+| `persistReadState` | `boolean` | `false` |
+| `persistFilterState` | `boolean` | `false` |
+
+### Events
+
+| Name | Payload |
+| --- | --- |
+| `update:modelValue` | `boolean` |
+| `update:items` | `NotificationCenterItem[]` |
+| `update:filter` | `NotificationFilter` |
+| `open` | none |
+| `close` | none |
+| `click` | notification payload |
+| `read` | notification payload |
+| `readAll` | notifications payload |
+| `clear` | notifications payload |
+| `action` | notification payload |
+| `filterChange` | `NotificationFilter` |
+| `persist` | `NotificationCenterPersistState, reason` |
+
+### Slots
+
+| Name | Description |
+| --- | --- |
+| `item` | Custom row with `{ item, index, toggleRead }`. |
+| `empty` | Replaces the default empty state. |
 
 ## Theming
 
-- Override via theme component overrides for each component documented on this page.
+Override component tokens through `theme.overrides.components.notificationCenter`.
 
 ## Tokens
 
-Component tokens (override via `theme.overrides.components.notificationCenter`):
+- Layering and placement: `zIndex`, `overlayBackgroundColor`, `top`, `right`, `width`, `maxWidth`, `maxHeight`
+- Surface: `borderColor`, `borderRadius`, `backgroundColor`, `textColor`, `shadow`, `dividerColor`
+- Header: `headerGap`, `headerPadding`, `titleGap`, `titleFontSize`, `titleLineHeight`, `titleFontWeight`
+- Badge and actions: `badgeSize`, `badgeBackgroundColor`, `badgeTextColor`, `badgeFontSize`, `actionsGap`, `closeSize`, `closeHoverBackgroundColor`, `disabledOpacity`
+- Items: `itemGap`, `itemPadding`, `unreadBackgroundColor`, `avatarSize`, `avatarBackgroundColor`, `avatarTextColor`, `avatarFontSize`, `itemTitleFontSize`, `itemTitleFontWeight`, `itemMetaFontSize`, `itemMetaColor`
+- Empty state: `emptyPadding`, `emptyColor`
 
-- `zIndex`, `overlayBackgroundColor`
-- `top`, `right`, `width`, `maxWidth`, `maxHeight`
-- `borderColor`, `borderRadius`, `backgroundColor`, `textColor`, `shadow`
-- `dividerColor`, `headerGap`, `headerPadding`
-- `titleGap`, `titleFontSize`, `titleLineHeight`, `titleFontWeight`
-- `badgeSize`, `badgeBackgroundColor`, `badgeTextColor`, `badgeFontSize`
-- `actionsGap`, `closeSize`, `closeHoverBackgroundColor`, `disabledOpacity`
-- `itemGap`, `itemPadding`, `unreadBackgroundColor`
-- `avatarSize`, `avatarBackgroundColor`, `avatarTextColor`, `avatarFontSize`
-- `itemTitleFontSize`, `itemTitleFontWeight`, `itemMetaFontSize`, `itemMetaColor`
-- `emptyPadding`, `emptyColor`
+## Recipes
 
-## Responsive
-
-Validate table/list density, horizontal overflow strategy, and virtualization behavior across breakpoints.
-Ensure row/item actions remain accessible and discoverable on touch devices.
-
-## SSR/Hydration
-
-Render initial viewport slice and structural wrappers deterministically to avoid hydration drift.
-Defer measurement-driven virtualization logic until client mount.
-
-## Testing
-
-Cover sorting/filtering/selection/navigation flows and large-dataset edge cases.
-Add performance-sensitive regression tests and ARIA verification for interactive data regions.
+- Use NotificationCenter for header bell panels, operational inboxes, and side-panel notification review.
+- Prefer `Toast` for transient alerts that do not require persistence, filtering, or bulk actions.
 
 ## Accessibility
 
-- Panel uses `role="dialog"` and `aria-modal="true"`.
-- On open, focus moves into the panel; on close, focus is restored to previously active element.
-- Supports `Escape` close behavior when `closeOnEsc` is enabled.
-- Filter controls expose tab-like toggles with `aria-selected`.
-
-## Interaction Contract
-
-- `modelValue=true`:
-    - emits `open`
-    - focuses panel container for keyboard users
-- Close triggers:
-    - overlay click when `closeOnOverlay=true`
-    - `Escape` when `closeOnEsc=true`
-    - close button
-- On close:
-    - emits `update:modelValue=false`
-    - emits `close`
-    - restores focus to the element active before open
-
-## Z-Index Policy
-
-- Uses `--vf-notification-center-z-index` (default `125`).
-- Default layer intent:
-    - above modal/drawer (`100`) and command palette (`110`)
-    - above toast/tour (`120`)
-- Override via theme tokens only when project-specific stacking order is required.
+- NotificationCenter renders a `dialog` with `aria-modal="true"`, moves focus into the panel on open, and restores focus on close.
+- Overlay and escape dismissal are configurable for workflows that should remain open while users review multiple items.
+- Filter controls use tab-like semantics with `aria-selected`.

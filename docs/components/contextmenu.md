@@ -1,9 +1,65 @@
 # ContextMenu
 
-## Purpose
+Open action menus from right-click or keyboard context-menu invocation at the pointer location.
 
-Handle layered interactions (dialogs, overlays, contextual actions, and transient notifications) with consistent behavior.
-Centralize close policies, focus management, and stack/layer contracts for complex SaaS screens.
+## Import
+
+```ts
+import { ContextMenu } from '@codemonster-ru/vueforge';
+```
+
+## Examples
+
+Use `ContextMenu` for row-level or canvas-level actions that naturally belong to right-click interaction.
+
+### Basic
+
+Use `items` for a conventional context menu with route or command actions.
+
+```vue
+<template>
+    <ContextMenu
+        :items="[
+            { label: 'Open', href: '#' },
+            { label: 'Duplicate', href: '#' },
+            { separator: true },
+            { label: 'Archive', href: '#', disabled: true }
+        ]"
+    >
+        <div style="padding: 1rem; border: 1px dashed #ccc;">Right-click here</div>
+    </ContextMenu>
+</template>
+```
+
+### Custom Menu Content
+
+Use the `menu` slot when the popup needs custom controls instead of a plain menu item list.
+
+```vue
+<template>
+    <ContextMenu>
+        <div style="padding: 1rem; border: 1px dashed #ccc;">Open custom menu</div>
+        <template #menu>
+            <Stack gap="0.5rem">
+                <Button label="Create report" size="small" data-context-menu-close />
+                <Button label="Share link" size="small" variant="text" data-context-menu-close />
+            </Stack>
+        </template>
+    </ContextMenu>
+</template>
+```
+
+### Controlled State
+
+Use `v-model` when open state must stay coordinated with surrounding logic.
+
+```vue
+<template>
+    <ContextMenu v-model="open" :items="[{ label: 'Refresh', href: '#' }]">
+        <div style="padding: 1rem; border: 1px dashed #ccc;">Controlled context area</div>
+    </ContextMenu>
+</template>
+```
 
 ## Props
 
@@ -29,16 +85,6 @@ Centralize close policies, focus management, and stack/layer contracts for compl
 
 Note: For custom menu content, add `data-context-menu-close` to clickable elements to auto-close on click.
 
-## Examples
-
-```vue
-<ContextMenu :items="menuItems">
-    <div class="surface">
-        Right-click here
-    </div>
-</ContextMenu>
-```
-
 ## Theming
 
 - Override via `theme.overrides.components.contextMenu`.
@@ -54,24 +100,9 @@ Component tokens (override via `theme.overrides.components.contextMenu`):
 
 ## Recipes
 
-- File row context menu with item commands (`items` prop).
-- Canvas context menu with custom `#menu` slot actions and `data-context-menu-close` hooks.
-- Keyboard fallback menu for focused list items (`Shift+F10` / `ContextMenu` key).
-
-## Responsive
-
-Verify overlay sizing, placement fallback, and viewport collision handling on mobile/tablet/desktop.
-Ensure gesture/touch close interactions and action buttons remain accessible on small screens.
-
-## SSR/Hydration
-
-Render closed/open initial state deterministically and keep portal/container structure hydration-safe.
-Initialize positioning/focus logic only after mount to avoid server-client markup drift.
-
-## Testing
-
-Cover open/close triggers, escape/outside click behavior, focus trap/restore, and stacking order.
-Add accessibility tests for ARIA roles, labelling, and keyboard navigation in layered UI.
+- Use `ContextMenu` for actions that are contextual to a specific row, card, or canvas point.
+- Always provide a keyboard fallback path for the same actions elsewhere in the UI.
+- Keep context menu action lists short and task-oriented; long trees are hard to scan at pointer position.
 
 ## Accessibility
 
@@ -79,22 +110,3 @@ Add accessibility tests for ARIA roles, labelling, and keyboard navigation in la
 - Supports keyboard fallback open via `ContextMenu` key and `Shift+F10`.
 - Context target should have clear visible focus and descriptive content.
 - For custom menu content, include keyboard-focusable actions with meaningful labels.
-
-## Interaction Contract
-
-- Open behavior:
-    - right-click (`contextmenu`) opens menu at pointer position
-    - `ContextMenu` key / `Shift+F10` opens menu near focused target center
-- Close behavior:
-    - outside click closes
-    - `Escape` closes when `closeOnEsc=true`
-    - select closes when `closeOnSelect=true` and clicked element is menu action or has `data-context-menu-close`
-    - close restores focus to previously focused target
-- Controlled mode:
-    - with `modelValue`, component emits `update:modelValue` and leaves state management to parent
-
-## Positioning and Z-Index Policy
-
-- Menu is rendered as `position: fixed` popup and clamped to viewport bounds on open/resize.
-- Offset from invocation point is controlled by `offset`.
-- Layer uses `--vf-context-menu-z-index` (default `60`), above dropdown (`50`) and below popover/tooltip/modals by default.

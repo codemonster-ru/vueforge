@@ -1,9 +1,91 @@
 # Dropdown
 
-## Purpose
+Open contextual menus and custom overlay content from a trigger without managing popup plumbing manually.
 
-Handle layered interactions (dialogs, overlays, contextual actions, and transient notifications) with consistent behavior.
-Centralize close policies, focus management, and stack/layer contracts for complex SaaS screens.
+## Import
+
+```ts
+import { Dropdown } from '@codemonster-ru/vueforge';
+```
+
+## Examples
+
+Treat `Dropdown` as a positioning and close-policy primitive. Use the built-in item list for simple menus and the default slot for custom content.
+
+### Menu Items
+
+Pass `items` for a lightweight action menu driven by menu semantics.
+
+```vue
+<template>
+    <Dropdown
+        :items="[
+            { label: 'View details', href: '#' },
+            { label: 'Duplicate', href: '#' },
+            { separator: true },
+            { label: 'Archive', href: '#', disabled: true }
+        ]"
+    >
+        <template #trigger>
+            <Button label="Actions" />
+        </template>
+    </Dropdown>
+</template>
+```
+
+### Custom Content
+
+Use the default slot when the popup needs richer controls than a standard menu item list.
+
+```vue
+<template>
+    <Dropdown>
+        <template #trigger>
+            <Button label="Quick actions" variant="outlined" />
+        </template>
+        <div style="display: grid; gap: 0.5rem; min-width: 12rem;">
+            <Button label="Create report" size="small" data-dropdown-close />
+            <Button label="Share link" size="small" variant="text" data-dropdown-close />
+        </div>
+    </Dropdown>
+</template>
+```
+
+### Placement
+
+Change `placement` when the menu belongs to a right-aligned toolbar or a top-positioned trigger.
+
+```vue
+<template>
+    <Dropdown placement="bottom-end">
+        <template #trigger>
+            <Button label="More" severity="secondary" />
+        </template>
+        <div style="display: grid; gap: 0.35rem; min-width: 10rem;">
+            <Button label="Rename" size="small" variant="text" data-dropdown-close />
+            <Button label="Delete" size="small" variant="text" severity="danger" data-dropdown-close />
+        </div>
+    </Dropdown>
+</template>
+```
+
+### Controlled State
+
+Use `v-model` when open state must stay in sync with surrounding UI logic.
+
+```vue
+<template>
+    <Dropdown v-model="open">
+        <template #trigger>
+            <Button label="Controlled dropdown" />
+        </template>
+        <div style="display: grid; gap: 0.5rem; min-width: 12rem;">
+            <div>Overlay content</div>
+            <Button label="Close" size="small" data-dropdown-close />
+        </div>
+    </Dropdown>
+</template>
+```
 
 ## Props
 
@@ -30,16 +112,6 @@ Centralize close policies, focus management, and stack/layer contracts for compl
 
 Note: For custom dropdown content, add `data-dropdown-close` to clickable elements to auto-close on click.
 
-## Examples
-
-```vue
-<Dropdown :items="menuItems">
-    <template #trigger>
-        <Button label="Actions" />
-    </template>
-</Dropdown>
-```
-
 ## Theming
 
 - Override via `theme.overrides.components.dropdown`.
@@ -54,24 +126,9 @@ Component tokens (override via `theme.overrides.components.dropdown`):
 
 ## Recipes
 
-- Action menu button with default item list (`items` prop).
-- Custom content menu using `#default` and `data-dropdown-close` hooks.
-- Toolbar menu aligned to trigger width (`matchTriggerWidth=true`).
-
-## Responsive
-
-Verify overlay sizing, placement fallback, and viewport collision handling on mobile/tablet/desktop.
-Ensure gesture/touch close interactions and action buttons remain accessible on small screens.
-
-## SSR/Hydration
-
-Render closed/open initial state deterministically and keep portal/container structure hydration-safe.
-Initialize positioning/focus logic only after mount to avoid server-client markup drift.
-
-## Testing
-
-Cover open/close triggers, escape/outside click behavior, focus trap/restore, and stacking order.
-Add accessibility tests for ARIA roles, labelling, and keyboard navigation in layered UI.
+- Use `items` for conventional action menus and the default slot for custom layouts.
+- Keep `closeOnSelect` enabled unless the overlay contains multi-step interactions.
+- Prefer `matchTriggerWidth=true` for form-like popups and `false` for compact contextual menus.
 
 ## Accessibility
 
@@ -82,16 +139,16 @@ Add accessibility tests for ARIA roles, labelling, and keyboard navigation in la
 ## Interaction Contract
 
 - Trigger behavior:
-    - `click`, `Enter`, `Space` toggle dropdown open state
-    - `ArrowDown` opens and focuses first item
-    - `ArrowUp` opens and focuses last item
+- `click`, `Enter`, `Space` toggle dropdown open state
+- `ArrowDown` opens and focuses first item
+- `ArrowUp` opens and focuses last item
 - Panel keyboard behavior:
-    - `ArrowDown`/`ArrowUp` moves focus between menu items
-    - `Home`/`End` focuses first/last item
-    - `Escape` closes dropdown and returns focus to trigger when `closeOnEsc=true`
+- `ArrowDown`/`ArrowUp` moves focus between menu items
+- `Home`/`End` focuses first/last item
+- `Escape` closes dropdown and returns focus to trigger when `closeOnEsc=true`
 - Selection behavior:
-    - emits `select` on panel click
-    - closes after select when `closeOnSelect=true` and clicked item is menu action or has `data-dropdown-close`
+- emits `select` on panel click
+- closes after select when `closeOnSelect=true` and clicked item is menu action or has `data-dropdown-close`
 - Outside click closes dropdown.
 
 ## Positioning and Z-Index Policy

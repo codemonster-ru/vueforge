@@ -301,6 +301,7 @@ const compiledPreview = computed<{ render: (() => unknown) | null; error: string
         const { code } = compile(normalizedPreviewTemplate.value, {
             mode: 'function',
             hoistStatic: false,
+            prefixIdentifiers: true,
         });
         return {
             render: new Function('Vue', `${code}`)(VueRuntime) as () => unknown,
@@ -330,9 +331,6 @@ const previewComponent = computed(() => {
             );
 
             return {
-                undefined,
-                Infinity,
-                NaN,
                 [previewStateKey]: previewState,
                 ...Object.fromEntries(
                     Object.entries(previewState).map(([key, value]) => [key, clonePreviewValue(value)]),

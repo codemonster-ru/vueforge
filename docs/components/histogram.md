@@ -1,48 +1,18 @@
 # Histogram
 
-## Purpose
+Histogram is a typed wrapper over `Chart` for bucketed numeric distributions with optional density overlay.
 
-Provide a typed histogram component on top of VueForge `Chart`, with configurable binning strategies and optional density overlay.
+## Import
 
-## Props
+```ts
+import Histogram from '@/package/components/histogram.vue';
+```
 
-- `values?: Array<number>` - raw numeric values.
-- `adapter?: ChartAdapter` - rendering adapter (for example, `createChartJsAdapter`).
-- `options?: Record<string, unknown>` - chart-engine options override.
-- `binStrategy?: 'sturges' | 'sqrt' | 'fd' | 'fixed'` (default `sturges`)
-- `binCount?: number` - explicit bin count override.
-- `binSize?: number` - fixed bin width when `binStrategy='fixed'`.
-- `min?: number` - lower range bound.
-- `max?: number` - upper range bound.
-- `densityOverlay?: boolean` (default `false`) - add density line over bars.
-- `width?: number` (default `640`)
-- `height?: number` (default `320`)
-- `loading?: boolean` (default `false`)
-- `loadingText?: string` (default `Loading chart...`)
-- `emptyText?: string` (default `No chart data`)
-- `ariaLabel?: string` (default `Histogram`)
-- `lazy?: boolean` (default `true`)
-- `lazyRootMargin?: string` (default `200px`)
-- `lazyThreshold?: number` (default `0`)
-- `pt?: PassThroughOptions`
-- `unstyled?: boolean` (default `false`)
+## Examples
 
-## Exposed Types
+### Basic
 
-- `HistogramBinStrategy`
-- `HistogramBin` (`{ start, end, count, density, label }`)
-
-## Events
-
-- `ready` (`ChartAdapterInstance`)
-- `error` (`Error`)
-
-## Slots
-
-- `loading`
-- `empty`
-
-## Example
+Use `Histogram` for latency distributions, score distributions, and other raw numeric samples.
 
 ```vue
 <script setup lang="ts">
@@ -56,32 +26,98 @@ const adapter = createChartJsAdapter(ChartJs);
     <Histogram
         :adapter="adapter"
         :values="[12, 13, 14, 18, 19, 24, 25, 28, 30, 35, 36, 40]"
-        bin-strategy="fd"
-        :density-overlay="true"
     />
 </template>
 ```
 
-## Accessibility
+### Density Overlay
 
-- Uses `role="img"` via base `Chart` canvas and supports custom `ariaLabel`.
-- For critical metrics, provide a nearby table summary with bucket counts.
+Enable `density-overlay` when the chart should show both count bars and distribution shape.
+
+```vue
+<Histogram
+    :adapter="adapter"
+    :values="values"
+    bin-strategy="fd"
+    density-overlay
+/>
+```
+
+### Fixed Bins
+
+Use fixed bins when analytics requirements define explicit bucket widths.
+
+```vue
+<Histogram
+    :adapter="adapter"
+    :values="values"
+    bin-strategy="fixed"
+    :bin-size="10"
+/>
+```
+
+## API
+
+### Types
+
+```ts
+type HistogramBinStrategy = 'sturges' | 'sqrt' | 'fd' | 'fixed';
+```
+
+### Props
+
+| Name | Type | Default |
+| --- | --- | --- |
+| `values` | `number[]` | `[]` |
+| `adapter` | `ChartAdapter \| undefined` | `undefined` |
+| `options` | `Record<string, unknown>` | `{}` |
+| `binStrategy` | `'sturges' \| 'sqrt' \| 'fd' \| 'fixed'` | `'sturges'` |
+| `binCount` | `number \| undefined` | `undefined` |
+| `binSize` | `number \| undefined` | `undefined` |
+| `min` | `number \| undefined` | `undefined` |
+| `max` | `number \| undefined` | `undefined` |
+| `densityOverlay` | `boolean` | `false` |
+| `width` | `number` | `640` |
+| `height` | `number` | `320` |
+| `loading` | `boolean` | `false` |
+| `loadingText` | `string` | `'Loading chart...'` |
+| `emptyText` | `string` | `'No chart data'` |
+| `ariaLabel` | `string` | `'Histogram'` |
+| `lazy` | `boolean` | `true` |
+| `lazyRootMargin` | `string` | `'200px'` |
+| `lazyThreshold` | `number` | `0` |
+| `pt` | `PassThroughOptions \| undefined` | `undefined` |
+| `unstyled` | `boolean` | `false` |
+
+### Events
+
+| Name | Payload |
+| --- | --- |
+| `ready` | `ChartAdapterInstance` |
+| `error` | `Error` |
+
+### Slots
+
+| Name | Description |
+| --- | --- |
+| `loading` | Replaces the loading state. |
+| `empty` | Replaces the empty state. |
 
 ## Theming
 
-- Inherits chart token set via `theme.overrides.components.chart`.
+`Histogram` does not have its own default preset file in `src/package/themes/default/components/`. In this repo it inherits the shared `Chart` theming contract through `theme.overrides.components.chart`.
 
-## Responsive
+## Tokens
 
-- Uses responsive base chart options and stretches to container width.
-- Use grid/container constraints to avoid overflow in narrow cards.
+- Inherit chart surface, typography, tooltip, focus, and state tokens from `Chart`
+- Use chart palette tokens plus explicit chart options when the bar and density line need custom colors
 
-## SSR/Hydration
+## Recipes
 
-- Adapter mount happens only on client mount and respects `lazy` viewport rendering.
-- Loading/empty states are deterministic for hydration-safe markup.
+- Use `fd` or `sqrt` when binning should adapt to the dataset, and `fixed` when product requirements define exact bucket widths.
+- Prefer `Histogram` over raw bar charts when the input is an unordered numeric sample rather than already aggregated categories.
 
-## Testing
+## Accessibility
 
-- Cover bin strategy behavior (`sturges`, `fixed`, etc.).
-- Cover density overlay dataset contract and adapter error/expose behavior.
+- The base `Chart` runtime provides the canvas and state semantics.
+- For critical quantitative workflows, pair the histogram with numeric summaries or a table of bin counts.

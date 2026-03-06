@@ -1,13 +1,66 @@
 # Card
 
-## Purpose
+Provide a reusable bordered surface for grouped content, settings blocks, and dashboard tiles.
 
-- Provide reusable content surface for dashboards, lists, and settings blocks.
-- Centralize elevation/border/padding behavior across the system.
+## Import
+
+```ts
+import { Card } from '@codemonster-ru/vueforge';
+```
+
+## Examples
+
+Use `Card` as a lightweight content surface rather than a heavy layout primitive.
+
+### Basic
+
+Use the default slot for simple content blocks.
+
+```vue
+<template>
+    <Card>
+        <p>Project settings are inherited from the workspace by default.</p>
+    </Card>
+</template>
+```
+
+### Structured Card
+
+Use header, body, and footer slots when the surface needs clear content regions.
+
+```vue
+<template>
+    <Card>
+        <template #header>
+            <PageHeader title="Workspace access" subtitle="Manage seats and roles" />
+        </template>
+        <template #body>
+            <p>Invite collaborators and review pending access requests.</p>
+        </template>
+        <template #footer>
+            <Button size="small">Manage members</Button>
+        </template>
+    </Card>
+</template>
+```
+
+### Grid Of Cards
+
+Use cards as repeatable dashboard tiles.
+
+```vue
+<template>
+    <Inline gap="1rem" wrap="wrap">
+        <Card><template #body>Open issues: 14</template></Card>
+        <Card><template #body>Deployments today: 3</template></Card>
+        <Card><template #body>Incidents: 0</template></Card>
+    </Inline>
+</template>
+```
 
 ## Props
 
-- No props
+- This component does not expose props.
 
 ## Events
 
@@ -20,53 +73,22 @@
 - `body`
 - `footer`
 
-## Examples
-
-```vue
-<Card>
-    <template #header>
-        Header
-    </template>
-    <template #body>
-        Main content
-    </template>
-    <template #footer>
-        Footer
-    </template>
-</Card>
-```
-
 ## Theming
 
 - Override via `theme.overrides.components.card`.
 
 ## Tokens
 
-Override via `theme.overrides.components.card`:
+Component tokens (override via `theme.overrides.components.card`):
 
 - `padding`, `borderColor`, `borderRadius`
 
 ## Recipes
 
-- Information card with header/body/footer slots.
-- Section container card wrapping `PageHeader` and controls.
-- Lightweight tile cards in grid/list layouts.
-
-## Responsive
-
-- Validate internal spacing and slot layout under compact breakpoints.
-- Ensure media/header/footer sections reflow cleanly on small screens.
-
-## SSR/Hydration
-
-- Card markup is static and should hydrate without state divergence.
-- Confirm token-based visual variants render identically server/client.
-
-## Testing
-
-- Cover surface variants, slot combinations, and interactive card states if enabled.
-- Add visual regression tests for bordered/elevated styles.
+- Use `Card` to group related actions or metrics without introducing another layout abstraction.
+- Prefer slot regions when the surface contains mixed content types such as headings, copy, and actions.
+- Keep nested cards rare; use spacing and dividers first.
 
 ## Accessibility
 
-- Ensure keyboard access, visible focus state, and sufficient color contrast in usage contexts.
+- `Card` is a neutral surface. Apply semantic headings, landmarks, or interactive elements inside it as needed.

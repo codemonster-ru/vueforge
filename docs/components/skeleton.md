@@ -1,9 +1,60 @@
 # Skeleton
 
-## Purpose
+Render loading placeholders that preserve layout while real content is still unavailable.
 
-- Provide loading placeholders that preserve layout during async data fetches.
-- Reduce perceived latency and prevent content jumps.
+## Import
+
+```ts
+import { Skeleton } from '@codemonster-ru/vueforge';
+```
+
+## Examples
+
+Use `Skeleton` to mirror the shape of the final UI, not as a generic decorative shimmer.
+
+### Basic
+
+Use inline dimensions for simple placeholders.
+
+```vue
+<template>
+    <Stack gap="0.5rem">
+        <Skeleton width="240px" height="14px" />
+        <Skeleton width="180px" height="14px" />
+        <Skeleton variant="circle" :width="48" />
+    </Stack>
+</template>
+```
+
+### Table Preset
+
+Use the table preset to keep grid-heavy layouts stable during loading.
+
+```vue
+<template>
+    <Skeleton preset="table" :table-rows="5" :table-columns="4" />
+</template>
+```
+
+### List Preset
+
+Use the list preset for feed, comment, and card-list loading states.
+
+```vue
+<template>
+    <Skeleton preset="list" :list-rows="6" />
+</template>
+```
+
+### Form Preset
+
+Use the form preset when a detail or edit screen is loading.
+
+```vue
+<template>
+    <Skeleton preset="form" :form-rows="4" />
+</template>
+```
 
 ## Props
 
@@ -25,48 +76,28 @@
 
 - This component does not expose named slots.
 
-## Examples
-
-```vue
-<Skeleton width="240px" height="14px" />
-<Skeleton width="180px" height="14px" />
-<Skeleton variant="circle" width="48" />
-<Skeleton preset="table" :table-rows="5" :table-columns="4" />
-<Skeleton preset="list" :list-rows="6" />
-<Skeleton preset="form" :form-rows="4" />
-```
-
 ## Theming
 
-- Override via theme component overrides for each component documented on this page.
+- Override via `theme.overrides.components.skeleton`.
 
 ## Tokens
 
-- Use `theme.overrides.components` to customize this component where token support is available.
-- Preset-specific sizing tokens are exposed through `theme.overrides.components.skeleton`.
+Component tokens (override via `theme.overrides.components.skeleton`):
+
+- `width`, `height`, `lineHeight`, `borderRadius`
+- `backgroundColor`, `shimmerColor`, `animationDuration`
+- `presetGap`
+- `presetTableHeaderHeight`, `presetTableRowHeight`
+- `presetListAvatarSize`, `presetListLineHeight`, `presetListSecondaryWidth`
+- `presetFormLabelWidth`, `presetFormLabelHeight`, `presetFormFieldHeight`
 
 ## Recipes
 
-- Start with the examples above as baseline usage for this component.
-- Use `preset="table"` for data grids, `preset="list"` for feed/card lists, and `preset="form"` for detail/edit skeleton screens.
-- Add product-specific variants (loading/error/dense/mobile) in consuming app docs when needed.
-
-## Responsive
-
-- Verify skeleton dimensions adapt to container breakpoints and density presets.
-- Ensure placeholder grids/lists remain aligned on small screens.
-
-## SSR/Hydration
-
-- SSR should render consistent placeholder structure for loading paths.
-- Client transition from skeleton to content must avoid hydration warnings.
-
-## Testing
-
-- Cover shape/animation variants and accessibility expectations for loading semantics.
-- Cover preset rendering contracts (`table`, `list`, `form`) with row/column count checks.
-- Add visual regression tests for common list/card/table skeleton patterns.
+- Use `preset="table"` for data grids, `preset="list"` for feed or card lists, and `preset="form"` for edit views.
+- Match placeholder density to the final screen so the transition feels credible.
+- Disable animation only when the product deliberately wants a static loading state.
 
 ## Accessibility
 
-- Ensure keyboard access, visible focus state, and sufficient color contrast in usage contexts.
+- Skeletons are `aria-hidden` placeholders and should not be treated as meaningful content.
+- Pair them with surrounding loading semantics when the parent region needs an announced busy state.

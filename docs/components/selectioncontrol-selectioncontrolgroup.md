@@ -1,42 +1,17 @@
 # SelectionControl / SelectionControlGroup
 
-## Purpose
+SelectionControl and SelectionControlGroup are low-level primitives behind checkbox, radio, and switch behaviors. They are useful when you need shared selection semantics with custom composition rather than higher-level form controls.
 
-Shared primitives for checkbox/radio/switch behaviors with optional group-managed state.
+## Import
 
-## SelectionControl Props
+```ts
+import SelectionControl from '@/package/components/selection-control.vue';
+import SelectionControlGroup from '@/package/components/selection-control-group.vue';
+```
 
-- `modelValue?: unknown`
-- `value?: string | number | boolean` (default `true`)
-- `type?: 'checkbox' | 'radio' | 'switch'` (default `checkbox`)
-- `label?: string`
-- `disabled?: boolean`
-- `id?: string`
-- `name?: string`
-- `required?: boolean`
-- `ariaLabel?: string`
-- `ariaLabelledby?: string`
-- `ariaDescribedby?: string`
-- `ariaInvalid?: boolean | 'true' | 'false'`
-- `ariaRequired?: boolean | 'true' | 'false'`
+## Examples
 
-## SelectionControlGroup Props
-
-- `modelValue?: unknown`
-- `type?: 'checkbox' | 'radio' | 'switch'` (default `checkbox`)
-- `name?: string`
-- `disabled?: boolean`
-- `direction?: 'vertical' | 'horizontal'` (default `vertical`)
-- `multiple?: boolean` (default auto: `true` except radio)
-- `ariaLabel?: string`
-- `ariaLabelledby?: string`
-
-## Events
-
-- `SelectionControl`: `update:modelValue`, `change`
-- `SelectionControlGroup`: `update:modelValue`, `change`
-
-## Example
+### Basic Group
 
 ```vue
 <SelectionControlGroup v-model="channels" type="checkbox">
@@ -45,15 +20,84 @@ Shared primitives for checkbox/radio/switch behaviors with optional group-manage
 </SelectionControlGroup>
 ```
 
+### Radio Group
+
+```vue
+<SelectionControlGroup v-model="priority" type="radio" name="priority">
+    <SelectionControl value="low" label="Low" />
+    <SelectionControl value="high" label="High" />
+</SelectionControlGroup>
+```
+
+### Switch Primitive
+
+```vue
+<SelectionControl v-model="enabled" type="switch" label="Enable notifications" />
+```
+
+## API
+
+### SelectionControl Props
+
+| Name | Type | Default |
+| --- | --- | --- |
+| `modelValue` | `unknown` | `undefined` |
+| `value` | `string \| number \| boolean` | `true` |
+| `type` | `'checkbox' \| 'radio' \| 'switch'` | `'checkbox'` |
+| `label` | `string` | `''` |
+| `disabled` | `boolean` | `false` |
+| `id` | `string \| undefined` | `undefined` |
+| `name` | `string \| undefined` | `undefined` |
+| `required` | `boolean` | `false` |
+| `ariaLabel` | `string \| undefined` | `undefined` |
+| `ariaLabelledby` | `string \| undefined` | `undefined` |
+| `ariaDescribedby` | `string \| undefined` | `undefined` |
+| `ariaInvalid` | `boolean \| 'true' \| 'false' \| undefined` | `undefined` |
+| `ariaRequired` | `boolean \| 'true' \| 'false' \| undefined` | `undefined` |
+
+### SelectionControl Events
+
+| Name | Payload |
+| --- | --- |
+| `update:modelValue` | updated value |
+| `change` | `value, event` |
+
+### SelectionControlGroup Props
+
+| Name | Type | Default |
+| --- | --- | --- |
+| `modelValue` | `unknown` | `undefined` |
+| `type` | `'checkbox' \| 'radio' \| 'switch'` | `'checkbox'` |
+| `name` | `string \| undefined` | `undefined` |
+| `disabled` | `boolean` | `false` |
+| `direction` | `'vertical' \| 'horizontal'` | `'vertical'` |
+| `multiple` | `boolean \| undefined` | `undefined` |
+| `ariaLabel` | `string` | `''` |
+| `ariaLabelledby` | `string` | `''` |
+
+### SelectionControlGroup Events
+
+| Name | Payload |
+| --- | --- |
+| `update:modelValue` | updated group value |
+| `change` | `value, event` |
+
+## Theming
+
+- `theme.overrides.components.selectionControl` controls the checkbox, radio, and switch primitives.
+- `theme.overrides.components.selectionControlGroup` controls primitive group spacing.
+
 ## Tokens
 
-- `theme.overrides.components.selectionControl`:
-  `gap`, `textColor`, `disabledOpacity`,
-  `box*`, `radio*`, `switch*`
-- `theme.overrides.components.selectionControlGroup`:
-  `gap`, `horizontalGap`
+- `selectionControl`: `gap`, `textColor`, `disabledOpacity`, `box*`, `radio*`, `switch*`
+- `selectionControlGroup`: `gap`, `horizontalGap`
+
+## Recipes
+
+- Use these primitives when building custom field wrappers, matrix inputs, or composite selection UIs.
+- Prefer `Checkbox`, `RadioGroup`, and `Switch` for standard consumer-facing forms.
 
 ## Accessibility
 
-- Group uses `radiogroup` role for radio type and `group` for checkbox/switch.
-- Switch mode maps to native checkbox with `role="switch"` and `aria-checked`.
+- Radio groups use `radiogroup`; checkbox and switch groups use `group`.
+- Switch mode maps to a checkbox input with `role="switch"` and explicit `aria-checked`.

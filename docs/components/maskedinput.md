@@ -1,18 +1,63 @@
 # MaskedInput
 
-## Purpose
+Capture formatted text input while preserving a predictable value contract.
 
-Capture user text and numeric input with consistent API, validation hooks, and theming behavior.
-Support high-frequency form entry scenarios in SaaS settings, auth, and CRUD flows.
+## Import
+
+```ts
+import { MaskedInput } from '@codemonster-ru/vueforge';
+```
+
+## Examples
+
+Use `MaskedInput` when the user should enter a value in a fixed pattern such as phone, code, or license format.
+
+### Basic
+
+Use a string mask for common formats.
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const phone = ref('');
+</script>
+
+<template>
+    <MaskedInput v-model="phone" mask="+7 (###) ###-##-##" placeholder="+7 (___) ___-__-__" />
+</template>
+```
+
+### Unmasked Value
+
+Set `unmask` when the bound model should contain only the raw token characters.
+
+```vue
+<template>
+    <MaskedInput model-value="AA1234" mask="AA-####" unmask variant="outlined" />
+</template>
+```
+
+### With Prefix Or Suffix
+
+Use the wrapper slots for fixed surrounding context.
+
+```vue
+<template>
+    <MaskedInput mask="#### #### #### ####">
+        <template #prefix>Card</template>
+    </MaskedInput>
+</template>
+```
 
 ## Props
 
-- `modelValue?: string` (v-model)
+- `modelValue?: string`
 - `mask?: string | ((value: string) => string)` (default `''`)
 - `placeholder?: string`
 - `placeholderChar?: string` (default `_`)
-- `disabled?: boolean`
-- `readonly?: boolean`
+- `disabled?: boolean` (default `false`)
+- `readonly?: boolean` (default `false`)
 - `required?: boolean` (default `false`)
 - `id?: string`
 - `name?: string`
@@ -22,7 +67,7 @@ Support high-frequency form entry scenarios in SaaS settings, auth, and CRUD flo
 - `ariaLabelledby?: string`
 - `ariaDescribedby?: string`
 - `ariaInvalid?: boolean | 'true' | 'false'`
-- `ariaRequired?: boolean | 'true' | 'false'` (defaults to `'true'` when `required`)
+- `ariaRequired?: boolean | 'true' | 'false'`
 - `unmask?: boolean` (default `false`)
 - `size?: 'small' | 'normal' | 'large'` (default `normal`)
 - `variant?: 'filled' | 'outlined'` (default `filled`)
@@ -38,18 +83,12 @@ Support high-frequency form entry scenarios in SaaS settings, auth, and CRUD flo
 
 ## Slots
 
-- This component does not expose named slots.
-
-## Examples
-
-```vue
-<MaskedInput v-model="phone" mask="+7 (###) ###-##-##" />
-<MaskedInput v-model="licenseRaw" mask="AA-####" unmask variant="outlined" />
-```
+- `prefix`
+- `suffix`
 
 ## Theming
 
-- Override via theme component overrides for each component documented on this page.
+- Override via `theme.overrides.components.maskedInput`.
 
 ## Tokens
 
@@ -65,27 +104,12 @@ Component tokens (override via `theme.overrides.components.maskedInput`):
 
 ## Recipes
 
-- Start with the examples above as baseline usage for this component.
-- Add product-specific variants (loading/error/dense/mobile) in consuming app docs when needed.
-
-## Responsive
-
-Validate control height, helper/error text wrapping, and icon/addon placement across breakpoints.
-Ensure virtual keyboards and touch interaction do not clip labels, hints, or action icons.
-
-## SSR/Hydration
-
-Keep initial value, disabled, and readonly states identical between server and client render.
-Avoid hydration mismatches from client-only formatting or masking initialization.
-
-## Testing
-
-Cover v-model updates, input/change/blur events, and validation edge cases.
-Add accessibility tests for labeling, error semantics, and keyboard interaction contracts.
+- Use masks to guide format, not to hide validation complexity that still belongs in form logic.
+- Set `unmask` when downstream systems expect raw data without separators.
+- Prefer plain `Input` when the format is too flexible for a stable mask.
 
 ## Accessibility
 
-- Provide an accessible name (`label` + `id`, or `ariaLabel` / `ariaLabelledby`).
-- For help/error text, wire `ariaDescribedby`.
-- For invalid and required states, use `ariaInvalid` / `required` (or `ariaRequired` override).
-- Keyboard focus uses the component focus ring (`:focus-within`) for visible state.
+- Provide an accessible name through label association or ARIA labelling.
+- Use `ariaDescribedby` for help or validation text.
+- `complete` is useful for form logic but should not replace validation feedback.

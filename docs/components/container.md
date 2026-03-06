@@ -1,9 +1,69 @@
 # Container
 
-## Purpose
+Constrain content width and horizontal gutters for pages, dashboards, and dense CRUD layouts.
 
-- Constrain page content width with predictable horizontal rhythm for dashboards and CRUD screens.
-- Provide a semantic wrapper for layout without introducing interaction behavior.
+## Import
+
+```ts
+import { Container } from '@codemonster-ru/vueforge';
+```
+
+## Examples
+
+Use `Container` as the outer width contract for page content. It works best when other layout primitives live inside it.
+
+### Basic
+
+Use the default width preset for standard application pages.
+
+```vue
+<template>
+    <Container>
+        <PageHeader title="Projects" subtitle="Manage active projects and team workload." />
+    </Container>
+</template>
+```
+
+### Size Presets
+
+Switch between width presets to match detail pages, dashboards, or reading surfaces.
+
+```vue
+<template>
+    <div style="display: grid; gap: 1rem;">
+        <Container size="sm"><Card>Small reading width</Card></Container>
+        <Container size="md"><Card>Medium form width</Card></Container>
+        <Container size="xl"><Card>Wide dashboard width</Card></Container>
+        <Container size="full"><Card>Full-width workspace</Card></Container>
+    </div>
+</template>
+```
+
+### Semantic Element
+
+Use `as` when the wrapper should also define a document landmark.
+
+```vue
+<template>
+    <Container as="main" size="xl">
+        <Section>
+            <p>Main page content</p>
+        </Section>
+    </Container>
+</template>
+```
+
+### Custom Width And Padding
+
+Use runtime overrides for product-specific shells without replacing the base container primitive.
+
+```vue
+<template>
+    <Container max-width="90rem" padding-x="2rem">
+        <Card>Custom workspace width and gutters</Card>
+    </Container>
+</template>
+```
 
 ## Props
 
@@ -20,19 +80,6 @@
 
 - `default`
 
-## Examples
-
-```vue
-<Container size="xl">
-    <PageHeader title="Projects" subtitle="Manage active projects and team workload." />
-</Container>
-<Container as="main" max-width="90rem" padding-x="2rem">
-    <div>
-        Custom width and horizontal padding
-    </div>
-</Container>
-```
-
 ## Theming
 
 - Override via `theme.overrides.components.container`.
@@ -46,23 +93,9 @@ Component tokens (override via `theme.overrides.components.container`):
 
 ## Recipes
 
-- Page shell: `Container as="main" size="xl"` for top-level content width.
-- Wide workspace: `size="full"` with custom `max-width` and `padding-x` for dashboards.
-
-## Responsive
-
-- Validate width presets and custom overrides at mobile/tablet/desktop breakpoints.
-- Ensure horizontal padding prevents edge collisions on narrow viewports.
-
-## SSR/Hydration
-
-- Output is static layout markup; no hydration state transitions are expected.
-- Keep server and client width calculations token-driven to avoid layout shifts.
-
-## Testing
-
-- Cover size preset class/token application and custom maxWidth/paddingX overrides.
-- Add responsive viewport checks for overflow prevention on narrow screens.
+- Use `Container as="main"` for top-level page content so width and landmark semantics stay together.
+- Prefer size presets first; reach for `maxWidth` only when the product shell has a specific hard requirement.
+- Pair `Container` with `Section` to separate vertical rhythm from horizontal width control.
 
 ## Accessibility
 

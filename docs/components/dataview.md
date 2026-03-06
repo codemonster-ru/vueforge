@@ -1,17 +1,94 @@
 # DataView
 
-## Purpose
+Render datasets in list or grid layout with built-in layout switching, sorting, and pagination hooks.
 
-Render datasets in list or grid layout with built-in pagination controls and server-handoff hooks for sorting/paging.
+## Import
+
+```ts
+import { DataView } from '@codemonster-ru/vueforge';
+```
+
+## Examples
+
+Use `DataView` when the same dataset should support both list and card-style presentation.
+
+### Basic
+
+Use the `item` slot to render each row or card while `DataView` manages layout and paging.
+
+```vue
+<template>
+    <DataView :items="products">
+        <template #item="{ item, layout }">
+            <Card>
+                <template #body>
+                    <strong>{{ item.name }}</strong> · {{ layout }}
+                </template>
+            </Card>
+        </template>
+    </DataView>
+</template>
+```
+
+### Sortable Catalog
+
+Enable `sortable` when users should change ordering locally.
+
+```vue
+<template>
+    <DataView :items="products" sortable default-sort-field="name">
+        <template #item="{ item }">
+            <article>{{ item.name }}</article>
+        </template>
+    </DataView>
+</template>
+```
+
+### Server Handoff
+
+Use `server` mode when paging and sorting are owned by an API.
+
+```vue
+<template>
+    <DataView
+        :items="serverItems"
+        :total="total"
+        :page="query.page"
+        :page-size="query.pageSize"
+        :sort-field="query.sortField"
+        :sort-order="query.sortOrder"
+        server
+        @request="onRequest"
+    >
+        <template #item="{ item }">
+            <article>{{ item.name }}</article>
+        </template>
+    </DataView>
+</template>
+```
+
+### Custom Empty State
+
+Use the `empty` slot when the no-results state needs explanation or actions.
+
+```vue
+<template>
+    <DataView :items="[]">
+        <template #empty>
+            <EmptyState title="No products" description="Try adjusting filters." />
+        </template>
+    </DataView>
+</template>
+```
 
 ## Props
 
 - `items?: Array<Record<string, unknown>>`
 - `layout?: 'list' | 'grid'` (default `list`)
-- `loading?: boolean`
+- `loading?: boolean` (default `false`)
 - `loadingText?: string` (default `Loading...`)
 - `emptyText?: string` (default `No items`)
-- `disabled?: boolean`
+- `disabled?: boolean` (default `false`)
 - `ariaLabel?: string` (default `Data view`)
 - `rowKey?: string | ((item, index) => string | number)` (default `id`)
 - `sortable?: boolean` (default `false`)
@@ -36,38 +113,17 @@ Render datasets in list or grid layout with built-in pagination controls and ser
 
 ## Slots
 
-- `item` - item renderer (`{ item, index, layout }`)
+- `item` - item renderer with `{ item, index, layout }`
 - `loading`
 - `empty`
-
-## Examples
-
-```vue
-<DataView :items="products" sortable default-sort-field="name">
-    <template #item="{ item, layout }">
-        <ProductCard :compact="layout === 'list'" :product="item" />
-    </template>
-</DataView>
-```
-
-```vue
-<DataView
-    :items="serverItems"
-    :total="total"
-    :page="query.page"
-    :page-size="query.pageSize"
-    :sort-field="query.sortField"
-    :sort-order="query.sortOrder"
-    server
-    @request="onRequest"
-/>
-```
 
 ## Theming
 
 - Override via `theme.overrides.components.dataview`.
 
 ## Tokens
+
+Component tokens (override via `theme.overrides.components.dataview`):
 
 - `gap`, `toolbarGap`, `layoutGap`
 - `controlBorderColor`, `controlBorderRadius`, `controlBackgroundColor`, `controlTextColor`, `controlPadding`, `controlFontSize`
@@ -79,25 +135,12 @@ Render datasets in list or grid layout with built-in pagination controls and ser
 
 ## Recipes
 
-- Use `server` mode with `@request` to keep sorting/pagination state in route/query params.
-- Use `layout` toggle to provide user-controlled list/grid preference in catalog pages.
+- Use `DataView` for catalog or gallery-style datasets where list and grid both make sense.
+- In server mode, keep `items`, `total`, and query props synchronized to avoid stale UI state.
+- Let the slot renderer own semantics such as `article`, headings, and actions.
 
 ## Accessibility
 
 - Content root uses `role="list"` or `role="grid"` based on active layout.
-- Layout toggle buttons use `aria-pressed` state.
-- Keep item slot content semantic (`article`, heading, and actionable controls) for screen-reader clarity.
-
-## Responsive
-
-- Grid layout uses auto-fill columns with `gridMinWidth` token; list mode remains single-column.
-- For narrow screens, reduce card density in slot renderer and keep primary action near top.
-
-## SSR/Hydration
-
-- Local mode is deterministic from props (`items`, `page`, `pageSize`, `sort*`) and is hydration-safe.
-- In server mode, keep `items`/`total` synchronized with requested query state to avoid client/server drift.
-
-## Testing
-
-- Cover layout switching, local pagination behavior, server handoff payloads, and loading/empty states.
+- Layout toggle buttons expose `aria-pressed`.
+- Keep slot content semantic so assistive tech can understand each rendered item.

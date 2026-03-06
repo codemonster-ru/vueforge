@@ -1,14 +1,72 @@
 # NavigationRail
 
-## Purpose
+Provide compact side navigation for application shells with optional collapsed mode.
 
-- Provide compact app-level side navigation for SaaS layouts.
-- Support collapsed/expanded states with icon+label patterns.
+## Import
+
+```ts
+import { NavigationRail } from '@codemonster-ru/vueforge';
+```
+
+## Examples
+
+Use `NavigationRail` when the primary navigation should stay visible but consume less space than a full sidebar.
+
+### Basic
+
+Use items with icons and labels for app-level destinations.
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const activeKey = ref('overview');
+const collapsed = ref(false);
+
+const railItems = [
+    { key: 'overview', label: 'Overview', icon: 'house' },
+    { key: 'deployments', label: 'Deployments', icon: 'rocket' },
+    { key: 'logs', label: 'Logs', icon: 'list' },
+    { key: 'settings', label: 'Settings', icon: 'gear' }
+];
+</script>
+
+<template>
+    <NavigationRail v-model="activeKey" v-model:collapsed="collapsed" :items="railItems" />
+</template>
+```
+
+### With Header And Footer
+
+Use the header and footer slots for logo, tenant context, or secondary actions.
+
+```vue
+<template>
+    <NavigationRail :items="railItems">
+        <template #header="{ collapsed }">
+            <strong>{{ collapsed ? 'WF' : 'VueForge' }}</strong>
+        </template>
+        <template #footer>
+            <Button size="small" variant="text">Help</Button>
+        </template>
+    </NavigationRail>
+</template>
+```
+
+### Right Side
+
+Switch `side` when the rail belongs on the opposite edge in a specific shell composition.
+
+```vue
+<template>
+    <NavigationRail :items="railItems" side="right" />
+</template>
+```
 
 ## Props
 
 - `items?: Array<NavigationRailItem>`
-- `modelValue?: string | number | null` (selected key)
+- `modelValue?: string | number | null`
 - `collapsed?: boolean` (default `false`)
 - `side?: 'left' | 'right'` (default `left`)
 - `disabled?: boolean` (default `false`)
@@ -16,8 +74,8 @@
 - `ariaLabel?: string` (default `Primary navigation`)
 - `collapseLabel?: string` (default `Collapse navigation`)
 - `expandLabel?: string` (default `Expand navigation`)
-- `collapseIcon?: string` (default `<`)
-- `expandIcon?: string` (default `>`)
+- `collapseIcon?: string` (default `chevronLeft`)
+- `expandIcon?: string` (default `chevronRight`)
 - `syncActiveFromRoute?: boolean` (default `true`)
 
 ## Events
@@ -29,21 +87,13 @@
 
 ## Slots
 
-- `header` (optional) - slot props `{ collapsed, toggle }`
-- `item` (optional) - slot props `{ item, index, active, collapsed }`
-- `footer` (optional) - slot props `{ collapsed, toggle }`
+- `header` with `{ collapsed, toggle }`
+- `item` with `{ item, index, active, collapsed }`
+- `footer` with `{ collapsed, toggle }`
 
-## Example
+## Theming
 
-```vue
-<NavigationRail v-model="activeKey" v-model:collapsed="collapsed" :items="railItems">
-    <template #header>
-        <strong>
-            Ops
-        </strong>
-    </template>
-</NavigationRail>
-```
+- Override via `theme.overrides.components.navigationRail`.
 
 ## Tokens
 
@@ -57,19 +107,13 @@ Component tokens (override via `theme.overrides.components.navigationRail`):
 - `itemActiveBackgroundColor`, `itemActiveColor`
 - `iconSize`, `labelFontSize`
 
-## Responsive
+## Recipes
 
-- Use `collapsed` state to fit narrow layout widths without removing navigation actions.
-
-## SSR/Hydration
-
-- Keep `collapsed` source controlled from app state for deterministic SSR output.
-
-## Testing
-
-- Covers collapse toggling, active selection, keyboard navigation, and route-synced active state.
+- Use `collapsed` mode when the layout must preserve more room for main content without hiding navigation entirely.
+- Prefer route syncing when the current page already maps cleanly to destination items.
+- Use `NavigationRail` inside `AppShell`; use `Menu` or `Tree` for deeper nested navigation structures.
 
 ## Accessibility
 
-- Uses `nav` landmark + vertical `menu` semantics.
-- Keyboard support: `ArrowUp/ArrowDown`, `Home/End`, `Enter/Space`.
+- Uses a `nav` landmark with vertical menu semantics.
+- Keyboard support includes arrow navigation, `Home`, `End`, `Enter`, and `Space`.

@@ -1,53 +1,81 @@
 # OrderList
 
-## Purpose
+OrderList manages ordered collections with selection, keyboard reordering, and drag and drop.
 
-Manage ordered collections with keyboard and drag/drop reordering.
+## Import
 
-## Props
+```ts
+import OrderList from '@/package/components/order-list.vue';
+```
 
-- `modelValue?: Array<Record<string, unknown>>` (default `[]`)
-- `itemKey?: string` (default `id`)
-- `itemLabel?: string` (default `label`)
-- `header?: string` (default `Order`)
-- `ariaLabel?: string` (default `Order list`)
-- `multiple?: boolean` (default `true`)
-- `disabled?: boolean` (default `false`)
+## Examples
 
-## Events
-
-- `update:modelValue`
-- `reorder` - payload: reordered array
-
-## Slots
-
-- `item` - slot props `{ item, index }`
-
-## Example
+### Basic
 
 ```vue
 <OrderList v-model="workflowSteps" header="Workflow steps" />
 ```
 
+### Custom Item Content
+
+```vue
+<OrderList v-model="workflowSteps" item-key="id" item-label="label">
+    <template #item="{ item }">
+        <strong>{{ item.label }}</strong>
+    </template>
+</OrderList>
+```
+
+### Single Selection
+
+```vue
+<OrderList v-model="workflowSteps" :multiple="false" />
+```
+
+## API
+
+### Props
+
+| Name | Type | Default |
+| --- | --- | --- |
+| `modelValue` | `Record<string, unknown>[]` | `[]` |
+| `itemKey` | `string` | `'id'` |
+| `itemLabel` | `string` | `'label'` |
+| `header` | `string` | `'Order'` |
+| `ariaLabel` | `string` | `'Order list'` |
+| `multiple` | `boolean` | `true` |
+| `disabled` | `boolean` | `false` |
+
+### Events
+
+| Name | Payload |
+| --- | --- |
+| `update:modelValue` | reordered items |
+| `reorder` | reordered items |
+
+### Slots
+
+| Name | Description |
+| --- | --- |
+| `item` | Custom item rendering with `{ item, index }`. |
+
 ## Theming
 
-- Override via `theme.overrides.components.orderlist`.
+Override component tokens through `theme.overrides.components.orderlist`.
 
 ## Tokens
 
-- `gap`
-- `borderColor`, `borderRadius`, `backgroundColor`, `headerColor`
-- `listPadding`, `listMinHeight`
-- `itemPadding`, `itemRadius`, `itemHoverBackgroundColor`, `itemSelectedBackgroundColor`, `itemSelectedColor`
-- `focusRingColor`
-- `buttonBorderColor`, `buttonRadius`, `buttonBackgroundColor`, `buttonColor`
-- `disabledOpacity`
+- Layout and surface: `gap`, `borderColor`, `borderRadius`, `backgroundColor`, `headerColor`, `listPadding`, `listMinHeight`
+- Items: `itemPadding`, `itemRadius`, `itemHoverBackgroundColor`, `itemSelectedBackgroundColor`, `itemSelectedColor`
+- Controls and state: `focusRingColor`, `buttonBorderColor`, `buttonRadius`, `buttonBackgroundColor`, `buttonColor`, `disabledOpacity`
+
+## Recipes
+
+- Use OrderList for workflow steps, dashboard sections, priority queues, and any single-column reordering task.
+- Prefer `PickList` when items must move between two buckets instead of only changing order.
 
 ## Accessibility
 
-- List uses `role="listbox"` with `aria-selected` on options.
-- Keyboard support includes `Enter`/`Space` selection and `Ctrl+ArrowUp/Down` reorder.
+- OrderList uses listbox semantics with `aria-selected`.
+- Keyboard support includes selection with `Enter` or `Space`, focus movement with arrow keys, and reorder with `Ctrl+ArrowUp` and `Ctrl+ArrowDown`.
 
-## Testing
-
-- Cover button reorder, keyboard reorder, and drag/drop reorder.

@@ -1,15 +1,81 @@
 # ButtonGroup
 
-## Purpose
+Group related buttons into one cohesive action cluster with shared size, variant, and spacing rules.
 
-- Group related actions with shared spacing, sizing, and visual cohesion.
-- Avoid inconsistent ad-hoc composition of adjacent action buttons.
+## Import
+
+```ts
+import { ButtonGroup } from '@codemonster-ru/vueforge';
+```
+
+## Examples
+
+Use `ButtonGroup` when adjacent actions belong to one decision set or compact control cluster.
+
+### Basic
+
+Use the default horizontal layout for related actions.
+
+```vue
+<template>
+    <ButtonGroup size="small">
+        <Button label="Refresh" />
+        <Button label="Export" variant="outlined" />
+    </ButtonGroup>
+</template>
+```
+
+### Attached
+
+Use `attached` when the buttons should read as one segmented action strip.
+
+```vue
+<template>
+    <ButtonGroup attached size="small" variant="outlined" severity="primary">
+        <Button label="Day" />
+        <Button label="Week" />
+        <Button label="Month" />
+    </ButtonGroup>
+</template>
+```
+
+### With SplitButton
+
+Mix `Button` and `SplitButton` when one action has secondary options.
+
+```vue
+<template>
+    <ButtonGroup attached>
+        <Button label="Save" />
+        <SplitButton
+            label="More"
+            :items="[
+                { label: 'Save draft' },
+                { label: 'Save and publish' }
+            ]"
+        />
+    </ButtonGroup>
+</template>
+```
+
+### Vertical
+
+Use vertical orientation in side panels and stacked tool palettes.
+
+```vue
+<template>
+    <ButtonGroup orientation="vertical" size="small">
+        <Button label="Move up" />
+        <Button label="Move down" />
+    </ButtonGroup>
+</template>
+```
 
 ## Props
 
-- `size?: 'small' | 'normal' | 'large'` (inherits to nested `Button`/`SplitButton` when child props are not set)
-- `variant?: 'filled' | 'outlined' | 'text'` (inherits to nested `Button`/`SplitButton`)
-- `severity?: 'primary' | 'secondary' | 'success' | 'info' | 'warning' | 'danger'` (inherits to nested `Button`/`SplitButton`)
+- `size?: 'small' | 'normal' | 'large'`
+- `variant?: 'filled' | 'outlined' | 'text'`
+- `severity?: 'primary' | 'secondary' | 'success' | 'info' | 'warning' | 'danger'`
 - `disabled?: boolean` (default `false`)
 - `orientation?: 'horizontal' | 'vertical'` (default `horizontal`)
 - `attached?: boolean` (default `false`)
@@ -20,21 +86,11 @@
 
 ## Slots
 
-- `default` - place `Button` / `SplitButton` items
-
-## Examples
-
-```vue
-<ButtonGroup attached size="small" variant="outlined" severity="primary">
-    <Button label="Day" />
-    <Button label="Week" />
-    <Button label="Month" />
-</ButtonGroup>
-```
+- `default`
 
 ## Theming
 
-- Override via theme component overrides for each component documented on this page.
+- Override via `theme.overrides.components.buttonGroup`.
 
 ## Tokens
 
@@ -44,24 +100,11 @@ Component tokens (override via `theme.overrides.components.buttonGroup`):
 
 ## Recipes
 
-- Start with the examples above as baseline usage for this component.
-- Add product-specific variants (loading/error/dense/mobile) in consuming app docs when needed.
-
-## Responsive
-
-- Verify horizontal-to-wrap behavior on narrow screens.
-- Ensure grouped controls keep usable tap targets and clear separation.
-
-## SSR/Hydration
-
-- Group wrapper is static; hydration should preserve child ordering and classes.
-- Controlled active/disabled styles should not diverge on hydration.
-
-## Testing
-
-- Cover group orientation/size variants and mixed button states.
-- Add visual regression tests for dense/outlined combinations.
+- Use `ButtonGroup` for related controls, not arbitrary neighboring buttons.
+- Let the group provide shared size and variant defaults instead of repeating them on every child.
+- Prefer `attached` only when the actions are tightly related and should read as one control strip.
 
 ## Accessibility
 
-- Ensure keyboard access, visible focus state, and sufficient color contrast in usage contexts.
+- The wrapper exposes `role="group"` and disabled state semantics through `aria-disabled`.
+- Keep grouped actions logically related so the grouping makes sense to keyboard and screen-reader users.

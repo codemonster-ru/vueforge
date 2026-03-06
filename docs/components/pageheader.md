@@ -1,9 +1,73 @@
 # PageHeader
 
-## Purpose
+Standardize page titles, subtitles, metadata, and actions at the top of application views.
 
-- Standardize top-of-page heading area with title, subtitle, metadata, and action slots.
-- Keep dashboard/detail pages visually and structurally consistent.
+## Import
+
+```ts
+import { PageHeader } from '@codemonster-ru/vueforge';
+```
+
+## Examples
+
+Use `PageHeader` as the canonical page intro block before building one-off header layouts.
+
+### Basic
+
+Use title and subtitle props for straightforward pages with no extra regions.
+
+```vue
+<template>
+    <PageHeader title="Projects" subtitle="Manage active projects and team workload." />
+</template>
+```
+
+### With Actions
+
+Use the `actions` slot for primary and secondary page-level actions.
+
+```vue
+<template>
+    <PageHeader title="Projects" subtitle="Manage active projects and team workload.">
+        <template #actions>
+            <Button label="Import" variant="outlined" severity="secondary" />
+            <Button label="New project" icon="plus" />
+        </template>
+    </PageHeader>
+</template>
+```
+
+### With Breadcrumbs And Meta
+
+Use `breadcrumbs` and `meta` when the page needs route context and lightweight status metadata.
+
+```vue
+<template>
+    <PageHeader title="Projects" subtitle="Overview and team activity.">
+        <template #breadcrumbs>
+            <Breadcrumbs :items="[{ label: 'Home', to: '/' }, { label: 'Projects', active: true }]" />
+        </template>
+        <template #meta>
+            <Badge severity="info">24 active</Badge>
+            <Chip label="Last sync: 2m ago" />
+        </template>
+    </PageHeader>
+</template>
+```
+
+### Custom Title Slot
+
+Use the `title` slot when the page must render a different heading level or custom title markup.
+
+```vue
+<template>
+    <PageHeader subtitle="Resource-specific context">
+        <template #title>
+            <h2 style="margin: 0;">Workspace settings</h2>
+        </template>
+    </PageHeader>
+</template>
+```
 
 ## Props
 
@@ -28,26 +92,6 @@
 - `actions` (optional)
 - `default` (optional) - additional body content
 
-## Examples
-
-```vue
-<PageHeader title="Projects" subtitle="Manage active projects and team workload.">
-    <template #breadcrumbs>
-        <Breadcrumbs :items="breadcrumbItems" />
-    </template>
-    <template #meta>
-        <Badge severity="info" variant="soft">
-            24 active
-        </Badge>
-        <Chip label="Last sync: 2m ago" />
-    </template>
-    <template #actions>
-        <Button label="Import" variant="outlined" severity="secondary" />
-        <Button label="New project" icon="plus" />
-    </template>
-</PageHeader>
-```
-
 ## Theming
 
 - Override via `theme.overrides.components.pageHeader`.
@@ -65,24 +109,9 @@ Component tokens (override via `theme.overrides.components.pageHeader`):
 
 ## Recipes
 
-- Resource list header: breadcrumbs + title/subtitle + right-aligned primary actions.
-- Compact mobile header: `size="small"` and minimal action group.
-- Detail page header: title slot with custom heading level and meta badges.
-
-## Responsive
-
-- Verify heading/action layout stacks correctly on narrow breakpoints.
-- Ensure action groups wrap without overlapping titles.
-
-## SSR/Hydration
-
-- PageHeader is mostly static and should hydrate with identical content ordering.
-- Confirm optional slot regions do not cause conditional hydration drift.
-
-## Testing
-
-- Cover title/subtitle/metadata/action slots and density variants.
-- Add responsive tests for action wrapping and long-title overflow.
+- Use `PageHeader` once per page view and keep all top-of-page chrome inside it.
+- Prefer props for simple pages and slots only when the content truly needs structural customization.
+- Keep `actions` limited to page-level operations; row-level or card-level actions belong closer to their content.
 
 ## Accessibility
 

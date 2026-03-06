@@ -1,9 +1,73 @@
 # Badge
 
-## Purpose
+Show compact status and metadata markers inline without adding interactive behavior.
 
-Communicate system and domain state through inline status, metadata markers, loaders, and empty experiences.
-Provide reusable feedback primitives for dashboards, tables, and long-running operations.
+## Import
+
+```ts
+import { Badge } from '@codemonster-ru/vueforge';
+```
+
+## Examples
+
+Use `Badge` for short, passive labels that support scanning and status recognition.
+
+### Basic
+
+Use the default soft badge for neutral metadata and lightweight labels.
+
+```vue
+<template>
+    <Inline gap="0.5rem">
+        <Badge label="Beta" />
+        <Badge label="Internal" />
+    </Inline>
+</template>
+```
+
+### Severities
+
+Use severity to communicate state without changing layout.
+
+```vue
+<template>
+    <Inline gap="0.5rem" wrap="wrap">
+        <Badge severity="neutral">Draft</Badge>
+        <Badge severity="info">Queued</Badge>
+        <Badge severity="success">Active</Badge>
+        <Badge severity="warn">Pending</Badge>
+        <Badge severity="danger">Blocked</Badge>
+    </Inline>
+</template>
+```
+
+### Variants
+
+Switch variant to match the visual weight of the surrounding surface.
+
+```vue
+<template>
+    <Inline gap="0.5rem" wrap="wrap">
+        <Badge variant="solid" severity="info">Solid</Badge>
+        <Badge variant="soft" severity="info">Soft</Badge>
+        <Badge variant="outline" severity="info">Outline</Badge>
+    </Inline>
+</template>
+```
+
+### Sizes
+
+Adjust size for dense tables or roomier page headers.
+
+```vue
+<template>
+    <Inline gap="0.5rem" align="center">
+        <Badge size="small">Small</Badge>
+        <Badge>Default</Badge>
+        <Badge size="large">Large</Badge>
+    </Inline>
+</template>
+```
 
 ## Props
 
@@ -21,18 +85,9 @@ Provide reusable feedback primitives for dashboards, tables, and long-running op
 
 - `default` - badge content (fallbacks to `label`)
 
-## Examples
-
-```vue
-<Badge label="Beta" />
-<Badge severity="success" variant="outline">
-    Active
-</Badge>
-```
-
 ## Theming
 
-- Override via theme component overrides for each component documented on this page.
+- Override via `theme.overrides.components.badge`.
 
 ## Tokens
 
@@ -42,30 +97,18 @@ Component tokens (override via `theme.overrides.components.badge`):
 - `backgroundColor`, `textColor`, `borderColor`
 - `softBackgroundColor`, `softTextColor`, `softBorderColor`
 - `outlineTextColor`, `outlineBorderColor`
-- `info.*`, `success.*`, `warn.*`, `danger.*` (backgroundColor/textColor/borderColor/soft*/outline*)
+- `info.*`, `success.*`, `warn.*`, `danger.*`
 - `small.fontSize`, `small.paddingX`, `small.paddingY`
 - `large.fontSize`, `large.paddingX`, `large.paddingY`
 
 ## Recipes
 
-- Start with the examples above as baseline usage for this component.
-- Add product-specific variants (loading/error/dense/mobile) in consuming app docs when needed.
-
-## Responsive
-
-Verify text/icon/indicator layout and density at mobile/tablet/desktop breakpoints.
-Ensure status content remains legible and non-overlapping in constrained containers.
-
-## SSR/Hydration
-
-Keep initial status/loading state deterministic in server-rendered output.
-Start animations or timers only after hydration to avoid markup mismatch.
-
-## Testing
-
-Cover severity/variant rendering, visibility lifecycle, and accessibility announcements where relevant.
-Add visual regression tests for key state combinations and contrast-sensitive variants.
+- Use `Badge` for short, passive status markers rather than actions or dismissible UI.
+- Keep badge text brief and standardized across the product so users learn the vocabulary quickly.
+- Prefer `soft` for most metadata and reserve `solid` for states that should stand out strongly.
 
 ## Accessibility
 
-- Ensure keyboard access, visible focus state, and sufficient color contrast in usage contexts.
+- Badge renders with `role="status"` and should describe meaningful state, not decorative noise.
+- Keep accessible labels concise when `ariaLabel` is used.
+- Ensure sufficient color contrast in usage contexts.

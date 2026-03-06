@@ -1,37 +1,46 @@
 # LocaleProvider
 
-## Purpose
+LocaleProvider scopes VueForge locale text overrides to a subtree.
 
-Provide subtree-scoped locale text overrides for VueForge components using `useLocaleText`.
+## Import
 
-## Props
+```ts
+import LocaleProvider from '@/package/components/locale-provider.vue';
+```
 
-- `localeText?: LocaleTextOptions` - local i18n overrides.
-- `as?: string` (default `div`) - root element tag.
+## Examples
 
-## Example
+### Scoped Locale
 
 ```vue
-<script setup lang="ts">
-import { LocaleProvider, CommandPalette } from '@codemonster-ru/vueforge';
-</script>
-
-<template>
-    <LocaleProvider
-        :locale-text="{
-            commandPalette: {
-                placeholder: 'Введите команду...',
-                emptyText: 'Команды не найдены',
-            },
-        }"
-    >
-        <CommandPalette />
-    </LocaleProvider>
-</template>
+<LocaleProvider
+    :locale-text="{
+        commandPalette: {
+            placeholder: 'Введите команду...',
+            emptyText: 'Команды не найдены',
+        },
+    }"
+>
+    <CommandPalette />
+</LocaleProvider>
 ```
+
+## API
+
+### Props
+
+| Name | Type | Default |
+| --- | --- | --- |
+| `localeText` | `LocaleTextOptions` | `{}` |
+| `as` | `string` | `'div'` |
 
 ## Priority
 
 1. Explicit component prop text
 2. Nearest `LocaleProvider` scoped locale
-3. Global locale from `setLocaleText` / `updateLocaleText`
+3. Global locale from `setLocaleText` or `updateLocaleText`
+
+## Recipes
+
+- Use LocaleProvider for embedded localized regions, previews, and app sections that temporarily differ from the global locale policy.
+

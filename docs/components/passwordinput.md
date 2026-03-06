@@ -1,9 +1,73 @@
 # PasswordInput
 
-## Purpose
+Capture passwords with optional visibility toggle, strength feedback, and Caps Lock hints.
 
-Capture user text and numeric input with consistent API, validation hooks, and theming behavior.
-Support high-frequency form entry scenarios in SaaS settings, auth, and CRUD flows.
+## Import
+
+```ts
+import { PasswordInput } from '@codemonster-ru/vueforge';
+```
+
+## Examples
+
+Use `PasswordInput` for authentication and credential setup flows where visibility and strength guidance reduce friction.
+
+### Basic
+
+Use the default password field when you want visibility toggle support without extra guidance.
+
+```vue
+<template>
+    <PasswordInput v-model="password" placeholder="Password" />
+</template>
+```
+
+### Strength Meter
+
+Turn on `showStrength` in sign-up and reset-password flows where users need immediate quality feedback.
+
+```vue
+<template>
+    <PasswordInput v-model="newPassword" placeholder="Create a password" show-strength />
+</template>
+```
+
+### Without Toggle
+
+Hide the toggle when product policy or context requires the value to stay masked.
+
+```vue
+<template>
+    <PasswordInput v-model="pin" :show-toggle="false" placeholder="Temporary PIN" />
+</template>
+```
+
+### Sizes
+
+Adjust density with `size` to match the rest of the form.
+
+```vue
+<template>
+    <div style="display: grid; gap: 0.75rem;">
+        <PasswordInput v-model="smallPassword" size="small" placeholder="Small password input" />
+        <PasswordInput v-model="normalPassword" placeholder="Default password input" />
+        <PasswordInput v-model="largePassword" size="large" placeholder="Large password input" />
+    </div>
+</template>
+```
+
+### Disabled And Readonly
+
+Use `disabled` for unavailable credential fields and `readonly` when the value must stay visible to assistive tech but uneditable.
+
+```vue
+<template>
+    <div style="display: grid; gap: 0.75rem;">
+        <PasswordInput v-model="disabledPassword" disabled placeholder="Disabled password input" />
+        <PasswordInput v-model="readonlyPassword" readonly />
+    </div>
+</template>
+```
 
 ## Props
 
@@ -45,17 +109,12 @@ Support high-frequency form entry scenarios in SaaS settings, auth, and CRUD flo
 
 ## Slots
 
-- This component does not expose named slots.
-
-## Examples
-
-```vue
-<PasswordInput v-model="password" show-strength />
-```
+- `prefix`
+- `suffix`
 
 ## Theming
 
-- Override via theme component overrides for each component documented on this page.
+- Override via `theme.overrides.components.passwordInput`.
 
 ## Tokens
 
@@ -75,23 +134,9 @@ Component tokens (override via `theme.overrides.components.passwordInput`):
 
 ## Recipes
 
-- Start with the examples above as baseline usage for this component.
-- Add product-specific variants (loading/error/dense/mobile) in consuming app docs when needed.
-
-## Responsive
-
-Validate control height, helper/error text wrapping, and icon/addon placement across breakpoints.
-Ensure virtual keyboards and touch interaction do not clip labels, hints, or action icons.
-
-## SSR/Hydration
-
-Keep initial value, disabled, and readonly states identical between server and client render.
-Avoid hydration mismatches from client-only formatting or masking initialization.
-
-## Testing
-
-Cover v-model updates, input/change/blur events, and validation edge cases.
-Add accessibility tests for labeling, error semantics, and keyboard interaction contracts.
+- Enable `showStrength` for password creation, but skip it for quick login forms where it only adds noise.
+- Keep `autocomplete` aligned with the actual task: `current-password` for login, `new-password` for reset/create flows.
+- Leave Caps Lock hints enabled unless the product already has a stronger keyboard-state affordance.
 
 ## Accessibility
 

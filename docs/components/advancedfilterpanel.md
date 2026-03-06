@@ -1,44 +1,18 @@
 # AdvancedFilterPanel
 
-## Purpose
+AdvancedFilterPanel combines field-level filters, optional query-builder logic, and reusable presets for admin search screens.
 
-Compose structured field filters with optional nested query rules and reusable presets.
-Provides URL-sync-friendly state serialization for list pages and backoffice search screens.
+## Import
 
-## Props
-
-- `modelValue?: AdvancedFilterPanelState | null` (v-model)
-- `fields?: Array<{ key: string; label: string; type?: 'text' | 'number' | 'boolean' | 'select' | 'date'; placeholder?: string; options?: Array<{ label: string; value: string | number | boolean }>; defaultValue?: unknown }>`
-- `queryBuilderFields?: Array<QueryBuilderField>`
-- `presets?: Array<{ id: string; label: string; state: Partial<AdvancedFilterPanelState> }>`
-- `disabled?: boolean` (default `false`)
-- `showQueryBuilder?: boolean` (default `true`)
-- `ariaLabel?: string` (default `Advanced filter panel`)
-- `presetLabel?: string` (default `Preset`)
-- `noPresetLabel?: string` (default `Custom`)
-- `applyLabel?: string` (default `Apply`)
-- `resetLabel?: string` (default `Reset`)
-
-## Events
-
-- `update:modelValue`
-- `change`
-- `apply`
-- `reset`
-- `presetChange`
-
-## Slots
-
-- This component does not expose named slots.
-
-## Exposed Methods
-
-- `serializeToQueryParams(): string`
-- `deserializeFromQueryParams(queryString: string): boolean`
-- `applyState()`
-- `resetState()`
+```ts
+import AdvancedFilterPanel from '@/package/components/advanced-filter-panel.vue';
+```
 
 ## Examples
+
+### Basic
+
+Use `AdvancedFilterPanel` when a list page needs both simple field filters and structured rule logic.
 
 ```vue
 <AdvancedFilterPanel
@@ -51,27 +25,89 @@ Provides URL-sync-friendly state serialization for list pages and backoffice sea
         { key: 'assignee', label: 'Assignee', type: 'text' },
         { key: 'severity', label: 'Severity', type: 'number' },
     ]"
-    :presets="savedPresets"
     @apply="fetchDataWithFilters"
 />
 ```
 
+### Presets
+
+Use presets for common operational views like "Assigned to me" or "Failed jobs".
+
+```vue
+<AdvancedFilterPanel
+    v-model="filters"
+    :fields="fields"
+    :presets="savedPresets"
+    @preset-change="onPresetChange"
+/>
+```
+
+### Field-Only Mode
+
+Disable the query builder when the page should stay limited to direct field controls.
+
+```vue
+<AdvancedFilterPanel
+    v-model="filters"
+    :fields="fields"
+    :show-query-builder="false"
+/>
+```
+
+## API
+
+### Props
+
+| Name | Type | Default |
+| --- | --- | --- |
+| `modelValue` | `AdvancedFilterPanelState \| null` | `null` |
+| `fields` | `AdvancedFilterField[]` | `[]` |
+| `queryBuilderFields` | `AdvancedFilterPanelQueryBuilderField[]` | `[]` |
+| `presets` | `AdvancedFilterPreset[]` | `[]` |
+| `disabled` | `boolean` | `false` |
+| `showQueryBuilder` | `boolean` | `true` |
+| `ariaLabel` | `string` | `'Advanced filter panel'` |
+| `presetLabel` | `string` | `'Preset'` |
+| `noPresetLabel` | `string` | `'Custom'` |
+| `applyLabel` | `string` | `'Apply'` |
+| `resetLabel` | `string` | `'Reset'` |
+
+### Events
+
+| Name | Payload |
+| --- | --- |
+| `update:modelValue` | `AdvancedFilterPanelState` |
+| `change` | `AdvancedFilterPanelState` |
+| `apply` | `AdvancedFilterPanelState` |
+| `reset` | `AdvancedFilterPanelState` |
+| `presetChange` | `(presetId, state)` |
+
+### Exposed Methods
+
+| Name | Description |
+| --- | --- |
+| `serializeToQueryParams()` | Serializes current state into a query string. |
+| `deserializeFromQueryParams(queryString)` | Applies serialized state and returns success. |
+| `applyState()` | Emits the current state through `apply`. |
+| `resetState()` | Resets to default state and emits updates. |
+
 ## Theming
 
-- Override via theme component overrides for each component documented on this page.
+Override component tokens through `theme.overrides.components.advancedFilterPanel`.
 
 ## Tokens
 
-Component tokens (override via `theme.overrides.components.advancedFilterPanel`):
+- Surface: `gap`, `padding`, `borderColor`, `borderRadius`, `backgroundColor`, `textColor`, `secondaryTextColor`
+- Form layout: `rowGap`, `labelFontSize`
+- Controls: `controlHeight`, `controlBorderColor`, `controlBorderRadius`, `controlBackgroundColor`
+- States: `focusBorderColor`, `focusRing`, `disabledOpacity`
 
-- `gap`, `padding`, `borderColor`, `borderRadius`, `backgroundColor`, `textColor`, `secondaryTextColor`
-- `rowGap`, `labelFontSize`
-- `controlHeight`, `controlBorderColor`, `controlBorderRadius`, `controlBackgroundColor`
-- `focusBorderColor`, `focusRing`
-- `disabledOpacity`
+## Recipes
+
+- Use field filters for common cases and reserve the query builder for advanced narrowing, not as the only filter entry point.
+- Keep preset labels task-oriented so operators can recognize them without opening the underlying rule tree.
 
 ## Accessibility
 
-- Root uses `role="region"` with configurable `ariaLabel`.
-- Built from native inputs/selects/buttons for keyboard compatibility.
-- Keep field labels aligned with backend filter semantics for clear screen-reader narration.
+- The root uses `role="region"` with a configurable `ariaLabel`.
+- Native inputs, selects, and buttons keep keyboard behavior predictable.

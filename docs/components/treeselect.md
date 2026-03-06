@@ -1,46 +1,16 @@
 # TreeSelect
 
-## Purpose
+TreeSelect combines a trigger, optional search input, and embedded `Tree` for hierarchical form selection.
 
-Enable fast option discovery and selection for forms, filters, and table toolbars.
-Cover both small curated lists and async/large datasets with consistent selection semantics.
+## Import
 
-## Props
-
-- `items?: Array<{ key: string | number; label: string; disabled?: boolean; children?: Array<...> }>` (default `[]`)
-- `modelValue?: string | number | Array<string | number>` (v-model)
-- `expandedKeys?: Array<string | number>` (`v-model:expandedKeys`)
-- `multiple?: boolean` (default `false`)
-- `selectable?: boolean` (default `true`)
-- `expandOnClick?: boolean` (default `true`)
-- `placeholder?: string`
-- `searchPlaceholder?: string` (default `Search...`)
-- `disabled?: boolean`
-- `readonly?: boolean`
-- `loading?: boolean` (default `false`)
-- `loadingText?: string` (default `Loading...`)
-- `emptyText?: string` (default `No results`)
-- `filter?: boolean` (default `true`)
-- `clearable?: boolean` (default `false`)
-- `size?: 'small' | 'normal' | 'large'` (default `normal`)
-- `variant?: 'filled' | 'outlined'` (default `filled`)
-
-## Events
-
-- `update:modelValue`
-- `change`
-- `update:expandedKeys`
-- `toggle`
-- `nodeClick`
-- `search`
-- `focus`
-- `blur`
-
-## Slots
-
-- `label` - forwarded Tree node label slot props: `{ node, level, selected, expanded, disabled }`
+```ts
+import TreeSelect from '@/package/components/tree-select.vue';
+```
 
 ## Examples
+
+### Basic
 
 ```vue
 <TreeSelect
@@ -50,106 +20,100 @@ Cover both small curated lists and async/large datasets with consistent selectio
     placeholder="Select docs section"
     clearable
 />
+```
+
+### Multiple Selection
+
+```vue
 <TreeSelect v-model="selectedMany" :items="treeItems" multiple variant="outlined" />
 ```
 
-More recipes: [`Selection Patterns`](selection-patterns.md).
-
-## Recipes
-
-### Searchable multi-select with controlled expansion
+### Searchable
 
 ```vue
-<script setup lang="ts">
-import { ref } from 'vue';
-
-const value = ref<Array<string>>([]);
-const expanded = ref<Array<string>>(['docs']);
-</script>
-
-<template>
-    <TreeSelect
-        v-model="value"
-        v-model:expandedKeys="expanded"
-        :items="treeItems"
-        multiple
-        clearable
-        filter
-        placeholder="Select sections"
-    />
-</template>
+<TreeSelect
+    v-model="value"
+    v-model:expandedKeys="expanded"
+    :items="treeItems"
+    multiple
+    clearable
+    filter
+    placeholder="Select sections"
+/>
 ```
 
-### Async loading + loading/empty states
+### Custom Labels
 
 ```vue
-<script setup lang="ts">
-import { ref } from 'vue';
-
-const loading = ref(true);
-const items = ref<Array<{ key: string; label: string; children?: Array<{ key: string; label: string }> }>>([]);
-
-setTimeout(() => {
-    items.value = [
-        { key: 'docs', label: 'Docs' },
-        { key: 'blog', label: 'Blog' },
-    ];
-    loading.value = false;
-}, 600);
-</script>
-
-<template>
-    <TreeSelect
-        v-model="selectedNode"
-        :items="items"
-        :loading="loading"
-        loading-text="Loading sections..."
-        empty-text="No sections found"
-    />
-</template>
+<TreeSelect :items="treeItems">
+    <template #label="{ node, selected }">
+        <span :class="{ 'is-selected': selected }">{{ node.label }}</span>
+    </template>
+</TreeSelect>
 ```
+
+## API
+
+### Props
+
+| Name | Type | Default |
+| --- | --- | --- |
+| `items` | `TreeItem[]` | `[]` |
+| `modelValue` | `TreeValue \| TreeValue[] \| undefined` | `undefined` |
+| `expandedKeys` | `TreeValue[]` | `[]` |
+| `multiple` | `boolean` | `false` |
+| `selectable` | `boolean` | `true` |
+| `expandOnClick` | `boolean` | `true` |
+| `disabled` | `boolean` | `false` |
+| `readonly` | `boolean` | `false` |
+| `loading` | `boolean` | `false` |
+| `loadingText` | `string \| undefined` | `undefined` |
+| `emptyText` | `string \| undefined` | `undefined` |
+| `placeholder` | `string` | `''` |
+| `searchPlaceholder` | `string \| undefined` | `undefined` |
+| `filter` | `boolean` | `true` |
+| `clearable` | `boolean` | `false` |
+| `variant` | `'filled' \| 'outlined'` | `'filled'` |
+| `size` | `'small' \| 'normal' \| 'large'` | `'normal'` |
+
+### Events
+
+| Name | Payload |
+| --- | --- |
+| `update:modelValue` | selected value payload |
+| `change` | `value, node, event` |
+| `update:expandedKeys` | expanded keys array |
+| `toggle` | `key, expanded, node, event` |
+| `nodeClick` | `node, event` |
+| `search` | query string |
+| `focus` | `FocusEvent` |
+| `blur` | `FocusEvent` |
+
+### Slots
+
+| Name | Description |
+| --- | --- |
+| `label` | Forwarded tree label slot with `{ node, level, selected, expanded, disabled }`. |
 
 ## Theming
 
-- Override via theme component overrides for each component documented on this page.
+Override component tokens through `theme.overrides.components.treeselect`.
 
 ## Tokens
 
-Component tokens (override via `theme.overrides.components.treeselect`):
+- Trigger: `minWidth`, `fontSize`, `controlGap`, `chevronSize`, `padding`, `borderRadius`, `borderColor`, `backgroundColor`, `textColor`, `placeholderColor`, `focusBorderColor`, `hoverBorderColor`, `focusRingShadow`, `disabledOpacity`
+- Panel: `panelBackgroundColor`, `panelBorderColor`, `panelPadding`, `panelMaxHeight`, `panelRadiusOffset`, `panelShadow`
+- Search and states: `searchPadding`, `searchBorderColor`, `searchBorderRadius`, `emptyPadding`, `emptyColor`, `loadingPadding`, `loadingColor`, `clearSize`, `clearRadius`, `clearHoverBackgroundColor`
+- Sizes: `small.*`, `large.*`
 
-- `minWidth`, `fontSize`, `controlGap`, `chevronSize`
-- `padding`, `borderRadius`, `borderColor`
-- `backgroundColor`, `textColor`, `placeholderColor`
-- `focusBorderColor`, `focusRingShadow`, `hoverBorderColor`
-- `disabledOpacity`
-- `panelBackgroundColor`, `panelBorderColor`, `panelPadding`, `panelMaxHeight`, `panelRadiusOffset`, `panelShadow`
-- `searchPadding`, `searchBorderColor`, `searchBorderRadius`
-- `emptyPadding`, `emptyColor`
-- `loadingPadding`, `loadingColor`
-- `clearSize`, `clearRadius`, `clearHoverBackgroundColor`
-- `small.fontSize`, `small.padding`
-- `large.fontSize`, `large.padding`
+## Recipes
 
-## Responsive
-
-Verify popup width, option density, and chip/tag wrapping on mobile and tablet breakpoints.
-Ensure touch hit targets and scroll behavior remain stable in long option lists.
-
-## SSR/Hydration
-
-Render initial value and selected option state deterministically in SSR output.
-Defer async option fetching and client-only positioning logic until after hydration.
-
-## Testing
-
-Cover keyboard navigation, selection, clear/reset flows, and disabled/readonly states.
-Add tests for filtering/search behavior, async loading states, and ARIA combobox/listbox contracts.
+- Use TreeSelect for hierarchical form fields, faceted filters, and toolbar pickers that need deeper navigation than a flat select can offer.
+- Prefer `Tree` when the hierarchy itself is the main content rather than a popup selection surface.
 
 ## Accessibility
 
-- Trigger opens the panel with keyboard (`ArrowDown`/`ArrowUp`) and closes with `Escape`.
-- When opened from keyboard, focus moves into the tree (or search input when filtering is enabled).
-- In filter mode, `ArrowDown` from the search input moves focus to the first enabled tree node.
-- Tree hierarchy navigation is supported via tree keyboard bindings (`ArrowRight` expand, `ArrowLeft` collapse/parent, `ArrowUp`/`ArrowDown` move, `Enter`/`Space` select).
-- Trigger/label/clear-control alignment relies on logical CSS properties, so RTL containers are supported.
-- In `readonly` mode, panel open/search interactions and selection mutations are blocked.
+- Trigger supports keyboard open and close, while the embedded tree keeps tree navigation bindings.
+- In filter mode, keyboard flow moves from the search field into the first enabled tree item.
+- `readonly` preserves the displayed value while blocking panel interaction and selection changes.
+

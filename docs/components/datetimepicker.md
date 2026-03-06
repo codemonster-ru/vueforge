@@ -1,16 +1,80 @@
 # DateTimePicker
 
-## Purpose
+Capture a combined date and time value with a shared calendar and time-option surface.
 
-Provide date/time input primitives for scheduling, reporting, and range-based filtering.
-Support localized parsing/display while keeping predictable controlled value contracts.
+## Import
+
+```ts
+import { DateTimePicker } from '@codemonster-ru/vueforge';
+```
+
+## Examples
+
+Use `DateTimePicker` when a timestamp matters and the user should choose date and time in one flow.
+
+### Basic
+
+Use the default picker for scheduling and event timestamps.
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const meetingAt = ref('2026-03-18T14:30');
+</script>
+
+<template>
+    <DateTimePicker v-model="meetingAt" placeholder="Pick date and time" />
+</template>
+```
+
+### With Bounds
+
+Use `min` and `max` when the timestamp must stay inside an operational window.
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const releaseAt = ref();
+</script>
+
+<template>
+    <DateTimePicker
+        v-model="releaseAt"
+        min="2026-03-01T09:00"
+        max="2026-03-31T18:00"
+        :minute-step="15"
+    />
+</template>
+```
+
+### 12-Hour Labels
+
+Use `format="12h"` to show AM or PM labels while still emitting canonical 24-hour values.
+
+```vue
+<template>
+    <DateTimePicker model-value="2026-07-10T17:45" format="12h" />
+</template>
+```
+
+### Outlined Variant
+
+Use `outlined` on filled panels, filter bars, and embedded forms.
+
+```vue
+<template>
+    <DateTimePicker model-value="2026-08-12T10:00" variant="outlined" />
+</template>
+```
 
 ## Props
 
 - `modelValue?: string` (v-model, ISO datetime `YYYY-MM-DDTHH:mm`)
 - `placeholder?: string`
-- `disabled?: boolean`
-- `readonly?: boolean`
+- `disabled?: boolean` (default `false`)
+- `readonly?: boolean` (default `false`)
 - `min?: string` (ISO datetime `YYYY-MM-DDTHH:mm`)
 - `max?: string` (ISO datetime `YYYY-MM-DDTHH:mm`)
 - `locale?: string` (default from global date/time locale config, fallback `en-US`)
@@ -34,23 +98,9 @@ Support localized parsing/display while keeping predictable controlled value con
 
 - This component does not expose named slots.
 
-## Examples
-
-```vue
-<DateTimePicker v-model="meetingAt" placeholder="Pick date and time" />
-<DateTimePicker
-    v-model="meetingAtAlt"
-    variant="outlined"
-    min="2026-01-10T09:00"
-    max="2026-12-31T18:00"
-    :minute-step="15"
-    format="12h"
-/>
-```
-
 ## Theming
 
-- Override via theme component overrides for each component documented on this page.
+- Override via `theme.overrides.components.datetimepicker`.
 
 ## Tokens
 
@@ -75,28 +125,12 @@ Component tokens (override via `theme.overrides.components.datetimepicker`):
 
 ## Recipes
 
-- Start with the examples above as baseline usage for this component.
-- Add product-specific variants (loading/error/dense/mobile) in consuming app docs when needed.
-
-## Responsive
-
-Validate panel positioning, grid readability, and action controls on small screens.
-Ensure touch interactions for day/time selection remain accurate with adequate target size.
-
-## SSR/Hydration
-
-Render initial date/time value and panel-closed state consistently in SSR output.
-Run locale/timezone-sensitive formatting in a hydration-safe way to prevent mismatch.
-
-## Testing
-
-Cover parsing/formatting, keyboard navigation, min/max constraints, and range/time edge cases.
-Add tests for locale variants and ARIA semantics for calendar and listbox-like panels.
+- Prefer this component when the date and time constraints are coupled.
+- Keep the emitted value in ISO datetime format and localize only the visible label.
+- Use `minuteStep` to match how precise the user is expected to be.
 
 ## Accessibility
 
-- The trigger exposes `aria-label`, `aria-expanded`, `aria-controls`, `aria-readonly` (when `readonly=true`) and `aria-haspopup="dialog"`.
-- The popup dialog exposes `panelAriaLabel`, and the time listbox exposes `timeListAriaLabel`.
-- Time options support keyboard navigation (`ArrowUp/ArrowDown`, `Home/End`, `Enter`/`Space`, `Escape`).
-- Ensure visible focus state and sufficient color contrast in usage contexts.
-- Locale and week-start defaults can be configured globally: [`Date/Time Locale Setup`](../guides/date-time-locale-setup.md).
+- The trigger exposes dialog semantics and the time column exposes a labeled listbox.
+- Time options support keyboard navigation with `ArrowUp`, `ArrowDown`, `Home`, `End`, `Enter`, `Space`, and `Escape`.
+- Locale and week-start defaults can be configured globally in [date-time-locale-setup.md](/Users/kolesnikov_k_a/Projects/Codemonster/JS/vueforge/docs/guides/date-time-locale-setup.md).

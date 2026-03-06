@@ -1,9 +1,87 @@
 # Breadcrumbs
 
-## Purpose
+Expose hierarchical navigation context for pages nested inside multi-level product flows.
 
-- Expose hierarchical navigation context for deep SaaS routes.
-- Improve orientation and quick back-navigation inside multi-level workflows.
+## Import
+
+```ts
+import { Breadcrumbs } from '@codemonster-ru/vueforge';
+```
+
+## Examples
+
+Use `Breadcrumbs` for route hierarchy, not for arbitrary metadata. The last item should represent the current page.
+
+### Basic
+
+Use a simple breadcrumb trail for standard application hierarchy.
+
+```vue
+<template>
+    <Breadcrumbs
+        :items="[
+            { label: 'Home', to: '/' },
+            { label: 'Settings', to: '/settings' },
+            { label: 'Profile', active: true }
+        ]"
+    />
+</template>
+```
+
+### Implicit Current Item
+
+When no explicit `active` item is set, the last item is treated as the current page automatically.
+
+```vue
+<template>
+    <Breadcrumbs
+        :items="[
+            { label: 'Projects', to: '/projects' },
+            { label: 'Project Apollo', to: '/projects/apollo' },
+            { label: 'Members' }
+        ]"
+    />
+</template>
+```
+
+### Custom Separator
+
+Use the `separator` slot when the product needs icon-style separators instead of text.
+
+```vue
+<template>
+    <Breadcrumbs
+        :items="[
+            { label: 'Home', to: '/' },
+            { label: 'Reports', to: '/reports' },
+            { label: 'Revenue', active: true }
+        ]"
+    >
+        <template #separator>
+            <span>&rsaquo;</span>
+        </template>
+    </Breadcrumbs>
+</template>
+```
+
+### Custom Item Slot
+
+Use the `item` slot when breadcrumb items need richer markup while keeping current-page logic intact.
+
+```vue
+<template>
+    <Breadcrumbs
+        :items="[
+            { label: 'Workspace', to: '/workspace' },
+            { label: 'Security', active: true }
+        ]"
+    >
+        <template #item="{ item, active }">
+            <span :style="{ fontWeight: active ? '600' : '400' }">{{ item.label }}</span>
+        </template>
+    </Breadcrumbs>
+</template>
+```
 
 ## Props
 
@@ -20,18 +98,6 @@
 - `item` - slot props: `{ item, index, isLast, active }`
 - `separator` (optional) - slot props: `{ separator }`
 
-## Examples
-
-```vue
-<Breadcrumbs
-    :items="[
-        { label: 'Home', to: '/' },
-        { label: 'Settings', to: '/settings' },
-        { label: 'Profile', active: true },
-    ]"
-/>
-```
-
 ## Theming
 
 - Override via `theme.overrides.components.breadcrumbs`.
@@ -45,24 +111,9 @@ Component tokens (override via `theme.overrides.components.breadcrumbs`):
 
 ## Recipes
 
-- Application hierarchy: `Home / Section / Page` with last item active.
-- Product workspace: include entity type level (`Projects / Project A / Settings`).
-- Custom separator: provide `#separator` slot for icon-based separators.
-
-## Responsive
-
-- Validate truncation/collapse strategy for long breadcrumb chains on mobile.
-- Ensure separators and current-page item remain legible at small widths.
-
-## SSR/Hydration
-
-- Breadcrumb item order and current-page semantics must be deterministic in SSR.
-- Client should only enhance interaction, not rewrite structure at hydration.
-
-## Testing
-
-- Cover item rendering, current/disabled states, separators, and custom slot content.
-- Add tests for overflow behavior with long paths.
+- Keep breadcrumb depth short; long trails usually signal an information architecture problem.
+- Use explicit `active` only when the current item is not the last entry in the array.
+- Prefer route labels users already recognize from navigation, not internal entity IDs or technical names.
 
 ## Accessibility
 

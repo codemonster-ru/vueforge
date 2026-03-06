@@ -1,81 +1,145 @@
 # Panel
 
-## Purpose
+Panel groups related content with built-in heading structure, optional actions, and optional collapse behavior.
 
-Group related content with optional heading actions and collapsible body.
+## Import
 
-## Props
+```ts
+import Panel from '@/package/components/panel.vue';
+```
 
-- `modelValue?: boolean` (default `true`) - expanded state (`v-model`)
-- `title?: string`
-- `subtitle?: string`
-- `size?: 'small' | 'normal' | 'large'` (default `normal`)
-- `variant?: 'filled' | 'outlined'` (default `filled`)
-- `collapsible?: boolean` (default `false`)
-- `disabled?: boolean` (default `false`)
-- `actionsAriaLabel?: string` (default `Panel actions`)
-- `expandLabel?: string` (default `Expand`)
-- `collapseLabel?: string` (default `Collapse`)
+## Examples
 
-## Events
+### Basic
 
-- `update:modelValue`
-- `toggle` (payload: `boolean`, `event`)
-
-## Slots
-
-- `default`
-- `header`
-- `title`
-- `subtitle`
-- `actions`
-- `footer`
-
-## Example
+Use `title` and `subtitle` for a standard content block with a built-in header.
 
 ```vue
-<Panel v-model="open" title="Project Summary" subtitle="Sprint 12" collapsible>
+<Panel title="Project summary" subtitle="Sprint 12">
+    <p>Delivery status and current risks for the active sprint.</p>
+</Panel>
+```
+
+### Header Actions
+
+Use the `actions` slot for local controls that belong to the panel itself.
+
+```vue
+<Panel title="Project summary" subtitle="Sprint 12">
     <template #actions>
-        <Button size="small">
+        <Button size="sm">
             Edit
         </Button>
-        <Button size="small" variant="outlined">
+        <Button size="sm" variant="outlined">
             Share
         </Button>
     </template>
 
-    <p>
-        Delivery status and risks for current sprint.
-    </p>
-
-    <template #footer>
-        <small>
-            Last updated 5 min ago
-        </small>
-    </template>
+    <p>Delivery status and risks for current sprint.</p>
 </Panel>
 ```
 
+### Collapsible
+
+Enable `collapsible` when the panel is useful as progressive disclosure.
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const open = ref(true);
+</script>
+
+<template>
+    <Panel v-model="open" title="Advanced filters" collapsible>
+        <FilterPanel />
+    </Panel>
+</template>
+```
+
+### Sizes
+
+Use `small` and `large` when the panel needs to align with denser or more editorial layouts.
+
+```vue
+<div class="panel-grid">
+    <Panel size="small" title="Compact">Dense summary</Panel>
+    <Panel title="Default">Standard block</Panel>
+    <Panel size="large" title="Large">Editorial section</Panel>
+</div>
+```
+
+### Custom Header Content
+
+Override `title`, `subtitle`, or the whole `header` when the heading needs richer markup.
+
+```vue
+<Panel>
+    <template #header>
+        <div>
+            <h3>Migration status</h3>
+            <StatusBadge value="On track" />
+        </div>
+    </template>
+
+    <p>Three of five environments have been migrated.</p>
+</Panel>
+```
+
+## API
+
+### Props
+
+| Name | Type | Default |
+| --- | --- | --- |
+| `modelValue` | `boolean` | `true` |
+| `title` | `string` | `''` |
+| `subtitle` | `string` | `''` |
+| `size` | `'small' \| 'normal' \| 'large'` | `'normal'` |
+| `variant` | `'filled' \| 'outlined'` | `'filled'` |
+| `collapsible` | `boolean` | `false` |
+| `disabled` | `boolean` | `false` |
+| `actionsAriaLabel` | `string` | `'Panel actions'` |
+| `expandLabel` | `string` | `'Expand'` |
+| `collapseLabel` | `string` | `'Collapse'` |
+
+### Events
+
+| Name | Payload |
+| --- | --- |
+| `update:modelValue` | `boolean` |
+| `toggle` | `expanded: boolean, event: Event` |
+
+### Slots
+
+| Name | Description |
+| --- | --- |
+| `default` | Main panel body. |
+| `header` | Replaces the whole header area. |
+| `title` | Replaces the title text inside the default header. |
+| `subtitle` | Replaces the subtitle text inside the default header. |
+| `actions` | Controls rendered beside the heading. |
+| `footer` | Footer rendered only while expanded. |
+
 ## Theming
 
-- Override via `theme.overrides.components.panel`.
+Override component tokens through `theme.overrides.components.panel`.
 
 ## Tokens
 
-- `borderColor`, `borderRadius`, `backgroundColor`, `textColor`
-- `headerPadding`, `bodyPadding`, `footerPadding`, `footerBorderColor`, `headerGap`
-- `titleFontSize`, `titleFontWeight`, `subtitleFontSize`, `subtitleColor`
-- `actionsGap`
-- `toggleSize`, `toggleRadius`, `toggleBorderColor`, `toggleBackgroundColor`, `toggleTextColor`, `toggleHoverBackgroundColor`
-- `disabledOpacity`
-- `small.padding`, `small.titleFontSize`
-- `large.padding`, `large.titleFontSize`
+- Surface: `borderColor`, `borderRadius`, `backgroundColor`, `textColor`
+- Layout: `headerPadding`, `bodyPadding`, `footerPadding`, `footerBorderColor`, `headerGap`
+- Typography: `titleFontSize`, `titleFontWeight`, `subtitleFontSize`, `subtitleColor`
+- Actions and toggle: `actionsGap`, `toggleSize`, `toggleRadius`, `toggleBorderColor`, `toggleBackgroundColor`, `toggleTextColor`, `toggleHoverBackgroundColor`
+- States and sizes: `disabledOpacity`, `small.padding`, `small.titleFontSize`, `large.padding`, `large.titleFontSize`
+
+## Recipes
+
+- Use Panel when the container needs a strong heading, local actions, or collapsible sections.
+- Prefer `Sheet` for purely visual grouping without built-in title and disclosure behavior.
 
 ## Accessibility
 
-- Action area uses `role="group"` for grouped controls.
-- Collapse button exposes `aria-expanded` and `aria-controls`.
+- The actions area uses `role="group"` with `actionsAriaLabel` for grouped controls.
+- The collapse button exposes `aria-expanded` and `aria-controls` for the body region.
 
-## Testing
-
-- Cover toggle emit/state behavior and actions group rendering.

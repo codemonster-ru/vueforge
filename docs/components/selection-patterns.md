@@ -1,10 +1,16 @@
 # Selection Patterns
 
-Recipes for selection-family components (`Select`, `Autocomplete`, `Combobox`, `MultiSelect`, `TagInput`, `TreeSelect`).
+This page collects common implementation patterns for the selection family: `Select`, `Autocomplete`, `Combobox`, `MultiSelect`, `TagInput`, and `TreeSelect`.
 
-## 1) Simple Options
+## Scope
 
-Use for short static lists.
+Use these recipes when choosing between static options, remote search, large datasets, and async loading states.
+
+## Examples
+
+### Simple Options
+
+Use static options for short, stable lists.
 
 ```vue
 <script setup lang="ts">
@@ -23,9 +29,9 @@ const roles = [
 </template>
 ```
 
-## 2) Large List
+### Large Lists
 
-Use remote filtering and capped result windows instead of rendering very large arrays at once.
+For very large datasets, prefer remote filtering and capped result windows instead of rendering everything at once.
 
 ```vue
 <script setup lang="ts">
@@ -78,9 +84,9 @@ const onLoadMore = async () => {
 </template>
 ```
 
-## 3) Async Options
+### Async Options
 
-Use explicit loading/error states with query-driven fetching.
+Use explicit loading and error states for query-driven remote selection.
 
 ```vue
 <script setup lang="ts">
@@ -117,23 +123,21 @@ const onSearch = async (term: string) => {
         placeholder="Find user"
         @search="onSearch"
     />
-    <p v-if="error">
-        {{ error }}
-    </p>
+    <p v-if="error">{{ error }}</p>
 </template>
 ```
 
+## Guidance
+
+- Use static options for small stable lists, remote search for medium or large dynamic datasets, and virtualization only when rendering cost becomes real.
+- Prefer server-driven filtering once option counts move beyond a few hundred rows.
+- Use `clearable` only when reset behavior is expected and safe in the surrounding form flow.
+
 ## Theming
 
-- Pattern guide only; use theme overrides of concrete components (`select`, `autocomplete`, `combobox`, etc.).
+This is a pattern page. Apply theme overrides on the concrete components such as `select`, `autocomplete`, `combobox`, `multiselect`, or `treeselect`.
 
 ## Accessibility
 
-- Ensure each selection control has an accessible label and clear empty/loading text.
-- Preserve keyboard operability for open, navigate, select, clear, and close flows.
-
-## Notes
-
-- Keep `readonly` and `disabled` semantics consistent across the selection family.
-- Prefer server-driven filtering for lists larger than a few hundred options.
-- Use `clearable` only when reset behavior is expected in the form flow.
+- Every selection control still needs an explicit label and clear empty and loading text.
+- Preserve keyboard support for open, navigate, select, clear, and close flows across all recipes.

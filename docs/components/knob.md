@@ -1,71 +1,104 @@
 # Knob
 
-## Purpose
+Knob is a circular range control for compact adjustments and value display.
 
-Provide a radial input control for compact value adjustment (audio, brightness, thresholds, and circular dashboards).
+## Import
 
-## Props
-
-- `modelValue?: number` (v-model)
-- `min?: number` (default `0`)
-- `max?: number` (default `100`)
-- `step?: number` (default `1`)
-- `size?: number` (default `120`)
-- `strokeWidth?: number` (default `10`)
-- `showValue?: boolean` (default `false`)
-- `disabled?: boolean` (default `false`)
-- `readonly?: boolean` (default `false`)
-- `ariaLabel?: string` (default `Knob`)
-
-## Events
-
-- `update:modelValue`
-- `input`
-- `change`
-- `focus`
-- `blur`
-
-## Slots
-
-- This component does not expose named slots.
+```ts
+import Knob from '@/package/components/knob.vue';
+```
 
 ## Examples
 
+### Basic
+
+Use `Knob` when radial input communicates value better than a linear slider.
+
 ```vue
-<Knob v-model="volume" :min="0" :max="100" :step="1" show-value aria-label="Volume" />
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const volume = ref(42);
+</script>
+
+<template>
+    <Knob v-model="volume" />
+</template>
 ```
+
+### Range And Step
+
+Adjust range and step for domain-specific inputs like gain, progress, or scoring controls.
+
+```vue
+<Knob
+    v-model="volume"
+    :min="0"
+    :max="100"
+    :step="5"
+/>
+```
+
+### Readonly Display
+
+Use `readonly` for a dashboard-style radial metric that should not accept input.
+
+```vue
+<Knob :model-value="72" readonly />
+```
+
+### Hidden Value
+
+Disable the center value when nearby labels already explain the metric.
+
+```vue
+<Knob v-model="volume" :show-value="false" />
+```
+
+## API
+
+### Props
+
+| Name | Type | Default |
+| --- | --- | --- |
+| `modelValue` | `number` | `0` |
+| `min` | `number` | `0` |
+| `max` | `number` | `100` |
+| `step` | `number` | `1` |
+| `size` | `number` | `120` |
+| `strokeWidth` | `number` | `12` |
+| `showValue` | `boolean` | `true` |
+| `disabled` | `boolean` | `false` |
+| `readonly` | `boolean` | `false` |
+| `ariaLabel` | `string` | `'Knob'` |
+
+### Events
+
+| Name | Payload |
+| --- | --- |
+| `update:modelValue` | `number` |
+| `input` | `number` |
+| `change` | `number` |
+| `focus` | `FocusEvent` |
+| `blur` | `FocusEvent` |
 
 ## Theming
 
-- Override via `theme.overrides.components.knob`.
+Override component tokens through `theme.overrides.components.knob`.
 
 ## Tokens
 
-- `trackColor`, `fillColor`
-- `thumbColor`, `thumbBorderColor`
-- `valueFontSize`, `valueColor`, `textColor`
-- `focusRingShadow`, `disabledOpacity`
+- Track and fill: `trackColor`, `valueColor`, `strokeLinecap`
+- Thumb and focus: `thumbColor`, `thumbSize`, `focusRingColor`, `focusRingShadow`
+- Value text: `valueFontSize`, `valueFontWeight`, `valueColor`
+- States: `disabledOpacity`
 
 ## Recipes
 
-- Audio/media control dial.
-- Compact KPI threshold controls in settings panels.
+- Prefer `Knob` for compact, tactile controls where circular motion fits the product metaphor.
+- Use `Slider` instead when precise comparison across values matters more than visual character.
 
 ## Accessibility
 
-- Exposes slider semantics (`role="slider"`) with `aria-valuemin/max/now`.
-- Keyboard support: `Arrow`, `Home`, `End`, `PageUp`, `PageDown`.
-
-## Responsive
-
-- Prefer larger `size` values for touch-heavy views.
-- Keep value text visible (`showValue`) when precise value confirmation is required.
-
-## SSR/Hydration
-
-- Deterministic initial render from numeric props.
-- Pointer interactions are client-only and hydration-safe.
-
-## Testing
-
-- Cover keyboard value changes, pointer dragging, disabled/readonly guards, and ARIA value semantics.
+- `Knob` exposes slider semantics and supports keyboard interaction, so keep `aria-label` specific to the adjusted value.
+- Avoid using it as the only input for critical numeric entry when exact text input is required.

@@ -17,6 +17,11 @@
     - Updated `ScrollTop` default icon from `↑` to `arrowUp` and synced component docs.
 - Testing/runtime:
     - Updated Vitest config to inline `@codemonster-ru/vueiconify` deps so CSS imports from the icon package resolve in test runtime.
+- Documentation:
+    - Reworked the entire `docs/components` set into a unified documentation structure: short intro, early `Import` or `Scope`, compact scenario-based examples, then API/theming/accessibility guidance.
+    - Normalized component pages, reference pages, and index/template pages so `docs/components` no longer contains legacy mixed-format markdown sections.
+    - Clarified alias and wrapper relationships in docs where relevant, including `Sidebar` vs `Drawer`, `OverlayPanel` vs `Popover`, chart wrappers vs canonical `Chart`, and service/host pages such as `DialogService` and `DynamicDialog`.
+    - Fixed docs preview runtime warnings by switching example template compilation to identifier-prefixed render output in `DocsExamplePreview`, and expanded docs regression coverage to assert those warnings stay absent.
 - Migration notes:
     - Install `@codemonster-ru/vueiconify@^1.0.1` in consuming apps.
     - If you reference the icon package directly, switch imports from `CmIcon` to `VueIconify`.

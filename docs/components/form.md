@@ -1,19 +1,89 @@
 # Form
 
-## Purpose
+Coordinate form values, validation, touched state, and async submission in one controlled workflow container.
 
-Compose complete form workflows with predictable field state, validation, and submission behavior.
-Standardize selection controls and grouped input patterns used across product settings and onboarding.
+## Import
+
+```ts
+import { Form } from '@codemonster-ru/vueforge';
+```
+
+## Examples
+
+Use `Form` when the page needs centralized validation and submission orchestration rather than ad hoc field handlers.
+
+### Basic
+
+Use the default slot helpers to wire controls to form state.
+
+```vue
+<template>
+    <Form v-model="values" :validate="validateForm" validate-on="blur" @submit="send">
+        <template #default="{ values, errors, touched, setFieldValue, setFieldTouched }">
+            <FormField label="Email" :error="touched.email ? errors.email : ''">
+                <template #default="{ id, describedBy, ariaInvalid, ariaRequired }">
+                    <Input
+                        :id="id"
+                        :model-value="String(values.email ?? '')"
+                        :aria-describedby="describedBy"
+                        :aria-invalid="ariaInvalid"
+                        :aria-required="ariaRequired"
+                        @update:model-value="value => setFieldValue('email', value)"
+                        @blur="() => setFieldTouched('email', true)"
+                    />
+                </template>
+            </FormField>
+            <Button type="submit" label="Send" />
+        </template>
+    </Form>
+</template>
+```
+
+### Async Submit
+
+Use `submit` and `mapSubmitError` when saving is asynchronous and server errors need to map back into form state.
+
+```vue
+<template>
+    <Form
+        v-model="values"
+        :validate="validateForm"
+        :submit="submitForm"
+        :map-submit-error="mapSubmitError"
+        @submit-success="onSubmitSuccess"
+    >
+        <template #default="{ values, errors, isSubmitting, setFieldValue }">
+            <Input :model-value="String(values.email ?? '')" @update:model-value="v => setFieldValue('email', v)" />
+            <p>{{ errors._form }}</p>
+            <Button type="submit" :loading="isSubmitting" label="Save" />
+        </template>
+    </Form>
+</template>
+```
+
+### Reset To Initial Values
+
+Use `initialValues` when the form should be able to restore a known baseline.
+
+```vue
+<template>
+    <Form v-model="values" :initial-values="initialValues">
+        <template #default="{ reset }">
+            <Button type="button" label="Reset" @click="reset()" />
+        </template>
+    </Form>
+</template>
+```
 
 ## Props
 
-- `modelValue?: Record<string, unknown>` (v-model)
+- `modelValue?: Record<string, unknown>`
 - `initialValues?: Record<string, unknown>`
 - `validate?: (values) => Record<string, string> | string | boolean | null | Promise<...>`
 - `submit?: (values) => unknown | Promise<unknown>`
 - `mapSubmitError?: (error, values) => Record<string, string> | string | boolean | null`
 - `validateOn?: 'submit' | 'input' | 'change' | 'blur' | Array<'submit' | 'input' | 'change' | 'blur'>` (default `submit`)
-- `disabled?: boolean`
+- `disabled?: boolean` (default `false`)
 - `novalidate?: boolean` (default `true`)
 - `id?: string`
 - `ariaLabel?: string`
@@ -33,132 +103,7 @@ Standardize selection controls and grouped input patterns used across product se
 
 ## Slots
 
-- `default` - form helpers:
-  `{ values, errors, touched, isValid, isDirty, isSubmitting, setFieldValue, setFieldTouched, setFieldError, validate, submit, reset }`
-
-## Examples
-
-```vue
-<Form v-model="values" :validate="validateForm" validate-on="blur" @submit="send">
-    <template #default="{ values, errors, touched, setFieldValue, setFieldTouched }">
-        <FormField label="Email" :error="touched.email ? errors.email : ''">
-            <template #default>
-                <Input
-                    :model-value="String(values.email ?? '')"
-                    @update:model-value="value => setFieldValue('email', value)"
-                    @blur="() => setFieldTouched('email', true)"
-                />
-            </template>
-        </FormField>
-        <Button type="submit" label="Send" />
-    </template>
-</Form>
-```
-
-## Recipes
-
-### Async submit pattern
-
-```vue
-<Form
-    v-model="values"
-    :validate="validateForm"
-    :submit="submitForm"
-    :map-submit-error="mapSubmitError"
-    validate-on="submit"
-    @submit-success="onSubmitSuccess"
->
-    <template #default="{ values, errors, isSubmitting, setFieldValue }">
-        <Input :model-value="String(values.email ?? '')" @update:model-value="v => setFieldValue('email', v)" />
-        <p>
-            {{ errors._form }}
-        </p>
-        <Button type="submit" :loading="isSubmitting" label="Save" />
-    </template>
-</Form>
-```
-
-### API errors handling
-
-```ts
-const submitForm = async (values: Record<string, unknown>) => {
-    await api.save(values);
-};
-
-const mapSubmitError = (error: unknown) => {
-    if (isApiError(error) && error.fieldErrors) {
-        return error.fieldErrors; // { email: 'Already used' }
-    }
-
-    return 'Unable to save form';
-};
-```
-
-### Reset flow
-
-```vue
-<Form v-model="values" :initial-values="initialValues" @reset="onReset">
-    <template #default="{ reset }">
-        <Button type="button" label="Reset" @click="reset()" />
-    </template>
-</Form>
-```
-
-### Zod adapter example
-
-```ts
-import { z } from 'zod';
-
-const schema = z.object({
-    email: z.string().email(),
-    password: z.string().min(8),
-});
-
-const validateWithZod = (values: Record<string, unknown>) => {
-    const result = schema.safeParse(values);
-
-    if (result.success) {
-        return {};
-    }
-
-    return result.error.issues.reduce<Record<string, string>>((acc, issue) => {
-        const key = String(issue.path[0] ?? '_form');
-        acc[key] = issue.message;
-
-        return acc;
-    }, {});
-};
-```
-
-### Yup adapter example
-
-```ts
-import * as yup from 'yup';
-
-const schema = yup.object({
-    email: yup.string().email().required(),
-    password: yup.string().min(8).required(),
-});
-
-const validateWithYup = async (values: Record<string, unknown>) => {
-    try {
-        await schema.validate(values, { abortEarly: false });
-
-        return {};
-    } catch (error) {
-        if (!(error instanceof yup.ValidationError)) {
-            return 'Validation failed';
-        }
-
-        return error.inner.reduce<Record<string, string>>((acc, issue) => {
-            const key = issue.path ?? '_form';
-            acc[key] = issue.message;
-
-            return acc;
-        }, {});
-    }
-};
-```
+- `default` with `{ values, errors, touched, isValid, isDirty, isSubmitting, setFieldValue, setFieldTouched, setFieldError, validate, submit, reset }`
 
 ## Theming
 
@@ -170,23 +115,14 @@ Component tokens (override via `theme.overrides.components.form`):
 
 - `gap`, `textColor`, `disabledOpacity`
 
-## Responsive
+## Recipes
 
-Verify label/control alignment, helper text, and error presentation on narrow layouts.
-Ensure grouped controls wrap cleanly and retain usable spacing for touch input.
-
-## SSR/Hydration
-
-Preserve initial form values, touched/error state defaults, and disabled/read-only semantics in SSR markup.
-Hydrate without mutating field structure before first interaction.
-
-## Testing
-
-Cover submission lifecycle (valid/invalid/async), reset flows, and field-level state propagation.
-Add tests for keyboard toggling, group navigation, and ARIA semantics for selection controls.
+- Use `Form` when field values, validation, and submit lifecycle belong to one coherent unit.
+- Keep validators side-effect free; use `submit` for I/O and `validate` for state checks.
+- Pair it with `FormField` so labels, hints, and errors stay consistently wired.
 
 ## Accessibility
 
-- Use `ariaLabel` or `ariaLabelledby` on form container when needed.
-- Pair controls with `FormField` to ensure label/hint/error relationships.
-- Validation errors should be shown with clear, textual messages.
+- Provide `ariaLabel` or `ariaLabelledby` when the form needs explicit naming.
+- Validation errors should remain textual and actionable.
+- Use `FormField` slot props to wire control labelling and descriptions correctly.

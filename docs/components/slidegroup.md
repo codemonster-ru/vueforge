@@ -1,52 +1,101 @@
 # SlideGroup
 
-## Purpose
+SlideGroup provides a horizontally scrollable selection group for filters, tabs, and chip-like navigation.
 
-Scrollable horizontal group for chip/tab/button navigation patterns on constrained widths.
+## Import
 
-## Props
+```ts
+import SlideGroup from '@/package/components/slide-group.vue';
+```
 
-- `modelValue?: string | number | null`
-- `items?: Array<SlideGroupItem>`
-- `disabled?: boolean` (default `false`)
-- `showControls?: boolean` (default `true`)
-- `scrollStep?: number` (default `180`)
-- `snap?: boolean` (default `true`)
-- `ariaLabel?: string` (default `Slide group`)
-- `prevLabel?: string` (default `Scroll left`)
-- `nextLabel?: string` (default `Scroll right`)
+## Examples
 
-## Events
+### Basic
 
-- `update:modelValue`
-- `change`
-
-## Slots
-
-- `item` (scoped: `{ item, index, active }`)
-- `prev`
-- `next`
-
-## Example
+Use `SlideGroup` when navigation items should stay horizontally scrollable on narrow screens.
 
 ```vue
 <SlideGroup v-model="filter" :items="filters" />
 ```
 
+### Custom Item Content
+
+Use the `item` slot when each choice needs badges, icons, or richer layout.
+
+```vue
+<SlideGroup v-model="filter" :items="filters">
+    <template #item="{ item, active }">
+        <span>{{ item.label }} {{ active ? '(active)' : '' }}</span>
+    </template>
+</SlideGroup>
+```
+
+### Hidden Controls
+
+Disable visible scroll controls when the surface already has enough horizontal affordance.
+
+```vue
+<SlideGroup v-model="filter" :items="filters" :show-controls="false" />
+```
+
+## API
+
+### Types
+
+```ts
+interface SlideGroupItem {
+    key?: string | number;
+    label: string;
+    value: string | number;
+    disabled?: boolean;
+}
+```
+
+### Props
+
+| Name | Type | Default |
+| --- | --- | --- |
+| `modelValue` | `string \| number \| null` | `null` |
+| `items` | `SlideGroupItem[]` | `[]` |
+| `disabled` | `boolean` | `false` |
+| `showControls` | `boolean` | `true` |
+| `scrollStep` | `number` | `180` |
+| `snap` | `boolean` | `true` |
+| `ariaLabel` | `string` | `'Slide group'` |
+| `prevLabel` | `string` | `'Scroll left'` |
+| `nextLabel` | `string` | `'Scroll right'` |
+
+### Events
+
+| Name | Payload |
+| --- | --- |
+| `update:modelValue` | `string \| number` |
+| `change` | `(value, item, index, sourceEvent)` |
+
+### Slots
+
+| Name | Description |
+| --- | --- |
+| `item` | Custom item rendering with `{ item, index, active }`. |
+| `prev` | Replaces the previous control content. |
+| `next` | Replaces the next control content. |
+
+## Theming
+
+Override component tokens through `theme.overrides.components.slideGroup`.
+
 ## Tokens
 
-Component tokens (override via `theme.overrides.components.slideGroup`):
+- Layout and controls: `gap`, `controlsGap`, `controlSize`, `controlRadius`, `controlBorderColor`, `controlBackgroundColor`, `controlTextColor`, `controlHoverBackgroundColor`
+- Items: `itemPadding`, `itemBorderRadius`, `itemBorderColor`, `itemBackgroundColor`, `itemTextColor`, `itemHoverBackgroundColor`, `itemActiveBackgroundColor`, `itemActiveTextColor`, `itemActiveBorderColor`
+- States: `disabledOpacity`
 
-- `gap`, `controlsGap`
-- `controlSize`, `controlRadius`
-- `controlBorderColor`, `controlBackgroundColor`, `controlTextColor`, `controlHoverBackgroundColor`
-- `itemPadding`, `itemBorderRadius`
-- `itemBorderColor`, `itemBackgroundColor`, `itemTextColor`
-- `itemHoverBackgroundColor`
-- `itemActiveBackgroundColor`, `itemActiveTextColor`, `itemActiveBorderColor`
-- `disabledOpacity`
+## Recipes
+
+- Use `SlideGroup` for selection patterns with many short labels, not for long-form tab panels with heavy content below.
+- Keep item labels short so horizontal scrolling stays an enhancement rather than a necessity.
 
 ## Accessibility
 
-- Uses keyboard navigation across items: `ArrowLeft/ArrowRight`, `Home/End`.
-- Exposes group label via `ariaLabel`.
+- Keyboard navigation supports arrow keys plus `Home` and `End`.
+- The viewport exposes a group label through `ariaLabel`.

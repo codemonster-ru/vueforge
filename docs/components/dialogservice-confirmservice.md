@@ -1,23 +1,18 @@
 # DialogService / ConfirmService
 
-## Purpose
+DialogService and ConfirmService provide promise-based programmatic dialog flows without local open-state wiring in each caller.
 
-- Provide programmatic dialog flows for module-level actions without manually managing local `v-model` state for each caller.
-- Support promise-based user decision handling (`await`) for confirm/close outcomes.
+## Import
 
-## Props
-
-- N/A (service APIs, not Vue components).
-
-## Events
-
-- N/A (service APIs return promises and expose imperative methods).
-
-## Slots
-
-- N/A (service APIs).
+```ts
+import { dialogService, confirmService } from '@/package/services';
+```
 
 ## Examples
+
+### Confirm Flow
+
+Use `confirmService.confirm()` when a caller only needs a boolean user decision.
 
 ```ts
 import { confirmService } from '@codemonster-ru/vueforge';
@@ -34,6 +29,10 @@ if (approved) {
 }
 ```
 
+### Generic Dialog Flow
+
+Use `dialogService.open()` when the result shape is domain-specific.
+
 ```ts
 import { dialogService } from '@codemonster-ru/vueforge';
 
@@ -42,47 +41,25 @@ const dialog = dialogService.open<{ reason: string }>({
     message: 'Unsaved changes will be lost.',
 });
 
-// Later, from UI layer:
 dialog.close({ reason: 'confirmed' });
 
 const result = await dialog.promise;
 ```
 
-## Theming
+### Renderer Integration
 
-- Services have no direct visual surface. Use component-level theming for the renderer (`Modal`, `ConfirmDialog`, custom host component).
+These services are runtime state only. Pair them with visual hosts like `ConfirmDialog`, `DynamicDialog`, or a custom renderer component.
 
-## Tokens
-
-- N/A (no service-level tokens).
-
-## Recipes
-
-- App-level confirm queue: mount one `ConfirmDialog` near app root and bind it to `confirmService.current`.
-- Feature-level programmatic dialogs: keep trigger logic in composables/stores and resolve via `dialogService` from host UI.
-
-## Accessibility
-
-- Accessibility behavior is enforced by the rendering component (`ConfirmDialog`, `Modal`, or custom host).
-- Ensure renderer keeps keyboard and ARIA contracts (focus trap/restore, escape behavior, descriptive labels).
-
-## Responsive
-
-- Responsive behavior depends on the renderer component and layout constraints used by the host.
-
-## SSR/Hydration
-
-- Services are hydration-safe: state is plain reactive runtime data and does not access DOM APIs.
-- Renderers should open dialogs only in deterministic client flows to avoid server/client mismatch.
-
-## Testing
-
-- Add service-level tests for queue/stack behavior, `open`/`close`, and promise resolution semantics.
-- Add renderer integration tests for keyboard, ARIA, and interaction behavior.
+```vue
+<template>
+    <ConfirmDialog />
+    <DynamicDialog />
+</template>
+```
 
 ## API
 
-`DialogService`:
+### DialogService
 
 - `open(options?) => { id, promise, close(result?), dismiss() }`
 - `close(id, result?)`
@@ -90,9 +67,9 @@ const result = await dialog.promise;
 - `closeCurrent(result?)`
 - `dismissCurrent()`
 - `clear()`
-- `dialogs`, `currentDialog`
+- state: `dialogs`, `currentDialog`
 
-`ConfirmService`:
+### ConfirmService
 
 - `open(options?) => { id, promise, confirm(), cancel(), close() }`
 - `confirm(options?) => Promise<boolean>`
@@ -100,4 +77,22 @@ const result = await dialog.promise;
 - `confirmById(id)` / `cancelById(id)`
 - `confirmCurrent()` / `cancelCurrent()` / `resolveCurrent(confirmed)`
 - `clear()`
-- `queue`, `current`
+- state: `queue`, `current`
+
+## Theming
+
+Services have no direct visual surface. Theme the renderer component instead, typically `ConfirmDialog`, `Modal`, or `DynamicDialog`.
+
+## Tokens
+
+- None at the service layer
+
+## Recipes
+
+- Use `confirmService` for standard destructive or approval prompts.
+- Use `dialogService` when the caller needs richer payloads, multiple dialog entries, or a custom renderer.
+
+## Accessibility
+
+- Accessibility is enforced by the renderer component, not by the service state itself.
+- The mounted host must still provide dialog semantics, focus handling, and explicit labels.

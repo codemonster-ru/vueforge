@@ -1,13 +1,85 @@
 # SplitButton
 
-## Purpose
+Combine one primary action with a secondary action menu in a compact two-part control.
 
-Provide advanced task-focused interactions for authoring, media/input control, and guided workflows.
-Enable product features that require richer interaction than basic form controls.
+## Import
+
+```ts
+import { SplitButton } from '@codemonster-ru/vueforge';
+```
+
+## Examples
+
+Use `SplitButton` when one action is the default and related alternatives should stay nearby.
+
+### Basic
+
+Use the main button for the default action and the dropdown for alternatives.
+
+```vue
+<template>
+    <SplitButton
+        label="Save"
+        :items="[
+            { label: 'Save draft' },
+            { label: 'Save and publish' }
+        ]"
+        @click="save"
+    />
+</template>
+```
+
+### Custom Primary Content
+
+Use the default slot when the primary action label needs richer content.
+
+```vue
+<template>
+    <SplitButton :items="[{ label: 'Duplicate' }, { label: 'Archive' }]">
+        Save changes
+    </SplitButton>
+</template>
+```
+
+### Outlined In A Group
+
+Combine `SplitButton` with `ButtonGroup` for compact page toolbars.
+
+```vue
+<template>
+    <ButtonGroup attached variant="outlined">
+        <Button label="Preview" />
+        <SplitButton
+            label="Publish"
+            :items="[
+                { label: 'Publish now' },
+                { label: 'Schedule' }
+            ]"
+        />
+    </ButtonGroup>
+</template>
+```
+
+### Top Placement
+
+Change placement when the menu opens near the bottom edge of the viewport.
+
+```vue
+<template>
+    <SplitButton
+        label="Run"
+        placement="top-end"
+        :items="[
+            { label: 'Run once' },
+            { label: 'Run nightly' }
+        ]"
+    />
+</template>
+```
 
 ## Props
 
-- `modelValue?: boolean` (dropdown open state)
+- `modelValue?: boolean`
 - `items?: Array<SplitButtonItem>`
 - `label?: string`
 - `icon?: string`
@@ -25,21 +97,9 @@ Enable product features that require richer interaction than basic form controls
 - `toggleAriaLabel?: string` (default `Toggle actions`)
 - `ariaLabel?: string` (default `Split button`)
 
-`SplitButtonItem` supports:
-
-- `label?: string`
-- `to?: string`
-- `href?: string`
-- `url?: string`
-- `icon?: string`
-- `active?: boolean`
-- `disabled?: boolean`
-- `separator?: boolean`
-- `command?: () => void`
-
 ## Events
 
-- `click` (primary action)
+- `click`
 - `update:modelValue`
 - `open`
 - `close`
@@ -47,52 +107,31 @@ Enable product features that require richer interaction than basic form controls
 
 ## Slots
 
-- `default` (primary button content)
-- `menu` (custom dropdown content)
-
-## Examples
-
-```vue
-<SplitButton
-    label="Save"
-    :items="[
-        { label: 'Save draft', command: saveDraft },
-        { label: 'Save and publish', command: publish },
-    ]"
-    @click="save"
-/>
-```
+- `default`
+- `menu`
 
 ## Theming
 
-- Override via theme component overrides for each component documented on this page.
+- Override via `theme.overrides.components.splitbutton`.
 
 ## Tokens
 
-Override via `theme.overrides.components.splitbutton`.
+Component tokens (override via `theme.overrides.components.splitbutton`):
+
+- `borderRadius`
+- `toggleMinWidth`, `togglePaddingX`, `toggleIconSize`
+- `disabledOpacity`
+- `small.toggleMinWidth`
+- `large.toggleMinWidth`
 
 ## Recipes
 
-- Start with the examples above as baseline usage for this component.
-- Add product-specific variants (loading/error/dense/mobile) in consuming app docs when needed.
-
-## Responsive
-
-Verify control affordances, panel sizing, and gesture/mouse interactions across device classes.
-Ensure compact layouts preserve clarity for actions, handles, and contextual hints.
-
-## SSR/Hydration
-
-Keep initial value and panel-closed/base state stable between server and client output.
-Hydrate client-only interaction engines (editor, drag, command layers) without DOM mismatch.
-
-## Testing
-
-Cover core interaction loops, boundary conditions, and value/state synchronization.
-Add accessibility tests for keyboard alternatives, labelling, and focus behavior.
+- Use `SplitButton` when one action is clearly primary and the alternatives are related, not unrelated menu items.
+- Keep the primary button safe to click without forcing users into the dropdown.
+- In cramped layouts, pair it with `ButtonGroup` instead of scattering adjacent action menus.
 
 ## Accessibility
 
-- Wrapper exposes `role="group"` with configurable `ariaLabel` to describe combined primary/toggle actions.
-- Use `toggleAriaLabel` to clearly describe the secondary menu action for screen readers.
-- Keep primary action and menu toggle both reachable with keyboard and visually distinct in focus state.
+- Wrapper exposes `role="group"` to describe the combined primary and toggle actions.
+- Use `toggleAriaLabel` to clearly describe the menu toggle for screen readers.
+- Keep both the primary action and the menu toggle keyboard reachable and visually distinct.

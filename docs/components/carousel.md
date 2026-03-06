@@ -1,95 +1,144 @@
 # Carousel
 
-## Purpose
+Carousel displays sequential slides with arrows, indicators, keyboard support, swipe gestures, and optional autoplay.
 
-Display sequential slides with keyboard navigation, touch swipe, and optional autoplay for feature highlights, onboarding, and content galleries.
+## Import
 
-## Props
-
-- `modelValue?: number` (default `0`)
-- `items?: Array<unknown>`
-- `autoplay?: boolean` (default `false`)
-- `autoplayInterval?: number` (default `5000`)
-- `loop?: boolean` (default `true`)
-- `keyboard?: boolean` (default `true`)
-- `swipe?: boolean` (default `true`)
-- `pauseOnHover?: boolean` (default `true`)
-- `showArrows?: boolean` (default `true`)
-- `showIndicators?: boolean` (default `true`)
-- `disabled?: boolean` (default `false`)
-- `ariaLabel?: string` (default `Carousel`)
-- `slideKey?: string | ((item, index) => string | number)`
-- `pt?: PassThroughOptions`
-- `unstyled?: boolean` (default `false`)
-
-## Events
-
-- `update:modelValue`
-- `change` (`{ index, previousIndex, source }`)
-
-## Slots
-
-- `item` - custom slide rendering (`{ item, index, active }`)
-- `prevIcon`
-- `nextIcon`
+```ts
+import Carousel from '@/package/components/carousel.vue';
+```
 
 ## Examples
 
+### Basic
+
+Use `v-model` to control the active slide from application state.
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const activeSlide = ref(0);
+const slides = [
+    { title: 'Launch faster', description: 'Ship internal tools with shared UI primitives.' },
+    { title: 'Scale safely', description: 'Keep design and implementation aligned.' },
+    { title: 'Stay consistent', description: 'Reuse one component language across apps.' },
+];
+</script>
+
+<template>
+    <Carousel v-model="activeSlide" :items="slides">
+        <template #item="{ item }">
+            <article class="promo-slide">
+                <h3>{{ item.title }}</h3>
+                <p>{{ item.description }}</p>
+            </article>
+        </template>
+    </Carousel>
+</template>
+```
+
+### Autoplay
+
+Enable autoplay for hero banners and lightweight promotional surfaces.
+
+```vue
+<Carousel
+    v-model="activeSlide"
+    :items="heroSlides"
+    autoplay
+    :autoplay-interval="4000"
+    :show-indicators="false"
+/>
+```
+
+### Controlled Navigation
+
+Disable looping when the slide sequence has a clear start and end.
+
+```vue
+<Carousel
+    v-model="activeSlide"
+    :items="slides"
+    :loop="false"
+    :show-arrows="true"
+    :show-indicators="true"
+/>
+```
+
+### Custom Navigation Icons
+
+Use `prevIcon` and `nextIcon` to match the surrounding icon set.
+
 ```vue
 <Carousel v-model="activeSlide" :items="slides">
-    <template #item="{ item }">
-        <article class="promo-slide">
-            <h3>
-                {{ item.title }}
-            </h3>
-            <p>
-                {{ item.description }}
-            </p>
-        </article>
+    <template #prevIcon>
+        <Icon icon="arrowLeft" />
+    </template>
+
+    <template #nextIcon>
+        <Icon icon="arrowRight" />
     </template>
 </Carousel>
 ```
 
-```vue
-<Carousel v-model="activeSlide" :items="heroSlides" autoplay :autoplay-interval="4000" :show-indicators="false" />
-```
+## API
+
+### Props
+
+| Name | Type | Default |
+| --- | --- | --- |
+| `modelValue` | `number` | `0` |
+| `items` | `unknown[]` | `[]` |
+| `autoplay` | `boolean` | `false` |
+| `autoplayInterval` | `number` | `5000` |
+| `loop` | `boolean` | `true` |
+| `keyboard` | `boolean` | `true` |
+| `swipe` | `boolean` | `true` |
+| `pauseOnHover` | `boolean` | `true` |
+| `showArrows` | `boolean` | `true` |
+| `showIndicators` | `boolean` | `true` |
+| `disabled` | `boolean` | `false` |
+| `ariaLabel` | `string` | `'Carousel'` |
+| `slideKey` | `string \| ((item: unknown, index: number) => string \| number) \| undefined` | `undefined` |
+| `pt` | `PassThroughOptions \| undefined` | `undefined` |
+| `unstyled` | `boolean` | `false` |
+
+### Events
+
+| Name | Payload |
+| --- | --- |
+| `update:modelValue` | `number` |
+| `change` | `{ index, previousIndex, source }` |
+
+### Slots
+
+| Name | Description |
+| --- | --- |
+| `item` | Custom slide content with `{ item, index, active }`. |
+| `prevIcon` | Replaces the previous-arrow icon. |
+| `nextIcon` | Replaces the next-arrow icon. |
 
 ## Theming
 
-- Override via `theme.overrides.components.carousel`.
+Override component tokens through `theme.overrides.components.carousel`.
 
 ## Tokens
 
-- `gap`, `borderColor`, `borderRadius`, `backgroundColor`, `textColor`
-- `slideMinHeight`, `slidePadding`
-- `transitionDuration`, `transitionEasing`
-- `arrowSize`, `arrowSizeMobile`, `arrowOffset`, `arrowBorderColor`, `arrowBorderRadius`, `arrowBackgroundColor`, `arrowTextColor`
-- `indicatorsGap`, `indicatorSize`, `indicatorBorderColor`, `indicatorBackgroundColor`, `indicatorActiveBorderColor`, `indicatorActiveBackgroundColor`
-- `focusRingShadow`, `focusBorderColor`, `disabledOpacity`
+- Surface and layout: `gap`, `borderColor`, `borderRadius`, `backgroundColor`, `textColor`, `slideMinHeight`, `slidePadding`
+- Motion: `transitionDuration`, `transitionEasing`
+- Arrows: `arrowSize`, `arrowSizeMobile`, `arrowOffset`, `arrowBorderColor`, `arrowBorderRadius`, `arrowBackgroundColor`, `arrowTextColor`
+- Indicators: `indicatorsGap`, `indicatorSize`, `indicatorBorderColor`, `indicatorBackgroundColor`, `indicatorActiveBorderColor`, `indicatorActiveBackgroundColor`
+- Focus and state: `focusRingShadow`, `focusBorderColor`, `disabledOpacity`
 
 ## Recipes
 
-- Product hero: autoplay + loop with short promotional copy and CTA inside each slide.
-- Onboarding flow: disable autoplay, keep indicators visible, and persist `v-model` index in route/query state.
+- Use Carousel for feature highlights, onboarding banners, and simple card-like slideshows.
+- Prefer `Window` when the content behaves like a stateful multi-step region rather than a visual slider.
 
 ## Accessibility
 
-- Root uses `role="region"` with `aria-roledescription="carousel"` and configurable `ariaLabel`.
-- Slides expose `role="group"` with `aria-roledescription="slide"` and sequence labels.
-- Keyboard support: `ArrowLeft`, `ArrowRight`, `Home`, `End`.
+- Carousel renders a `region` with `aria-roledescription="carousel"` and per-slide group labels.
+- Keyboard support includes `ArrowLeft`, `ArrowRight`, `Home`, and `End`.
+- Swipe gestures and autoplay are optional, so interaction can stay predictable in dense layouts.
 
-## Responsive
-
-- Swipe gestures are enabled by default for touch devices.
-- Keep slide content concise and vertically compact on mobile to avoid scroll conflicts.
-- Arrow controls shrink on narrow viewports via mobile token sizing.
-
-## SSR/Hydration
-
-- Initial slide is derived from props and rendered deterministically.
-- Autoplay interval starts only after mount, preventing SSR/client mismatch.
-
-## Testing
-
-- Cover keyboard and swipe interactions, autoplay progression, and boundary behavior with/without looping.
-- Assert ARIA roles/labels for root, slides, and indicator controls.

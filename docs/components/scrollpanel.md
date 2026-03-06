@@ -1,52 +1,88 @@
 # ScrollPanel
 
-## Purpose
+ScrollPanel provides a styled scrollable container for logs, side panels, and long inline content.
 
-Provide a styled scrollable container for long content blocks and side panels.
+## Import
 
-## Props
+```ts
+import ScrollPanel from '@/package/components/scroll-panel.vue';
+```
 
-- `height?: string` (default `16rem`)
-- `minHeight?: string`
-- `maxHeight?: string`
-- `alwaysShow?: boolean` (default `false`) - always render scrollbars
-- `role?: string` (default `region`)
-- `ariaLabel?: string` (default `Scrollable region`)
-- `tabIndex?: number` (default `0`)
+## Examples
 
-## Slots
+### Basic
 
-- `default`
-
-## Exposed
-
-- `getViewport(): HTMLElement | null`
-- `scrollTo(top: number, behavior?: ScrollBehavior)`
-
-## Example
+Use `ScrollPanel` when a section needs its own bounded scroll area.
 
 ```vue
 <ScrollPanel height="18rem" aria-label="Deployment logs">
-    <pre>
-        {{ logs }}
-    </pre>
+    <pre>{{ logs }}</pre>
 </ScrollPanel>
 ```
 
+### Constrained Range
+
+Use `min-height` and `max-height` when the container should grow within limits.
+
+```vue
+<ScrollPanel min-height="12rem" max-height="24rem">
+    ...
+</ScrollPanel>
+```
+
+### Always Visible Scrollbars
+
+Enable `always-show` where discoverability of overflow matters more than minimal chrome.
+
+```vue
+<ScrollPanel height="16rem" always-show>
+    ...
+</ScrollPanel>
+```
+
+## API
+
+### Props
+
+| Name | Type | Default |
+| --- | --- | --- |
+| `height` | `string` | `'16rem'` |
+| `minHeight` | `string \| undefined` | `undefined` |
+| `maxHeight` | `string \| undefined` | `undefined` |
+| `alwaysShow` | `boolean` | `false` |
+| `role` | `string` | `'region'` |
+| `ariaLabel` | `string` | `'Scrollable region'` |
+| `tabIndex` | `number` | `0` |
+
+### Exposed Methods
+
+| Name | Description |
+| --- | --- |
+| `getViewport()` | Returns the scrollable viewport element. |
+| `scrollTo(top, behavior?)` | Scrolls the viewport to a position. |
+
 ## Theming
 
-- Override via `theme.overrides.components.scrollpanel`.
+`ScrollPanel` currently uses a CSS variable contract in component styles, but this repo does not include a dedicated preset file in `src/package/themes/default/components/` for it yet.
 
 ## Tokens
 
-- `borderColor`, `borderRadius`, `backgroundColor`, `textColor`
-- `contentPadding`, `focusRingColor`
-- `scrollbarSize`, `scrollbarTrackColor`, `scrollbarThumbColor`
+- `borderColor`
+- `borderRadius`
+- `backgroundColor`
+- `textColor`
+- `contentPadding`
+- `focusRingColor`
+- `scrollbarSize`
+- `scrollbarTrackColor`
+- `scrollbarThumbColor`
+
+## Recipes
+
+- Use `ScrollPanel` for bounded content regions, not as a replacement for whole-page scrolling.
+- Keep the `ariaLabel` specific when multiple scroll regions exist on the same screen.
 
 ## Accessibility
 
-- Focusable region with configurable `role` and `aria-label`.
-
-## Testing
-
-- Cover role/aria rendering and viewport sizing behavior.
+- The viewport is focusable by default and exposes configurable `role` and `aria-label`.
+- Keyboard users should be able to reach and scroll the region without relying on pointer interaction.

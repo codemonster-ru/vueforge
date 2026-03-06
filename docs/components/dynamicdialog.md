@@ -1,29 +1,29 @@
 # DynamicDialog
 
-## Purpose
+DynamicDialog is a host renderer for programmatic dialogs opened through `dynamicDialogService`.
 
-Programmatically open feature-level modals with dynamic Vue content, without wiring local `v-model` state per caller.
-`DynamicDialog` is a host renderer that consumes `DynamicDialogService` queue entries.
+## Import
 
-## Props
-
-- `service?: DynamicDialogService` (default `dynamicDialogService`)
-
-## Events
-
-- N/A (dialog lifecycle is controlled through `DynamicDialogService` methods and promises).
-
-## Slots
-
-- default - fallback content when no `component` is provided; slot props: `{ entry, close, dismiss }`
-- `footer` - optional footer actions; slot props: `{ entry, close, dismiss }`
-
-## Exposes
-
-- `closeCurrent(result?)`
-- `dismissCurrent()`
+```ts
+import DynamicDialog from '@/package/components/dynamic-dialog.vue';
+import { dynamicDialogService } from '@/package/services/dynamic-dialog-service';
+```
 
 ## Examples
+
+### Root Host
+
+Mount one host near the app root so feature code can open dialogs without local `v-model` wiring.
+
+```vue
+<template>
+    <DynamicDialog />
+</template>
+```
+
+### Programmatic Open
+
+Use `dynamicDialogService.open()` when the caller should await the dialog result.
 
 ```ts
 import { dynamicDialogService } from '@codemonster-ru/vueforge';
@@ -39,43 +39,58 @@ const result = await dynamicDialogService.open<{ role: string }, { memberId: str
 }).promise;
 ```
 
+### Slot-Based Fallback
+
+Use the host slots when an entry provides only title and message, or when you want a custom global fallback UI.
+
 ```vue
-<template>
-    <DynamicDialog />
-</template>
+<DynamicDialog>
+    <template #default="{ entry, close, dismiss }">
+        <div>
+            <p>{{ entry?.options.message }}</p>
+            <Button label="Close" @click="close()" />
+            <Button label="Cancel" severity="secondary" @click="dismiss()" />
+        </div>
+    </template>
+</DynamicDialog>
 ```
+
+## API
+
+### Props
+
+| Name | Type | Default |
+| --- | --- | --- |
+| `service` | `DynamicDialogService` | `dynamicDialogService` |
+
+### Slots
+
+| Name | Description |
+| --- | --- |
+| `default` | Fallback content when no component is provided, with `{ entry, close, dismiss }`. |
+| `footer` | Optional footer actions with `{ entry, close, dismiss }`. |
+
+### Exposed Methods
+
+| Name | Description |
+| --- | --- |
+| `closeCurrent(result?)` | Resolves and closes the active dialog. |
+| `dismissCurrent()` | Dismisses the active dialog without a result. |
 
 ## Theming
 
-- Override via `theme.overrides.components.dynamicDialog`.
-- Default token source is aliased to `modal` token contract.
+`DynamicDialog` does not have its own standalone visual contract. It renders through `Modal` and inherits the `theme.overrides.components.modal` token set.
 
 ## Tokens
 
-- Uses `ModalTokens` (`width*`, `maxWidth*`, `padding`, `borderRadius`, `overlayBackgroundColor`, `zIndex`, header/body/footer/close tokens).
+- Uses `Modal` tokens such as `width*`, `maxWidth*`, `padding`, `borderRadius`, `overlayBackgroundColor`, `zIndex`, and header/body/footer control tokens
 
 ## Recipes
 
-- Mount one global `<DynamicDialog />` near app root and trigger dialogs from composables/stores via `dynamicDialogService`.
-- Pass feature component listeners through `open({ listeners })` and resolve with `closeCurrent(result)`.
+- Mount a single global host and treat feature dialogs as service-driven flows.
+- Pass business payload through `payload` and UI bindings through `componentProps` or `listeners`.
 
 ## Accessibility
 
-- Inherits `role="dialog"` semantics, focus trap, focus restore, and `Escape` handling from `Modal`.
-- Overlay-close behavior follows per-entry `modal.closeOnOverlay`.
-- Ensure injected dynamic component keeps form controls keyboard reachable and labels/descriptions explicit.
-
-## Responsive
-
-- Responsive surface sizing follows `Modal` tokens (`width`, `maxWidth`, `size` variants).
-- Use per-dialog `modal.size` to adapt compact vs wide feature flows.
-
-## SSR/Hydration
-
-- Service state is plain reactive data and does not access DOM APIs.
-- Host component is hydration-safe; open dialogs in deterministic client actions to avoid mismatch.
-
-## Testing
-
-- Cover service queue/stack semantics, close/dismiss promise resolution, and clear behavior.
-- Cover host rendering for dynamic component props/listeners and modal close/dismiss integration.
+- Accessibility behavior comes from `Modal`, including dialog semantics, focus management, and close-on-escape handling.
+- Dynamically rendered content still needs proper form labels, descriptions, and keyboard reachability.

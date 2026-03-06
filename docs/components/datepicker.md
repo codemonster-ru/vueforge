@@ -1,16 +1,85 @@
 # DatePicker
 
-## Purpose
+Capture a single calendar date through a compact trigger with a floating month grid.
 
-Provide date/time input primitives for scheduling, reporting, and range-based filtering.
-Support localized parsing/display while keeping predictable controlled value contracts.
+## Import
+
+```ts
+import { DatePicker } from '@codemonster-ru/vueforge';
+```
+
+## Examples
+
+Use `DatePicker` when the user should choose one date and keep the value in canonical ISO form.
+
+### Basic
+
+Use the default picker for a single date field.
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const startDate = ref('2026-03-16');
+</script>
+
+<template>
+    <DatePicker v-model="startDate" placeholder="Pick date" />
+</template>
+```
+
+### With Bounds
+
+Use `min` and `max` to prevent invalid scheduling windows.
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const billingDate = ref();
+</script>
+
+<template>
+    <DatePicker
+        v-model="billingDate"
+        placeholder="Choose billing date"
+        min="2026-01-01"
+        max="2026-12-31"
+    />
+</template>
+```
+
+### Localized Week Start
+
+Override `locale` and `firstDayOfWeek` when the surrounding workflow requires a specific calendar convention.
+
+```vue
+<template>
+    <DatePicker
+        model-value="2026-04-06"
+        locale="de-DE"
+        :first-day-of-week="1"
+        placeholder="Wahle ein Datum"
+    />
+</template>
+```
+
+### Outlined Variant
+
+Use `outlined` when the picker sits on a filled surface and needs lighter chrome.
+
+```vue
+<template>
+    <DatePicker model-value="2026-06-01" variant="outlined" />
+</template>
+```
 
 ## Props
 
 - `modelValue?: string` (v-model, ISO date `YYYY-MM-DD`)
 - `placeholder?: string`
-- `disabled?: boolean`
-- `readonly?: boolean`
+- `disabled?: boolean` (default `false`)
+- `readonly?: boolean` (default `false`)
 - `min?: string` (ISO date `YYYY-MM-DD`)
 - `max?: string` (ISO date `YYYY-MM-DD`)
 - `locale?: string` (default from global date/time locale config, fallback `en-US`)
@@ -31,45 +100,37 @@ Support localized parsing/display while keeping predictable controlled value con
 
 - This component does not expose named slots.
 
-## Examples
-
-```vue
-<DatePicker v-model="startDate" placeholder="Pick date" min="2026-01-01" max="2026-12-31" />
-```
-
 ## Theming
 
-- Override via theme component overrides for each component documented on this page.
+- Override via `theme.overrides.components.datepicker`.
 
 ## Tokens
 
-- Use `theme.overrides.components` to customize this component where token support is available.
+Component tokens (override via `theme.overrides.components.datepicker`):
+
+- `minWidth`, `fontSize`, `controlGap`, `chevronSize`
+- `padding`, `borderRadius`, `borderColor`
+- `backgroundColor`, `textColor`, `placeholderColor`
+- `focusBorderColor`, `focusRingShadow`, `hoverBorderColor`
+- `disabledOpacity`
+- `panelWidth`, `panelBackgroundColor`, `panelBorderColor`, `panelPadding`, `panelRadiusOffset`, `panelShadow`
+- `headerGap`, `headerPadding`, `monthLabelFontSize`, `monthLabelFontWeight`
+- `navButtonSize`, `navButtonRadius`, `navButtonFontSize`
+- `weekdayColor`, `weekdayFontSize`, `weekdaysMarginBottom`
+- `daysGap`, `daySize`, `dayFontSize`, `dayBorderRadius`
+- `dayHoverBackgroundColor`, `daySelectedBackgroundColor`, `daySelectedTextColor`, `dayMutedColor`, `dayTodayBorderColor`
+- `small.fontSize`, `small.padding`, `small.daySize`
+- `large.fontSize`, `large.padding`, `large.daySize`
 
 ## Recipes
 
-- Start with the examples above as baseline usage for this component.
-- Add product-specific variants (loading/error/dense/mobile) in consuming app docs when needed.
-
-## Responsive
-
-Validate panel positioning, grid readability, and action controls on small screens.
-Ensure touch interactions for day/time selection remain accurate with adequate target size.
-
-## SSR/Hydration
-
-Render initial date/time value and panel-closed state consistently in SSR output.
-Run locale/timezone-sensitive formatting in a hydration-safe way to prevent mismatch.
-
-## Testing
-
-Cover parsing/formatting, keyboard navigation, min/max constraints, and range/time edge cases.
-Add tests for locale variants and ARIA semantics for calendar and listbox-like panels.
+- Keep the emitted value in ISO format and localize only the display label.
+- Use `Calendar` instead when the calendar grid itself should stay visible in the page layout.
+- Apply `min` and `max` whenever the valid date window is bounded by business rules.
 
 ## Accessibility
 
-- Trigger exposes popup semantics via `aria-haspopup="dialog"`, `aria-expanded`, and `aria-controls`.
-- Keyboard support: `ArrowDown` opens calendar, `Escape` closes popup.
-- Invalid ISO values are ignored (treated as empty state) and do not produce invalid committed dates.
-- `min`/`max` constraints disable out-of-range days in the calendar grid.
-- In `readonly` mode, open/select interactions are blocked.
-- Locale and week-start defaults can be configured globally: [`Date/Time Locale Setup`](../guides/date-time-locale-setup.md).
+- The trigger exposes popup semantics via `aria-haspopup="dialog"`, `aria-expanded`, and `aria-controls`.
+- Keyboard support includes `ArrowDown` to open the panel and `Escape` to close it.
+- Invalid ISO values are ignored and treated as an empty state rather than coerced.
+- Locale and week-start defaults can be configured globally in [date-time-locale-setup.md](/Users/kolesnikov_k_a/Projects/Codemonster/JS/vueforge/docs/guides/date-time-locale-setup.md).

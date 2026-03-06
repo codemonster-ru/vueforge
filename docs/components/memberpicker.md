@@ -1,89 +1,113 @@
 # MemberPicker
 
-## Purpose
+MemberPicker selects people from searchable options with chips, avatars, async search hooks, and optional multi-select behavior.
 
-Pick people/org members from async search results with avatars and customizable role hints.
+## Import
 
-## Props
-
-- `modelValue?: string | number | Array<string | number> | null` (default `null`)
-- `options?: Array<MemberPickerItem>` (default `[]`)
-- `multiple?: boolean` (default `true`)
-- `disabled?: boolean` (default `false`)
-- `readonly?: boolean` (default `false`)
-- `placeholder?: string` (default `Search members...`)
-- `ariaLabel?: string` (default `Member picker`)
-- `loading?: boolean` (default `false`)
-- `loadingText?: string` (default `Searching members...`)
-- `emptyText?: string` (default `No members found.`)
-- `removeLabel?: string` (default `Remove member`)
-- `filterLocal?: boolean` (default `true`)
-
-`MemberPickerItem`:
-
-- `id: string | number`
-- `name: string`
-- `email?: string`
-- `avatar?: string`
-- `roleHint?: string`
-- `org?: string`
-- `disabled?: boolean`
-
-## Events
-
-- `update:modelValue`
-- `change`
-- `search(query)`
-- `select(member)`
-- `remove(member)`
-- `focus`
-- `blur`
-
-## Slots
-
-- `option` (`{ member, index, selected }`)
-- `selection` (`{ member, remove }`)
-- `role-hint` (`{ member }`)
+```ts
+import MemberPicker from '@/package/components/member-picker.vue';
+```
 
 ## Examples
 
+### Basic
+
 ```vue
-<MemberPicker v-model="assignees" :options="memberOptions" :loading="loadingMembers" @search="loadMembers" />
+<MemberPicker
+    v-model="assignees"
+    :options="memberOptions"
+    :loading="loadingMembers"
+    @search="loadMembers"
+/>
 ```
+
+### Single Assignee
+
+```vue
+<MemberPicker v-model="owner" :options="memberOptions" :multiple="false" placeholder="Assign owner" />
+```
+
+### Custom Option Meta
+
+```vue
+<MemberPicker v-model="assignees" :options="memberOptions">
+    <template #role-hint="{ member }">
+        <Badge v-if="member.roleHint" :value="member.roleHint" />
+    </template>
+</MemberPicker>
+```
+
+## API
+
+### Types
+
+```ts
+interface MemberPickerItem {
+    id: string | number;
+    name: string;
+    email?: string;
+    avatar?: string;
+    roleHint?: string;
+    org?: string;
+    disabled?: boolean;
+}
+```
+
+### Props
+
+| Name | Type | Default |
+| --- | --- | --- |
+| `modelValue` | `string \| number \| Array<string \| number> \| null` | `null` |
+| `options` | `MemberPickerItem[]` | `[]` |
+| `multiple` | `boolean` | `true` |
+| `disabled` | `boolean` | `false` |
+| `readonly` | `boolean` | `false` |
+| `placeholder` | `string` | `'Search members...'` |
+| `ariaLabel` | `string` | `'Member picker'` |
+| `loading` | `boolean` | `false` |
+| `loadingText` | `string` | `'Searching members...'` |
+| `emptyText` | `string` | `'No members found.'` |
+| `removeLabel` | `string` | `'Remove member'` |
+| `filterLocal` | `boolean` | `true` |
+
+### Events
+
+| Name | Payload |
+| --- | --- |
+| `update:modelValue` | selection payload |
+| `change` | selection payload |
+| `search` | query string |
+| `select` | member |
+| `remove` | member |
+| `focus` | `FocusEvent` |
+| `blur` | `FocusEvent` |
+
+### Slots
+
+| Name | Description |
+| --- | --- |
+| `option` | Custom option content with `{ member, index, selected }`. |
+| `selection` | Custom selected chip with `{ member, remove }`. |
+| `role-hint` | Role/meta decoration with `{ member }`. |
 
 ## Theming
 
-- Override via `theme.overrides.components.memberPicker`.
+Override component tokens through `theme.overrides.components.memberPicker`.
 
 ## Tokens
 
-- `controlMinHeight`, `borderColor`, `borderRadius`, `backgroundColor`, `textColor`, `padding`, `gap`
-- `focusBorderColor`, `focusRingShadow`, `disabledOpacity`
-- `chipGap`, `chipBackgroundColor`, `chipBorderColor`, `chipBorderRadius`, `chipFontSize`, `chipRemoveFontSize`
-- `zIndex`
-- `panelBorderColor`, `panelBorderRadius`, `panelBackgroundColor`, `panelShadow`, `panelMaxHeight`
-- `optionPadding`, `optionGap`, `optionHighlightBackgroundColor`, `optionSelectedBackgroundColor`
-- `optionTitleFontSize`, `optionTitleFontWeight`, `optionMetaFontSize`, `optionMetaColor`
-- `statePadding`
+- Control: `controlMinHeight`, `borderColor`, `borderRadius`, `backgroundColor`, `textColor`, `padding`, `gap`, `focusBorderColor`, `focusRingShadow`, `disabledOpacity`
+- Chips: `chipGap`, `chipBackgroundColor`, `chipBorderColor`, `chipBorderRadius`, `chipFontSize`, `chipRemoveFontSize`
+- Panel: `zIndex`, `panelBorderColor`, `panelBorderRadius`, `panelBackgroundColor`, `panelShadow`, `panelMaxHeight`
+- Options and states: `optionPadding`, `optionGap`, `optionHighlightBackgroundColor`, `optionSelectedBackgroundColor`, `optionTitleFontSize`, `optionTitleFontWeight`, `optionMetaFontSize`, `optionMetaColor`, `statePadding`
 
 ## Recipes
 
-- Async member search: set `filterLocal=false`, update `options` from backend on `search` event.
-- Role-aware assignees: use `role-hint` slot to show org role badges or access levels.
+- Use MemberPicker for assignees, reviewers, watchers, and any user-centric search and select flow.
+- Set `filterLocal=false` when the source of truth is backend search rather than a local option list.
 
 ## Accessibility
 
-- Uses combobox/listbox semantics with keyboard navigation (`ArrowUp/ArrowDown/Enter/Escape`).
-- Selected chips and option actions use native buttons.
+- MemberPicker uses combobox and listbox semantics with keyboard navigation.
+- Chips and remove controls are native buttons, so selection state stays keyboard-accessible.
 
-## Responsive
-
-- Control and chips wrap on narrow layouts; options panel keeps constrained max height with scroll.
-
-## SSR/Hydration
-
-- Component is hydration-safe; async option loading should happen in client-driven flows.
-
-## Testing
-
-- Cover search emissions, option select/remove, role-hint slot rendering, and empty/loading states.

@@ -1,88 +1,140 @@
 # Dock
 
-## Purpose
+Dock provides app-launcher style navigation for primary workspaces and utility destinations in desktop-like shells.
 
-Provide an app-launcher style navigation strip for quick access to primary workspaces and utility actions.
+## Import
 
-## Props
-
-- `items?: Array<DockItem>`
-- `modelValue?: string | number | null`
-- `position?: 'bottom' | 'top' | 'left' | 'right'` (default `bottom`)
-- `disabled?: boolean` (default `false`)
-- `ariaLabel?: string` (default `Application launcher`)
-- `syncActiveFromRoute?: boolean` (default `true`)
-- `pt?: PassThroughOptions`
-- `unstyled?: boolean` (default `false`)
-
-`DockItem`:
-
-- `key?: string | number`
-- `label: string`
-- `icon?: string`
-- `to?: string | RouteLocationRaw`
-- `href?: string`
-- `url?: string`
-- `active?: boolean`
-- `exact?: boolean`
-- `disabled?: boolean`
-- `command?: () => void`
-
-## Events
-
-- `update:modelValue`
-- `select` (`{ item, index, key, event }`)
-
-## Slots
-
-- `item` - slot props `{ item, index, active }`
+```ts
+import Dock from '@/package/components/dock.vue';
+```
 
 ## Examples
 
+### Basic
+
+Use Dock for a compact launcher with explicit active state.
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const activeKey = ref('home');
+const items = [
+    { key: 'home', label: 'Home', icon: 'house', to: '/home' },
+    { key: 'search', label: 'Search', icon: 'magnifyingGlass', to: '/search' },
+    { key: 'settings', label: 'Settings', icon: 'gear' },
+];
+</script>
+
+<template>
+    <Dock v-model="activeKey" :items="items" />
+</template>
+```
+
+### Vertical Positions
+
+Switch to `left` or `right` when the dock belongs to a dense desktop-style shell.
+
+```vue
+<Dock v-model="activeKey" :items="items" position="left" />
+```
+
+### Route-Synced Active State
+
+Keep `syncActiveFromRoute` enabled when dock items map directly to router destinations.
+
 ```vue
 <Dock
-    v-model="activeKey"
     :items="[
-        { key: 'home', label: 'Home', icon: 'house', to: '/home' },
-        { key: 'search', label: 'Search', icon: 'magnifyingGlass', to: '/search' },
-        { key: 'settings', label: 'Settings', icon: 'gear' },
+        { key: 'dashboard', label: 'Dashboard', icon: 'house', to: '/dashboard', exact: true },
+        { key: 'projects', label: 'Projects', icon: 'folder', to: '/projects' },
+        { key: 'settings', label: 'Settings', icon: 'gear', to: '/settings' },
     ]"
 />
 ```
 
+### Custom Item Template
+
+Use the `item` slot when the launcher needs badges, counters, or richer branding.
+
+```vue
+<Dock :items="items">
+    <template #item="{ item, active }">
+        <span :class="['dock-item', { 'dock-item_active': active }]">
+            <Icon :icon="item.icon" />
+            <Badge v-if="item.key === 'search'" value="3" />
+            <span>{{ item.label }}</span>
+        </span>
+    </template>
+</Dock>
+```
+
+## API
+
+### Types
+
+```ts
+type DockKey = string | number;
+
+interface DockItem {
+    key?: DockKey;
+    label: string;
+    icon?: string;
+    to?: string | RouteLocationRaw;
+    href?: string;
+    url?: string;
+    active?: boolean;
+    exact?: boolean;
+    disabled?: boolean;
+    command?: () => void;
+}
+```
+
+### Props
+
+| Name | Type | Default |
+| --- | --- | --- |
+| `items` | `DockItem[]` | `[]` |
+| `modelValue` | `string \| number \| null` | `null` |
+| `position` | `'bottom' \| 'top' \| 'left' \| 'right'` | `'bottom'` |
+| `disabled` | `boolean` | `false` |
+| `ariaLabel` | `string` | `'Application launcher'` |
+| `syncActiveFromRoute` | `boolean` | `true` |
+| `pt` | `PassThroughOptions \| undefined` | `undefined` |
+| `unstyled` | `boolean` | `false` |
+
+### Events
+
+| Name | Payload |
+| --- | --- |
+| `update:modelValue` | `DockKey` |
+| `select` | `{ item, index, key, event }` |
+
+### Slots
+
+| Name | Description |
+| --- | --- |
+| `item` | Custom launcher item with `{ item, index, active }`. |
+
 ## Theming
 
-- Override via `theme.overrides.components.dock`.
+Override component tokens through `theme.overrides.components.dock`.
 
 ## Tokens
 
-- `borderColor`, `borderRadius`, `backgroundColor`, `shadow`
-- `padding`, `gap`
-- `itemSize`, `itemBorderRadius`, `itemColor`
-- `itemHoverBackgroundColor`, `itemActiveBackgroundColor`, `itemActiveColor`
-- `iconSize`, `labelFontSize`, `disabledOpacity`
+- Surface: `borderColor`, `borderRadius`, `backgroundColor`, `shadow`
+- Layout: `padding`, `gap`
+- Items: `itemSize`, `itemBorderRadius`, `itemColor`, `itemHoverBackgroundColor`, `itemActiveBackgroundColor`, `itemActiveColor`
+- Icon and label: `iconSize`, `labelFontSize`
+- State: `disabledOpacity`
 
 ## Recipes
 
-- Bottom launcher for desktop apps with workspace shortcuts.
-- Vertical side launcher (`position="left"`/`"right"`) for dense admin shells.
+- Use Dock for desktop-style app launchers, workspace switchers, and utility rails.
+- Prefer `BottomNavigation` for mobile primary navigation where app-shell semantics are simpler and labels are always visible.
 
 ## Accessibility
 
-- Renders semantic `nav` landmark with `menubar/menuitem` interaction roles.
-- Keyboard support: `Arrow` keys for roving focus, `Home`/`End` for boundaries, `Enter`/`Space` for activation.
-- Active route/item is exposed with `aria-current="page"`.
-
-## Responsive
-
-- Use horizontal dock for mobile bottom navigation and keep labels short.
-- For vertical docks, verify hit targets and spacing in collapsed sidebars.
-
-## SSR/Hydration
-
-- Deterministic render from `items`/`modelValue`.
-- Route-sync behavior reads injected route state without client-only branching.
-
-## Testing
-
-- Cover click/keyboard activation, disabled items, route active-state sync, and orientation behavior.
+- Dock renders a `nav` landmark with `menubar` and `menuitem` roles.
+- Keyboard support includes roving focus with arrow keys, `Home`, `End`, and activation with `Enter` or `Space`.
+- Active route or selected item is exposed via `aria-current="page"` when applicable.

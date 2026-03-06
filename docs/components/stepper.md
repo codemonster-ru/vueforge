@@ -1,13 +1,76 @@
 # Stepper
 
-## Purpose
+Show multi-step progress or navigation state without owning the actual step content.
 
-Organize multi-section and multi-step workflows with explicit progression and navigation semantics.
-Support dense information architecture in settings, onboarding, and detail screens.
+## Import
+
+```ts
+import { Stepper } from '@codemonster-ru/vueforge';
+```
+
+## Examples
+
+Use `Stepper` when the UI needs an explicit progress indicator or clickable step navigation separate from the content panels themselves.
+
+### Basic
+
+Use it for checkout or onboarding progress.
+
+```vue
+<template>
+    <Stepper
+        v-model="step"
+        :steps="[
+            { value: 'cart', label: 'Cart' },
+            { value: 'address', label: 'Address' },
+            { value: 'payment', label: 'Payment' },
+            { value: 'confirm', label: 'Confirm' }
+        ]"
+        clickable
+    />
+</template>
+```
+
+### Vertical
+
+Use vertical layout in sidebars or narrow detail panels.
+
+```vue
+<template>
+    <Stepper
+        model-value="plan"
+        orientation="vertical"
+        size="small"
+        :steps="[
+            { value: 'account', label: 'Account' },
+            { value: 'plan', label: 'Plan' },
+            { value: 'confirm', label: 'Confirm' }
+        ]"
+    />
+</template>
+```
+
+### Error State
+
+Use explicit `status` when a step should communicate a problem.
+
+```vue
+<template>
+    <Stepper
+        model-value="plan"
+        clickable
+        :steps="[
+            { value: 'account', label: 'Account', status: 'completed' },
+            { value: 'plan', label: 'Plan', status: 'error', description: 'Fix validation errors' },
+            { value: 'confirm', label: 'Confirm' }
+        ]"
+    />
+</template>
+```
 
 ## Props
 
-- `modelValue?: string | number` (v-model)
+- `modelValue?: string | number`
 - `steps?: Array<{ label?: string; description?: string; value?: string | number; disabled?: boolean; status?: 'completed' | 'active' | 'upcoming' | 'error' }>`
 - `orientation?: 'horizontal' | 'vertical'` (default `horizontal`)
 - `size?: 'small' | 'normal' | 'large'` (default `normal`)
@@ -23,49 +86,12 @@ Support dense information architecture in settings, onboarding, and detail scree
 
 ## Slots
 
-- This component does not expose named slots.
-
-## Examples
-
-```vue
-<Stepper v-model="step" :steps="steps" clickable />
-<Stepper v-model="step" :steps="steps" orientation="vertical" size="small" />
-```
-
-## Recipes
-
-### Checkout progress navigation
-
-```vue
-<Stepper
-    v-model="checkoutStep"
-    clickable
-    :steps="[
-        { value: 'cart', label: 'Cart' },
-        { value: 'address', label: 'Address' },
-        { value: 'payment', label: 'Payment' },
-        { value: 'confirm', label: 'Confirm' },
-    ]"
-/>
-```
-
-### Error state for failed step validation
-
-```vue
-<Stepper
-    v-model="step"
-    :steps="[
-        { value: 'account', label: 'Account', status: 'completed' },
-        { value: 'plan', label: 'Plan', status: 'error', description: 'Fix validation errors' },
-        { value: 'confirm', label: 'Confirm' },
-    ]"
-    clickable
-/>
-```
+- `indicator`
+- `step`
 
 ## Theming
 
-- Override via theme component overrides for each component documented on this page.
+- Override via `theme.overrides.components.stepper`.
 
 ## Tokens
 
@@ -79,27 +105,17 @@ Component tokens (override via `theme.overrides.components.stepper`):
 - `errorIndicatorBackgroundColor`, `errorIndicatorTextColor`, `errorIndicatorBorderColor`
 - `labelFontSize`, `labelColor`, `descriptionFontSize`, `descriptionColor`
 - `disabledOpacity`
-- `small.indicatorSize`, `small.indicatorFontSize`, `small.labelFontSize`, `small.descriptionFontSize`, `small.lineLength`, `small.itemGap`
-- `large.indicatorSize`, `large.indicatorFontSize`, `large.labelFontSize`, `large.descriptionFontSize`, `large.lineLength`, `large.itemGap`
+- `small.*`
+- `large.*`
 
-## Responsive
+## Recipes
 
-Validate tab/step headers for overflow, wrap, and scroll behavior on smaller viewports.
-Ensure active indicator and navigation controls remain clear and tappable on touch devices.
-
-## SSR/Hydration
-
-Preserve initially active section/step state and panel visibility across server and client render.
-Avoid hydration drift from client-only measurement used for indicator positioning.
-
-## Testing
-
-Cover controlled/uncontrolled active state, keyboard navigation, and disabled step/tab behavior.
-Add tests for deep-link/page-state sync when applicable and ARIA tab/step semantics.
+- Use `Stepper` as a progress or navigation primitive, not a full step workflow manager.
+- When the step headers and content panels are coupled, prefer `Wizard`.
+- Keep custom statuses explicit when the default active or completed inference is not enough.
 
 ## Accessibility
 
-- Active step is announced with `aria-current="step"`.
-- In clickable mode, keyboard navigation supports arrow keys and `Home`/`End` for step transitions.
-- Global `disabled` state prevents interactive step transitions for consistent behavior with other navigation/disclosure components.
-- Ensure visible focus state and sufficient color contrast in usage contexts.
+- Active step is exposed with `aria-current="step"`.
+- In clickable mode, keyboard navigation supports arrow keys and `Home` or `End`.
+- Disabled state prevents interactive transitions consistently across the entire stepper.

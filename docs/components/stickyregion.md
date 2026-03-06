@@ -1,25 +1,18 @@
 # StickyRegion
 
-## Purpose
+StickyRegion is a utility wrapper for sticky headers, subheaders, and action bars.
 
-- Provide sticky utility wrappers for header/subheader/action regions.
-- Standardize offset and z-index behavior for stacked sticky surfaces.
+## Import
 
-## Props
+```ts
+import StickyRegion from '@/package/components/sticky-region.vue';
+```
 
-- `as?: string` (default `div`)
-- `edge?: 'top' | 'bottom'` (default `top`)
-- `offset?: string` (default `0px`)
-- `zIndex?: string | number` (optional override)
-- `bordered?: boolean` (default `false`)
-- `shadow?: boolean` (default `false`)
-- `ariaLabel?: string` (optional landmark label)
+## Examples
 
-## Slots
+### Top Sticky Header
 
-- `default`
-
-## Example
+Use `edge="top"` for action bars and section headers that should stay visible while scrolling.
 
 ```vue
 <StickyRegion as="header" edge="top" offset="3.5rem" bordered shadow>
@@ -27,26 +20,49 @@
 </StickyRegion>
 ```
 
+### Bottom Sticky Actions
+
+Use `edge="bottom"` for mobile or workflow completion actions.
+
+```vue
+<StickyRegion edge="bottom" offset="0px" shadow>
+    <Button label="Save changes" />
+</StickyRegion>
+```
+
+## API
+
+### Props
+
+| Name | Type | Default |
+| --- | --- | --- |
+| `as` | `string` | `'div'` |
+| `edge` | `'top' \| 'bottom'` | `'top'` |
+| `offset` | `string` | `'0px'` |
+| `zIndex` | `string \| number` | `''` |
+| `bordered` | `boolean` | `false` |
+| `shadow` | `boolean` | `false` |
+| `ariaLabel` | `string` | `''` |
+
+## Theming
+
+Override component tokens through `theme.overrides.components.stickyRegion`.
+
 ## Tokens
 
-Component tokens (override via `theme.overrides.components.stickyRegion`):
-
-- `zIndex`, `padding`
-- `borderColor`, `backgroundColor`, `textColor`
+- `zIndex`
+- `padding`
+- `borderColor`
+- `backgroundColor`
+- `textColor`
 - `shadow`
 
-## Responsive
+## Recipes
 
-- Use `offset` to align sticky region with responsive app bars or top system bars.
-
-## SSR/Hydration
-
-- Sticky positioning is CSS-only and SSR-stable when `offset` is deterministic.
-
-## Testing
-
-- Covers top/bottom variants, border/shadow classes, and style overrides.
+- Use `offset` to line sticky regions up with app bars, system bars, or other already-sticky shell surfaces.
+- Keep sticky wrappers limited to meaningful utility regions, not arbitrary content blocks.
 
 ## Accessibility
 
-- Uses `role="region"` for non-semantic tags and supports explicit `ariaLabel`.
+- Non-semantic tags receive `role="region"`, while semantic `header` and `footer` keep their native meaning.
+- Add `ariaLabel` when multiple sticky regions exist on the same screen.

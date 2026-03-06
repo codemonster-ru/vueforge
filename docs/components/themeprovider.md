@@ -1,40 +1,55 @@
 # ThemeProvider
 
-## Purpose
+ThemeProvider scopes theme preset and token overrides to a subtree without replacing the global theme for the whole app.
 
-Provide local theme scope overrides for a component subtree without replacing global theme configuration.
+## Import
 
-## Props
-
-- `preset?: ThemePreset` - optional local preset baseline.
-- `overrides?: ThemePreset` - local token overrides merged with preset/global theme.
-- `as?: string` (default `div`) - root element tag.
-- `dark?: boolean` (default `false`) - use dark token variables for the scoped subtree.
-
-## Slots
-
-- `default`
-
-## Example
-
-```vue
-<script setup lang="ts">
-import { Button, ThemeProvider } from '@codemonster-ru/vueforge';
-</script>
-
-<template>
-    <ThemeProvider
-        :overrides="{
-            colors: { primary: '#7c3aed' },
-            components: { button: { backgroundColor: '#7c3aed' } },
-        }"
-    >
-        <Button> Scoped Themed Action </Button>
-    </ThemeProvider>
-</template>
+```ts
+import ThemeProvider from '@/package/components/theme-provider.vue';
 ```
 
-## Notes
+## Examples
 
-- Theme scope is applied as CSS variables on provider root.
-- Use `dark` mode for local dark-themed regions within mixed-layout pages.
+### Scoped Overrides
+
+```vue
+<ThemeProvider
+    :overrides="{
+        colors: { primary: '#7c3aed' },
+        components: { button: { backgroundColor: '#7c3aed' } },
+    }"
+>
+    <Button>Scoped Themed Action</Button>
+</ThemeProvider>
+```
+
+### Local Dark Region
+
+```vue
+<ThemeProvider :overrides="dashboardTheme" dark>
+    <DashboardSidebar />
+</ThemeProvider>
+```
+
+## API
+
+### Props
+
+| Name | Type | Default |
+| --- | --- | --- |
+| `preset` | `ThemePreset \| undefined` | `undefined` |
+| `overrides` | `ThemePreset \| undefined` | `undefined` |
+| `as` | `string` | `'div'` |
+| `dark` | `boolean` | `false` |
+
+### Slots
+
+| Name | Description |
+| --- | --- |
+| `default` | Content that should receive the scoped theme variables. |
+
+## Recipes
+
+- Use ThemeProvider for isolated themed surfaces, embedded product previews, and mixed light or dark regions.
+- Nested providers are valid; inner scopes override outer CSS variable values for their subtree.
+

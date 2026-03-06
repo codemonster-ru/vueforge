@@ -1,19 +1,92 @@
 # DateRangePicker
 
-## Purpose
+Capture a start and end date through one trigger and a shared range-selection calendar.
 
-Provide date/time input primitives for scheduling, reporting, and range-based filtering.
-Support localized parsing/display while keeping predictable controlled value contracts.
+## Import
+
+```ts
+import { DateRangePicker } from '@codemonster-ru/vueforge';
+```
+
+## Examples
+
+Use `DateRangePicker` for reporting, booking, and filter flows where start and end dates belong to one decision.
+
+### Basic
+
+Use the default picker for a simple reporting range.
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const dateRange = ref<[string | null, string | null] | null>(['2026-03-01', '2026-03-15']);
+</script>
+
+<template>
+    <DateRangePicker v-model="dateRange" placeholder="Pick date range" />
+</template>
+```
+
+### Partial Range
+
+Allow partial values while the user is still choosing the second date.
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const inProgress = ref<[string | null, string | null] | null>(['2026-04-01', null]);
+</script>
+
+<template>
+    <DateRangePicker v-model="inProgress" start-placeholder="Start date" end-placeholder="End date" />
+</template>
+```
+
+### With Bounds
+
+Use `min` and `max` to constrain the selectable reporting window.
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const fiscalRange = ref();
+</script>
+
+<template>
+    <DateRangePicker
+        v-model="fiscalRange"
+        min="2026-01-01"
+        max="2026-12-31"
+        separator=" to "
+    />
+</template>
+```
+
+### Outlined Variant
+
+Use `outlined` when the control sits on a filled surface.
+
+```vue
+<template>
+    <DateRangePicker
+        :model-value="['2026-06-01', '2026-06-30']"
+        variant="outlined"
+    />
+</template>
+```
 
 ## Props
 
-- `modelValue?: [string | null, string | null] | null` (v-model, ISO date `YYYY-MM-DD`)
+- `modelValue?: [string | null, string | null] | null` (v-model, ISO dates `YYYY-MM-DD`)
 - `placeholder?: string`
 - `startPlaceholder?: string` (default `Start`)
 - `endPlaceholder?: string` (default `End`)
-- `separator?: string` (default `-`)
-- `disabled?: boolean`
-- `readonly?: boolean`
+- `separator?: string` (default ` - `)
+- `disabled?: boolean` (default `false`)
+- `readonly?: boolean` (default `false`)
 - `min?: string` (ISO date `YYYY-MM-DD`)
 - `max?: string` (ISO date `YYYY-MM-DD`)
 - `locale?: string` (default from global date/time locale config, fallback `en-US`)
@@ -34,45 +107,38 @@ Support localized parsing/display while keeping predictable controlled value con
 
 - This component does not expose named slots.
 
-## Examples
-
-```vue
-<DateRangePicker v-model="dateRange" placeholder="Pick date range" min="2026-01-01" max="2026-12-31" />
-```
-
 ## Theming
 
-- Override via theme component overrides for each component documented on this page.
+- Override via `theme.overrides.components.daterangepicker`.
 
 ## Tokens
 
-- Use `theme.overrides.components` to customize this component where token support is available.
+Component tokens (override via `theme.overrides.components.daterangepicker`):
+
+- `minWidth`, `fontSize`, `controlGap`, `chevronSize`
+- `padding`, `borderRadius`, `borderColor`
+- `backgroundColor`, `textColor`, `placeholderColor`
+- `focusBorderColor`, `focusRingShadow`, `hoverBorderColor`
+- `disabledOpacity`
+- `panelWidth`, `panelBackgroundColor`, `panelBorderColor`, `panelPadding`, `panelRadiusOffset`, `panelShadow`
+- `headerGap`, `headerPadding`, `monthLabelFontSize`, `monthLabelFontWeight`
+- `navButtonSize`, `navButtonRadius`, `navButtonFontSize`
+- `weekdayColor`, `weekdayFontSize`, `weekdaysMarginBottom`
+- `daysGap`, `daySize`, `dayFontSize`, `dayBorderRadius`
+- `dayHoverBackgroundColor`, `daySelectedBackgroundColor`, `daySelectedTextColor`
+- `dayRangeBackgroundColor`, `dayRangeTextColor`, `dayMutedColor`, `dayTodayBorderColor`
+- `small.fontSize`, `small.padding`, `small.daySize`
+- `large.fontSize`, `large.padding`, `large.daySize`
 
 ## Recipes
 
-- Start with the examples above as baseline usage for this component.
-- Add product-specific variants (loading/error/dense/mobile) in consuming app docs when needed.
-
-## Responsive
-
-Validate panel positioning, grid readability, and action controls on small screens.
-Ensure touch interactions for day/time selection remain accurate with adequate target size.
-
-## SSR/Hydration
-
-Render initial date/time value and panel-closed state consistently in SSR output.
-Run locale/timezone-sensitive formatting in a hydration-safe way to prevent mismatch.
-
-## Testing
-
-Cover parsing/formatting, keyboard navigation, min/max constraints, and range/time edge cases.
-Add tests for locale variants and ARIA semantics for calendar and listbox-like panels.
+- Use one range picker instead of two separate date pickers when the dates are conceptually one filter.
+- Keep placeholders explicit so partial ranges remain understandable.
+- When the range must include time-of-day, compose `DateTimePicker` values explicitly instead of stretching this component.
 
 ## Accessibility
 
-- Trigger exposes popup semantics via `aria-haspopup="dialog"`, `aria-expanded`, and `aria-controls`.
-- Keyboard support: `ArrowDown` opens the popup, `Escape` closes, and day-grid navigation supports `Arrow` keys, `Home`/`End`, `PageUp`/`PageDown`, with `Enter`/`Space` commit.
-- `min`/`max` constraints disable out-of-range days.
-- Invalid ISO range values are ignored (treated as empty placeholders in display).
-- In `readonly` mode, open/select interactions are blocked.
-- Locale and week-start defaults can be configured globally: [`Date/Time Locale Setup`](../guides/date-time-locale-setup.md).
+- The trigger exposes popup semantics via `aria-haspopup="dialog"`, `aria-expanded`, and `aria-controls`.
+- The day grid supports arrow-key navigation, `Home`, `End`, `PageUp`, `PageDown`, `Enter`, and `Space`.
+- Invalid ISO values are ignored and rendered as an empty or partial state rather than coerced.
+- Locale and week-start defaults can be configured globally in [date-time-locale-setup.md](/Users/kolesnikov_k_a/Projects/Codemonster/JS/vueforge/docs/guides/date-time-locale-setup.md).

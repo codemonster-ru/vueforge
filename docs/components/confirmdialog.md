@@ -1,9 +1,79 @@
 # ConfirmDialog
 
-## Purpose
+Present a blocking confirmation flow with built-in confirm and cancel actions.
 
-Handle layered interactions (dialogs, overlays, contextual actions, and transient notifications) with consistent behavior.
-Centralize close policies, focus management, and stack/layer contracts for complex SaaS screens.
+## Import
+
+```ts
+import { ConfirmDialog } from '@codemonster-ru/vueforge';
+```
+
+## Examples
+
+Use `ConfirmDialog` when the user must explicitly accept or reject a blocking action.
+
+### Basic
+
+Use the defaults for destructive confirmation flows.
+
+```vue
+<template>
+    <ConfirmDialog
+        v-model="open"
+        title="Delete item?"
+        message="This action cannot be undone."
+        confirm-label="Delete"
+    />
+</template>
+```
+
+### Custom Severity And Labels
+
+Adjust labels and confirm severity to match the intent of the action.
+
+```vue
+<template>
+    <ConfirmDialog
+        v-model="open"
+        title="Publish changes?"
+        message="The new version will become visible to all users."
+        confirm-label="Publish"
+        cancel-label="Keep draft"
+        confirm-severity="primary"
+    />
+</template>
+```
+
+### Loading Confirm Action
+
+Use `loading` when the confirm action is async and the dialog should not close immediately.
+
+```vue
+<template>
+    <ConfirmDialog
+        v-model="open"
+        title="Sync project?"
+        message="This may take a minute."
+        :loading="true"
+        :close-on-confirm="false"
+    />
+</template>
+```
+
+### Custom Actions Slot
+
+Use the `actions` slot when the default two-button footer is not sufficient.
+
+```vue
+<template>
+    <ConfirmDialog v-model="open" title="Archive project?" message="You can restore it later.">
+        <template #actions="{ confirm, cancel }">
+            <Button label="Cancel" variant="outlined" severity="secondary" @click="cancel" />
+            <Button label="Archive" severity="warning" @click="confirm" />
+        </template>
+    </ConfirmDialog>
+</template>
+```
 
 ## Props
 
@@ -34,21 +104,9 @@ Centralize close policies, focus management, and stack/layer contracts for compl
 - `default` (optional) - dialog message/body content (fallbacks to `message`)
 - `actions` (optional) - custom action buttons; slot props: `{ confirm, cancel }`
 
-## Examples
-
-```vue
-<ConfirmDialog
-    v-model="open"
-    title="Delete item?"
-    message="This action cannot be undone."
-    confirm-label="Delete"
-    @confirm="removeItem"
-/>
-```
-
 ## Theming
 
-- Override via theme component overrides for each component documented on this page.
+- Override via `theme.overrides.components.confirmDialog`.
 
 ## Tokens
 
@@ -60,23 +118,9 @@ Component tokens (override via `theme.overrides.components.confirmDialog`):
 
 ## Recipes
 
-- Start with the examples above as baseline usage for this component.
-- Add product-specific variants (loading/error/dense/mobile) in consuming app docs when needed.
-
-## Responsive
-
-Verify overlay sizing, placement fallback, and viewport collision handling on mobile/tablet/desktop.
-Ensure gesture/touch close interactions and action buttons remain accessible on small screens.
-
-## SSR/Hydration
-
-Render closed/open initial state deterministically and keep portal/container structure hydration-safe.
-Initialize positioning/focus logic only after mount to avoid server-client markup drift.
-
-## Testing
-
-Cover open/close triggers, escape/outside click behavior, focus trap/restore, and stacking order.
-Add accessibility tests for ARIA roles, labelling, and keyboard navigation in layered UI.
+- Use `ConfirmDialog` for blocking confirmations that should interrupt the workflow before proceeding.
+- Keep destructive labels explicit (`Delete project`, `Archive workspace`) rather than generic (`Confirm`).
+- Use `closeOnConfirm=false` only when the caller truly needs to keep the dialog open during async completion.
 
 ## Accessibility
 

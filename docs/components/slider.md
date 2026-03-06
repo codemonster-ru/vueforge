@@ -1,9 +1,89 @@
 # Slider
 
-## Purpose
+Capture numeric values and ranges through direct drag or keyboard adjustment.
 
-Provide advanced task-focused interactions for authoring, media/input control, and guided workflows.
-Enable product features that require richer interaction than basic form controls.
+## Import
+
+```ts
+import { Slider } from '@codemonster-ru/vueforge';
+```
+
+## Examples
+
+Use `Slider` when relative scale matters and the user benefits from continuous adjustment instead of typing.
+
+### Basic
+
+Use a single-value slider for volume, zoom, or threshold controls.
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const volume = ref(60);
+</script>
+
+<template>
+    <Slider v-model="volume" :min="0" :max="100" :step="5" showValue />
+</template>
+```
+
+### Range
+
+Enable `range` when the user should define a start and end boundary.
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const priceRange = ref<[number, number]>([200, 700]);
+</script>
+
+<template>
+    <Slider v-model="priceRange" :min="0" :max="1000" :step="10" range showValue />
+</template>
+```
+
+### With Marks
+
+Use marks for discrete milestones or commonly understood thresholds.
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const retention = ref(30);
+</script>
+
+<template>
+    <Slider
+        v-model="retention"
+        :min="7"
+        :max="90"
+        :step="1"
+        :marks="[
+            { value: 7, label: '7d' },
+            { value: 30, label: '30d' },
+            { value: 60, label: '60d' },
+            { value: 90, label: '90d' }
+        ]"
+    />
+</template>
+```
+
+### Sizes
+
+Adjust size for compact control bars or more spacious settings surfaces.
+
+```vue
+<template>
+    <Stack gap="1rem">
+        <Slider :model-value="25" size="small" />
+        <Slider :model-value="50" />
+        <Slider :model-value="75" size="large" />
+    </Stack>
+</template>
+```
 
 ## Props
 
@@ -12,7 +92,7 @@ Enable product features that require richer interaction than basic form controls
 - `max?: number` (default `100`)
 - `step?: number` (default `1`)
 - `range?: boolean` (default `false`)
-- `disabled?: boolean`
+- `disabled?: boolean` (default `false`)
 - `size?: 'small' | 'normal' | 'large'` (default `normal`)
 - `variant?: 'filled' | 'outlined'` (default `filled`)
 - `showValue?: boolean` (default `false`)
@@ -33,16 +113,9 @@ Enable product features that require richer interaction than basic form controls
 
 - This component does not expose named slots.
 
-## Examples
-
-```vue
-<Slider v-model="volume" :min="0" :max="100" :step="5" show-value />
-<Slider v-model="priceRange" :min="0" :max="1000" :step="10" range />
-```
-
 ## Theming
 
-- Override via theme component overrides for each component documented on this page.
+- Override via `theme.overrides.components.slider`.
 
 ## Tokens
 
@@ -60,26 +133,12 @@ Component tokens (override via `theme.overrides.components.slider`):
 
 ## Recipes
 
-- Start with the examples above as baseline usage for this component.
-- Add product-specific variants (loading/error/dense/mobile) in consuming app docs when needed.
-
-## Responsive
-
-Verify control affordances, panel sizing, and gesture/mouse interactions across device classes.
-Ensure compact layouts preserve clarity for actions, handles, and contextual hints.
-
-## SSR/Hydration
-
-Keep initial value and panel-closed/base state stable between server and client output.
-Hydrate client-only interaction engines (editor, drag, command layers) without DOM mismatch.
-
-## Testing
-
-Cover core interaction loops, boundary conditions, and value/state synchronization.
-Add accessibility tests for keyboard alternatives, labelling, and focus behavior.
+- Use sliders only when approximate adjustment is faster than typing an exact number.
+- Add marks when certain milestones matter more than arbitrary intermediate values.
+- For precise financial or configuration input, pair the slider with a numeric field or use `NumberInput` directly.
 
 ## Accessibility
 
 - Uses native `input[type="range"]` semantics for keyboard and assistive technology support.
-- Provide explicit labels via `ariaLabel` (single) or `ariaLabelStart`/`ariaLabelEnd` (range).
-- Keep thumb/track/focus styles with sufficient contrast in custom themes.
+- Provide explicit labels via `ariaLabel` for single-value sliders or `ariaLabelStart` and `ariaLabelEnd` for ranges.
+- Keep thumb, track, and focus styles with sufficient contrast in custom themes.

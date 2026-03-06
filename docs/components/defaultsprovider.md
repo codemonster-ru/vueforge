@@ -1,42 +1,46 @@
 # DefaultsProvider
 
-## Purpose
+DefaultsProvider scopes default prop policies for VueForge components to a subtree.
 
-Provide subtree-scoped default prop policies for VueForge components.
+## Import
 
-## Props
-
-- `defaults?: ComponentDefaultsMap` - component-to-props default map.
-- `as?: string` (default `div`) - root element tag.
-
-## Example
-
-```vue
-<script setup lang="ts">
-import { Button, DefaultsProvider } from '@codemonster-ru/vueforge';
-</script>
-
-<template>
-    <DefaultsProvider
-        :defaults="{
-            Button: {
-                size: 'lg',
-                rounded: true,
-            },
-        }"
-    >
-        <Button> Large Rounded by Scope </Button>
-    </DefaultsProvider>
-</template>
+```ts
+import DefaultsProvider from '@/package/components/defaults-provider.vue';
 ```
 
-## Policy Priority
+## Examples
+
+### Scoped Defaults
+
+```vue
+<DefaultsProvider
+    :defaults="{
+        Button: {
+            size: 'lg',
+            rounded: true,
+        },
+    }"
+>
+    <Button>Large Rounded by Scope</Button>
+</DefaultsProvider>
+```
+
+## API
+
+### Props
+
+| Name | Type | Default |
+| --- | --- | --- |
+| `defaults` | `ComponentDefaultsMap` | `{}` |
+| `as` | `string` | `'div'` |
+
+## Priority
 
 1. Explicit component prop
 2. Nearest `DefaultsProvider` scoped defaults
 3. Component base defaults
 
-## Notes
+## Recipes
 
-- Nested providers are supported; inner provider overrides outer policy per component key.
-- Component keys map to public component names (for example `Button`, `Input`, `Chart`).
+- Use DefaultsProvider for local design policy shifts, demos, and app sections that need consistent defaults without repeating props.
+- Nested providers are supported; inner scopes override outer defaults per component key.

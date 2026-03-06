@@ -1,20 +1,63 @@
 # OtpInput
 
-## Purpose
+Capture a one-time code across multiple fixed cells with paste and keyboard support.
 
-Capture user text and numeric input with consistent API, validation hooks, and theming behavior.
-Support high-frequency form entry scenarios in SaaS settings, auth, and CRUD flows.
+## Import
+
+```ts
+import { OtpInput } from '@codemonster-ru/vueforge';
+```
+
+## Examples
+
+Use `OtpInput` for verification codes, backup codes, and other short fixed-length authentication tokens.
+
+### Basic
+
+Use the default six-cell numeric code entry.
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const otp = ref('');
+</script>
+
+<template>
+    <OtpInput v-model="otp" :length="6" />
+</template>
+```
+
+### Alphanumeric
+
+Enable `alphanumeric` for backup codes or mixed-character tokens.
+
+```vue
+<template>
+    <OtpInput model-value="A1B2C3D4" :length="8" alphanumeric variant="outlined" />
+</template>
+```
+
+### Auto Focus
+
+Use `autoFocus` when the code input is the next immediate task after navigation.
+
+```vue
+<template>
+    <OtpInput :length="4" auto-focus />
+</template>
+```
 
 ## Props
 
-- `modelValue?: string` (v-model)
+- `modelValue?: string`
 - `length?: number` (default `6`)
 - `placeholder?: string`
-- `disabled?: boolean`
-- `readonly?: boolean`
+- `disabled?: boolean` (default `false`)
+- `readonly?: boolean` (default `false`)
 - `required?: boolean` (default `false`)
 - `id?: string`
-- `name?: string` (cell names are generated as `${name}-1`, `${name}-2`, ...)
+- `name?: string`
 - `mask?: boolean` (default `false`)
 - `alphanumeric?: boolean` (default `false`)
 - `autocomplete?: string` (default `one-time-code`)
@@ -26,32 +69,25 @@ Support high-frequency form entry scenarios in SaaS settings, auth, and CRUD flo
 - `ariaLabelledby?: string`
 - `ariaDescribedby?: string`
 - `ariaInvalid?: boolean | 'true' | 'false'`
-- `ariaRequired?: boolean | 'true' | 'false'` (defaults to `'true'` when `required`)
+- `ariaRequired?: boolean | 'true' | 'false'`
 - `cellAriaLabelPrefix?: string` (default `OTP digit`)
 
 ## Events
 
 - `update:modelValue`
 - `change`
-- `complete` (payload: `string`)
+- `complete`
 - `focus`
 - `blur`
-- `paste` (payload: `string`)
+- `paste`
 
 ## Slots
 
 - This component does not expose named slots.
 
-## Examples
-
-```vue
-<OtpInput v-model="otp" :length="6" />
-<OtpInput v-model="backupCode" :length="8" alphanumeric variant="outlined" />
-```
-
 ## Theming
 
-- Override via theme component overrides for each component documented on this page.
+- Override via `theme.overrides.components.otpInput`.
 
 ## Tokens
 
@@ -67,28 +103,12 @@ Component tokens (override via `theme.overrides.components.otpInput`):
 
 ## Recipes
 
-- Start with the examples above as baseline usage for this component.
-- Add product-specific variants (loading/error/dense/mobile) in consuming app docs when needed.
-
-## Responsive
-
-Validate control height, helper/error text wrapping, and icon/addon placement across breakpoints.
-Ensure virtual keyboards and touch interaction do not clip labels, hints, or action icons.
-
-## SSR/Hydration
-
-Keep initial value, disabled, and readonly states identical between server and client render.
-Avoid hydration mismatches from client-only formatting or masking initialization.
-
-## Testing
-
-Cover v-model updates, input/change/blur events, and validation edge cases.
-Add accessibility tests for labeling, error semantics, and keyboard interaction contracts.
+- Use `OtpInput` when the code is fixed-length and benefits from one-character-per-cell scanning.
+- Keep `autoFocus` reserved for flows where the code step is unquestionably next.
+- Prefer alphanumeric mode for recovery codes and numeric mode for SMS or authenticator codes.
 
 ## Accessibility
 
-- Root uses `role="group"` and supports `ariaLabel` / `ariaLabelledby` / `ariaDescribedby`.
-- Each cell exposes a generated label like `OTP digit 1 of 6` (customizable via `cellAriaLabelPrefix`).
-- For invalid and required states, use `ariaInvalid` / `required` (or `ariaRequired` override).
-- Keyboard supports `ArrowLeft`/`ArrowRight` navigation, `Backspace` clearing, and paste distribution across cells.
-- Keyboard focus ring is provided per cell via `:focus-visible`.
+- Root uses `role="group"` and supports ARIA labelling and descriptions.
+- Each cell exposes a generated label such as `OTP digit 1 of 6`.
+- Keyboard supports left or right navigation, backspace clearing, and paste distribution.

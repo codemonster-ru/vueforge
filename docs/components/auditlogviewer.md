@@ -1,83 +1,107 @@
 # AuditLogViewer
 
-## Purpose
+AuditLogViewer displays audit events in a table with a detail drawer for payload inspection and diffs.
 
-Display operational audit events as a table with quick detail inspection in a side drawer, including payload diff (`before`/`after`).
+## Import
 
-## Props
-
-- `entries?: Array<AuditLogEntry>` (default `[]`)
-- `drawerTitle?: string` (default `Audit details`)
-- `emptyText?: string` (default `No audit records.`)
-- `detailsLabel?: string` (default `View`)
-- `ariaLabel?: string` (default `Audit log`)
-- `showDiff?: boolean` (default `true`)
-- `locale?: string` (default `en`)
-- `timeZone?: string` (optional IANA timezone)
-
-`AuditLogEntry`:
-
-- `id?: string | number`
-- `event: string`
-- `summary?: string`
-- `actor?: { id?: string | number; name: string; meta?: string }`
-- `entity?: string`
-- `timestamp?: string | number | Date`
-- `payload?: unknown`
-- `previousPayload?: unknown`
-
-## Events
-
-- `select({ entry, index })`
-- `openDetails({ entry, index })`
-- `closeDetails()`
-
-## Slots
-
-- `empty`
+```ts
+import AuditLogViewer from '@/package/components/audit-log-viewer.vue';
+```
 
 ## Examples
 
+### Basic
+
+Use `AuditLogViewer` on admin and security screens where operators scan many records and open only selected details.
+
 ```vue
-<AuditLogViewer :entries="auditEvents" drawer-title="Audit event" @openDetails="trackOpen" />
+<AuditLogViewer :entries="auditEvents" drawer-title="Audit event" />
 ```
+
+### Diff-Focused Details
+
+Keep `show-diff` enabled for configuration or permission changes where before and after payloads matter.
+
+```vue
+<AuditLogViewer
+    :entries="auditEvents"
+    show-diff
+    @open-details="trackOpen"
+/>
+```
+
+### Custom Empty State
+
+Use the `empty` slot when the audit surface needs product-specific onboarding or guidance.
+
+```vue
+<AuditLogViewer :entries="[]">
+    <template #empty>
+        No audit entries for the selected period.
+    </template>
+</AuditLogViewer>
+```
+
+## API
+
+### Types
+
+```ts
+interface AuditLogEntry {
+    id?: string | number;
+    event: string;
+    summary?: string;
+    actor?: { id?: string | number; name: string; meta?: string };
+    entity?: string;
+    timestamp?: string | number | Date;
+    payload?: unknown;
+    previousPayload?: unknown;
+}
+```
+
+### Props
+
+| Name | Type | Default |
+| --- | --- | --- |
+| `entries` | `AuditLogEntry[]` | `[]` |
+| `drawerTitle` | `string` | `'Audit details'` |
+| `emptyText` | `string` | `'No audit records.'` |
+| `detailsLabel` | `string` | `'View'` |
+| `ariaLabel` | `string` | `'Audit log'` |
+| `showDiff` | `boolean` | `true` |
+| `locale` | `string` | `'en'` |
+| `timeZone` | `string \| undefined` | `undefined` |
+
+### Events
+
+| Name | Payload |
+| --- | --- |
+| `select` | `{ entry, index }` |
+| `openDetails` | `{ entry, index }` |
+| `closeDetails` | none |
+
+### Slots
+
+| Name | Description |
+| --- | --- |
+| `empty` | Replaces the empty-state row. |
 
 ## Theming
 
-- Override via `theme.overrides.components.auditLogViewer`.
+Override component tokens through `theme.overrides.components.auditLogViewer`.
 
 ## Tokens
 
-- `borderColor`, `borderRadius`, `backgroundColor`, `textColor`
-- `dividerColor`, `headerBackgroundColor`
-- `fontSize`, `cellPadding`
-- `eventFontWeight`
-- `metaColor`, `metaFontSize`
-- `actionColor`, `actionFontSize`
-- `detailsGap`, `sectionTitleFontSize`
-- `monoFontFamily`, `monoFontSize`
+- Table surface: `borderColor`, `borderRadius`, `backgroundColor`, `textColor`, `dividerColor`, `headerBackgroundColor`
+- Typography: `fontSize`, `eventFontWeight`, `metaColor`, `metaFontSize`, `actionColor`, `actionFontSize`
+- Detail drawer content: `detailsGap`, `sectionTitleFontSize`, `monoFontFamily`, `monoFontSize`, `cellPadding`
 
 ## Recipes
 
-- Use for admin and security pages where operators scan many events and inspect only selected records in the drawer.
-- Keep `showDiff=true` for change-heavy entities (RBAC, billing, settings) to show field-level payload transitions.
+- Use `showDiff` for change-heavy domains like RBAC, billing, and settings.
+- Provide explicit `locale` and `timeZone` when audit timestamps must be stable across operators.
 
 ## Accessibility
 
-- Table uses semantic header/cell structure and configurable `ariaLabel`.
-- Row details action is a native button.
-- Detail pane uses `Drawer` dialog semantics with focus trap and `Escape` close behavior.
-
-## Responsive
-
-- Main table keeps horizontal overflow support on narrow screens.
-- Detail drawer remains readable on mobile with wrapped diff payload blocks.
-
-## SSR/Hydration
-
-- Timestamp formatting is deterministic for static values; provide stable `locale`/`timeZone` where needed.
-- Drawer interaction is client-driven and hydration-safe.
-
-## Testing
-
-- Cover table render, empty state, drawer open/close events, and payload diff output.
+- The main table uses semantic rows and headers.
+- Detail inspection runs through `Drawer`, so focus and escape behavior follow dialog conventions.

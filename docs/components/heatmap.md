@@ -1,55 +1,18 @@
 # Heatmap
 
-## Purpose
+Heatmap is a typed wrapper over `Chart` for matrix-style intensity visualization with an optional range legend.
 
-Provide a typed heatmap component on top of VueForge `Chart`, including axis labeling and range legend support.
+## Import
 
-## Props
+```ts
+import Heatmap from '@/package/components/heatmap.vue';
+```
 
-- `cells?: Array<HeatmapCell>` - matrix cells.
-- `xLabels?: Array<string | number>` - explicit x-axis labels.
-- `yLabels?: Array<string | number>` - explicit y-axis labels.
-- `adapter?: ChartAdapter` - rendering adapter (for example, `createChartJsAdapter`).
-- `options?: Record<string, unknown>` - chart-engine options override.
-- `colorRange?: Array<string>` - palette from low to high values.
-- `showRangeLegend?: boolean` (default `true`) - render value-range legend.
-- `cellRadius?: number` (default `14`) - visual cell size in bubble renderer.
-- `width?: number` (default `640`)
-- `height?: number` (default `320`)
-- `loading?: boolean` (default `false`)
-- `loadingText?: string` (default `Loading chart...`)
-- `emptyText?: string` (default `No chart data`)
-- `ariaLabel?: string` (default `Heatmap`)
-- `lazy?: boolean` (default `true`)
-- `lazyRootMargin?: string` (default `200px`)
-- `lazyThreshold?: number` (default `0`)
-- `pt?: PassThroughOptions`
-- `unstyled?: boolean` (default `false`)
+## Examples
 
-### `HeatmapCell`
+### Basic
 
-- `x: string | number`
-- `y: string | number`
-- `value: number`
-
-### `HeatmapRangeItem`
-
-- `min: number`
-- `max: number`
-- `color: string`
-- `label: string`
-
-## Events
-
-- `ready` (`ChartAdapterInstance`)
-- `error` (`Error`)
-
-## Slots
-
-- `loading`
-- `empty`
-
-## Example
+Use `Heatmap` for activity density, system saturation, or resource-by-time summaries.
 
 ```vue
 <script setup lang="ts">
@@ -73,26 +36,96 @@ const adapter = createChartJsAdapter(ChartJs);
 </template>
 ```
 
-## Accessibility
+### Custom Palette
 
-- Uses `role="img"` via base `Chart` canvas and supports custom `ariaLabel`.
-- For critical metrics, provide a nearby table summary with numeric values.
+Override `color-range` when the heatmap should align with product semantics or alert levels.
+
+```vue
+<Heatmap
+    :adapter="adapter"
+    :cells="cells"
+    :color-range="['#ecfeff', '#67e8f9', '#0891b2', '#164e63']"
+/>
+```
+
+### Compact Mode
+
+Reduce dimensions and hide the legend for card-sized summaries.
+
+```vue
+<Heatmap
+    :adapter="adapter"
+    :cells="cells"
+    :show-range-legend="false"
+    :height="240"
+/>
+```
+
+## API
+
+### Types
+
+```ts
+interface HeatmapCell {
+    x: string | number;
+    y: string | number;
+    value: number;
+}
+```
+
+### Props
+
+| Name | Type | Default |
+| --- | --- | --- |
+| `cells` | `HeatmapCell[]` | `[]` |
+| `xLabels` | `Array<string \| number>` | `[]` |
+| `yLabels` | `Array<string \| number>` | `[]` |
+| `adapter` | `ChartAdapter \| undefined` | `undefined` |
+| `options` | `Record<string, unknown>` | `{}` |
+| `colorRange` | `string[]` | default palette |
+| `showRangeLegend` | `boolean` | `true` |
+| `cellRadius` | `number` | `14` |
+| `width` | `number` | `640` |
+| `height` | `number` | `320` |
+| `loading` | `boolean` | `false` |
+| `loadingText` | `string` | `'Loading chart...'` |
+| `emptyText` | `string` | `'No chart data'` |
+| `ariaLabel` | `string` | `'Heatmap'` |
+| `lazy` | `boolean` | `true` |
+| `lazyRootMargin` | `string` | `'200px'` |
+| `lazyThreshold` | `number` | `0` |
+| `pt` | `PassThroughOptions \| undefined` | `undefined` |
+| `unstyled` | `boolean` | `false` |
+
+### Events
+
+| Name | Payload |
+| --- | --- |
+| `ready` | `ChartAdapterInstance` |
+| `error` | `Error` |
+
+### Slots
+
+| Name | Description |
+| --- | --- |
+| `loading` | Replaces the loading state. |
+| `empty` | Replaces the empty state. |
 
 ## Theming
 
-- Inherits chart token set via `theme.overrides.components.chart`.
+`Heatmap` does not have its own default preset file in `src/package/themes/default/components/`. In this repo it inherits the shared `Chart` theming contract through `theme.overrides.components.chart`.
 
-## Responsive
+## Tokens
 
-- Uses responsive base chart options and stretches to container width.
-- Range legend wraps and remains readable on small viewports.
+- Inherit chart surface, typography, focus, and state tokens from `Chart`
+- Heatmap-specific visual tuning usually comes from `series*` palette tokens and explicit `colorRange`
 
-## SSR/Hydration
+## Recipes
 
-- Adapter mount happens only on client mount and respects `lazy` viewport rendering.
-- Loading/empty states and range legend structure are deterministic for hydration-safe markup.
+- Use `Heatmap` when magnitude at two dimensions matters more than sequential trends.
+- Drop to `Chart` when you need lower-level engine customization outside the typed heatmap behavior.
 
-## Testing
+## Accessibility
 
-- Cover cell-to-axis mapping, legend rendering, and tooltip/axis label callbacks.
-- Cover adapter error propagation and exposed methods.
+- The chart still uses image semantics via the base `Chart` runtime.
+- For critical operational dashboards, accompany the heatmap with textual or tabular value summaries.

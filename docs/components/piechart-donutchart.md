@@ -1,103 +1,103 @@
 # PieChart / DonutChart
 
-## Purpose
+PieChart and DonutChart are typed wrappers over `Chart` for category distribution with optional interactive legends and drilldown hooks.
 
-Provide category-distribution charts on top of VueForge `Chart`, including interactive legend toggles and drilldown hooks.
+`DonutChart` is a convenience alias of `PieChart` with the donut variant.
 
-`DonutChart` is a convenience alias of `PieChart` with `variant="donut"`.
+## Import
 
-## Props
-
-- `labels?: Array<string | number>` - category labels.
-- `series?: Array<PieChartSeries>` - category values (single or multiple datasets).
-- `variant?: 'pie' | 'donut'` (PieChart only, default `pie`)
-- `adapter?: ChartAdapter` - rendering adapter (for example, `createChartJsAdapter`).
-- `options?: Record<string, unknown>` - chart-engine options override.
-- `showLegend?: boolean` (default `true`) - render VueForge legend list under chart.
-- `legendInteractive?: boolean` (default `true`) - allow toggling category visibility from legend.
-- `width?: number` (default `640`)
-- `height?: number` (default `320`)
-- `loading?: boolean` (default `false`)
-- `loadingText?: string` (default `Loading chart...`)
-- `emptyText?: string` (default `No chart data`)
-- `ariaLabel?: string` (`Pie chart` / `Donut chart`)
-- `lazy?: boolean` (default `true`)
-- `lazyRootMargin?: string` (default `200px`)
-- `lazyThreshold?: number` (default `0`)
-- `pt?: PassThroughOptions`
-- `unstyled?: boolean` (default `false`)
-
-### `PieChartSeries`
-
-- `label?: string`
-- `data: Array<number | null>`
-- `backgroundColor?: Array<string>`
-- `borderColor?: Array<string>`
-- `borderWidth?: number`
-- `...rest` - additional dataset fields are passed to the chart adapter.
-
-## Events
-
-- `ready` (`ChartAdapterInstance`)
-- `error` (`Error`)
-- `legendToggle` (`{ index, label, hidden }`) - fired when legend item is toggled.
-- `sliceClick` (`{ datasetIndex, index, label, value }`) - fired when chart engine click callback reports a slice.
-- `drilldown` (`{ source: 'legend' | 'slice', index, label, value, datasetIndex? }`) - unified hook for downstream drill-in flows.
-
-## Slots
-
-- `loading`
-- `empty`
-- `legendLabel` (`{ label, value, index }`) - custom legend row content.
+```ts
+import PieChart from '@/package/components/pie-chart.vue';
+import DonutChart from '@/package/components/donut-chart.vue';
+```
 
 ## Examples
 
+### Pie
+
 ```vue
-<script setup lang="ts">
-import { PieChart, DonutChart, createChartJsAdapter } from '@codemonster-ru/vueforge';
-import ChartJs from 'chart.js/auto';
-
-const adapter = createChartJsAdapter(ChartJs);
-</script>
-
-<template>
-    <PieChart
-        :adapter="adapter"
-        :labels="['North', 'South', 'West']"
-        :series="[{ data: [42, 35, 23], backgroundColor: ['#2f80ed', '#27ae60', '#f2994a'] }]"
-        @drilldown="payload => console.log(payload)"
-    />
-
-    <DonutChart
-        :adapter="adapter"
-        :labels="['Free', 'Pro', 'Enterprise']"
-        :series="[{ data: [58, 34, 8], backgroundColor: ['#93c5fd', '#2f80ed', '#1d4ed8'] }]"
-    />
-</template>
+<PieChart
+    :adapter="adapter"
+    :labels="['North', 'South', 'West']"
+    :series="[{ data: [42, 35, 23], backgroundColor: ['#2f80ed', '#27ae60', '#f2994a'] }]"
+/>
 ```
 
-## Accessibility
+### Donut
 
-- Uses `role="img"` via base `Chart` canvas and supports custom `ariaLabel`.
-- Legend controls are keyboard-focusable buttons and expose `aria-pressed` state.
-- For critical metrics, provide a nearby data table summary.
+```vue
+<DonutChart
+    :adapter="adapter"
+    :labels="['Free', 'Pro', 'Enterprise']"
+    :series="[{ data: [58, 34, 8], backgroundColor: ['#93c5fd', '#2f80ed', '#1d4ed8'] }]"
+/>
+```
+
+### Interactive Legend
+
+```vue
+<PieChart
+    :adapter="adapter"
+    :labels="labels"
+    :series="series"
+    show-legend
+    legend-interactive
+    @drilldown="onDrilldown"
+/>
+```
+
+## API
+
+### Types
+
+```ts
+interface PieChartSeries {
+    label?: string;
+    data: Array<number | null>;
+    backgroundColor?: string[];
+    borderColor?: string[];
+    borderWidth?: number;
+    [key: string]: unknown;
+}
+```
+
+### Props
+
+| Name | Type | Default |
+| --- | --- | --- |
+| `labels` | `(string \| number)[]` | `[]` |
+| `series` | `PieChartSeries[]` | `[]` |
+| `variant` | `'pie' \| 'donut'` | `'pie'` |
+| `adapter` | `ChartAdapter \| undefined` | `undefined` |
+| `options` | `Record<string, unknown>` | `{}` |
+| `showLegend` | `boolean` | `true` |
+| `legendInteractive` | `boolean` | `true` |
+| chart base props | same as `Chart` | |
+
+### Events
+
+| Name | Payload |
+| --- | --- |
+| `ready` | `ChartAdapterInstance` |
+| `error` | `Error` |
+| `legendToggle` | `{ index, label, hidden }` |
+| `sliceClick` | `{ datasetIndex, index, label, value }` |
+| `drilldown` | `{ source, index, label, value, datasetIndex? }` |
+
+### Slots
+
+| Name | Description |
+| --- | --- |
+| `loading` | Replaces the loading state. |
+| `empty` | Replaces the empty state. |
+| `legendLabel` | Custom legend row content with `{ label, value, index }`. |
 
 ## Theming
 
-- Inherits chart token set via `theme.overrides.components.chart`.
+PieChart and DonutChart inherit the shared chart token set from `theme.overrides.components.chart`.
 
-## Responsive
+## Recipes
 
-- Uses responsive base chart options and stretches to container width.
-- Legend wraps below chart and remains keyboard-accessible on small screens.
+- Use PieChart for simple proportion snapshots and DonutChart when the hollow center improves layout or leaves room for supplementary KPI treatment.
+- Prefer bar-based comparisons when categories are numerous or values are close enough that arc comparison becomes hard to read.
 
-## SSR/Hydration
-
-- Adapter mount happens only on client mount and respects `lazy` viewport rendering.
-- Loading/empty states and legend structure are deterministic for hydration-safe markup.
-
-## Testing
-
-- Cover legend rendering/toggle behavior and drilldown emissions.
-- Cover pie/donut variant config and slice click hook behavior.
-- Cover alias wrapper (`DonutChart`) event forwarding.

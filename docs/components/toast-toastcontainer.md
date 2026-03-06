@@ -1,13 +1,86 @@
 # Toast / ToastContainer
 
-## Purpose
+Display non-blocking transient notifications in a positioned stack.
 
-Handle layered interactions (dialogs, overlays, contextual actions, and transient notifications) with consistent behavior.
-Centralize close policies, focus management, and stack/layer contracts for complex SaaS screens.
+## Import
 
-## Overview
+```ts
+import { Toast, ToastContainer } from '@codemonster-ru/vueforge';
+```
 
-Props (Toast):
+## Examples
+
+Use `Toast` for lightweight global feedback that should not interrupt the current task.
+
+### Basic
+
+Use one container near the app root and render toasts inside it.
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const toastOpen = ref(true);
+</script>
+
+<template>
+    <ToastContainer position="top-right">
+        <Toast
+            v-model="toastOpen"
+            title="Saved"
+            message="Changes are saved."
+            severity="success"
+            :duration="2500"
+        />
+    </ToastContainer>
+</template>
+```
+
+### Persistent Warning
+
+Set `duration="0"` for user-dismissed notifications.
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const toastOpen = ref(true);
+</script>
+
+<template>
+    <ToastContainer position="bottom-right">
+        <Toast
+            v-model="toastOpen"
+            title="Sync delayed"
+            message="The background job is still running."
+            severity="warn"
+            :duration="0"
+        />
+    </ToastContainer>
+</template>
+```
+
+### Custom Body Content
+
+Use the default slot when the message body needs richer inline content.
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const toastOpen = ref(true);
+</script>
+
+<template>
+    <ToastContainer>
+        <Toast v-model="toastOpen" title="Deployment finished" severity="success">
+            Workspace metrics are ready to review.
+        </Toast>
+    </ToastContainer>
+</template>
+```
+
+## Toast Props
 
 - `modelValue?: boolean` (v-model)
 - `title?: string`
@@ -16,42 +89,24 @@ Props (Toast):
 - `closable?: boolean` (default `true`)
 - `duration?: number` (ms, default `0`, no auto-close)
 
-Props (ToastContainer):
+## ToastContainer Props
 
 - `position?: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left'` (default `top-right`)
 - `ariaLabel?: string` (default `Notifications`)
 
-## Props
-
-- No additional props documented for this component at the moment.
-
 ## Events
 
 - `Toast`: `update:modelValue`, `open`, `close`
-- `ToastContainer`: no emitted events
+- `ToastContainer`: this component does not emit component-specific events
 
 ## Slots
 
 - `Toast`: `default` (message body), `close` (close control content)
-- `ToastContainer`: default slot for stacked `Toast` items
-
-## Examples
-
-```vue
-<ToastContainer position="top-right">
-    <Toast v-model="toastOpen" title="Saved" message="Changes are saved." severity="success" :duration="2500" />
-</ToastContainer>
-```
-
-## Recipes
-
-- Success feedback: short-lived save confirmation (`duration` 1500-3000 ms).
-- Persistent warning: `duration=0` with close button for user-dismissed alerts.
-- Global stack: place a single `ToastContainer` near app root and render toast instances from store.
+- `ToastContainer`: `default` for stacked `Toast` items
 
 ## Theming
 
-- Override via theme component overrides for each component documented on this page.
+- Override via `theme.overrides.components.toast`.
 
 ## Tokens
 
@@ -62,46 +117,16 @@ Component tokens (override via `theme.overrides.components.toast`):
 - `fontSize`, `lineHeight`, `bodyGap`
 - `titleFontSize`, `titleFontWeight`, `closeSize`
 - `containerGap`, `containerPadding`, `containerMaxWidth`, `zIndex`
-- `info.*`, `success.*`, `warn.*`, `danger.*` (backgroundColor/borderColor/textColor)
+- `info.*`, `success.*`, `warn.*`, `danger.*`
 
-## Responsive
+## Recipes
 
-Verify overlay sizing, placement fallback, and viewport collision handling on mobile/tablet/desktop.
-Ensure gesture/touch close interactions and action buttons remain accessible on small screens.
-
-## SSR/Hydration
-
-Render closed/open initial state deterministically and keep portal/container structure hydration-safe.
-Initialize positioning/focus logic only after mount to avoid server-client markup drift.
-
-## Testing
-
-Cover open/close triggers, escape/outside click behavior, focus trap/restore, and stacking order.
-Add accessibility tests for ARIA roles, labelling, and keyboard navigation in layered UI.
+- Use short-lived success toasts for save or completion feedback.
+- Use persistent warning toasts only when the user can safely dismiss them later.
+- Keep a single `ToastContainer` near the app root and feed it from app or feature state.
 
 ## Accessibility
 
 - Toast uses `role="status"` with `aria-live="polite"` for non-blocking announcements.
-- `ToastContainer` uses a live region (`role="region"`, `aria-live="polite"`) and supports `ariaLabel`.
-- Close control is a native button with accessible label (`Close toast`).
-- Keep toasts brief and actionable; avoid long interactive content in toast body.
-
-## Interaction Contract
-
-- `modelValue=true`:
-    - emits `open`
-    - renders toast content in current container
-- Close triggers:
-    - close button (when `closable=true`)
-    - auto-dismiss timer when `duration > 0`
-- On close:
-    - emits `update:modelValue=false`
-    - emits `close`
-
-## Z-Index Policy
-
-- Toast stack uses `--vf-toast-z-index` (default `120`).
-- Default layer intent:
-    - above command palette (`110`) and modal/drawer (`100`)
-    - below notification center (`125`)
-- Keep toast non-blocking; do not use as modal replacement.
+- `ToastContainer` uses a live region and supports `ariaLabel`.
+- Close control is a native button with accessible label `Close toast`.

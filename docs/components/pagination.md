@@ -1,19 +1,72 @@
 # Pagination
 
-## Purpose
+Navigate paged result sets with explicit previous, next, and numbered page controls.
 
-Organize multi-section and multi-step workflows with explicit progression and navigation semantics.
-Support dense information architecture in settings, onboarding, and detail screens.
+## Import
+
+```ts
+import { Pagination } from '@codemonster-ru/vueforge';
+```
+
+## Examples
+
+Use `Pagination` when a large result set is chunked into pages rather than infinite scrolling.
+
+### Basic
+
+Use `totalItems` and `pageSize` for straightforward client or API-backed paging.
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const page = ref(3);
+</script>
+
+<template>
+    <Pagination v-model="page" :total-items="240" :page-size="20" />
+</template>
+```
+
+### With Explicit Total Pages
+
+Use `totalPages` when the API already gives you page count directly.
+
+```vue
+<template>
+    <Pagination :model-value="2" :total-pages="12" />
+</template>
+```
+
+### Dense Footer
+
+Use the small size in table footers and compact admin layouts.
+
+```vue
+<template>
+    <Pagination :model-value="5" :total-items="480" :page-size="25" size="small" />
+</template>
+```
+
+### Outlined Variant
+
+Use `outlined` on filled panels or dashboards.
+
+```vue
+<template>
+    <Pagination :model-value="4" :total-pages="16" variant="outlined" />
+</template>
+```
 
 ## Props
 
 - `modelValue?: number` (v-model, default `1`)
 - `totalItems?: number` (default `0`)
 - `pageSize?: number` (default `10`)
-- `totalPages?: number` (optional override instead of `totalItems/pageSize`)
+- `totalPages?: number` (optional override instead of `totalItems / pageSize`)
 - `siblingCount?: number` (default `1`)
 - `boundaryCount?: number` (default `1`)
-- `disabled?: boolean`
+- `disabled?: boolean` (default `false`)
 - `size?: 'small' | 'normal' | 'large'` (default `normal`)
 - `variant?: 'filled' | 'outlined'` (default `filled`)
 - `prevLabel?: string` (default `Prev`)
@@ -28,12 +81,6 @@ Support dense information architecture in settings, onboarding, and detail scree
 ## Slots
 
 - This component does not expose named slots.
-
-## Examples
-
-```vue
-<Pagination v-model="page" :total-items="240" :page-size="20" />
-```
 
 ## Theming
 
@@ -55,25 +102,12 @@ Component tokens (override via `theme.overrides.components.pagination`):
 
 ## Recipes
 
-- Standard list pagination with `totalItems` + `pageSize`.
-- API-driven pagination where page is synced to route/query state.
-- Dense table footer pagination using `size="small"`.
-
-## Responsive
-
-Validate tab/step headers for overflow, wrap, and scroll behavior on smaller viewports.
-Ensure active indicator and navigation controls remain clear and tappable on touch devices.
-
-## SSR/Hydration
-
-Preserve initially active section/step state and panel visibility across server and client render.
-Avoid hydration drift from client-only measurement used for indicator positioning.
-
-## Testing
-
-Cover controlled/uncontrolled active state, keyboard navigation, and disabled step/tab behavior.
-Add tests for deep-link/page-state sync when applicable and ARIA tab/step semantics.
+- Use `totalPages` only when the backend already resolves page count; otherwise prefer `totalItems` and `pageSize`.
+- Keep the current page synchronized with route query state for filterable list pages.
+- Reduce sibling and boundary counts in dense layouts where width is constrained.
 
 ## Accessibility
 
-- Ensure keyboard access, visible focus state, and sufficient color contrast in usage contexts.
+- Uses navigation semantics via `<nav aria-label="Pagination">`.
+- Current page is exposed through `aria-current="page"`.
+- Previous and next controls are disabled automatically at the bounds.

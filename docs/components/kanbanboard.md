@@ -1,41 +1,26 @@
 # KanbanBoard
 
-## Purpose
+KanbanBoard renders draggable lane-based work items with keyboard drag and drop, optional virtualization, and customizable column and card templates.
 
-Render and manage high-density operational data with scalable interaction patterns.
-Support filtering, navigation, and bulk workflows used in core SaaS backoffice screens.
+## Import
 
-## Props
-
-- `columns?: Array<{ id: string | number; title: string }>`
-- `items?: Array<{ id: string | number; columnId: string | number; title: string; description?: string; assignee?: string; priority?: 'low' | 'medium' | 'high'; tags?: string[] }>`
-- `ariaLabel?: string` (default `Kanban board`)
-- `emptyColumnText?: string` (default `Drop cards here`)
-- `virtualization?: boolean` (default `false`)
-- `virtualizationThreshold?: number` (default `40`)
-- `itemHeight?: number` (default `72`)
-- `swimlaneHeight?: number` (default `420`)
-- `overscan?: number` (default `3`)
-- `keyboardDnD?: boolean` (default `true`)
-
-## Events
-
-- `update:items`
-- `move`
-- `click`
-
-## Slots
-
-- `column-header` (optional) - slot props `{ column, items }`
-- `card` (optional) - slot props `{ item, column, index }`
-- `column-footer` (optional) - slot props `{ column, items }`
-- `empty-column` (optional) - slot props `{ column }`
+```ts
+import KanbanBoard from '@/package/components/kanban-board.vue';
+```
 
 ## Examples
+
+### Basic
+
+Use `v-model:items` to let the board emit reordered cards after moves.
 
 ```vue
 <KanbanBoard v-model:items="items" :columns="columns" @move="onMove" />
 ```
+
+### Virtualized Lanes
+
+Enable virtualization for tall lanes with many cards.
 
 ```vue
 <KanbanBoard
@@ -48,53 +33,110 @@ Support filtering, navigation, and bulk workflows used in core SaaS backoffice s
 />
 ```
 
+### Custom Card Content
+
+Use the `card` slot when the board needs richer cards than the built-in title, description, tags, and assignee layout.
+
+```vue
+<KanbanBoard v-model:items="items" :columns="columns">
+    <template #card="{ item }">
+        <article class="task-card">
+            <strong>{{ item.title }}</strong>
+            <p>{{ item.description }}</p>
+            <StatusBadge :severity="item.priority" />
+        </article>
+    </template>
+</KanbanBoard>
+```
+
+### Custom Headers And Footers
+
+Use header and footer slots for lane-level controls or metrics.
+
+```vue
+<KanbanBoard v-model:items="items" :columns="columns">
+    <template #column-header="{ column, items }">
+        <Inline gap="sm">
+            <h3>{{ column.title }}</h3>
+            <Badge :value="items.length" />
+        </Inline>
+    </template>
+</KanbanBoard>
+```
+
+## API
+
+### Types
+
+```ts
+type KanbanId = string | number;
+type KanbanPriority = 'low' | 'medium' | 'high';
+
+interface KanbanColumn {
+    id: KanbanId;
+    title: string;
+}
+
+interface KanbanBoardItem {
+    id: KanbanId;
+    columnId: KanbanId;
+    title: string;
+    description?: string;
+    assignee?: string;
+    priority?: KanbanPriority;
+    tags?: string[];
+}
+```
+
+### Props
+
+| Name | Type | Default |
+| --- | --- | --- |
+| `columns` | `KanbanColumn[]` | `[]` |
+| `items` | `KanbanBoardItem[]` | `[]` |
+| `ariaLabel` | `string` | `'Kanban board'` |
+| `emptyColumnText` | `string` | `'Drop cards here'` |
+| `virtualization` | `boolean` | `false` |
+| `virtualizationThreshold` | `number` | `40` |
+| `itemHeight` | `number` | `72` |
+| `swimlaneHeight` | `number` | `420` |
+| `overscan` | `number` | `3` |
+| `keyboardDnD` | `boolean` | `true` |
+
+### Events
+
+| Name | Payload |
+| --- | --- |
+| `update:items` | updated items array |
+| `move` | `item, fromColumnId, toColumnId` |
+| `click` | card item |
+
+### Slots
+
+| Name | Description |
+| --- | --- |
+| `column-header` | `{ column, items }` |
+| `card` | `{ item, column, index }` |
+| `column-footer` | `{ column, items }` |
+| `empty-column` | `{ column }` |
+
 ## Theming
 
-- Override via theme component overrides for each component documented on this page.
+Override component tokens through `theme.overrides.components.kanbanBoard`.
 
 ## Tokens
 
-Component tokens (override via `theme.overrides.components.kanbanBoard`):
-
-- `gap`, `columnMinWidth`, `columnGap`
-- `columnBorderColor`, `columnBorderRadius`, `columnBackgroundColor`
-- `columnHeaderPadding`, `columnHeaderBorderColor`
-- `columnTitleFontSize`, `columnTitleFontWeight`, `columnCountFontSize`, `columnCountColor`
-- `bodyPadding`
-- `cardGap`, `cardPadding`, `cardBorderRadius`, `cardBorderColor`, `cardBackgroundColor`, `cardHoverBorderColor`
-- `cardTitleFontSize`, `cardTitleFontWeight`, `cardDescriptionFontSize`, `cardDescriptionColor`
-- `priorityLowColor`, `priorityMediumColor`, `priorityHighColor`
-- `tagGap`, `tagPadding`, `tagBorderRadius`, `tagBackgroundColor`, `tagTextColor`
-- `assigneeFontSize`, `assigneeColor`
-- `emptyPadding`, `emptyColor`
-- `columnFooterPadding`, `columnFooterBorderColor`
-- `dragOpacity`
+- Columns: `gap`, `columnMinWidth`, `columnGap`, `columnBorderColor`, `columnBorderRadius`, `columnBackgroundColor`, `columnHeaderPadding`, `columnHeaderBorderColor`, `columnTitleFontSize`, `columnTitleFontWeight`, `columnCountFontSize`, `columnCountColor`, `bodyPadding`, `columnFooterPadding`, `columnFooterBorderColor`
+- Cards: `cardGap`, `cardPadding`, `cardBorderRadius`, `cardBorderColor`, `cardBackgroundColor`, `cardHoverBorderColor`, `cardTitleFontSize`, `cardTitleFontWeight`, `cardDescriptionFontSize`, `cardDescriptionColor`
+- Priority and metadata: `priorityLowColor`, `priorityMediumColor`, `priorityHighColor`, `tagGap`, `tagPadding`, `tagBorderRadius`, `tagBackgroundColor`, `tagTextColor`, `assigneeFontSize`, `assigneeColor`
+- Empty and drag state: `emptyPadding`, `emptyColor`, `dragOpacity`
 
 ## Recipes
 
-- Start with the examples above as baseline usage for this component.
-- Add product-specific variants (loading/error/dense/mobile) in consuming app docs when needed.
-
-## Responsive
-
-Validate lane density, horizontal overflow strategy, and virtualization behavior across breakpoints.
-Ensure card actions remain accessible and discoverable on touch devices.
-
-## SSR/Hydration
-
-Render initial viewport slice and structural wrappers deterministically to avoid hydration drift.
-Defer measurement-driven virtualization logic until client mount.
-
-## Testing
-
-Cover keyboard DnD, drag/drop lane moves, and large-dataset virtualization edge cases.
-Add performance-sensitive regression tests for swimlane scrolling and move interactions.
+- Use KanbanBoard for task planning, pipeline stages, support triage, and any lane-based status workflow.
+- Keep `keyboardDnD` enabled unless your product has a stricter custom accessibility contract.
 
 ## Accessibility
 
-- Keyboard DnD shortcuts:
-    - `Space` or `Enter`: pick/drop focused card
-    - `ArrowUp` / `ArrowDown`: reorder within lane while picked
-    - `ArrowLeft` / `ArrowRight`: move to adjacent lane while picked
-    - `Escape`: cancel keyboard drag mode
-- Ensure visible focus state and sufficient color contrast in usage contexts.
+- Keyboard drag and drop supports pick and drop with `Space` or `Enter`, lane movement with arrow keys, and cancel with `Escape`.
+- Virtualized lanes preserve the board interaction model while reducing DOM size for long columns.

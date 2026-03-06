@@ -1,16 +1,81 @@
 # TimePicker
 
-## Purpose
+Capture a time-of-day value through a trigger and option list while keeping a canonical `HH:mm` model.
 
-Provide date/time input primitives for scheduling, reporting, and range-based filtering.
-Support localized parsing/display while keeping predictable controlled value contracts.
+## Import
+
+```ts
+import { TimePicker } from '@codemonster-ru/vueforge';
+```
+
+## Examples
+
+Use `TimePicker` when the user should pick one discrete time value rather than type free-form text.
+
+### Basic
+
+Use the default picker for straightforward meeting or reminder times.
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const meetingTime = ref('10:30');
+</script>
+
+<template>
+    <TimePicker v-model="meetingTime" placeholder="Pick time" />
+</template>
+```
+
+### With Bounds And Step
+
+Use `min`, `max`, and `step` to match business-hour or scheduling increments.
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const supportWindow = ref();
+</script>
+
+<template>
+    <TimePicker
+        v-model="supportWindow"
+        placeholder="Choose start time"
+        min="09:00"
+        max="18:00"
+        :step="15"
+    />
+</template>
+```
+
+### 12-Hour Labels
+
+Use `format="12h"` when the UI should display AM or PM labels while still emitting `HH:mm`.
+
+```vue
+<template>
+    <TimePicker model-value="14:15" format="12h" />
+</template>
+```
+
+### Outlined Variant
+
+Use `outlined` on filled cards or filter bars.
+
+```vue
+<template>
+    <TimePicker model-value="08:00" variant="outlined" />
+</template>
+```
 
 ## Props
 
 - `modelValue?: string` (v-model, time `HH:mm`)
 - `placeholder?: string`
-- `disabled?: boolean`
-- `readonly?: boolean`
+- `disabled?: boolean` (default `false`)
+- `readonly?: boolean` (default `false`)
 - `min?: string` (time `HH:mm`)
 - `max?: string` (time `HH:mm`)
 - `step?: number` (minutes, default `30`)
@@ -31,15 +96,9 @@ Support localized parsing/display while keeping predictable controlled value con
 
 - This component does not expose named slots.
 
-## Examples
-
-```vue
-<TimePicker v-model="meetingTime" placeholder="Pick time" min="09:00" max="18:00" :step="15" />
-```
-
 ## Theming
 
-- Override via theme component overrides for each component documented on this page.
+- Override via `theme.overrides.components.timepicker`.
 
 ## Tokens
 
@@ -58,28 +117,12 @@ Component tokens (override via `theme.overrides.components.timepicker`):
 
 ## Recipes
 
-- Start with the examples above as baseline usage for this component.
-- Add product-specific variants (loading/error/dense/mobile) in consuming app docs when needed.
-
-## Responsive
-
-Validate panel positioning, grid readability, and action controls on small screens.
-Ensure touch interactions for day/time selection remain accurate with adequate target size.
-
-## SSR/Hydration
-
-Render initial date/time value and panel-closed state consistently in SSR output.
-Run locale/timezone-sensitive formatting in a hydration-safe way to prevent mismatch.
-
-## Testing
-
-Cover parsing/formatting, keyboard navigation, min/max constraints, and range/time edge cases.
-Add tests for locale variants and ARIA semantics for calendar and listbox-like panels.
+- Keep the model in `HH:mm` even when displaying 12-hour labels.
+- Use bounded steps for appointment-like flows and coarser steps for lower-precision settings.
+- Prefer `DateTimePicker` when the time must be selected in the context of a date.
 
 ## Accessibility
 
-- Trigger exposes popup semantics via `aria-haspopup="listbox"`, `aria-expanded`, and `aria-controls`.
-- Keyboard support: `ArrowDown` opens and focuses options; option list supports `ArrowUp`/`ArrowDown`, `Home`/`End`, `Enter`/`Space` select, and `Escape` close.
-- Invalid time values are ignored for display state (treated as empty placeholder).
-- `min`/`max` constraints disable out-of-range options.
-- In `readonly` mode, open/select interactions are blocked.
+- The trigger exposes popup semantics via `aria-haspopup="listbox"`, `aria-expanded`, and `aria-controls`.
+- The options list supports `ArrowUp`, `ArrowDown`, `Home`, `End`, `Enter`, `Space`, and `Escape`.
+- Invalid time strings are ignored for display state and treated as empty placeholders.

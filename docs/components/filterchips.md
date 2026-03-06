@@ -1,37 +1,16 @@
 # FilterChips
 
-## Purpose
+FilterChips renders compact toggleable chips for single or multiple filter state.
 
-Render and manage high-density operational data with scalable interaction patterns.
-Support filtering, navigation, and bulk workflows used in core SaaS backoffice screens.
+## Import
 
-## Props
-
-- `modelValue?: string | number | Array<string | number> | null` (v-model)
-- `options?: Array<{ label: string; value: string | number; disabled?: boolean; count?: number }>` (default `[]`)
-- `multiple?: boolean` (default `true`)
-- `allowEmpty?: boolean` (default `true`, used in single mode)
-- `clearable?: boolean` (default `false`)
-- `clearText?: string` (default `Clear`)
-- `clearLabel?: string` (default `Clear filters`)
-- `disabled?: boolean`
-- `wrap?: boolean` (default `true`)
-- `size?: 'small' | 'normal' | 'large'` (default `normal`)
-- `variant?: 'soft' | 'outline' | 'solid'` (default `soft`)
-- `ariaLabel?: string`
-- `ariaLabelledby?: string`
-
-## Events
-
-- `update:modelValue`
-- `change`
-- `clear`
-
-## Slots
-
-- This component does not expose named slots.
+```ts
+import FilterChips from '@/package/components/filter-chips.vue';
+```
 
 ## Examples
+
+### Basic
 
 ```vue
 <FilterChips
@@ -43,51 +22,72 @@ Support filtering, navigation, and bulk workflows used in core SaaS backoffice s
     ]"
     clearable
 />
-<FilterChips v-model="activeStatus" :options="statusOptions" :multiple="false" variant="outline" />
 ```
+
+### Single-Select
+
+```vue
+<FilterChips
+    v-model="activeStatus"
+    :options="statusOptions"
+    :multiple="false"
+    :allow-empty="false"
+    variant="outline"
+/>
+```
+
+### Dense Toolbar Filters
+
+```vue
+<FilterChips v-model="activeFilters" :options="statusOptions" size="small" :wrap="false" />
+```
+
+## API
+
+### Props
+
+| Name | Type | Default |
+| --- | --- | --- |
+| `modelValue` | `string \| number \| Array<string \| number> \| null` | `null` |
+| `options` | option array | `[]` |
+| `multiple` | `boolean` | `true` |
+| `allowEmpty` | `boolean` | `true` |
+| `clearable` | `boolean` | `false` |
+| `clearText` | `string \| undefined` | `undefined` |
+| `clearLabel` | `string` | `''` |
+| `disabled` | `boolean` | `false` |
+| `wrap` | `boolean` | `true` |
+| `size` | `'small' \| 'normal' \| 'large'` | `'normal'` |
+| `variant` | `'soft' \| 'outline' \| 'solid'` | `'soft'` |
+| `ariaLabel` | `string` | `''` |
+| `ariaLabelledby` | `string` | `''` |
+
+### Events
+
+| Name | Payload |
+| --- | --- |
+| `update:modelValue` | selection payload |
+| `change` | `selection, event` |
+| `clear` | `MouseEvent` |
 
 ## Theming
 
-- Override via theme component overrides for each component documented on this page.
+Override component tokens through `theme.overrides.components.filterChips`.
 
 ## Tokens
 
-Component tokens (override via `theme.overrides.components.filterChips`):
-
-- `fontSize`, `gap`
-- `chipGap`, `chipPadding`, `chipBorderRadius`
-- `chipBorderColor`, `chipBackgroundColor`, `chipTextColor`
-- `chipHoverBackgroundColor`, `chipHoverBorderColor`
-- `chipActiveBackgroundColor`, `chipActiveBorderColor`, `chipActiveTextColor`
-- `chipSolidActiveBackgroundColor`, `chipSolidActiveBorderColor`, `chipSolidActiveTextColor`
-- `countPadding`, `countFontSize`, `countBackgroundColor`, `countTextColor`
-- `countActiveBackgroundColor`, `countActiveTextColor`
-- `disabledOpacity`
-- `small.fontSize`, `small.chipPadding`
-- `large.fontSize`, `large.chipPadding`
+- Layout: `fontSize`, `gap`, `chipGap`, `chipPadding`, `chipBorderRadius`
+- Chip states: `chipBorderColor`, `chipBackgroundColor`, `chipTextColor`, `chipHoverBackgroundColor`, `chipHoverBorderColor`, `chipActiveBackgroundColor`, `chipActiveBorderColor`, `chipActiveTextColor`, `chipSolidActiveBackgroundColor`, `chipSolidActiveBorderColor`, `chipSolidActiveTextColor`
+- Count badge: `countPadding`, `countFontSize`, `countBackgroundColor`, `countTextColor`, `countActiveBackgroundColor`, `countActiveTextColor`
+- State and sizes: `disabledOpacity`, `small.*`, `large.*`
 
 ## Recipes
 
-- Start with the examples above as baseline usage for this component.
-- Add product-specific variants (loading/error/dense/mobile) in consuming app docs when needed.
-
-## Responsive
-
-Validate table/list density, horizontal overflow strategy, and virtualization behavior across breakpoints.
-Ensure row/item actions remain accessible and discoverable on touch devices.
-
-## SSR/Hydration
-
-Render initial viewport slice and structural wrappers deterministically to avoid hydration drift.
-Defer measurement-driven virtualization logic until client mount.
-
-## Testing
-
-Cover sorting/filtering/selection/navigation flows and large-dataset edge cases.
-Add performance-sensitive regression tests and ARIA verification for interactive data regions.
+- Use FilterChips for result filters, status toggles, and dense toolbar facets.
+- Prefer `SegmentedControl` when the interaction is strictly single-select and the options need stronger button-like affordance.
 
 ## Accessibility
 
-- Chip buttons expose toggle state via `aria-pressed` and are grouped with `role="group"` + label (`ariaLabel`/`ariaLabelledby`).
-- Use meaningful `clearLabel` text for screen readers when `clearable` is enabled.
-- Ensure active/hover/focus visual states and count badges keep sufficient contrast.
+- Chips are native buttons with `aria-pressed` and grouped through `role="group"`.
+- The clear button should use explicit text when the filter meaning is not obvious from nearby context.
+

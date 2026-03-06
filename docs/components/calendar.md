@@ -1,15 +1,68 @@
 # Calendar
 
-## Purpose
+Keep a full month grid visible in the page layout for direct date browsing and selection.
 
-Provide date/time input primitives for scheduling, reporting, and range-based filtering.
-Support localized parsing/display while keeping predictable controlled value contracts.
+## Import
+
+```ts
+import { Calendar } from '@codemonster-ru/vueforge';
+```
+
+## Examples
+
+Use `Calendar` when the calendar itself should remain visible instead of being hidden behind a trigger.
+
+### Basic
+
+Use an inline calendar for dashboard filters, side panels, and booking surfaces.
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const selectedDate = ref('2026-03-12');
+</script>
+
+<template>
+    <Calendar v-model="selectedDate" />
+</template>
+```
+
+### With Bounds
+
+Use `min` and `max` to disable invalid dates directly in the grid.
+
+```vue
+<template>
+    <Calendar model-value="2026-05-15" min="2026-05-01" max="2026-05-31" />
+</template>
+```
+
+### Monday Week Start
+
+Override `firstDayOfWeek` when the surrounding product convention expects Monday-first calendars.
+
+```vue
+<template>
+    <Calendar model-value="2026-04-07" locale="fr-FR" :first-day-of-week="1" />
+</template>
+```
+
+### Outlined Variant
+
+Use `outlined` to reduce visual weight on filled or tinted surfaces.
+
+```vue
+<template>
+    <Calendar model-value="2026-08-20" variant="outlined" />
+</template>
+```
 
 ## Props
 
 - `modelValue?: string` (v-model, ISO date `YYYY-MM-DD`)
-- `disabled?: boolean`
-- `readonly?: boolean`
+- `disabled?: boolean` (default `false`)
+- `readonly?: boolean` (default `false`)
 - `min?: string` (ISO date `YYYY-MM-DD`)
 - `max?: string` (ISO date `YYYY-MM-DD`)
 - `locale?: string` (default from global date/time locale config, fallback `en-US`)
@@ -27,16 +80,9 @@ Support localized parsing/display while keeping predictable controlled value con
 
 - This component does not expose named slots.
 
-## Examples
-
-```vue
-<Calendar v-model="selectedDate" min="2026-01-01" max="2026-12-31" />
-<Calendar v-model="selectedDateAlt" variant="outlined" :first-day-of-week="1" />
-```
-
 ## Theming
 
-- Override via theme component overrides for each component documented on this page.
+- Override via `theme.overrides.components.calendar`.
 
 ## Tokens
 
@@ -56,29 +102,12 @@ Component tokens (override via `theme.overrides.components.calendar`):
 
 ## Recipes
 
-- Start with the examples above as baseline usage for this component.
-- Add product-specific variants (loading/error/dense/mobile) in consuming app docs when needed.
-
-## Responsive
-
-Validate panel positioning, grid readability, and action controls on small screens.
-Ensure touch interactions for day/time selection remain accurate with adequate target size.
-
-## SSR/Hydration
-
-Render initial date/time value and panel-closed state consistently in SSR output.
-Run locale/timezone-sensitive formatting in a hydration-safe way to prevent mismatch.
-
-## Testing
-
-Cover parsing/formatting, keyboard navigation, min/max constraints, and range/time edge cases.
-Add tests for locale variants and ARIA semantics for calendar and listbox-like panels.
+- Prefer `Calendar` over `DatePicker` when the grid should always stay visible and interactive.
+- Keep the model in ISO date format and localize only the visible labels.
+- Apply `min` and `max` for booking or reporting windows so disabled dates are obvious before interaction.
 
 ## Accessibility
 
-- Grid day navigation supports `Arrow` keys, `Home`/`End`, and `PageUp`/`PageDown`.
-- Date commit is keyboard-accessible via `Enter`/`Space`.
-- `min`/`max` constraints disable out-of-range days.
-- Invalid ISO model values are ignored (no selected day state).
-- In `readonly` mode, selection mutation is blocked.
-- Locale and week-start defaults can be configured globally: [`Date/Time Locale Setup`](../guides/date-time-locale-setup.md).
+- Grid day navigation supports arrow keys, `Home`, `End`, `PageUp`, and `PageDown`.
+- Date commit is keyboard-accessible via `Enter` and `Space`.
+- Locale and week-start defaults can be configured globally in [date-time-locale-setup.md](/Users/kolesnikov_k_a/Projects/Codemonster/JS/vueforge/docs/guides/date-time-locale-setup.md).

@@ -1,8 +1,72 @@
 # SpeedDial
 
-## Purpose
+Provide a floating quick-action menu for a small set of high-priority actions.
 
-Provide a floating action menu pattern for quick, high-priority actions in app shells and dense management interfaces.
+## Import
+
+```ts
+import { SpeedDial } from '@codemonster-ru/vueforge';
+```
+
+## Examples
+
+Use `SpeedDial` when important actions should stay reachable without occupying permanent toolbar space.
+
+### Basic
+
+Use it for quick create or workflow shortcuts.
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const open = ref(false);
+</script>
+
+<template>
+    <SpeedDial
+        v-model="open"
+        :actions="[
+            { label: 'Create task', value: 'create' },
+            { label: 'Invite member', value: 'invite' },
+            { label: 'Export', value: 'export' }
+        ]"
+        @action="onQuickAction"
+    />
+</template>
+```
+
+### Different Direction
+
+Change direction to fit the surrounding viewport and avoid collisions.
+
+```vue
+<template>
+    <SpeedDial
+        :model-value="true"
+        direction="left"
+        :actions="[
+            { label: 'Pin' },
+            { label: 'Share' },
+            { label: 'Archive' }
+        ]"
+    />
+</template>
+```
+
+### Custom Trigger
+
+Use the `trigger` slot when the floating trigger should match product language or iconography.
+
+```vue
+<template>
+    <SpeedDial :actions="actions">
+        <template #trigger="{ open }">
+            {{ open ? 'Close' : 'Quick' }}
+        </template>
+    </SpeedDial>
+</template>
+```
 
 ## Props
 
@@ -21,41 +85,21 @@ Provide a floating action menu pattern for quick, high-priority actions in app s
 ## Events
 
 - `update:modelValue`
-- `toggle` (`boolean`)
-- `action` (`{ action, index, value }`)
+- `toggle`
+- `action`
 
 ## Slots
 
-- `trigger` - custom trigger content (`{ open }`)
-- `action` - custom action content (`{ action, index }`)
-
-## Examples
-
-```vue
-<SpeedDial
-    v-model="open"
-    :actions="[
-        { label: 'Create task', value: 'create' },
-        { label: 'Invite member', value: 'invite' },
-        { label: 'Export', value: 'export' },
-    ]"
-    @action="onQuickAction"
-/>
-```
-
-```vue
-<SpeedDial v-model="open" :actions="actions" direction="left">
-    <template #trigger="{ open }">
-        {{ open ? 'Close' : 'Quick' }}
-    </template>
-</SpeedDial>
-```
+- `trigger` with `{ open }`
+- `action` with `{ action, index }`
 
 ## Theming
 
 - Override via `theme.overrides.components.speeddial`.
 
 ## Tokens
+
+Component tokens (override via `theme.overrides.components.speeddial`):
 
 - `gap`, `zIndex`, `offsetX`, `offsetY`, `offsetXMobile`, `offsetYMobile`
 - `transitionDuration`, `transitionEasing`
@@ -66,26 +110,12 @@ Provide a floating action menu pattern for quick, high-priority actions in app s
 
 ## Recipes
 
-- Floating create menu for dashboards with secondary actions (`create`, `import`, `invite`).
-- Context quick-actions for mobile where top-bar buttons are limited.
+- Keep the action set short; a floating menu should not turn into a second full navigation.
+- Use direction and offsets intentionally so the menu does not cover critical content.
+- Prefer concise labels because floating actions consume limited screen space.
 
 ## Accessibility
 
 - Trigger exposes `aria-haspopup="menu"` and `aria-expanded`.
 - Actions render as `menuitem` controls in a `role="menu"` container.
-- Keyboard support includes `Enter/Space` toggle on trigger and `Arrow`, `Home/End`, `Escape` inside action list.
-
-## Responsive
-
-- Component is fixed-position and uses mobile offsets on narrow screens.
-- Prefer concise action labels to keep floating menu compact on phones.
-
-## SSR/Hydration
-
-- Closed/open state is deterministic from `modelValue`.
-- Outside-click behavior is bound on client only and does not affect SSR output.
-
-## Testing
-
-- Cover toggle behavior, action emission payload, keyboard navigation, and outside-click close behavior.
-- Assert ARIA menu semantics for trigger and action list.
+- Keyboard support includes trigger toggle, arrow navigation, `Home`, `End`, and `Escape`.

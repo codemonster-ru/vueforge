@@ -1,8 +1,62 @@
 # Sidebar
 
-## Purpose
+Provide a compatibility-oriented alias over `Drawer` for sidebar-style overlays.
 
-Provide a migration-friendly alias over `Drawer` for sidebar-style overlays.
+## Import
+
+```ts
+import { Sidebar } from '@codemonster-ru/vueforge';
+```
+
+## Examples
+
+Use `Sidebar` only when maintaining compatibility with an older API. Prefer `Drawer` for new code.
+
+### Basic
+
+Use the legacy `visible` contract when migrating existing code incrementally.
+
+```vue
+<template>
+    <Sidebar v-model:visible="sidebarOpen" title="Filters" position="left">
+        <template #body>
+            <p>Sidebar content</p>
+        </template>
+    </Sidebar>
+</template>
+```
+
+### Vue Standard v-model
+
+Use `modelValue` if the surrounding codebase has already switched to the canonical Vue pattern.
+
+```vue
+<template>
+    <Sidebar v-model="open" title="Workspace navigation">
+        <template #body>
+            <Menu :items="[{ label: 'Overview', to: '/' }, { label: 'Members', to: '/members' }]" />
+        </template>
+    </Sidebar>
+</template>
+```
+
+### Footer Actions
+
+The forwarded slots are the same as `Drawer`, so header/body/footer composition still works.
+
+```vue
+<template>
+    <Sidebar v-model="open" title="Filters">
+        <template #body>
+            <p>Filter controls</p>
+        </template>
+        <template #footer>
+            <Button label="Reset" variant="outlined" severity="secondary" />
+            <Button label="Apply" />
+        </template>
+    </Sidebar>
+</template>
+```
 
 ## Props
 
@@ -34,18 +88,6 @@ Provide a migration-friendly alias over `Drawer` for sidebar-style overlays.
 
 - `header`, `body`, `footer`, `close`, default
 
-## Examples
-
-```vue
-<Sidebar v-model:visible="sidebarOpen" title="Filters" position="left">
-    <template #body>
-        <p>
-            Sidebar content
-        </p>
-    </template>
-</Sidebar>
-```
-
 ## Guidance vs Drawer
 
 - `Drawer` is the canonical component for new code.
@@ -54,25 +96,14 @@ Provide a migration-friendly alias over `Drawer` for sidebar-style overlays.
 
 ## Theming
 
-- Override via `theme.overrides.components.sidebar` (same token shape as `drawer`).
+- Override via `theme.overrides.components.sidebar` only if your project intentionally keeps a separate alias token entry.
+- In practice this component follows the same visual contract as `Drawer`.
 
 ## Tokens
 
-- Uses `DrawerTokens` contract (`width*`, `height*`, `padding`, `borderRadius`, `overlayBackgroundColor`, `shadow`, `zIndex`, header/body/footer gaps, close tokens).
+- Uses the `Drawer` token contract (`width*`, `height*`, `padding`, `borderRadius`, `overlayBackgroundColor`, `shadow`, `zIndex`, header/body/footer gaps, close tokens).
 
 ## Accessibility
 
 - Inherits dialog semantics and focus trapping from `Drawer`.
 - Keyboard `Escape` close depends on `closeOnEsc`/`closeOnEscape`.
-
-## Responsive
-
-- Keep `position="left"`/`position="right"` for desktop navigation and use top/bottom for compact mobile flows.
-
-## SSR/Hydration
-
-- Same SSR/hydration behavior as `Drawer`.
-
-## Testing
-
-- Cover alias prop mapping (`visible`, `dismissable`, `closeOnEscape`, `showCloseIcon`, `blockScroll`) and event forwarding.

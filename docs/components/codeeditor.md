@@ -1,96 +1,138 @@
 # CodeEditor
 
-## Purpose
+CodeEditor wraps adapter-driven engines such as Monaco or CodeMirror with lazy mounting, readonly control, and theme synchronization.
 
-Provide an adapter-driven code editor wrapper for Monaco/CodeMirror style engines with readonly and theme controls.
+## Import
 
-## Props
-
-- `modelValue?: string` (default `''`)
-- `adapter?: CodeEditorAdapter`
-- `language?: string` (default `plaintext`)
-- `theme?: string` (default `light`)
-- `readonly?: boolean` (default `false`)
-- `disabled?: boolean` (default `false`)
-- `loading?: boolean` (default `false`)
-- `loadingText?: string` (default `Loading editor...`)
-- `noAdapterText?: string` (default `Editor adapter is not configured.`)
-- `showHeader?: boolean` (default `true`)
-- `languageLabel?: string` (default `Language`)
-- `readonlyLabel?: string` (default `Read-only`)
-- `editableLabel?: string` (default `Editable`)
-- `ariaLabel?: string` (default `Code editor`)
-- `lazy?: boolean` (default `true`)
-- `lazyRootMargin?: string` (default `200px`)
-- `lazyThreshold?: number` (default `0`)
-- `options?: Record<string, unknown>`
-
-## Events
-
-- `update:modelValue`
-- `change({ value })`
-- `ready(instance)`
-- `error(error)`
-
-## Slots
-
-- `loading`
-- `empty`
+```ts
+import CodeEditor from '@/package/components/code-editor.vue';
+```
 
 ## Examples
 
+### Basic
+
+Mount the editor with an adapter and bind `v-model` to the source text.
+
 ```vue
 <script setup lang="ts">
-import { CodeEditor, createMonacoAdapter } from '@codemonster-ru/vueforge';
+import { createMonacoAdapter } from '@codemonster-ru/vueforge';
 import * as monaco from 'monaco-editor';
 
 const adapter = createMonacoAdapter(monaco);
 </script>
 
 <template>
-    <CodeEditor v-model="source" :adapter="adapter" language="typescript" theme="dark" :readonly="readonly" />
+    <CodeEditor v-model="source" :adapter="adapter" language="typescript" theme="dark" />
 </template>
 ```
 
+### Readonly Review
+
+Use `readonly` for diff viewers, audit screens, and generated output previews.
+
+```vue
+<CodeEditor
+    v-model="generatedConfig"
+    :adapter="adapter"
+    language="json"
+    readonly
+    readonly-label="Read-only"
+/>
+```
+
+### Lazy Mount
+
+Keep `lazy` enabled for heavy editor engines inside tabs, drawers, and long pages.
+
+```vue
+<CodeEditor
+    v-model="source"
+    :adapter="adapter"
+    language="yaml"
+    lazy
+    lazy-root-margin="300px"
+/>
+```
+
+### Custom States
+
+Use slots to brand the loading or no-adapter fallback.
+
+```vue
+<CodeEditor v-model="source" :adapter="adapter" :loading="loading">
+    <template #loading>
+        Preparing editor...
+    </template>
+</CodeEditor>
+```
+
+## API
+
+### Props
+
+| Name | Type | Default |
+| --- | --- | --- |
+| `modelValue` | `string` | `''` |
+| `adapter` | `CodeEditorAdapter \| undefined` | `undefined` |
+| `language` | `string` | `'plaintext'` |
+| `theme` | `string` | `'light'` |
+| `readonly` | `boolean` | `false` |
+| `disabled` | `boolean` | `false` |
+| `loading` | `boolean` | `false` |
+| `loadingText` | `string` | `'Loading editor...'` |
+| `noAdapterText` | `string` | `'Editor adapter is not configured.'` |
+| `showHeader` | `boolean` | `true` |
+| `languageLabel` | `string` | `'Language'` |
+| `readonlyLabel` | `string` | `'Read-only'` |
+| `editableLabel` | `string` | `'Editable'` |
+| `ariaLabel` | `string` | `'Code editor'` |
+| `lazy` | `boolean` | `true` |
+| `lazyRootMargin` | `string` | `'200px'` |
+| `lazyThreshold` | `number` | `0` |
+| `options` | `Record<string, unknown>` | `{}` |
+
+### Events
+
+| Name | Payload |
+| --- | --- |
+| `update:modelValue` | `string` |
+| `change` | `{ value }` |
+| `ready` | editor instance |
+| `error` | `Error` |
+
+### Slots
+
+| Name | Description |
+| --- | --- |
+| `loading` | Replaces the loading state content. |
+| `empty` | Replaces the no-adapter state content. |
+
 ## Theming
 
-- Override via `theme.overrides.components.codeEditor`.
+Override component tokens through `theme.overrides.components.codeEditor`.
+
+## Tokens
+
+- Surface and layout: `gap`, `borderColor`, `borderRadius`, `backgroundColor`, `textColor`, `padding`
+- Header: `headerGap`, `metaFontSize`, `metaColor`
+- Editor surface: `surfaceBorderColor`, `surfaceBorderRadius`, `surfaceBackgroundColor`, `minHeight`
+- States: `stateMinHeight`, `stateColor`, `stateFontSize`, `disabledOpacity`
+- Dark mode: `darkBorderColor`, `darkBackgroundColor`, `darkTextColor`, `darkSurfaceBorderColor`, `darkSurfaceBackgroundColor`, `darkMetaColor`, `darkStateColor`
 
 ## Adapter API
 
 - `mount(container, config)` is required.
 - Optional hooks: `update`, `setValue`, `getValue`, `setReadonly`, `setTheme`, `focus`, `destroy`.
-- Helpers exported:
-    - `createMonacoAdapter(monaco)`
-    - `createCodeMirrorAdapter(factory)`
-
-## Tokens
-
-- Surface/layout: `gap`, `padding`, `borderColor`, `borderRadius`, `backgroundColor`, `textColor`
-- Header/meta: `headerGap`, `metaFontSize`, `metaColor`
-- Editor surface: `surfaceBorderColor`, `surfaceBorderRadius`, `surfaceBackgroundColor`, `minHeight`
-- States: `stateMinHeight`, `stateColor`, `stateFontSize`, `disabledOpacity`
-- Dark mode: `dark*` token group
+- Helpers are exported for common integrations such as Monaco and CodeMirror adapters.
 
 ## Recipes
 
-- Feature flag editor modules can lazy-mount heavy engines with `lazy=true`.
-- Use `readonly` for audit/review screens where editing is prohibited.
+- Use CodeEditor for developer-facing settings, code snippets, pipeline definitions, and schema editing.
+- Prefer `RichTextEditor` when the primary content is prose rather than code.
 
 ## Accessibility
 
-- Provide meaningful `ariaLabel` for the editable region.
-- Keep readonly state mirrored in editor engine options (`readOnly`/equivalent).
+- The wrapper provides a labeled editor region and mirrors readonly state into the editor adapter config.
+- SSR renders only the shell; the actual engine mounts client-side and can be delayed via `lazy`.
 
-## Responsive
-
-- Wrapper is block-level and uses tokenized min heights; place in responsive panels without fixed pixel locking.
-
-## SSR/Hydration
-
-- Editor engines are client-only; wrapper renders deterministic shell during SSR.
-- `lazy` mount delays engine initialization until intersection.
-
-## Testing
-
-- Cover adapter lifecycle, `v-model` propagation, readonly/theme synchronization, and lazy mount behavior.
