@@ -25,7 +25,6 @@ Use `AdvancedFilterPanel` when a list page needs both simple field filters and s
         { key: 'assignee', label: 'Assignee', type: 'text' },
         { key: 'severity', label: 'Severity', type: 'number' },
     ]"
-    @apply="fetchDataWithFilters"
 />
 ```
 
@@ -36,9 +35,36 @@ Use presets for common operational views like "Assigned to me" or "Failed jobs".
 ```vue
 <AdvancedFilterPanel
     v-model="filters"
-    :fields="fields"
-    :presets="savedPresets"
-    @preset-change="onPresetChange"
+    :fields="[
+        {
+            key: 'status',
+            label: 'Status',
+            type: 'select',
+            options: [
+                { label: 'Open', value: 'open' },
+                { label: 'Closed', value: 'closed' }
+            ]
+        },
+        { key: 'priority', label: 'Priority', type: 'number' }
+    ]"
+    :presets="[
+        {
+            id: 'assigned',
+            label: 'Assigned to me',
+            state: {
+                presetId: 'assigned',
+                fieldValues: { status: 'open', priority: 2 }
+            }
+        },
+        {
+            id: 'failed',
+            label: 'Failed jobs',
+            state: {
+                presetId: 'failed',
+                fieldValues: { status: 'closed', priority: 5 }
+            }
+        }
+    ]"
 />
 ```
 
@@ -49,7 +75,18 @@ Disable the query builder when the page should stay limited to direct field cont
 ```vue
 <AdvancedFilterPanel
     v-model="filters"
-    :fields="fields"
+    :fields="[
+        { key: 'owner', label: 'Owner', type: 'text', placeholder: 'Search by owner' },
+        {
+            key: 'status',
+            label: 'Status',
+            type: 'select',
+            options: [
+                { label: 'Open', value: 'open' },
+                { label: 'Closed', value: 'closed' }
+            ]
+        }
+    ]"
     :show-query-builder="false"
 />
 ```

@@ -15,27 +15,43 @@ import Carousel from '@/package/components/carousel.vue';
 Use `v-model` to control the active slide from application state.
 
 ```vue
-<script setup lang="ts">
-import { ref } from 'vue';
-
-const activeSlide = ref(0);
-const slides = [
-    { title: 'Launch faster', description: 'Ship internal tools with shared UI primitives.' },
-    { title: 'Scale safely', description: 'Keep design and implementation aligned.' },
-    { title: 'Stay consistent', description: 'Reuse one component language across apps.' },
-];
-</script>
-
-<template>
-    <Carousel v-model="activeSlide" :items="slides">
-        <template #item="{ item }">
-            <article class="promo-slide">
-                <h3>{{ item.title }}</h3>
-                <p>{{ item.description }}</p>
-            </article>
-        </template>
-    </Carousel>
-</template>
+<Carousel v-model="activeSlide" :items="slides">
+    <template #item="{ item }">
+        <article
+            style="
+                display: grid;
+                gap: 0.9rem;
+                min-height: 15rem;
+                align-content: start;
+                padding: 0.5rem;
+            "
+        >
+            <span
+                style="
+                    display: inline-flex;
+                    width: fit-content;
+                    padding: 0.2rem 0.55rem;
+                    border-radius: 999px;
+                    background: color-mix(in srgb, var(--vf-docs-link-hover-bg) 70%, transparent);
+                    color: var(--vf-docs-link-color);
+                    font-size: 0.75rem;
+                    font-weight: 600;
+                    letter-spacing: 0.02em;
+                    text-transform: uppercase;
+                "
+            >
+                {{ item.kicker }}
+            </span>
+            <div style="display: grid; gap: 0.45rem;">
+                <h3 style="margin: 0; font-size: 2rem; line-height: 1.05;">{{ item.title }}</h3>
+                <p style="margin: 0; max-width: 30rem; color: var(--vf-docs-secondary-text);">
+                    {{ item.description }}
+                </p>
+            </div>
+            <strong style="font-size: 0.95rem; color: var(--vf-docs-text);">{{ item.meta }}</strong>
+        </article>
+    </template>
+</Carousel>
 ```
 
 ### Autoplay
@@ -141,4 +157,3 @@ Override component tokens through `theme.overrides.components.carousel`.
 - Carousel renders a `region` with `aria-roledescription="carousel"` and per-slide group labels.
 - Keyboard support includes `ArrowLeft`, `ArrowRight`, `Home`, and `End`.
 - Swipe gestures and autoplay are optional, so interaction can stay predictable in dense layouts.
-

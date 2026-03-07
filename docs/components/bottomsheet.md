@@ -12,26 +12,14 @@ import BottomSheet from '@/package/components/bottom-sheet.vue';
 
 ### Basic
 
-Use `v-model` to control visibility from a trigger.
+Use `v-model` to control visibility. In docs preview, this example starts open so the sheet is visible immediately.
 
 ```vue
-<script setup lang="ts">
-import { ref } from 'vue';
-
-const open = ref(false);
-</script>
-
-<template>
-    <Button @click="open = true">
-        Open actions
-    </Button>
-
-    <BottomSheet v-model="open" title="Quick actions">
-        <template #body>
-            <p>Run mobile-first contextual actions here.</p>
-        </template>
-    </BottomSheet>
-</template>
+<BottomSheet v-model="open" title="Quick actions">
+    <template #body>
+        <p>Run mobile-first contextual actions here.</p>
+    </template>
+</BottomSheet>
 ```
 
 ### Header And Footer
@@ -150,4 +138,3 @@ Override component tokens through `theme.overrides.components.bottomSheet`.
 
 - Focus is trapped while the sheet is open and restored to the previous trigger on close.
 - Escape and overlay dismissal are configurable for flows that require explicit confirmation.
-

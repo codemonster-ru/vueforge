@@ -2,6 +2,17 @@ import { mount } from '@vue/test-utils';
 import Alert from '../alert.vue';
 
 describe('Alert', () => {
+    it('is visible by default in uncontrolled mode', () => {
+        const wrapper = mount(Alert, {
+            props: {
+                title: 'Team access',
+                message: 'Changes to roles may take up to 5 minutes to propagate.',
+            },
+        });
+
+        expect(wrapper.get('.vf-alert').isVisible()).toBe(true);
+    });
+
     it('emits update:modelValue when close is clicked in controlled mode', async () => {
         const wrapper = mount(Alert, {
             props: {

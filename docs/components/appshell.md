@@ -17,28 +17,30 @@ Use `AppShell` as the outer layout for SaaS-style workspaces rather than hand-bu
 Use sidebar, header, and main regions for a standard application frame.
 
 ```vue
-<script setup lang="ts">
-import { ref } from 'vue';
-
-const collapsed = ref(false);
-</script>
-
 <template>
-    <AppShell v-model="collapsed">
-        <template #sidebar="{ collapsed: isCollapsed }">
-            <NavigationRail v-model:collapsed="isCollapsed" :items="railItems" />
+    <AppShell :full-height="false">
+        <template #sidebar>
+            <NavigationRail
+                :show-toggle="false"
+                style="height: 100%; border-right: none;"
+                :items="[
+                    { key: 'overview', label: 'Overview', icon: 'house', active: true },
+                    { key: 'billing', label: 'Billing', icon: 'creditCard' },
+                    { key: 'settings', label: 'Settings', icon: 'gear' }
+                ]"
+            />
         </template>
 
-        <template #header="{ toggleSidebar }">
-            <AppBar title="Workspace">
-                <template #start>
-                    <Button size="small" variant="text" @click="toggleSidebar">Menu</Button>
-                </template>
-            </AppBar>
+        <template #header>
+            <strong>Workspace</strong>
         </template>
 
         <Section>
-            Main content
+            <Stack gap="0.75rem">
+                <strong>Workspace overview</strong>
+                <span>Pending approvals: 3</span>
+                <span>Active incidents: 1</span>
+            </Stack>
         </Section>
     </AppShell>
 </template>

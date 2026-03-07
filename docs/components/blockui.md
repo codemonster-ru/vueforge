@@ -33,7 +33,9 @@ const blocked = ref(true);
 Enable `full-screen` when the whole application shell should be blocked during critical operations.
 
 ```vue
-<BlockUI v-model="blocked" full-screen label="Deploying release" />
+<BlockUI v-model="blocked" full-screen label="Deploying release">
+    <div style="padding: 1rem; min-height: 10rem;">Release dashboard</div>
+</BlockUI>
 ```
 
 ### Soft Overlay
@@ -41,7 +43,9 @@ Enable `full-screen` when the whole application shell should be blocked during c
 Use the default soft variant when content should remain legible underneath the overlay.
 
 ```vue
-<BlockUI v-model="blocked" variant="soft" :blur="2" />
+<BlockUI v-model="blocked" variant="soft" :blur="2">
+    <div style="padding: 1rem; min-height: 10rem;">Workspace summary</div>
+</BlockUI>
 ```
 
 ### Custom Overlay

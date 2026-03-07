@@ -23,7 +23,7 @@ const adapter = createMonacoAdapter(monaco);
 </script>
 
 <template>
-    <CodeEditor v-model="source" :adapter="adapter" language="typescript" theme="dark" />
+    <CodeEditor v-model="source" :adapter="adapter" language="typescript" />
 </template>
 ```
 
@@ -135,4 +135,3 @@ Override component tokens through `theme.overrides.components.codeEditor`.
 
 - The wrapper provides a labeled editor region and mirrors readonly state into the editor adapter config.
 - SSR renders only the shell; the actual engine mounts client-side and can be delayed via `lazy`.
-

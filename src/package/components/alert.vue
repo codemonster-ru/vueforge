@@ -37,6 +37,7 @@ interface Props {
 
 const emits = defineEmits(['update:modelValue', 'close']);
 const props = withDefaults(defineProps<Props>(), {
+    modelValue: undefined,
     title: '',
     message: '',
     severity: 'neutral',

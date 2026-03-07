@@ -16,11 +16,27 @@ Use ActivityFeed for audit surfaces, workspace history, and support timelines.
 
 ```vue
 <ActivityFeed
-    :items="events"
+    :items="[
+        {
+            id: 1,
+            title: 'Invoice approved',
+            description: 'Finance approved invoice #2048 for payout.',
+            timestamp: '2026-02-24T11:30:00Z',
+            type: 'success',
+            actor: { name: 'Maya Chen', meta: 'Finance' },
+            actionLabel: 'View'
+        },
+        {
+            id: 2,
+            title: 'Workspace access requested',
+            description: 'A contractor requested access to the Support workspace.',
+            timestamp: '2026-02-24T09:10:00Z',
+            type: 'info',
+            actor: { name: 'Jordan Lee', meta: 'IT Ops' }
+        }
+    ]"
     group-by="date"
     :now="new Date('2026-02-24T12:00:00Z')"
-    @itemClick="openEvent"
-    @actionClick="handleAction"
 />
 ```
 
@@ -29,7 +45,25 @@ Use ActivityFeed for audit surfaces, workspace history, and support timelines.
 Set `groupBy="none"` when the feed should read as one continuous stream.
 
 ```vue
-<ActivityFeed :items="events" group-by="none" />
+<ActivityFeed
+    :items="[
+        {
+            id: 1,
+            title: 'Build finished',
+            timestamp: '2026-02-24T11:30:00Z',
+            type: 'success',
+            actor: { name: 'CI Bot', meta: 'Deploy' }
+        },
+        {
+            id: 2,
+            title: 'Incident acknowledged',
+            timestamp: '2026-02-24T10:05:00Z',
+            type: 'warn',
+            actor: { name: 'Nora Patel', meta: 'Support' }
+        }
+    ]"
+    group-by="none"
+/>
 ```
 
 ### Custom Item Rendering
@@ -37,7 +71,23 @@ Set `groupBy="none"` when the feed should read as one continuous stream.
 Use the `item` slot when feed entries need richer controls or product-specific layout.
 
 ```vue
-<ActivityFeed :items="events">
+<ActivityFeed
+    :items="[
+        {
+            id: 1,
+            title: 'Design review scheduled',
+            timestamp: '2026-02-24T15:00:00Z',
+            actor: { name: 'Alex Kim', meta: 'Product' },
+            actionLabel: 'Join'
+        },
+        {
+            id: 2,
+            title: 'Spec updated',
+            timestamp: '2026-02-24T13:15:00Z',
+            actor: { name: 'Priya Singh', meta: 'Design' }
+        }
+    ]"
+>
     <template #item="{ item, relativeTime, onClick, onAction }">
         <article class="feed-item">
             <button type="button" @click="onClick()">
@@ -140,4 +190,3 @@ Override component tokens through `theme.overrides.components.activityFeed`.
 
 - ActivityFeed uses `role="feed"` and exposes item and action controls as native buttons by default.
 - Custom slot content should keep semantic interactive elements and visible focus states.
-
