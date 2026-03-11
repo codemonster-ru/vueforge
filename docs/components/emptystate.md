@@ -18,11 +18,7 @@ Use title and description props for straightforward empty scenarios.
 
 ```vue
 <template>
-    <EmptyState
-        title="No projects yet"
-        description="Create your first project to get started."
-        icon="folder"
-    />
+    <EmptyState title="No projects yet" description="Create your first project to get started." icon="folder" />
 </template>
 ```
 
@@ -47,11 +43,7 @@ Use `outlined` when the empty state sits on a busy surface and should feel light
 
 ```vue
 <template>
-    <EmptyState
-        variant="outlined"
-        title="No matching environments"
-        description="Try adjusting the selected filters."
-    />
+    <EmptyState variant="outlined" title="No matching environments" description="Try adjusting the selected filters." />
 </template>
 ```
 

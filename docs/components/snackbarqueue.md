@@ -31,7 +31,7 @@ Use `items` when the queue is driven declaratively from state.
     <SnackbarQueue
         :items="[
             { id: 'saved', title: 'Saved', message: 'Changes were stored.', severity: 'success' },
-            { id: 'sync', title: 'Sync delayed', message: 'Background sync is still running.', severity: 'warn' }
+            { id: 'sync', title: 'Sync delayed', message: 'Background sync is still running.', severity: 'warn' },
         ]"
         :max-visible="2"
     />
@@ -50,8 +50,8 @@ Use `actionLabel` for a single immediate follow-up action.
                 id: 'undo-delete',
                 title: 'Project archived',
                 message: 'You can restore it from the archive.',
-                actionLabel: 'Undo'
-            }
+                actionLabel: 'Undo',
+            },
         ]"
     />
 </template>

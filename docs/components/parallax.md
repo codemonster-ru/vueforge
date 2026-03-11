@@ -5,7 +5,7 @@ Parallax applies scroll-driven decorative motion with reduced-motion compliance 
 ## Import
 
 ```ts
-import Parallax from '@/package/components/parallax.vue';
+import { Parallax } from '@codemonster-ru/vueforge';
 ```
 
 ## Examples
@@ -38,28 +38,28 @@ import Parallax from '@/package/components/parallax.vue';
 
 ### Props
 
-| Name | Type | Default |
-| --- | --- | --- |
-| `as` | `string` | `'div'` |
-| `speed` | `number` | `0.2` |
-| `axis` | `'x' \| 'y'` | `'y'` |
-| `reverse` | `boolean` | `false` |
-| `maxOffset` | `number` | `120` |
-| `clamp` | `boolean` | `true` |
-| `disabled` | `boolean` | `false` |
-| `reducedMotion` | `boolean \| null` | `null` |
-| `ariaLabel` | `string` | `''` |
+| Name            | Type              | Default |
+| --------------- | ----------------- | ------- |
+| `as`            | `string`          | `'div'` |
+| `speed`         | `number`          | `0.2`   |
+| `axis`          | `'x' \| 'y'`      | `'y'`   |
+| `reverse`       | `boolean`         | `false` |
+| `maxOffset`     | `number`          | `120`   |
+| `clamp`         | `boolean`         | `true`  |
+| `disabled`      | `boolean`         | `false` |
+| `reducedMotion` | `boolean \| null` | `null`  |
+| `ariaLabel`     | `string`          | `''`    |
 
 ### Events
 
-| Name | Payload |
-| --- | --- |
+| Name     | Payload      |
+| -------- | ------------ |
 | `change` | `{ offset }` |
 
 ### Slots
 
-| Name | Description |
-| --- | --- |
+| Name      | Description                      |
+| --------- | -------------------------------- |
 | `default` | Decorative content to transform. |
 
 ## Theming
@@ -82,4 +82,3 @@ Override component tokens through `theme.overrides.components.parallax`.
 
 - Motion auto-disables when `prefers-reduced-motion: reduce` is active or `data-vf-reduced-motion="true"` is present on `<html>`.
 - Reduced motion can be overridden explicitly through the prop when the host app has stricter policy control.
-

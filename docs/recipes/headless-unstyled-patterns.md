@@ -86,4 +86,4 @@ Show practical usage patterns for `pt` and `unstyled` when integrating VueForge 
 - When adding or renaming parts, update:
   `docs/guides/pass-through-unstyled.md`,
   `docs/audits/headless-parity-matrix.md`,
-  and `src/package/components/__tests__/headless-parity.test.ts`.
+  and `tests/integration/headless-parity.test.ts`.

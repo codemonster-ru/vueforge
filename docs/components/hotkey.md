@@ -5,8 +5,8 @@ Hotkey is a scoped keyboard shortcut utility component backed by the `useHotkey`
 ## Import
 
 ```ts
-import Hotkey from '@/package/components/hotkey.vue';
-import { useHotkey } from '@/package/components/use-hotkey';
+import { Hotkey, useHotkey } from '@codemonster-ru/vueforge';
+import { Hotkey, useHotkey } from '@codemonster-ru/vueforge';
 ```
 
 ## Examples
@@ -47,30 +47,30 @@ useHotkey({
 
 ### Component Props
 
-| Name | Type | Default |
-| --- | --- | --- |
-| `combo` | `string \| string[]` | `'mod+k'` |
-| `enabled` | `boolean` | `true` |
-| `disabled` | `boolean` | `false` |
-| `scoped` | `boolean` | `true` |
-| `event` | `'keydown' \| 'keyup'` | `'keydown'` |
-| `preventDefault` | `boolean` | `true` |
-| `stopPropagation` | `boolean` | `false` |
-| `ignoreInputs` | `boolean` | `true` |
-| `allowInInputs` | `boolean` | `false` |
-| `exact` | `boolean` | `true` |
-| `as` | `string` | `'div'` |
+| Name              | Type                   | Default     |
+| ----------------- | ---------------------- | ----------- |
+| `combo`           | `string \| string[]`   | `'mod+k'`   |
+| `enabled`         | `boolean`              | `true`      |
+| `disabled`        | `boolean`              | `false`     |
+| `scoped`          | `boolean`              | `true`      |
+| `event`           | `'keydown' \| 'keyup'` | `'keydown'` |
+| `preventDefault`  | `boolean`              | `true`      |
+| `stopPropagation` | `boolean`              | `false`     |
+| `ignoreInputs`    | `boolean`              | `true`      |
+| `allowInInputs`   | `boolean`              | `false`     |
+| `exact`           | `boolean`              | `true`      |
+| `as`              | `string`               | `'div'`     |
 
 ### Component Events
 
-| Name | Payload |
-| --- | --- |
+| Name      | Payload            |
+| --------- | ------------------ |
 | `trigger` | `{ event, combo }` |
 
 ### Component Slots
 
-| Name | Description |
-| --- | --- |
+| Name      | Description                     |
+| --------- | ------------------------------- |
 | `default` | Scoped slot with `{ trigger }`. |
 
 ### Composable API
@@ -88,7 +88,7 @@ useHotkey({
     exact,
     target,
     scopeRef,
-})
+});
 ```
 
 ## Recipes
@@ -100,4 +100,3 @@ useHotkey({
 
 - By default hotkeys ignore `input`, `textarea`, `select`, and `contenteditable` targets.
 - Scoped mode prevents shortcuts from leaking outside the intended interactive region.
-

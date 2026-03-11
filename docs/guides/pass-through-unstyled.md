@@ -41,7 +41,6 @@ Enable deep customization (attrs/classes/styles per part) and opt-out from built
 ## Supported Parts (current baseline)
 
 - `Carousel`: `root`, `viewport`, `track`, `slide`, `prevArrow`, `nextArrow`, `indicators`, `indicator`
-- `Chart`: `root`, `state`, `canvasWrap`, `canvas`
 - `Image`: `root`, `trigger`, `img`, `overlay`, `dialog`, `preview`, `close`, `toolbarButton`, `navButton`, `download`
 - `SpeedDial`: `root`, `trigger`, `actions`, `item`, `action`, `label`
 - `OverlayPanel`: `root`, `header`, `close`

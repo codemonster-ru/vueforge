@@ -18,9 +18,7 @@ Use the same content shape as `Alert` for quick migration.
 
 ```vue
 <template>
-    <Message severity="info" title="Draft mode">
-        Changes are saved locally until you publish.
-    </Message>
+    <Message severity="info" title="Draft mode"> Changes are saved locally until you publish. </Message>
 </template>
 ```
 
@@ -30,9 +28,7 @@ The alias forwards dismiss behavior and slots to `Alert`.
 
 ```vue
 <template>
-    <Message severity="warn" title="Unsaved changes" closable>
-        Leave this page only after saving.
-    </Message>
+    <Message severity="warn" title="Unsaved changes" closable> Leave this page only after saving. </Message>
 </template>
 ```
 

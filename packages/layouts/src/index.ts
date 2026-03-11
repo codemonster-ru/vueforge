@@ -1,0 +1,14 @@
+export { default as AppShell } from './components/app-shell.vue';
+export { default as MainLayoutRegion } from './components/main-layout-region.vue';
+export { default as AppBar } from './components/app-bar.vue';
+export { default as SystemBar } from './components/system-bar.vue';
+export { default as NavigationRail } from './components/navigation-rail.vue';
+export { default as BottomNavigation } from './components/bottom-navigation.vue';
+export { default as Footer } from './components/footer.vue';
+export { default as PageLayout } from './components/page-layout.vue';
+export { default as SplitLayout } from './components/split-layout.vue';
+export { default as ResizableSidebar } from './components/resizable-sidebar.vue';
+export { default as StickyRegion } from './components/sticky-region.vue';
+export { default as PageHeader } from './components/page-header.vue';
+export { default as Breadcrumbs } from './components/breadcrumbs.vue';
+export { DefaultLayoutsTheme } from '@core/themes/default';

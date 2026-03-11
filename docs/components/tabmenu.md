@@ -29,7 +29,7 @@ const activeSection = ref('overview');
         :items="[
             { label: 'Overview', value: 'overview' },
             { label: 'Usage', value: 'usage' },
-            { label: 'Billing', value: 'billing' }
+            { label: 'Billing', value: 'billing' },
         ]"
     />
 </template>
@@ -45,7 +45,7 @@ Use route links when each section should have its own URL.
         :items="[
             { label: 'Overview', to: '/account/overview' },
             { label: 'Usage', to: '/account/usage' },
-            { label: 'Billing', to: '/account/billing' }
+            { label: 'Billing', to: '/account/billing' },
         ]"
     />
 </template>
@@ -61,7 +61,7 @@ Keep future or unavailable sections visible but disabled.
         model-value="general"
         :items="[
             { label: 'General', value: 'general' },
-            { label: 'Permissions', value: 'permissions', disabled: true }
+            { label: 'Permissions', value: 'permissions', disabled: true },
         ]"
     />
 </template>

@@ -40,13 +40,7 @@ const watching = ref(false);
 </script>
 
 <template>
-    <ToggleButton
-        v-model="watching"
-        on-label="Watching"
-        off-label="Watch"
-        on-icon="eye"
-        off-icon="eyeSlash"
-    />
+    <ToggleButton v-model="watching" on-label="Watching" off-label="Watch" on-icon="eye" off-icon="eyeSlash" />
 </template>
 ```
 

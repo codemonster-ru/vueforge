@@ -5,7 +5,7 @@ Link provides a single abstraction for external anchors and internal router navi
 ## Import
 
 ```ts
-import Link from '@/package/components/link.vue';
+import { Link } from '@codemonster-ru/vueforge';
 ```
 
 ## Examples
@@ -54,30 +54,30 @@ Provide `active` explicitly when router matching is not the right source of trut
 
 ### Props
 
-| Name | Type | Default |
-| --- | --- | --- |
-| `to` | `string \| RouteLocation \| undefined` | `undefined` |
-| `href` | `string \| undefined` | `undefined` |
-| `url` | `string \| undefined` | `undefined` |
-| `as` | `'a' \| 'router-link' \| undefined` | `undefined` |
-| `type` | `string \| undefined` | `undefined` |
-| `label` | `string` | `''` |
-| `active` | `boolean \| undefined` | `undefined` |
-| `disabled` | `boolean \| undefined` | `undefined` |
+| Name       | Type                                   | Default     |
+| ---------- | -------------------------------------- | ----------- |
+| `to`       | `string \| RouteLocation \| undefined` | `undefined` |
+| `href`     | `string \| undefined`                  | `undefined` |
+| `url`      | `string \| undefined`                  | `undefined` |
+| `as`       | `'a' \| 'router-link' \| undefined`    | `undefined` |
+| `type`     | `string \| undefined`                  | `undefined` |
+| `label`    | `string`                               | `''`        |
+| `active`   | `boolean \| undefined`                 | `undefined` |
+| `disabled` | `boolean \| undefined`                 | `undefined` |
 
 ### Events
 
-| Name | Payload |
-| --- | --- |
-| `click` | `MouseEvent` |
-| `active` | none |
-| `update:active` | `boolean` |
-| `onActive` | none |
+| Name            | Payload      |
+| --------------- | ------------ |
+| `click`         | `MouseEvent` |
+| `active`        | none         |
+| `update:active` | `boolean`    |
+| `onActive`      | none         |
 
 ### Slots
 
-| Name | Description |
-| --- | --- |
+| Name      | Description              |
+| --------- | ------------------------ |
 | `default` | Replaces the label text. |
 
 ## Theming

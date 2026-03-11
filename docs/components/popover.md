@@ -22,9 +22,7 @@ Use the default slot for compact informational content.
         <template #button>
             <Button label="Open popover" />
         </template>
-        <template #default>
-            Popover content
-        </template>
+        <template #default> Popover content </template>
     </Popover>
 </template>
 ```
@@ -40,9 +38,7 @@ Use header/body/footer slots when the popover needs a small card-like structure.
             <Button label="Project info" variant="outlined" />
         </template>
         <template #header>Workspace notice</template>
-        <template #body>
-            New teammates can view dashboards immediately.
-        </template>
+        <template #body> New teammates can view dashboards immediately. </template>
         <template #footer>
             <Button label="Dismiss" size="small" />
         </template>
@@ -60,9 +56,7 @@ Use `v-model` when visible state must stay coordinated with surrounding UI.
         <template #button>
             <Button label="Controlled popover" />
         </template>
-        <template #default>
-            Controlled overlay content
-        </template>
+        <template #default> Controlled overlay content </template>
     </Popover>
 </template>
 ```
@@ -77,9 +71,7 @@ Disable outside click dismissal when the content contains a task that should not
         <template #button>
             <Button label="Review changes" />
         </template>
-        <template #default>
-            Confirm the values before closing this card.
-        </template>
+        <template #default> Confirm the values before closing this card. </template>
     </Popover>
 </template>
 ```

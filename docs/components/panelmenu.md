@@ -30,13 +30,13 @@ const expanded = ref(['products']);
             {
                 key: 'products',
                 label: 'Products',
-                items: [{ key: 'catalog', label: 'Catalog', to: '/catalog' }]
+                items: [{ key: 'catalog', label: 'Catalog', to: '/catalog' }],
             },
             {
                 key: 'docs',
                 label: 'Docs',
-                items: [{ key: 'guides', label: 'Guides', to: '/guides' }]
-            }
+                items: [{ key: 'guides', label: 'Guides', to: '/guides' }],
+            },
         ]"
     />
 </template>
@@ -58,12 +58,7 @@ Use `lazy` when nested items are loaded on demand.
 
 ```vue
 <template>
-    <PanelMenu
-        :items="[
-            { key: 'reports', label: 'Reports', lazy: true, items: [] }
-        ]"
-        @lazy-load="onLazyLoad"
-    />
+    <PanelMenu :items="[{ key: 'reports', label: 'Reports', lazy: true, items: [] }]" @lazy-load="onLazyLoad" />
 </template>
 ```
 

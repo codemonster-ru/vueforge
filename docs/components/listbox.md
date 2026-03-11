@@ -5,7 +5,7 @@ Listbox provides an always-visible option list for single or multiple selection 
 ## Import
 
 ```ts
-import Listbox from '@/package/components/listbox.vue';
+import { Listbox } from '@codemonster-ru/vueforge';
 ```
 
 ## Examples
@@ -74,32 +74,32 @@ interface ListboxOptionGroup {
 
 ### Props
 
-| Name | Type | Default |
-| --- | --- | --- |
-| `modelValue` | `ListboxValue \| ListboxValue[] \| undefined` | `undefined` |
-| `options` | `(ListboxOption \| ListboxOptionGroup)[]` | `[]` |
-| `multiple` | `boolean` | `false` |
-| `disabled` | `boolean` | `false` |
-| `size` | `'small' \| 'normal' \| 'large'` | `'normal'` |
-| `variant` | `'filled' \| 'outlined'` | `'filled'` |
-| `ariaLabel` | `string` | `'Listbox'` |
-| `emptyText` | `string` | `'No options'` |
+| Name         | Type                                          | Default        |
+| ------------ | --------------------------------------------- | -------------- |
+| `modelValue` | `ListboxValue \| ListboxValue[] \| undefined` | `undefined`    |
+| `options`    | `(ListboxOption \| ListboxOptionGroup)[]`     | `[]`           |
+| `multiple`   | `boolean`                                     | `false`        |
+| `disabled`   | `boolean`                                     | `false`        |
+| `size`       | `'small' \| 'normal' \| 'large'`              | `'normal'`     |
+| `variant`    | `'filled' \| 'outlined'`                      | `'filled'`     |
+| `ariaLabel`  | `string`                                      | `'Listbox'`    |
+| `emptyText`  | `string`                                      | `'No options'` |
 
 ### Events
 
-| Name | Payload |
-| --- | --- |
-| `update:modelValue` | selected value payload |
-| `change` | `nextValue, option, event` |
-| `focus` | `FocusEvent` |
-| `blur` | `FocusEvent` |
+| Name                | Payload                    |
+| ------------------- | -------------------------- |
+| `update:modelValue` | selected value payload     |
+| `change`            | `nextValue, option, event` |
+| `focus`             | `FocusEvent`               |
+| `blur`              | `FocusEvent`               |
 
 ### Slots
 
-| Name | Description |
-| --- | --- |
+| Name     | Description                                                     |
+| -------- | --------------------------------------------------------------- |
 | `option` | Custom option content with `{ option, selected, highlighted }`. |
-| `empty` | Replaces the empty state. |
+| `empty`  | Replaces the empty state.                                       |
 
 ## Theming
 
@@ -122,4 +122,3 @@ Override component tokens through `theme.overrides.components.listbox`.
 - Listbox uses `role="listbox"` and `role="option"` with `aria-selected`.
 - Keyboard support includes `ArrowUp`, `ArrowDown`, `Home`, `End`, `Enter`, and `Space`.
 - Multi-select mode exposes `aria-multiselectable`.
-

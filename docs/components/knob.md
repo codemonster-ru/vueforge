@@ -5,7 +5,7 @@ Knob is a circular range control for compact adjustments and value display.
 ## Import
 
 ```ts
-import Knob from '@/package/components/knob.vue';
+import { Knob } from '@codemonster-ru/vueforge';
 ```
 
 ## Examples
@@ -31,12 +31,7 @@ const volume = ref(42);
 Adjust range and step for domain-specific inputs like gain, progress, or scoring controls.
 
 ```vue
-<Knob
-    v-model="volume"
-    :min="0"
-    :max="100"
-    :step="5"
-/>
+<Knob v-model="volume" :min="0" :max="100" :step="5" />
 ```
 
 ### Readonly Display
@@ -59,28 +54,28 @@ Disable the center value when nearby labels already explain the metric.
 
 ### Props
 
-| Name | Type | Default |
-| --- | --- | --- |
-| `modelValue` | `number` | `0` |
-| `min` | `number` | `0` |
-| `max` | `number` | `100` |
-| `step` | `number` | `1` |
-| `size` | `number` | `120` |
-| `strokeWidth` | `number` | `12` |
-| `showValue` | `boolean` | `true` |
-| `disabled` | `boolean` | `false` |
-| `readonly` | `boolean` | `false` |
-| `ariaLabel` | `string` | `'Knob'` |
+| Name          | Type      | Default  |
+| ------------- | --------- | -------- |
+| `modelValue`  | `number`  | `0`      |
+| `min`         | `number`  | `0`      |
+| `max`         | `number`  | `100`    |
+| `step`        | `number`  | `1`      |
+| `size`        | `number`  | `120`    |
+| `strokeWidth` | `number`  | `12`     |
+| `showValue`   | `boolean` | `true`   |
+| `disabled`    | `boolean` | `false`  |
+| `readonly`    | `boolean` | `false`  |
+| `ariaLabel`   | `string`  | `'Knob'` |
 
 ### Events
 
-| Name | Payload |
-| --- | --- |
-| `update:modelValue` | `number` |
-| `input` | `number` |
-| `change` | `number` |
-| `focus` | `FocusEvent` |
-| `blur` | `FocusEvent` |
+| Name                | Payload      |
+| ------------------- | ------------ |
+| `update:modelValue` | `number`     |
+| `input`             | `number`     |
+| `change`            | `number`     |
+| `focus`             | `FocusEvent` |
+| `blur`              | `FocusEvent` |
 
 ## Theming
 

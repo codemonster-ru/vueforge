@@ -36,6 +36,10 @@ const createTestRouter = (path = firstDocsRoute) => {
                 path,
                 component: DocsAppView,
             })),
+            {
+                path: '/:pathMatch(.*)*',
+                component: { template: '<div />' },
+            },
         ],
     });
 };
@@ -101,8 +105,8 @@ describe('DocsAppView', () => {
     });
 
     it('filters sidebar links and opens mobile drawer', async () => {
-        const router = createTestRouter('/docs/components/chart');
-        router.push('/docs/components/chart');
+        const router = createTestRouter('/docs/components/button');
+        router.push('/docs/components/button');
         await router.isReady();
 
         const wrapper = mount(DocsAppView, {
@@ -111,18 +115,18 @@ describe('DocsAppView', () => {
             },
         });
 
-        await wrapper.find('[data-testid="vf-docs-search"]').setValue('chart');
+        await wrapper.find('[data-testid="vf-docs-search"]').setValue('button');
         const links = wrapper.findAll('.vf-panelmenu-node__link');
-        expect(links.some(link => link.text().toLowerCase().includes('chart'))).toBe(true);
-        expect(links.every(link => link.text().toLowerCase().includes('chart'))).toBe(true);
+        expect(links.some(link => link.text().toLowerCase().includes('button'))).toBe(true);
+        expect(links.every(link => link.text().toLowerCase().includes('button'))).toBe(true);
 
         await wrapper.find('[data-testid="vf-docs-mobile-toggle"]').trigger('click');
         expect(wrapper.find('[data-testid="vf-docs-mobile-drawer"]').exists()).toBe(true);
     });
 
     it('marks hash heading as active in the table of contents', async () => {
-        const router = createTestRouter('/docs/components/chart#props');
-        router.push('/docs/components/chart#props');
+        const router = createTestRouter('/docs/components/button#props');
+        router.push('/docs/components/button#props');
         await router.isReady();
 
         const wrapper = mount(DocsAppView, {
@@ -209,39 +213,6 @@ describe('DocsAppView', () => {
         expect(wrapper.text()).not.toContain('Live preview is not available for this example yet.');
     });
 
-    it('renders live preview for self-contained activity feed examples', async () => {
-        const router = createTestRouter('/docs/components/activityfeed');
-        router.push('/docs/components/activityfeed');
-        await router.isReady();
-
-        const wrapper = mount(DocsAppView, {
-            global: {
-                plugins: [router],
-            },
-        });
-
-        expect(wrapper.find('[data-testid="vf-docs-example-block"]').exists()).toBe(true);
-        expect(wrapper.find('[data-testid="vf-docs-example-preview"]').text()).toContain('Invoice approved');
-        expect(wrapper.text()).toContain('Design review scheduled');
-        expect(wrapper.text()).not.toContain('Live preview is not available for this example yet.');
-    });
-
-    it('renders live preview for self-contained advanced filter panel examples', async () => {
-        const router = createTestRouter('/docs/components/advancedfilterpanel');
-        router.push('/docs/components/advancedfilterpanel');
-        await router.isReady();
-
-        const wrapper = mount(DocsAppView, {
-            global: {
-                plugins: [router],
-            },
-        });
-
-        expect(wrapper.find('[data-testid="vf-docs-example-preview"]').text()).toContain('Status');
-        expect(wrapper.find('[data-testid="vf-docs-example-preview"]').text()).toContain('Apply');
-        expect(wrapper.text()).toContain('Search by owner');
-    });
-
     it('renders alert examples that use nested slot templates', async () => {
         const router = createTestRouter('/docs/components/alert');
         router.push('/docs/components/alert');
@@ -272,10 +243,9 @@ describe('DocsAppView', () => {
         expect(blockWrapper.text()).toContain('Form content');
         expect(blockWrapper.text()).toContain('Release dashboard');
         expect(blockWrapper.text()).toContain('Workspace summary');
-        expect(blockWrapper.find('[data-testid="vf-docs-example-preview"] .vf-blockui__overlay_fullscreen').exists()).toBe(
-            false,
-        );
-        expect(blockWrapper.find('[data-testid="vf-docs-example-preview"] .vf-blockui__overlay').exists()).toBe(true);
+        expect(
+            blockWrapper.find('[data-testid="vf-docs-example-preview"] .vf-blockui__overlay_fullscreen').exists(),
+        ).toBe(false);
 
         const themeRouter = createTestRouter('/docs/components/themeprovider');
         themeRouter.push('/docs/components/themeprovider');
@@ -352,59 +322,9 @@ describe('DocsAppView', () => {
         expect(wrapper.find('[data-testid="vf-docs-example-preview"] .vf-bottom-navigation_fixed').exists()).toBe(
             false,
         );
-        expect(
-            wrapper.find('[data-testid="vf-docs-example-preview"] .vf-bottom-navigation_mobile-only').exists(),
-        ).toBe(false);
-    });
-
-    it('renders bottom sheet examples inside preview blocks instead of teleporting into the page', async () => {
-        const router = createTestRouter('/docs/components/bottomsheet');
-        router.push('/docs/components/bottomsheet');
-        await router.isReady();
-
-        const wrapper = mount(DocsAppView, {
-            global: {
-                plugins: [router],
-            },
-        });
-
-        expect(wrapper.find('[data-testid="vf-docs-example-preview"] .vf-bottom-sheet_preview').exists()).toBe(true);
-        expect(wrapper.find('[data-testid="vf-docs-example-preview"] .vf-bottom-sheet__panel').exists()).toBe(true);
-        expect(document.body.querySelector('.vf-bottom-sheet:not(.vf-bottom-sheet_preview)')).toBeNull();
-    });
-
-    it('lets stateful bottom sheet previews reset to their initial state without reloading the page', async () => {
-        const router = createTestRouter('/docs/components/bottomsheet');
-        router.push('/docs/components/bottomsheet');
-        await router.isReady();
-
-        const wrapper = mount(DocsAppView, {
-            global: {
-                plugins: [router],
-            },
-        });
-
-        const preview = wrapper
-            .findAll('[data-testid="vf-docs-example-preview"]')
-            .find(candidate => candidate.find('.vf-bottom-sheet_preview').exists());
-
-        expect(preview).toBeDefined();
-        expect(preview?.find('.vf-bottom-sheet_preview').exists()).toBe(true);
-        expect(preview?.find('[data-testid="vf-docs-example-reset"]').exists()).toBe(false);
-
-        await preview?.find('.vf-bottom-sheet__close').trigger('click');
-        await nextTick();
-        await nextTick();
-
-        expect(preview?.find('.vf-bottom-sheet_preview').exists()).toBe(false);
-        expect(preview?.find('[data-testid="vf-docs-example-reset"]').text()).toBe('Open preview');
-
-        await preview?.find('[data-testid="vf-docs-example-reset"]').trigger('click');
-        await nextTick();
-        await nextTick();
-
-        expect(preview?.find('.vf-bottom-sheet_preview').exists()).toBe(true);
-        expect(preview?.find('[data-testid="vf-docs-example-reset"]').exists()).toBe(false);
+        expect(wrapper.find('[data-testid="vf-docs-example-preview"] .vf-bottom-navigation_mobile-only').exists()).toBe(
+            false,
+        );
     });
 
     it('renders teleport-based overlay components inside preview blocks', async () => {
@@ -424,21 +344,6 @@ describe('DocsAppView', () => {
                 previewSelector: '.vf-drawer_preview .vf-drawer__panel',
                 bodySelector: '.vf-drawer:not(.vf-drawer_preview)',
             },
-            {
-                route: '/docs/components/notificationcenter',
-                previewSelector: '.vf-notification-center_preview .vf-notification-center__panel',
-                bodySelector: '.vf-notification-center:not(.vf-notification-center_preview)',
-            },
-            {
-                route: '/docs/components/tour',
-                previewSelector: '.vf-tour_preview .vf-tour__panel',
-                bodySelector: '.vf-tour:not(.vf-tour_preview)',
-            },
-            {
-                route: '/docs/components/commandpalette',
-                previewSelector: '.vf-command-palette_preview .vf-command-palette__panel',
-                bodySelector: '.vf-command-palette:not(.vf-command-palette_preview)',
-            },
         ];
 
         for (const page of pages) {
@@ -455,23 +360,6 @@ describe('DocsAppView', () => {
             expect(wrapper.find(`[data-testid="vf-docs-example-preview"] ${page.previewSelector}`).exists()).toBe(true);
             expect(document.body.querySelector(page.bodySelector)).toBeNull();
         }
-    });
-
-    it('renders the basic command palette preview with visible commands', async () => {
-        const router = createTestRouter('/docs/components/commandpalette');
-        router.push('/docs/components/commandpalette');
-        await router.isReady();
-
-        const wrapper = mount(DocsAppView, {
-            global: {
-                plugins: [router],
-            },
-        });
-
-        const preview = wrapper.find('[data-testid="vf-docs-example-preview"]');
-        expect(preview.find('.vf-command-palette_preview .vf-command-palette__panel').exists()).toBe(true);
-        expect(preview.text()).toContain('Open docs');
-        expect(preview.text()).toContain('Save and publish');
     });
 
     it('renders comment thread examples with demo comments', async () => {
@@ -569,95 +457,6 @@ describe('DocsAppView', () => {
         expect(preview.text()).toContain('Delete row?');
     });
 
-    it('renders chart wrapper examples with the built-in docs adapter', async () => {
-        const router = createTestRouter('/docs/components/areachart');
-        router.push('/docs/components/areachart');
-        await router.isReady();
-
-        const wrapper = mount(DocsAppView, {
-            global: {
-                plugins: [router],
-            },
-        });
-
-        expect(wrapper.find('[data-testid="vf-docs-example-preview"]').exists()).toBe(true);
-        expect(wrapper.find('.vf-docs-demo-chart__surface').exists()).toBe(true);
-        expect(wrapper.text()).toContain('Q1');
-    });
-
-    it('renders bubble chart examples with chart-specific series fallbacks', async () => {
-        const router = createTestRouter('/docs/components/bubblechart');
-        router.push('/docs/components/bubblechart');
-        await router.isReady();
-
-        const wrapper = mount(DocsAppView, {
-            global: {
-                plugins: [router],
-            },
-        });
-
-        expect(wrapper.find('[data-testid="vf-docs-example-preview"]').exists()).toBe(true);
-        expect(wrapper.find('.vf-docs-demo-chart__surface').exists()).toBe(true);
-        expect(wrapper.findAll('.vf-docs-demo-chart__bubble').length).toBeGreaterThan(0);
-        expect(wrapper.text()).toContain('Accounts');
-        expect(wrapper.text()).not.toContain('props.series.map is not a function');
-    });
-
-    it('renders base chart examples with the built-in docs adapter and table fallback control', async () => {
-        const router = createTestRouter('/docs/components/chart');
-        router.push('/docs/components/chart');
-        await router.isReady();
-
-        const wrapper = mount(DocsAppView, {
-            global: {
-                plugins: [router],
-            },
-        });
-
-        const accessibleFallbackBlock = wrapper
-            .findAll('[data-testid="vf-docs-example-block"]')
-            .find(candidate => candidate.text().includes('Accessible Table Fallback'));
-
-        expect(accessibleFallbackBlock).toBeDefined();
-        expect(accessibleFallbackBlock?.find('[data-testid="vf-docs-example-preview"] .vf-docs-demo-chart__surface').exists()).toBe(true);
-        expect(accessibleFallbackBlock?.text()).toContain('Show data table');
-        expect(accessibleFallbackBlock?.text()).toContain('Revenue increased over the last four quarters.');
-    });
-
-    it('renders code editor examples with the built-in docs adapter', async () => {
-        const router = createTestRouter('/docs/components/codeeditor');
-        router.push('/docs/components/codeeditor');
-        await router.isReady();
-
-        const wrapper = mount(DocsAppView, {
-            global: {
-                plugins: [router],
-            },
-        });
-
-        const basicBlock = wrapper
-            .findAll('[data-testid="vf-docs-example-block"]')
-            .find(candidate => candidate.text().includes('Basic'));
-
-        expect(basicBlock).toBeDefined();
-        expect(basicBlock?.find('[data-testid="vf-docs-example-preview"]').exists()).toBe(true);
-        expect(basicBlock?.find('.vf-docs-demo-editor').exists()).toBe(true);
-        expect((basicBlock?.find('.vf-docs-demo-editor').element as HTMLTextAreaElement).value).toContain(
-            'export const releaseChannels',
-        );
-        expect(basicBlock?.findAll('.vf-code-editor__meta').at(-1)?.text()).toBe('Editable');
-
-        const readonlyBlock = wrapper
-            .findAll('[data-testid="vf-docs-example-block"]')
-            .find(candidate => candidate.text().includes('Readonly Review'));
-
-        expect(readonlyBlock).toBeDefined();
-        expect(readonlyBlock?.findAll('.vf-code-editor__meta').at(-1)?.text()).toBe('Read-only');
-        expect((readonlyBlock?.find('.vf-docs-demo-editor').element as HTMLTextAreaElement).value).toContain(
-            '"environment": "staging"',
-        );
-    });
-
     it('renders carousel examples with docs-specific slide data', async () => {
         const router = createTestRouter('/docs/components/carousel');
         router.push('/docs/components/carousel');
@@ -717,20 +516,6 @@ describe('DocsAppView', () => {
 
         expect(wrapper.text()).toContain('Navigation');
         expect(wrapper.text()).toContain('Workspace overview');
-        expect(wrapper.text()).not.toContain('Live preview is not available for this example yet.');
-    });
-
-    it('hides preview container for unsupported examples instead of rendering fallback copy', async () => {
-        const router = createTestRouter('/docs/components/activityfeed');
-        router.push('/docs/components/activityfeed');
-        await router.isReady();
-
-        const wrapper = mount(DocsAppView, {
-            global: {
-                plugins: [router],
-            },
-        });
-
         expect(wrapper.text()).not.toContain('Live preview is not available for this example yet.');
     });
 

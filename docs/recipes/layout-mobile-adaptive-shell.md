@@ -5,9 +5,9 @@ Combine `Show`/`Hide` with layout presets to deliver mobile-first shell behavior
 ```vue
 <template>
     <Show to="md">
-        <BottomSheet v-model="mobileNavOpen">
+        <Drawer v-model="mobileNavOpen" placement="left">
             <NavigationRail :items="navItems" :show-toggle="false" />
-        </BottomSheet>
+        </Drawer>
     </Show>
 
     <Show from="md">

@@ -27,6 +27,10 @@ const router = createRouter({
                 path,
                 component: DocsAppView,
             })),
+        {
+            path: '/:pathMatch(.*)*',
+            redirect: firstDocsRoute,
+        },
     ],
 });
 

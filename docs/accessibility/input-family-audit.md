@@ -1,6 +1,6 @@
 # Input Family Accessibility Audit Framework
 
-Scope: `Input`, `Textarea`, `NumberInput`, `PasswordInput`, `SearchInput`, `MaskedInput`, `MentionInput`, `OtpInput`.
+Scope: `Input`, `Textarea`, `NumberInput`, `PasswordInput`, `MaskedInput`, `OtpInput`.
 
 Goal: provide a repeatable checklist for keyboard and ARIA behavior validation before release.
 
@@ -40,10 +40,6 @@ Goal: provide a repeatable checklist for keyboard and ARIA behavior validation b
     - Arrow keys and step behavior are documented and tested.
 - `PasswordInput`:
     - Show/hide toggle is keyboard accessible and labeled.
-- `SearchInput`:
-    - Clear action is keyboard accessible and labeled.
-- `MentionInput`:
-    - Suggestion list keyboard navigation and active option semantics are verified.
 - `OtpInput`:
     - Cell navigation, paste behavior, and screen-reader clarity are verified.
 

@@ -5,7 +5,7 @@ DialogService and ConfirmService provide promise-based programmatic dialog flows
 ## Import
 
 ```ts
-import { dialogService, confirmService } from '@/package/services';
+import { dialogService, confirmService } from '@codemonster-ru/vueforge';
 ```
 
 ## Examples

@@ -40,9 +40,7 @@ const alerts = ref(false);
 </script>
 
 <template>
-    <Switch v-model="alerts">
-        Send deployment alerts to Slack
-    </Switch>
+    <Switch v-model="alerts"> Send deployment alerts to Slack </Switch>
 </template>
 ```
 

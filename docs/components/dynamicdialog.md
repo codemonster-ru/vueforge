@@ -5,8 +5,8 @@ DynamicDialog is a host renderer for programmatic dialogs opened through `dynami
 ## Import
 
 ```ts
-import DynamicDialog from '@/package/components/dynamic-dialog.vue';
-import { dynamicDialogService } from '@/package/services/dynamic-dialog-service';
+import { DynamicDialog, dynamicDialogService } from '@codemonster-ru/vueforge';
+import { DynamicDialog, dynamicDialogService } from '@codemonster-ru/vueforge';
 ```
 
 ## Examples
@@ -59,23 +59,23 @@ Use the host slots when an entry provides only title and message, or when you wa
 
 ### Props
 
-| Name | Type | Default |
-| --- | --- | --- |
+| Name      | Type                   | Default                |
+| --------- | ---------------------- | ---------------------- |
 | `service` | `DynamicDialogService` | `dynamicDialogService` |
 
 ### Slots
 
-| Name | Description |
-| --- | --- |
+| Name      | Description                                                                       |
+| --------- | --------------------------------------------------------------------------------- |
 | `default` | Fallback content when no component is provided, with `{ entry, close, dismiss }`. |
-| `footer` | Optional footer actions with `{ entry, close, dismiss }`. |
+| `footer`  | Optional footer actions with `{ entry, close, dismiss }`.                         |
 
 ### Exposed Methods
 
-| Name | Description |
-| --- | --- |
-| `closeCurrent(result?)` | Resolves and closes the active dialog. |
-| `dismissCurrent()` | Dismisses the active dialog without a result. |
+| Name                    | Description                                   |
+| ----------------------- | --------------------------------------------- |
+| `closeCurrent(result?)` | Resolves and closes the active dialog.        |
+| `dismissCurrent()`      | Dismisses the active dialog without a result. |
 
 ## Theming
 

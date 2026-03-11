@@ -56,9 +56,7 @@ Override `role` and `ariaLive` only when the default automatic behavior is not a
 
 ```vue
 <template>
-    <InlineMessage severity="info" role="status" aria-live="polite">
-        Search results update as you type.
-    </InlineMessage>
+    <InlineMessage severity="info" role="status" aria-live="polite"> Search results update as you type. </InlineMessage>
 </template>
 ```
 

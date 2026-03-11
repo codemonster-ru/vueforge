@@ -32,11 +32,7 @@ const inProgressRange: [string | null, string | null] = ['2026-03-01', null];
 Bounds should disable invalid choices instead of silently coercing the value.
 
 ```vue
-<DateTimePicker
-    min="2026-03-10T09:00"
-    max="2026-03-10T18:00"
-    :minute-step="15"
-/>
+<DateTimePicker min="2026-03-10T09:00" max="2026-03-10T18:00" :minute-step="15" />
 ```
 
 ## Accepted Model Formats
@@ -54,23 +50,23 @@ Invalid values are ignored. Components fall back to an empty or unselected displ
 - Date labels are localized through `locale` where supported: `DatePicker`, `Calendar`, `DateRangePicker`, and `DateTimePicker`.
 - Locale and week-start defaults can be configured globally in [date-time-locale-setup.md](/Users/kolesnikov_k_a/Projects/Codemonster/JS/vueforge/docs/guides/date-time-locale-setup.md).
 - `TimePicker` and `DateTimePicker` support:
-  - `format="24h"` -> `HH:mm`
-  - `format="12h"` -> `h:mm AM/PM`
+    - `format="24h"` -> `HH:mm`
+    - `format="12h"` -> `h:mm AM/PM`
 - Even in `12h` mode, emitted time values stay in canonical 24-hour format.
 
 ## Constraints
 
 - Date bounds:
-  - `min` and `max` disable out-of-range days.
-  - Disabled days are not selectable by pointer or keyboard.
+    - `min` and `max` disable out-of-range days.
+    - Disabled days are not selectable by pointer or keyboard.
 - Time bounds:
-  - `min` and `max` disable out-of-range time options.
-  - `step` in `TimePicker` and `minuteStep` in `DateTimePicker` generate discrete selectable options.
+    - `min` and `max` disable out-of-range time options.
+    - `step` in `TimePicker` and `minuteStep` in `DateTimePicker` generate discrete selectable options.
 - Combined datetime bounds:
-  - `DateTimePicker` disables dates by day and then filters time options again when the selected day matches the min or max boundary day.
+    - `DateTimePicker` disables dates by day and then filters time options again when the selected day matches the min or max boundary day.
 - Range bounds:
-  - `DateRangePicker` applies limits to both start and end picks.
-  - Selecting an end date before the current start resets the in-progress range anchor according to component behavior.
+    - `DateRangePicker` applies limits to both start and end picks.
+    - Selecting an end date before the current start resets the in-progress range anchor according to component behavior.
 
 ## Empty And Partial States
 

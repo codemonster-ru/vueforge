@@ -5,7 +5,7 @@ Expose hierarchical navigation context for pages nested inside multi-level produ
 ## Import
 
 ```ts
-import { Breadcrumbs } from '@codemonster-ru/vueforge';
+import { Breadcrumbs } from '@codemonster-ru/vueforge-layouts';
 ```
 
 ## Examples
@@ -22,7 +22,7 @@ Use a simple breadcrumb trail for standard application hierarchy.
         :items="[
             { label: 'Home', to: '/' },
             { label: 'Settings', to: '/settings' },
-            { label: 'Profile', active: true }
+            { label: 'Profile', active: true },
         ]"
     />
 </template>
@@ -38,7 +38,7 @@ When no explicit `active` item is set, the last item is treated as the current p
         :items="[
             { label: 'Projects', to: '/projects' },
             { label: 'Project Apollo', to: '/projects/apollo' },
-            { label: 'Members' }
+            { label: 'Members' },
         ]"
     />
 </template>
@@ -54,7 +54,7 @@ Use the `separator` slot when the product needs icon-style separators instead of
         :items="[
             { label: 'Home', to: '/' },
             { label: 'Reports', to: '/reports' },
-            { label: 'Revenue', active: true }
+            { label: 'Revenue', active: true },
         ]"
     >
         <template #separator>
@@ -73,7 +73,7 @@ Use the `item` slot when breadcrumb items need richer markup while keeping curre
     <Breadcrumbs
         :items="[
             { label: 'Workspace', to: '/workspace' },
-            { label: 'Security', active: true }
+            { label: 'Security', active: true },
         ]"
     >
         <template #item="{ item, active }">

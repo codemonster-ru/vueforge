@@ -40,12 +40,7 @@ const releaseAt = ref();
 </script>
 
 <template>
-    <DateTimePicker
-        v-model="releaseAt"
-        min="2026-03-01T09:00"
-        max="2026-03-31T18:00"
-        :minute-step="15"
-    />
+    <DateTimePicker v-model="releaseAt" min="2026-03-01T09:00" max="2026-03-31T18:00" :minute-step="15" />
 </template>
 ```
 

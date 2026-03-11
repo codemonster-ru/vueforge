@@ -5,7 +5,7 @@ Galleria is a media-focused gallery with a main stage, thumbnail navigation, ind
 ## Import
 
 ```ts
-import Galleria from '@/package/components/galleria.vue';
+import { Galleria } from '@codemonster-ru/vueforge';
 ```
 
 ## Examples
@@ -35,13 +35,7 @@ const media = [
 Hide thumbnails, indicators, or captions when the gallery should stay compact.
 
 ```vue
-<Galleria
-    v-model="activeIndex"
-    :items="media"
-    :show-thumbnails="false"
-    :show-indicators="true"
-    :show-caption="false"
-/>
+<Galleria v-model="activeIndex" :items="media" :show-thumbnails="false" :show-indicators="true" :show-caption="false" />
 ```
 
 ### Product Gallery
@@ -49,13 +43,7 @@ Hide thumbnails, indicators, or captions when the gallery should stay compact.
 Keep thumbnails visible for catalogs and detail pages where users compare images directly.
 
 ```vue
-<Galleria
-    v-model="activeIndex"
-    :items="productImages"
-    show-thumbnails
-    show-caption
-    :circular="false"
-/>
+<Galleria v-model="activeIndex" :items="productImages" show-thumbnails show-caption :circular="false" />
 ```
 
 ### Autoplay Showcase
@@ -63,12 +51,7 @@ Keep thumbnails visible for catalogs and detail pages where users compare images
 Enable autoplay for passive marketing or presentation use cases.
 
 ```vue
-<Galleria
-    v-model="activeIndex"
-    :items="campaignMedia"
-    auto-play
-    :auto-play-interval="3500"
-/>
+<Galleria v-model="activeIndex" :items="campaignMedia" auto-play :auto-play-interval="3500" />
 ```
 
 ## API
@@ -88,27 +71,27 @@ interface GalleriaItem {
 
 ### Props
 
-| Name | Type | Default |
-| --- | --- | --- |
-| `items` | `GalleriaItem[]` | `[]` |
-| `modelValue` | `number` | `0` |
-| `showThumbnails` | `boolean` | `true` |
-| `showIndicators` | `boolean` | `true` |
-| `showCaption` | `boolean` | `true` |
-| `circular` | `boolean` | `true` |
-| `autoPlay` | `boolean` | `false` |
-| `autoPlayInterval` | `number` | `5000` |
-| `pauseOnHover` | `boolean` | `true` |
-| `disabled` | `boolean` | `false` |
-| `ariaLabel` | `string` | `'Media gallery'` |
+| Name               | Type             | Default           |
+| ------------------ | ---------------- | ----------------- |
+| `items`            | `GalleriaItem[]` | `[]`              |
+| `modelValue`       | `number`         | `0`               |
+| `showThumbnails`   | `boolean`        | `true`            |
+| `showIndicators`   | `boolean`        | `true`            |
+| `showCaption`      | `boolean`        | `true`            |
+| `circular`         | `boolean`        | `true`            |
+| `autoPlay`         | `boolean`        | `false`           |
+| `autoPlayInterval` | `number`         | `5000`            |
+| `pauseOnHover`     | `boolean`        | `true`            |
+| `disabled`         | `boolean`        | `false`           |
+| `ariaLabel`        | `string`         | `'Media gallery'` |
 
 ### Events
 
-| Name | Payload |
-| --- | --- |
-| `update:modelValue` | `number` |
-| `change` | `{ index, previousIndex, source }` |
-| `itemClick` | `{ item, index, event }` |
+| Name                | Payload                            |
+| ------------------- | ---------------------------------- |
+| `update:modelValue` | `number`                           |
+| `change`            | `{ index, previousIndex, source }` |
+| `itemClick`         | `{ item, index, event }`           |
 
 ## Theming
 
@@ -133,4 +116,3 @@ Override component tokens through `theme.overrides.components.galleria`.
 - Galleria renders region/carousel semantics with keyboard support for `ArrowLeft`, `ArrowRight`, `Home`, and `End`.
 - The current media item exposes progression like `x of y`.
 - Disabled media items stay non-interactive in the thumbnail strip.
-

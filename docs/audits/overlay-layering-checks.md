@@ -23,6 +23,6 @@ Scope: verify default overlay-capable components follow a consistent z-index pol
 
 ## Verification Notes
 
-- Values are sourced from `src/package/themes/default/components/*`.
+- Values are sourced from `packages/vueforge/src/themes/default/components/*`.
 - Component docs include matching z-index guidance for the affected families.
 - Changes to default token values should update this audit and related docs together.

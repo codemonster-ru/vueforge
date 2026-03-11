@@ -24,7 +24,7 @@ Use a basic select for compact forms and settings panels with a short option lis
         :options="[
             { label: 'Viewer', value: 'viewer' },
             { label: 'Editor', value: 'editor' },
-            { label: 'Admin', value: 'admin' }
+            { label: 'Admin', value: 'admin' },
         ]"
     />
 </template>
@@ -43,7 +43,7 @@ Turn on `clearable` when the field can intentionally return to an empty state.
         :options="[
             { label: 'Ava Patel', value: 'ava' },
             { label: 'Maksim Ivanov', value: 'maksim' },
-            { label: 'Wei Chen', value: 'wei' }
+            { label: 'Wei Chen', value: 'wei' },
         ]"
     />
 </template>
@@ -67,7 +67,7 @@ Use `disabled` for unavailable controls and `readonly` when the current selectio
             readonly
             :options="[
                 { label: 'Weekly', value: 'weekly' },
-                { label: 'Monthly', value: 'monthly' }
+                { label: 'Monthly', value: 'monthly' },
             ]"
         />
     </div>
@@ -107,7 +107,7 @@ Enable virtualization when the list is long enough to justify rendering only the
             { label: 'Expansion MRR', value: 'expansion-mrr' },
             { label: 'Gross margin', value: 'gross-margin' },
             { label: 'Lead velocity', value: 'lead-velocity' },
-            { label: 'Net revenue retention', value: 'net-revenue-retention' }
+            { label: 'Net revenue retention', value: 'net-revenue-retention' },
         ]"
     />
 </template>

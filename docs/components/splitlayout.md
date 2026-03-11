@@ -5,7 +5,7 @@ SplitLayout provides ready-made multi-pane workspace layouts such as master-deta
 ## Import
 
 ```ts
-import SplitLayout from '@/package/components/split-layout.vue';
+import { SplitLayout } from '@codemonster-ru/vueforge-layouts';
 ```
 
 ## Examples
@@ -29,7 +29,7 @@ Use `editor-preview` when the secondary pane acts as a live result or comparison
 
 ```vue
 <SplitLayout preset="editor-preview" v-model:secondary-collapsed="previewCollapsed">
-    <CodeEditor />
+    <Textarea model-value="Editable content" rows="12" />
     <template #secondary>
         <DiffViewer />
     </template>
@@ -53,42 +53,42 @@ Use `inspector` when the tertiary pane is the main secondary surface.
 
 ### Props
 
-| Name | Type | Default |
-| --- | --- | --- |
-| `preset` | `'master-detail' \| 'inspector' \| 'editor-preview'` | `'master-detail'` |
-| `secondaryCollapsed` | `boolean` | `false` |
-| `tertiaryCollapsed` | `boolean` | `false` |
-| `secondaryWidth` | `string` | `'22rem'` |
-| `tertiaryWidth` | `string` | `'18rem'` |
-| `mobileBreakpoint` | `number` | `1024` |
-| `showMobileToggles` | `boolean` | `true` |
-| `showDesktopToggles` | `boolean` | `false` |
-| `closeOnEsc` | `boolean` | `true` |
-| `primaryAriaLabel` | `string` | `'Primary pane'` |
-| `secondaryAriaLabel` | `string` | `'Secondary pane'` |
-| `tertiaryAriaLabel` | `string` | `'Tertiary pane'` |
-| `secondaryToggleLabel` | `string` | `'Toggle secondary pane'` |
-| `tertiaryToggleLabel` | `string` | `'Toggle tertiary pane'` |
-| `closeSecondaryLabel` | `string` | `'Close secondary pane'` |
-| `closeTertiaryLabel` | `string` | `'Close tertiary pane'` |
-| `secondaryToggleIcon` | `string` | unicode icon |
-| `tertiaryToggleIcon` | `string` | unicode icon |
+| Name                   | Type                                                 | Default                   |
+| ---------------------- | ---------------------------------------------------- | ------------------------- |
+| `preset`               | `'master-detail' \| 'inspector' \| 'editor-preview'` | `'master-detail'`         |
+| `secondaryCollapsed`   | `boolean`                                            | `false`                   |
+| `tertiaryCollapsed`    | `boolean`                                            | `false`                   |
+| `secondaryWidth`       | `string`                                             | `'22rem'`                 |
+| `tertiaryWidth`        | `string`                                             | `'18rem'`                 |
+| `mobileBreakpoint`     | `number`                                             | `1024`                    |
+| `showMobileToggles`    | `boolean`                                            | `true`                    |
+| `showDesktopToggles`   | `boolean`                                            | `false`                   |
+| `closeOnEsc`           | `boolean`                                            | `true`                    |
+| `primaryAriaLabel`     | `string`                                             | `'Primary pane'`          |
+| `secondaryAriaLabel`   | `string`                                             | `'Secondary pane'`        |
+| `tertiaryAriaLabel`    | `string`                                             | `'Tertiary pane'`         |
+| `secondaryToggleLabel` | `string`                                             | `'Toggle secondary pane'` |
+| `tertiaryToggleLabel`  | `string`                                             | `'Toggle tertiary pane'`  |
+| `closeSecondaryLabel`  | `string`                                             | `'Close secondary pane'`  |
+| `closeTertiaryLabel`   | `string`                                             | `'Close tertiary pane'`   |
+| `secondaryToggleIcon`  | `string`                                             | unicode icon              |
+| `tertiaryToggleIcon`   | `string`                                             | unicode icon              |
 
 ### Events
 
-| Name | Payload |
-| --- | --- |
+| Name                        | Payload   |
+| --------------------------- | --------- |
 | `update:secondaryCollapsed` | `boolean` |
-| `update:tertiaryCollapsed` | `boolean` |
-| `breakpoint-change` | `boolean` |
+| `update:tertiaryCollapsed`  | `boolean` |
+| `breakpoint-change`         | `boolean` |
 
 ### Slots
 
-| Name | Description |
-| --- | --- |
-| `default` | Primary pane content. |
+| Name        | Description                                     |
+| ----------- | ----------------------------------------------- |
+| `default`   | Primary pane content.                           |
 | `secondary` | Secondary pane content with `{ mobile, open }`. |
-| `tertiary` | Tertiary pane content with `{ mobile, open }`. |
+| `tertiary`  | Tertiary pane content with `{ mobile, open }`.  |
 
 ## Theming
 

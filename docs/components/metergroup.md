@@ -5,7 +5,7 @@ MeterGroup displays multiple labeled values as compact progress meters.
 ## Import
 
 ```ts
-import MeterGroup from '@/package/components/meter-group.vue';
+import { MeterGroup } from '@codemonster-ru/vueforge';
 ```
 
 ## Examples
@@ -99,17 +99,17 @@ interface MeterGroupItem {
 
 ### Props
 
-| Name | Type | Default |
-| --- | --- | --- |
-| `items` | `MeterGroupItem[]` | `[]` |
-| `max` | `number \| undefined` | `undefined` |
-| `ariaLabel` | `string` | `'Meter group'` |
-| `locale` | `string \| undefined` | `undefined` |
+| Name        | Type                  | Default         |
+| ----------- | --------------------- | --------------- |
+| `items`     | `MeterGroupItem[]`    | `[]`            |
+| `max`       | `number \| undefined` | `undefined`     |
+| `ariaLabel` | `string`              | `'Meter group'` |
+| `locale`    | `string \| undefined` | `undefined`     |
 
 ### Slots
 
-| Name | Description |
-| --- | --- |
+| Name   | Description                                                   |
+| ------ | ------------------------------------------------------------- |
 | `item` | Custom item rendering with `{ item, index, percent, state }`. |
 
 ## Theming
@@ -126,7 +126,7 @@ Override component tokens through `theme.overrides.components.meterGroup`.
 ## Recipes
 
 - Use `MeterGroup` when several related values should be scanned together without the weight of a chart.
-- Prefer `Chart` when trend over time matters more than current relative values.
+- Prefer `Timeline` or a custom analytics view when trend over time matters more than current relative values.
 
 ## Accessibility
 

@@ -5,7 +5,7 @@ Fieldset provides semantic form grouping with native `fieldset` and `legend` str
 ## Import
 
 ```ts
-import Fieldset from '@/package/components/fieldset.vue';
+import { Fieldset } from '@codemonster-ru/vueforge';
 ```
 
 ## Examples
@@ -81,30 +81,30 @@ Override the legend slot when the group title needs richer content.
 
 ### Props
 
-| Name | Type | Default |
-| --- | --- | --- |
-| `modelValue` | `boolean` | `true` |
-| `legend` | `string` | `'Details'` |
-| `variant` | `'filled' \| 'outlined'` | `'filled'` |
-| `collapsible` | `boolean` | `false` |
-| `disabled` | `boolean` | `false` |
-| `actionsAriaLabel` | `string` | `'Fieldset actions'` |
-| `expandLabel` | `string` | `'Expand'` |
-| `collapseLabel` | `string` | `'Collapse'` |
+| Name               | Type                     | Default              |
+| ------------------ | ------------------------ | -------------------- |
+| `modelValue`       | `boolean`                | `true`               |
+| `legend`           | `string`                 | `'Details'`          |
+| `variant`          | `'filled' \| 'outlined'` | `'filled'`           |
+| `collapsible`      | `boolean`                | `false`              |
+| `disabled`         | `boolean`                | `false`              |
+| `actionsAriaLabel` | `string`                 | `'Fieldset actions'` |
+| `expandLabel`      | `string`                 | `'Expand'`           |
+| `collapseLabel`    | `string`                 | `'Collapse'`         |
 
 ### Events
 
-| Name | Payload |
-| --- | --- |
-| `update:modelValue` | `boolean` |
-| `toggle` | `expanded: boolean, event: Event` |
+| Name                | Payload                           |
+| ------------------- | --------------------------------- |
+| `update:modelValue` | `boolean`                         |
+| `toggle`            | `expanded: boolean, event: Event` |
 
 ### Slots
 
-| Name | Description |
-| --- | --- |
-| `default` | Fieldset content. |
-| `legend` | Replaces the legend label. |
+| Name      | Description                          |
+| --------- | ------------------------------------ |
+| `default` | Fieldset content.                    |
+| `legend`  | Replaces the legend label.           |
 | `actions` | Controls rendered beside the legend. |
 
 ## Theming
@@ -128,4 +128,3 @@ Override component tokens through `theme.overrides.components.fieldset`.
 
 - Fieldset preserves native `fieldset` and `legend` semantics for screen readers and forms.
 - The collapse button exposes `aria-expanded` and `aria-controls` when disclosure is enabled.
-

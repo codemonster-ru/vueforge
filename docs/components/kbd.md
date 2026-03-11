@@ -5,7 +5,7 @@ Kbd displays keyboard keys and shortcuts with consistent styling for docs, onboa
 ## Import
 
 ```ts
-import Kbd from '@/package/components/kbd.vue';
+import { Kbd } from '@codemonster-ru/vueforge';
 ```
 
 ## Examples
@@ -50,20 +50,20 @@ Use the size variants to match dense docs tables or more prominent onboarding ca
 
 ### Props
 
-| Name | Type | Default |
-| --- | --- | --- |
-| `keys` | `string[]` | `[]` |
-| `separator` | `string` | `'+'` |
-| `size` | `'small' \| 'medium' \| 'large'` | `'medium'` |
-| `disabled` | `boolean` | `false` |
-| `ariaLabel` | `string` | `'Keyboard shortcut'` |
+| Name        | Type                             | Default               |
+| ----------- | -------------------------------- | --------------------- |
+| `keys`      | `string[]`                       | `[]`                  |
+| `separator` | `string`                         | `'+'`                 |
+| `size`      | `'small' \| 'medium' \| 'large'` | `'medium'`            |
+| `disabled`  | `boolean`                        | `false`               |
+| `ariaLabel` | `string`                         | `'Keyboard shortcut'` |
 
 ### Slots
 
-| Name | Description |
-| --- | --- |
+| Name      | Description                                    |
+| --------- | ---------------------------------------------- |
 | `default` | Replaces the entire rendered shortcut content. |
-| `key` | Customizes individual key rendering. |
+| `key`     | Customizes individual key rendering.           |
 
 ## Theming
 

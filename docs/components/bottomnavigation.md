@@ -5,7 +5,7 @@ Provide mobile-first primary navigation anchored to the bottom edge of the viewp
 ## Import
 
 ```ts
-import { BottomNavigation } from '@codemonster-ru/vueforge';
+import { BottomNavigation } from '@codemonster-ru/vueforge-layouts';
 ```
 
 ## Examples
@@ -26,7 +26,7 @@ const items = [
     { key: 'home', label: 'Home', icon: 'house' },
     { key: 'search', label: 'Search', icon: 'search' },
     { key: 'alerts', label: 'Alerts', icon: 'bell', badge: 3 },
-    { key: 'profile', label: 'Profile', icon: 'user' }
+    { key: 'profile', label: 'Profile', icon: 'user' },
 ];
 </script>
 

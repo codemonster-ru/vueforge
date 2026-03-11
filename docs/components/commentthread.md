@@ -5,7 +5,7 @@ CommentThread renders discussion threads with nested replies, mention extraction
 ## Import
 
 ```ts
-import CommentThread from '@/package/components/comment-thread.vue';
+import { CommentThread } from '@codemonster-ru/vueforge';
 ```
 
 ## Examples
@@ -54,10 +54,7 @@ Use resolve and reopen actions to mark threads that no longer need attention.
 The `reply` event returns parsed `@mentions` so consumers can attach notification or assignee logic.
 
 ```vue
-<CommentThread
-    :items="comments"
-    @reply="({ parent, text, mentions }) => saveReply(parent.id, text, mentions)"
-/>
+<CommentThread :items="comments" @reply="({ parent, text, mentions }) => saveReply(parent.id, text, mentions)" />
 ```
 
 ## API
@@ -84,28 +81,28 @@ interface CommentThreadItem {
 
 ### Props
 
-| Name | Type | Default |
-| --- | --- | --- |
-| `items` | `CommentThreadItem[]` | `[]` |
-| `ariaLabel` | `string` | `'Comment thread'` |
-| `emptyText` | `string` | `'No comments yet.'` |
-| `replyLabel` | `string` | `'Reply'` |
-| `cancelReplyLabel` | `string` | `'Cancel'` |
-| `sendReplyLabel` | `string` | `'Send'` |
-| `replyPlaceholder` | `string` | `'Write a reply...'` |
-| `replyAriaLabel` | `string` | `'Reply text'` |
-| `resolveLabel` | `string` | `'Resolve'` |
-| `reopenLabel` | `string` | `'Reopen'` |
-| `locale` | `string` | `'en'` |
-| `timeZone` | `string \| undefined` | `undefined` |
+| Name               | Type                  | Default              |
+| ------------------ | --------------------- | -------------------- |
+| `items`            | `CommentThreadItem[]` | `[]`                 |
+| `ariaLabel`        | `string`              | `'Comment thread'`   |
+| `emptyText`        | `string`              | `'No comments yet.'` |
+| `replyLabel`       | `string`              | `'Reply'`            |
+| `cancelReplyLabel` | `string`              | `'Cancel'`           |
+| `sendReplyLabel`   | `string`              | `'Send'`             |
+| `replyPlaceholder` | `string`              | `'Write a reply...'` |
+| `replyAriaLabel`   | `string`              | `'Reply text'`       |
+| `resolveLabel`     | `string`              | `'Resolve'`          |
+| `reopenLabel`      | `string`              | `'Reopen'`           |
+| `locale`           | `string`              | `'en'`               |
+| `timeZone`         | `string \| undefined` | `undefined`          |
 
 ### Events
 
-| Name | Payload |
-| --- | --- |
-| `reply` | `{ parent, index, text, mentions }` |
-| `resolve` | `{ item, index }` |
-| `reopen` | `{ item, index }` |
+| Name      | Payload                             |
+| --------- | ----------------------------------- |
+| `reply`   | `{ parent, index, text, mentions }` |
+| `resolve` | `{ item, index }`                   |
+| `reopen`  | `{ item, index }`                   |
 
 ## Theming
 
@@ -130,4 +127,3 @@ Override component tokens through `theme.overrides.components.commentThread`.
 
 - CommentThread exposes reply and moderation actions as native buttons and labels the reply textarea via `replyAriaLabel`.
 - Timestamp formatting depends on `locale` and `timeZone`, so keep them aligned in SSR environments.
-

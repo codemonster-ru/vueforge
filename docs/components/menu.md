@@ -19,11 +19,7 @@ Use a vertical menu for simple action or navigation lists.
 ```vue
 <template>
     <Menu
-        :items="[
-            { label: 'Home', to: '/' },
-            { separator: true },
-            { label: 'Docs', href: 'https://example.com/docs' }
-        ]"
+        :items="[{ label: 'Home', to: '/' }, { separator: true }, { label: 'Docs', href: 'https://example.com/docs' }]"
     />
 </template>
 ```
@@ -41,11 +37,11 @@ Use nested `items` to group related destinations or commands under a parent item
                 label: 'Management',
                 items: [
                     { label: 'Users', to: '/management/users' },
-                    { label: 'Roles', to: '/management/roles' }
-                ]
+                    { label: 'Roles', to: '/management/roles' },
+                ],
             },
             { separator: true },
-            { label: 'Settings', to: '/settings' }
+            { label: 'Settings', to: '/settings' },
         ]"
     />
 </template>
@@ -65,10 +61,10 @@ Use `orientation="horizontal"` for top-level app navigation.
                 label: 'Products',
                 items: [
                     { label: 'Catalog', to: '/products/catalog' },
-                    { label: 'Pricing', to: '/products/pricing' }
-                ]
+                    { label: 'Pricing', to: '/products/pricing' },
+                ],
             },
-            { label: 'Docs', href: 'https://example.com/docs' }
+            { label: 'Docs', href: 'https://example.com/docs' },
         ]"
     />
 </template>
@@ -84,7 +80,7 @@ Use `command` for action-style items and `disabled` when an item should stay vis
         :items="[
             { label: 'Refresh', command: noop },
             { label: 'Archive', disabled: true },
-            { label: 'Export', command: noop }
+            { label: 'Export', command: noop },
         ]"
     />
 </template>

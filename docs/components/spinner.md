@@ -5,7 +5,7 @@ Spinner communicates loading and waiting states in inline or overlay form.
 ## Import
 
 ```ts
-import Spinner from '@/package/components/spinner.vue';
+import { Spinner } from '@codemonster-ru/vueforge';
 ```
 
 ## Examples
@@ -55,18 +55,18 @@ Use the default slot when loading copy needs more than a single string.
 
 ### Props
 
-| Name | Type | Default |
-| --- | --- | --- |
-| `variant` | `'inline' \| 'overlay'` | `'inline'` |
-| `size` | `'small' \| 'medium' \| 'large'` | `'medium'` |
-| `severity` | `'primary' \| 'secondary' \| 'success' \| 'info' \| 'warning' \| 'danger'` | `'primary'` |
-| `label` | `string` | `''` |
-| `ariaLabel` | `string` | `'Loading'` |
+| Name        | Type                                                                       | Default     |
+| ----------- | -------------------------------------------------------------------------- | ----------- |
+| `variant`   | `'inline' \| 'overlay'`                                                    | `'inline'`  |
+| `size`      | `'small' \| 'medium' \| 'large'`                                           | `'medium'`  |
+| `severity`  | `'primary' \| 'secondary' \| 'success' \| 'info' \| 'warning' \| 'danger'` | `'primary'` |
+| `label`     | `string`                                                                   | `''`        |
+| `ariaLabel` | `string`                                                                   | `'Loading'` |
 
 ### Slots
 
-| Name | Description |
-| --- | --- |
+| Name      | Description                      |
+| --------- | -------------------------------- |
 | `default` | Replaces the text label content. |
 
 ## Theming

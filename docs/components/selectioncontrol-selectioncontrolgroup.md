@@ -5,8 +5,8 @@ SelectionControl and SelectionControlGroup are low-level primitives behind check
 ## Import
 
 ```ts
-import SelectionControl from '@/package/components/selection-control.vue';
-import SelectionControlGroup from '@/package/components/selection-control-group.vue';
+import { SelectionControl, SelectionControlGroup } from '@codemonster-ru/vueforge';
+import { SelectionControl, SelectionControlGroup } from '@codemonster-ru/vueforge';
 ```
 
 ## Examples
@@ -39,48 +39,48 @@ import SelectionControlGroup from '@/package/components/selection-control-group.
 
 ### SelectionControl Props
 
-| Name | Type | Default |
-| --- | --- | --- |
-| `modelValue` | `unknown` | `undefined` |
-| `value` | `string \| number \| boolean` | `true` |
-| `type` | `'checkbox' \| 'radio' \| 'switch'` | `'checkbox'` |
-| `label` | `string` | `''` |
-| `disabled` | `boolean` | `false` |
-| `id` | `string \| undefined` | `undefined` |
-| `name` | `string \| undefined` | `undefined` |
-| `required` | `boolean` | `false` |
-| `ariaLabel` | `string \| undefined` | `undefined` |
-| `ariaLabelledby` | `string \| undefined` | `undefined` |
-| `ariaDescribedby` | `string \| undefined` | `undefined` |
-| `ariaInvalid` | `boolean \| 'true' \| 'false' \| undefined` | `undefined` |
-| `ariaRequired` | `boolean \| 'true' \| 'false' \| undefined` | `undefined` |
+| Name              | Type                                        | Default      |
+| ----------------- | ------------------------------------------- | ------------ |
+| `modelValue`      | `unknown`                                   | `undefined`  |
+| `value`           | `string \| number \| boolean`               | `true`       |
+| `type`            | `'checkbox' \| 'radio' \| 'switch'`         | `'checkbox'` |
+| `label`           | `string`                                    | `''`         |
+| `disabled`        | `boolean`                                   | `false`      |
+| `id`              | `string \| undefined`                       | `undefined`  |
+| `name`            | `string \| undefined`                       | `undefined`  |
+| `required`        | `boolean`                                   | `false`      |
+| `ariaLabel`       | `string \| undefined`                       | `undefined`  |
+| `ariaLabelledby`  | `string \| undefined`                       | `undefined`  |
+| `ariaDescribedby` | `string \| undefined`                       | `undefined`  |
+| `ariaInvalid`     | `boolean \| 'true' \| 'false' \| undefined` | `undefined`  |
+| `ariaRequired`    | `boolean \| 'true' \| 'false' \| undefined` | `undefined`  |
 
 ### SelectionControl Events
 
-| Name | Payload |
-| --- | --- |
-| `update:modelValue` | updated value |
-| `change` | `value, event` |
+| Name                | Payload        |
+| ------------------- | -------------- |
+| `update:modelValue` | updated value  |
+| `change`            | `value, event` |
 
 ### SelectionControlGroup Props
 
-| Name | Type | Default |
-| --- | --- | --- |
-| `modelValue` | `unknown` | `undefined` |
-| `type` | `'checkbox' \| 'radio' \| 'switch'` | `'checkbox'` |
-| `name` | `string \| undefined` | `undefined` |
-| `disabled` | `boolean` | `false` |
-| `direction` | `'vertical' \| 'horizontal'` | `'vertical'` |
-| `multiple` | `boolean \| undefined` | `undefined` |
-| `ariaLabel` | `string` | `''` |
-| `ariaLabelledby` | `string` | `''` |
+| Name             | Type                                | Default      |
+| ---------------- | ----------------------------------- | ------------ |
+| `modelValue`     | `unknown`                           | `undefined`  |
+| `type`           | `'checkbox' \| 'radio' \| 'switch'` | `'checkbox'` |
+| `name`           | `string \| undefined`               | `undefined`  |
+| `disabled`       | `boolean`                           | `false`      |
+| `direction`      | `'vertical' \| 'horizontal'`        | `'vertical'` |
+| `multiple`       | `boolean \| undefined`              | `undefined`  |
+| `ariaLabel`      | `string`                            | `''`         |
+| `ariaLabelledby` | `string`                            | `''`         |
 
 ### SelectionControlGroup Events
 
-| Name | Payload |
-| --- | --- |
+| Name                | Payload             |
+| ------------------- | ------------------- |
 | `update:modelValue` | updated group value |
-| `change` | `value, event` |
+| `change`            | `value, event`      |
 
 ## Theming
 

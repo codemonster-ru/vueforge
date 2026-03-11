@@ -5,7 +5,7 @@ ResizableSidebar provides a collapsible sidebar with drag resize and optional pe
 ## Import
 
 ```ts
-import ResizableSidebar from '@/package/components/resizable-sidebar.vue';
+import { ResizableSidebar } from '@codemonster-ru/vueforge-layouts';
 ```
 
 ## Examples
@@ -25,10 +25,7 @@ Use `ResizableSidebar` for navigation, inspectors, or workspace side panels that
 Control collapsed state explicitly when the shell tracks sidebar visibility.
 
 ```vue
-<ResizableSidebar
-    v-model="sidebarWidth"
-    v-model:collapsed="sidebarCollapsed"
->
+<ResizableSidebar v-model="sidebarWidth" v-model:collapsed="sidebarCollapsed">
     <NavigationRail :collapsed="sidebarCollapsed" />
 </ResizableSidebar>
 ```
@@ -52,40 +49,40 @@ Enable persistence when sidebar width and collapsed state are durable workspace 
 
 ### Props
 
-| Name | Type | Default |
-| --- | --- | --- |
-| `modelValue` | `number` | `280` |
-| `collapsed` | `boolean` | `false` |
-| `minWidth` | `number` | `200` |
-| `maxWidth` | `number` | `480` |
-| `collapsedWidth` | `number` | `56` |
-| `side` | `'left' \| 'right'` | `'left'` |
-| `resizable` | `boolean` | `true` |
-| `disabled` | `boolean` | `false` |
-| `showToggle` | `boolean` | `true` |
-| `persistence` | `'none' \| 'local' \| 'session'` | `'none'` |
-| `persistenceKey` | `string` | `''` |
-| `ariaLabel` | `string` | `'Sidebar'` |
-| `collapseLabel` | `string` | `'Collapse sidebar'` |
-| `expandLabel` | `string` | `'Expand sidebar'` |
-| `collapseIcon` | `string` | `'chevronLeft'` |
-| `expandIcon` | `string` | `'chevronRight'` |
+| Name             | Type                             | Default              |
+| ---------------- | -------------------------------- | -------------------- |
+| `modelValue`     | `number`                         | `280`                |
+| `collapsed`      | `boolean`                        | `false`              |
+| `minWidth`       | `number`                         | `200`                |
+| `maxWidth`       | `number`                         | `480`                |
+| `collapsedWidth` | `number`                         | `56`                 |
+| `side`           | `'left' \| 'right'`              | `'left'`             |
+| `resizable`      | `boolean`                        | `true`               |
+| `disabled`       | `boolean`                        | `false`              |
+| `showToggle`     | `boolean`                        | `true`               |
+| `persistence`    | `'none' \| 'local' \| 'session'` | `'none'`             |
+| `persistenceKey` | `string`                         | `''`                 |
+| `ariaLabel`      | `string`                         | `'Sidebar'`          |
+| `collapseLabel`  | `string`                         | `'Collapse sidebar'` |
+| `expandLabel`    | `string`                         | `'Expand sidebar'`   |
+| `collapseIcon`   | `string`                         | `'chevronLeft'`      |
+| `expandIcon`     | `string`                         | `'chevronRight'`     |
 
 ### Events
 
-| Name | Payload |
-| --- | --- |
-| `update:modelValue` | `number` |
-| `update:collapsed` | `boolean` |
-| `resize-end` | `number` |
+| Name                | Payload   |
+| ------------------- | --------- |
+| `update:modelValue` | `number`  |
+| `update:collapsed`  | `boolean` |
+| `resize-end`        | `number`  |
 
 ### Slots
 
-| Name | Description |
-| --- | --- |
-| `header` | Header content with `{ collapsed, toggle, width }`. |
-| `default` | Main sidebar content with `{ collapsed, width }`. |
-| `footer` | Footer content with `{ collapsed, toggle, width }`. |
+| Name      | Description                                         |
+| --------- | --------------------------------------------------- |
+| `header`  | Header content with `{ collapsed, toggle, width }`. |
+| `default` | Main sidebar content with `{ collapsed, width }`.   |
+| `footer`  | Footer content with `{ collapsed, toggle, width }`. |
 
 ## Theming
 

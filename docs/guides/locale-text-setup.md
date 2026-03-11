@@ -35,11 +35,11 @@ import { VueForge } from '@codemonster-ru/vueforge';
 
 createApp(App).use(VueForge, {
     localeText: {
-        commandPalette: {
-            emptyText: 'No commands',
+        multiSelect: {
+            emptyText: 'No matching options',
         },
-        notificationCenter: {
-            emptyText: 'No notifications',
+        treeSelect: {
+            emptyText: 'Nothing found',
         },
     },
 });
@@ -56,8 +56,8 @@ createApp(App).use(VueForge, {
 Built-in component strings are now localized through `localeText`, including:
 
 - loading/empty state text for data and selection components
-- component action labels (`DataTable`, `NotificationCenter`, `FilterChips`)
-- default placeholders and panel labels (`CommandPalette`, `MultiSelect`, `TreeSelect`)
+- component action labels (`DataTable`, `Combobox`, `TagInput`)
+- default placeholders and panel labels (`MultiSelect`, `TreeSelect`, `Autocomplete`)
 - default clear/remove accessibility labels (`Combobox`, `TagInput`, `Chip`)
 
 For combined locale text + RTL setup, see: [i18n and RTL Setup](./i18n-rtl-setup.md)

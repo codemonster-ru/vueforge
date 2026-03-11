@@ -5,7 +5,7 @@ Panel groups related content with built-in heading structure, optional actions, 
 ## Import
 
 ```ts
-import Panel from '@/package/components/panel.vue';
+import { Panel } from '@codemonster-ru/vueforge';
 ```
 
 ## Examples
@@ -90,36 +90,36 @@ Override `title`, `subtitle`, or the whole `header` when the heading needs riche
 
 ### Props
 
-| Name | Type | Default |
-| --- | --- | --- |
-| `modelValue` | `boolean` | `true` |
-| `title` | `string` | `''` |
-| `subtitle` | `string` | `''` |
-| `size` | `'small' \| 'normal' \| 'large'` | `'normal'` |
-| `variant` | `'filled' \| 'outlined'` | `'filled'` |
-| `collapsible` | `boolean` | `false` |
-| `disabled` | `boolean` | `false` |
-| `actionsAriaLabel` | `string` | `'Panel actions'` |
-| `expandLabel` | `string` | `'Expand'` |
-| `collapseLabel` | `string` | `'Collapse'` |
+| Name               | Type                             | Default           |
+| ------------------ | -------------------------------- | ----------------- |
+| `modelValue`       | `boolean`                        | `true`            |
+| `title`            | `string`                         | `''`              |
+| `subtitle`         | `string`                         | `''`              |
+| `size`             | `'small' \| 'normal' \| 'large'` | `'normal'`        |
+| `variant`          | `'filled' \| 'outlined'`         | `'filled'`        |
+| `collapsible`      | `boolean`                        | `false`           |
+| `disabled`         | `boolean`                        | `false`           |
+| `actionsAriaLabel` | `string`                         | `'Panel actions'` |
+| `expandLabel`      | `string`                         | `'Expand'`        |
+| `collapseLabel`    | `string`                         | `'Collapse'`      |
 
 ### Events
 
-| Name | Payload |
-| --- | --- |
-| `update:modelValue` | `boolean` |
-| `toggle` | `expanded: boolean, event: Event` |
+| Name                | Payload                           |
+| ------------------- | --------------------------------- |
+| `update:modelValue` | `boolean`                         |
+| `toggle`            | `expanded: boolean, event: Event` |
 
 ### Slots
 
-| Name | Description |
-| --- | --- |
-| `default` | Main panel body. |
-| `header` | Replaces the whole header area. |
-| `title` | Replaces the title text inside the default header. |
+| Name       | Description                                           |
+| ---------- | ----------------------------------------------------- |
+| `default`  | Main panel body.                                      |
+| `header`   | Replaces the whole header area.                       |
+| `title`    | Replaces the title text inside the default header.    |
 | `subtitle` | Replaces the subtitle text inside the default header. |
-| `actions` | Controls rendered beside the heading. |
-| `footer` | Footer rendered only while expanded. |
+| `actions`  | Controls rendered beside the heading.                 |
+| `footer`   | Footer rendered only while expanded.                  |
 
 ## Theming
 
@@ -142,4 +142,3 @@ Override component tokens through `theme.overrides.components.panel`.
 
 - The actions area uses `role="group"` with `actionsAriaLabel` for grouped controls.
 - The collapse button exposes `aria-expanded` and `aria-controls` for the body region.
-

@@ -38,10 +38,15 @@ Expected deployed files:
 
 Automatic deploy flow:
 
-- Push a release tag through the normal publish pipeline
+- Push a package-specific release tag through the normal publish pipeline
 - `publish to NPM` completes successfully
 - `docs deploy` runs from `workflow_run`
 - Workflow checks out the published workflow `head_sha` and deploys docs for that exact release commit
+
+Supported release tags:
+
+- `vueforge-vx.y.z`
+- `layouts-vx.y.z`
 
 Manual deploy flow:
 

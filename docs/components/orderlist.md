@@ -5,7 +5,7 @@ OrderList manages ordered collections with selection, keyboard reordering, and d
 ## Import
 
 ```ts
-import OrderList from '@/package/components/order-list.vue';
+import { OrderList } from '@codemonster-ru/vueforge';
 ```
 
 ## Examples
@@ -36,27 +36,27 @@ import OrderList from '@/package/components/order-list.vue';
 
 ### Props
 
-| Name | Type | Default |
-| --- | --- | --- |
-| `modelValue` | `Record<string, unknown>[]` | `[]` |
-| `itemKey` | `string` | `'id'` |
-| `itemLabel` | `string` | `'label'` |
-| `header` | `string` | `'Order'` |
-| `ariaLabel` | `string` | `'Order list'` |
-| `multiple` | `boolean` | `true` |
-| `disabled` | `boolean` | `false` |
+| Name         | Type                        | Default        |
+| ------------ | --------------------------- | -------------- |
+| `modelValue` | `Record<string, unknown>[]` | `[]`           |
+| `itemKey`    | `string`                    | `'id'`         |
+| `itemLabel`  | `string`                    | `'label'`      |
+| `header`     | `string`                    | `'Order'`      |
+| `ariaLabel`  | `string`                    | `'Order list'` |
+| `multiple`   | `boolean`                   | `true`         |
+| `disabled`   | `boolean`                   | `false`        |
 
 ### Events
 
-| Name | Payload |
-| --- | --- |
+| Name                | Payload         |
+| ------------------- | --------------- |
 | `update:modelValue` | reordered items |
-| `reorder` | reordered items |
+| `reorder`           | reordered items |
 
 ### Slots
 
-| Name | Description |
-| --- | --- |
+| Name   | Description                                   |
+| ------ | --------------------------------------------- |
 | `item` | Custom item rendering with `{ item, index }`. |
 
 ## Theming
@@ -78,4 +78,3 @@ Override component tokens through `theme.overrides.components.orderlist`.
 
 - OrderList uses listbox semantics with `aria-selected`.
 - Keyboard support includes selection with `Enter` or `Space`, focus movement with arrow keys, and reorder with `Ctrl+ArrowUp` and `Ctrl+ArrowDown`.
-

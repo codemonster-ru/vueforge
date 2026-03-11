@@ -4,8 +4,8 @@ Purpose: confirm that must-have parity components expose theme tokens in runtime
 
 Validation sources:
 
-- Runtime schema: `src/package/config/theme-core.ts` (`ThemeComponentTokens`)
-- Default token presets: `src/package/themes/default/index.ts`
+- Runtime schema: `packages/vueforge/src/config/theme-core.ts` (`ThemeComponentTokens`)
+- Default token presets: `packages/vueforge/src/themes/default/index.ts`
 - Component docs token sections: `docs/components/*.md`
 
 Coverage summary:
@@ -20,7 +20,6 @@ Coverage summary:
 | PanelMenu          | `panelmenu`                | `docs/components/panelmenu.md`    |
 | Carousel           | `carousel`                 | `docs/components/carousel.md`     |
 | SpeedDial          | `speeddial`                | `docs/components/speeddial.md`    |
-| Chart              | `chart`                    | `docs/components/chart.md`        |
 | Image              | `image`                    | `docs/components/image.md`        |
 | Skeleton presets   | `skeleton`                 | `docs/components/skeleton.md`     |
 | OverlayPanel alias | `popover` / `overlaypanel` | `docs/components/overlaypanel.md` |

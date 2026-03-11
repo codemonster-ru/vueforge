@@ -173,15 +173,13 @@ Execution dependencies:
 
 ### P0.13 Input family (existing hardening)
 
-- [x] Input family baseline is implemented (`Input`, `Textarea`, `NumberInput`, `PasswordInput`, `SearchInput`, `MaskedInput`, `MentionInput`, `OtpInput`)
+- [x] Input family baseline is implemented (`Input`, `Textarea`, `NumberInput`, `PasswordInput`, `MaskedInput`, `OtpInput`)
 - [x] Input family audit framework is defined (shared keyboard + ARIA checklist)
 - [x] `Input` keyboard/focus-visible/ARIA audit + tests
 - [x] `Textarea` keyboard/focus-visible/ARIA audit + tests
 - [x] `NumberInput` keyboard/focus-visible/ARIA audit + tests
 - [x] `PasswordInput` keyboard/focus-visible/ARIA audit + tests
-- [x] `SearchInput` keyboard/focus-visible/ARIA audit + tests
 - [x] `MaskedInput` keyboard/focus-visible/ARIA audit + tests
-- [x] `MentionInput` keyboard/focus-visible/ARIA audit + tests
 - [x] `OtpInput` keyboard/focus-visible/ARIA audit + tests
 - [x] Add consolidated docs matrix for shared input props (`size`, `variant`, `disabled`, `readonly`)
 
@@ -351,7 +349,7 @@ Backfill execution waves for implemented components:
 
 - [x] Wave 1: backfill compliance gates for P0 first-slice components and shared layout primitives.
 - [x] Wave 2: backfill compliance gates for input/selection/date-time families and overlays.
-- [x] Wave 3: backfill compliance gates for advanced/data-heavy and DX components (`DataTable`, `Tree`, `VirtualScroller`, `KanbanBoard`, `CommandPalette`, `NotificationCenter`).
+- [x] Wave 3: backfill compliance gates for advanced/data-heavy and DX components (`DataTable`, `Tree`, `VirtualScroller`, `TreeTable`, `DataView`).
 - [x] Wave 4: close remaining implemented components and reach fully green compliance matrix.
 - [x] Create full rollout plan for all implemented and planned components: `docs/audits/component-rollout-plan.md`.
 - [x] Create API package specification document for all implemented/planned rollout packages: `docs/audits/component-api-package-specs.md`.
@@ -391,7 +389,6 @@ Wave 1 package gate (applies to each `W1-PR*`):
 - [x] `SplitterPanel` hardening baseline (API, tests, a11y/docs confirmation)
 - [x] `TabPanel` hardening baseline (API, tests, a11y/docs confirmation)
 - [x] `ToastContainer` hardening baseline (API, tests, a11y/docs confirmation)
-- [x] `WizardStep` hardening baseline (API, tests, a11y/docs confirmation)
 
 ## P1 (Advanced Competitiveness)
 
@@ -409,17 +406,17 @@ Wave 1 package gate (applies to each `W1-PR*`):
 - [x] Add RTL behavior verification
 - [x] Add advanced docs recipes
 
-### P1.3 `Tabs` / `Accordion` / `Stepper` / `Wizard` hardening
+### P1.3 `Tabs` / `Accordion` / `Stepper` hardening
 
 - [x] Audit keyboard and ARIA behavior for all four components
 - [x] Add regression tests for navigation and state transitions
 - [x] Add docs recipes for common multi-step flows and disclosures
 - [x] Normalize shared API patterns where applicable
 
-### P1.4 `NotificationCenter` / `Toast` / `Tour` / `CommandPalette` hardening
+### P1.4 `Toast` hardening
 
-- [x] `NotificationCenter`, `Toast`, `Tour`, and `CommandPalette` are implemented
-- [x] Define interaction and accessibility contracts for each component
+- [x] `Toast` is implemented
+- [x] Define interaction and accessibility contracts
 - [x] Add keyboard and focus management regression tests
 - [x] Verify overlay/layering behavior against global policy
 - [x] Add docs recipes for real app usage patterns
@@ -485,7 +482,6 @@ Exit criteria:
 - [x] `PanelMenu` component (accordion-style navigation tree)
 - [x] `Carousel` component (keyboard + swipe + autoplay controls)
 - [x] `SpeedDial` / floating action menu pattern
-- [x] `Chart` wrapper component (official adapter around a stable chart engine)
 - [x] `Image` component with preview/lightbox mode
 - [x] `Skeleton` advanced presets parity (table/list/form presets)
 - [x] `OverlayPanel` v1 alias parity (`Popover`-backed API subset with compatibility mapping)
@@ -508,12 +504,9 @@ Must-have acceptance criteria (applies to each item):
 - [x] `ScrollPanel` and `ScrollTop` utilities
 - [x] `PickList` / `OrderList` parity (transfer, reorder, keyboard and drag/drop coverage)
 - [x] `Splitter` parity hardening (nested panels + persistence + keyboard edge cases)
-- [x] `FileUpload` advanced mode (chunking/resume + retry + signed URL flows)
-- [x] `Editor` hardening (`RichTextEditor` security + paste sanitization profiles)
 - [x] `OrgChart` component
 - [x] Virtualized `Select`/`Autocomplete` parity for large datasets (windowing + async loading UX)
 - [x] `Image` advanced mode (preview group, zoom steps, keyboard nav, download/alt guidance)
-- [x] `Chart` adapter hardening (peer dependency policy, SSR-safe lazy mount, resize handling)
 - [x] `Icon` system parity (official icon package strategy, tree-shaking, size/color/theming contracts)
 - [x] `MenuBar`/`MegaMenu`/`PanelMenu` routing parity (router integration, active state sync, lazy child loading)
 - [x] Headless parity matrix for key components (documented slot/part API coverage and tested contracts)
@@ -523,7 +516,6 @@ Must-have acceptance criteria (applies to each item):
 - [x] `Dock` / app launcher navigation pattern
 - [x] `Galleria` / gallery-focused media component
 - [x] `Knob` / radial input
-- [x] `Terminal` / command log display component
 - [x] `Inplace` display-edit pattern parity checks
 
 #### ICP-driven optional parity (enable based on target product segments)
@@ -539,38 +531,22 @@ Goal: ensure the library can ship full-featured SaaS products (admin panels, ops
 
 #### SaaS core gaps (additions to parity track)
 
-- [x] `QueryBuilder` component (rule groups, AND/OR nesting, operator/value editors, serialization)
-- [x] `AdvancedFilterPanel` component (field filters, presets, URL-sync-friendly state)
-- [x] `SavedViewsManager` component (save/rename/share/default views for list pages)
-- [x] `DataTableToolbar` component (search, filters, column presets, density, export entry points)
 - [x] `BulkActionBar` component (selection-aware actions with confirm/undo hooks)
 - [x] `TieredMenu` v1 alias parity (`Menu` preset/mode for hierarchical navigation)
 - [x] `TabMenu` component (route-aware section navigation for dashboard/detail pages)
 - [x] `CascadeSelect` component (hierarchical selection with async branch loading support)
 - [x] `ConfirmPopup` component (anchor-based confirm interactions for row/list actions)
 - [x] `DynamicDialog` service/component pair (programmatic modal composition for feature modules)
-- [x] `ActivityFeed` component (typed events, grouping, relative time, actor metadata)
-- [x] `AuditLogViewer` component (event table + detail drawer + diff payload view)
 - [x] `CommentThread` component (inline replies, mentions, resolve/reopen flows)
-- [x] `MemberPicker` component (async people/org search with avatars and role hint slots)
-- [x] `PermissionMatrix` component (role vs capability matrix with tri-state controls)
-- [x] `KPIStatCard` component set (value, trend, delta, sparkline slot)
 - [x] `MeterGroup` component (progressive KPI blocks with thresholds and labels)
 - [x] `OverlayBadge` utility component/directive (status/count overlays for actionable icons)
 - [x] `InlineMessage` component (field-local status/error/info messaging separate from global alerts)
-- [x] `FileManager` / asset-browser component (list/grid modes, preview, bulk actions)
 - [x] `JSONViewer` component (expand/collapse, syntax highlight, path copy)
 - [x] `DiffViewer` component (inline/split modes for text/JSON payload comparison)
-- [x] `CodeEditor` wrapper component (Monaco/CodeMirror adapter with theming and readonly modes)
-- [x] `Scheduler` component (calendar timeline for resource/time-slot planning)
-- [x] `BottomSheet` component (mobile-first action/details surface for responsive SaaS flows)
 - [x] `InfiniteScroll` utility/component (cursor/offset loading with sentinel and recovery states)
 
 #### SaaS hardening for existing components
 
-- [x] `KanbanBoard` production hardening (keyboard DnD, virtualization, swimlane performance tests)
-- [x] `NotificationCenter` SaaS mode (read/unread filters, grouping, action links, persistence contract)
-- [x] `CommandPalette` SaaS actions mode (entity search, recent items, scoped commands)
 - [x] `DataTable` SaaS ops mode (server-driven saved filters, export hooks, long-running action states)
 - [x] `Tree` hardening as `TreeView` parity (virtualized expansion, selection modes, async branch states)
 - [x] `Accordion` hardening as `ExpansionPanel` parity (dense mode, grouped control patterns, analytics hooks)
@@ -606,40 +582,6 @@ Goal: provide production-grade application layout patterns for complex SaaS prod
 - [x] Add docs recipes: dashboard shell, settings shell, analytics shell, and mobile adaptive shell
 - [x] Add visual regression scenarios for major layout presets and breakpoint transitions
 
-### P1.15 Data visualization parity
-
-Goal: provide first-class charting and analytics visualization coverage for SaaS dashboards, reports, and monitoring pages.
-
-#### Core chart components
-
-- [x] `BarChart` component (grouped/stacked/horizontal variants)
-- [x] `LineChart` component (multi-series, gaps/nulls, threshold overlays)
-- [x] `AreaChart` component (stacked and normalized variants)
-- [x] `PieChart` / `DonutChart` component (legend interaction and drilldown hooks)
-- [x] `ScatterChart` component (regression line and point clustering options)
-- [x] `BubbleChart` component (size encoding and tooltip contracts)
-- [x] `Histogram` component (bin strategies and density overlays)
-- [x] `Heatmap` component (cell scaling, axis labeling, range legend)
-- [x] `RadarChart` component (multi-series comparison)
-- [x] `FunnelChart` component (conversion-stage visualization)
-- [x] `TreemapChart` component (hierarchical area encoding)
-- [x] `GaugeChart` component (single KPI arc/radial gauge)
-- [x] `CandlestickChart` component (OHLC/volume overlays for financial/time-series use cases)
-- [x] `Sparkline` component (inline trend visualizations)
-
-#### Visualization platform and quality
-
-- [x] Define official chart engine adapter strategy (single default adapter + extension interface)
-- [x] Define shared data schema contracts for series, axes, legend, tooltip, and annotation layers
-- [x] Add accessibility contracts (keyboard navigation, screen-reader summaries, data table fallback)
-- [x] Add responsive and high-density rendering strategy (resize observers, decimation, virtualization where needed)
-- [x] Add theming/token contracts for chart colors, grids, typography, and states
-- [x] Add export contracts (PNG/SVG/CSV) and print-friendly rendering mode
-- [x] Add performance budgets and benchmark scenarios for large datasets
-- [x] Add visual regression suites for chart variants and theme modes
-- [x] Add docs recipes: executive dashboard, product analytics, finance/reporting, and ops monitoring
-- [x] Add secure data-rendering guidance (untrusted labels/tooltips/HTML formatters)
-
 ### P1.16 Catalog delta parity (foundation and utility components)
 
 Goal: close remaining catalog-level gaps for foundation, utility, and compositional components that are commonly available in mature Vue UI libraries.
@@ -656,7 +598,6 @@ Goal: close remaining catalog-level gaps for foundation, utility, and compositio
 #### Navigation and surface utilities
 
 - [x] `BottomNavigation` component (mobile-first primary navigation)
-- [x] `Banner` component (inline page-level announcements/actions)
 - [x] `Sheet` component (generic elevated/flat container surface with variants)
 - [x] `Window` / pager container component (stateful pane switching and transitions)
 - [x] `SlideGroup` component (scrollable chip/tab/button group navigation)
@@ -702,7 +643,6 @@ MVP wave (required for immediate product impact):
 Next wave (high leverage after MVP):
 
 - [x] `SystemBar`
-- [x] `Banner`
 - [x] `SlideGroup`
 - [x] `SnackbarQueue`
 - [x] `SelectionControl` / `SelectionControlGroup`
@@ -760,7 +700,7 @@ Documentation platform and deployment:
 
 ### P2.4 Security and robustness
 
-- [ ] Add security checklist for input-rich components (`RichTextEditor`, link-like components, content rendering)
+- [ ] Add security checklist for input-rich components (link-like components, content rendering)
 - [ ] Define sanitization/escaping recommendations and boundaries
 - [ ] Add tests for critical unsafe-input scenarios
 - [ ] Document secure usage patterns for consumers

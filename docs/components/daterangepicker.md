@@ -56,12 +56,7 @@ const fiscalRange = ref();
 </script>
 
 <template>
-    <DateRangePicker
-        v-model="fiscalRange"
-        min="2026-01-01"
-        max="2026-12-31"
-        separator=" to "
-    />
+    <DateRangePicker v-model="fiscalRange" min="2026-01-01" max="2026-12-31" separator=" to " />
 </template>
 ```
 
@@ -71,10 +66,7 @@ Use `outlined` when the control sits on a filled surface.
 
 ```vue
 <template>
-    <DateRangePicker
-        :model-value="['2026-06-01', '2026-06-30']"
-        variant="outlined"
-    />
+    <DateRangePicker :model-value="['2026-06-01', '2026-06-30']" variant="outlined" />
 </template>
 ```
 
@@ -84,7 +76,7 @@ Use `outlined` when the control sits on a filled surface.
 - `placeholder?: string`
 - `startPlaceholder?: string` (default `Start`)
 - `endPlaceholder?: string` (default `End`)
-- `separator?: string` (default ` - `)
+- `separator?: string` (default `-`)
 - `disabled?: boolean` (default `false`)
 - `readonly?: boolean` (default `false`)
 - `min?: string` (ISO date `YYYY-MM-DD`)

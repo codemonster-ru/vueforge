@@ -26,9 +26,9 @@ Use `mode="sidebar-nav"` for vertical hierarchical navigation.
                 label: 'Management',
                 items: [
                     { label: 'Users', to: '/management/users' },
-                    { label: 'Roles', to: '/management/roles' }
-                ]
-            }
+                    { label: 'Roles', to: '/management/roles' },
+                ],
+            },
         ]"
     />
 </template>
@@ -44,7 +44,7 @@ Use `mode="top-nav"` when the same menu data should render horizontally.
         mode="top-nav"
         :items="[
             { label: 'Products', items: [{ label: 'Catalog', to: '/catalog' }] },
-            { label: 'Docs', items: [{ label: 'Guides', to: '/guides' }] }
+            { label: 'Docs', items: [{ label: 'Guides', to: '/guides' }] },
         ]"
     />
 </template>

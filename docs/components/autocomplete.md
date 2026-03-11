@@ -25,7 +25,7 @@ Use a single-value autocomplete for common form fields and toolbar filters.
             { label: 'Canada', value: 'ca' },
             { label: 'Germany', value: 'de' },
             { label: 'Japan', value: 'jp' },
-            { label: 'United States', value: 'us' }
+            { label: 'United States', value: 'us' },
         ]"
     />
 </template>
@@ -45,7 +45,7 @@ Enable `multiple` to collect tags, assignees, or watchers while keeping selected
             { label: 'Ava Patel', value: 'ava' },
             { label: 'Maksim Ivanov', value: 'maksim' },
             { label: 'Nora Smith', value: 'nora' },
-            { label: 'Wei Chen', value: 'wei' }
+            { label: 'Wei Chen', value: 'wei' },
         ]"
     />
 </template>
@@ -66,16 +66,16 @@ Use grouped data when options belong to clear categories and the group context h
                 label: 'North America',
                 items: [
                     { label: 'New York', value: 'new-york' },
-                    { label: 'Toronto', value: 'toronto' }
-                ]
+                    { label: 'Toronto', value: 'toronto' },
+                ],
             },
             {
                 label: 'Europe',
                 items: [
                     { label: 'Berlin', value: 'berlin' },
-                    { label: 'Prague', value: 'prague' }
-                ]
-            }
+                    { label: 'Prague', value: 'prague' },
+                ],
+            },
         ]"
     />
 </template>
@@ -131,7 +131,7 @@ Enable virtualization for long lists to keep scrolling and keyboard navigation r
             { label: 'Expansion MRR', value: 'expansion-mrr' },
             { label: 'Gross margin', value: 'gross-margin' },
             { label: 'Lead velocity', value: 'lead-velocity' },
-            { label: 'Net revenue retention', value: 'net-revenue-retention' }
+            { label: 'Net revenue retention', value: 'net-revenue-retention' },
         ]"
     />
 </template>

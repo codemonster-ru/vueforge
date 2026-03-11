@@ -5,7 +5,7 @@ Compose page shells with optional sidebar and aside regions that collapse respon
 ## Import
 
 ```ts
-import { PageLayout } from '@codemonster-ru/vueforge';
+import { PageLayout } from '@codemonster-ru/vueforge-layouts';
 ```
 
 ## Examples

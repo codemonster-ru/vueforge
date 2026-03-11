@@ -23,7 +23,7 @@ Use `items` for a conventional context menu with route or command actions.
             { label: 'Open', href: '#' },
             { label: 'Duplicate', href: '#' },
             { separator: true },
-            { label: 'Archive', href: '#', disabled: true }
+            { label: 'Archive', href: '#', disabled: true },
         ]"
     >
         <div style="padding: 1rem; border: 1px dashed #ccc;">Right-click here</div>

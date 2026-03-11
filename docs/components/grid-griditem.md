@@ -5,8 +5,8 @@ Grid and `GridItem` provide responsive two-dimensional layout primitives for car
 ## Import
 
 ```ts
-import Grid from '@/package/components/grid.vue';
-import GridItem from '@/package/components/grid-item.vue';
+import { Grid, GridItem } from '@codemonster-ru/vueforge';
+import { Grid, GridItem } from '@codemonster-ru/vueforge';
 ```
 
 ## Examples
@@ -52,26 +52,26 @@ Use `start` and `end` when a layout needs more exact placement than simple spans
 
 ### Grid Props
 
-| Name | Type | Default |
-| --- | --- | --- |
-| `as` | `string` | `'div'` |
-| `columns` | `number \| string` | theme default |
-| `gap` | `string` | `''` |
-| `columnGap` | `string` | `''` |
-| `rowGap` | `string` | `''` |
-| `align` | `'start' \| 'center' \| 'end' \| 'stretch'` | `'stretch'` |
-| `justify` | `'start' \| 'center' \| 'end' \| 'stretch'` | `'stretch'` |
-| `breakpoints` | `Partial<Record<'sm' \| 'md' \| 'lg' \| 'xl', GridBreakpointConfig>>` | `{}` |
+| Name          | Type                                                                  | Default       |
+| ------------- | --------------------------------------------------------------------- | ------------- |
+| `as`          | `string`                                                              | `'div'`       |
+| `columns`     | `number \| string`                                                    | theme default |
+| `gap`         | `string`                                                              | `''`          |
+| `columnGap`   | `string`                                                              | `''`          |
+| `rowGap`      | `string`                                                              | `''`          |
+| `align`       | `'start' \| 'center' \| 'end' \| 'stretch'`                           | `'stretch'`   |
+| `justify`     | `'start' \| 'center' \| 'end' \| 'stretch'`                           | `'stretch'`   |
+| `breakpoints` | `Partial<Record<'sm' \| 'md' \| 'lg' \| 'xl', GridBreakpointConfig>>` | `{}`          |
 
 ### GridItem Props
 
-| Name | Type | Default |
-| --- | --- | --- |
-| `as` | `string` | `'div'` |
-| `span` | `number \| string` | `''` |
-| `start` | `number \| string` | `''` |
-| `end` | `number \| string` | `''` |
-| `breakpoints` | `Partial<Record<'sm' \| 'md' \| 'lg' \| 'xl', GridItemBreakpointConfig>>` | `{}` |
+| Name          | Type                                                                      | Default |
+| ------------- | ------------------------------------------------------------------------- | ------- |
+| `as`          | `string`                                                                  | `'div'` |
+| `span`        | `number \| string`                                                        | `''`    |
+| `start`       | `number \| string`                                                        | `''`    |
+| `end`         | `number \| string`                                                        | `''`    |
+| `breakpoints` | `Partial<Record<'sm' \| 'md' \| 'lg' \| 'xl', GridItemBreakpointConfig>>` | `{}`    |
 
 ## Theming
 

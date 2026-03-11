@@ -5,7 +5,7 @@ FilterChips renders compact toggleable chips for single or multiple filter state
 ## Import
 
 ```ts
-import FilterChips from '@/package/components/filter-chips.vue';
+import { FilterChips } from '@codemonster-ru/vueforge';
 ```
 
 ## Examples
@@ -27,13 +27,7 @@ import FilterChips from '@/package/components/filter-chips.vue';
 ### Single-Select
 
 ```vue
-<FilterChips
-    v-model="activeStatus"
-    :options="statusOptions"
-    :multiple="false"
-    :allow-empty="false"
-    variant="outline"
-/>
+<FilterChips v-model="activeStatus" :options="statusOptions" :multiple="false" :allow-empty="false" variant="outline" />
 ```
 
 ### Dense Toolbar Filters
@@ -46,29 +40,29 @@ import FilterChips from '@/package/components/filter-chips.vue';
 
 ### Props
 
-| Name | Type | Default |
-| --- | --- | --- |
-| `modelValue` | `string \| number \| Array<string \| number> \| null` | `null` |
-| `options` | option array | `[]` |
-| `multiple` | `boolean` | `true` |
-| `allowEmpty` | `boolean` | `true` |
-| `clearable` | `boolean` | `false` |
-| `clearText` | `string \| undefined` | `undefined` |
-| `clearLabel` | `string` | `''` |
-| `disabled` | `boolean` | `false` |
-| `wrap` | `boolean` | `true` |
-| `size` | `'small' \| 'normal' \| 'large'` | `'normal'` |
-| `variant` | `'soft' \| 'outline' \| 'solid'` | `'soft'` |
-| `ariaLabel` | `string` | `''` |
-| `ariaLabelledby` | `string` | `''` |
+| Name             | Type                                                  | Default     |
+| ---------------- | ----------------------------------------------------- | ----------- |
+| `modelValue`     | `string \| number \| Array<string \| number> \| null` | `null`      |
+| `options`        | option array                                          | `[]`        |
+| `multiple`       | `boolean`                                             | `true`      |
+| `allowEmpty`     | `boolean`                                             | `true`      |
+| `clearable`      | `boolean`                                             | `false`     |
+| `clearText`      | `string \| undefined`                                 | `undefined` |
+| `clearLabel`     | `string`                                              | `''`        |
+| `disabled`       | `boolean`                                             | `false`     |
+| `wrap`           | `boolean`                                             | `true`      |
+| `size`           | `'small' \| 'normal' \| 'large'`                      | `'normal'`  |
+| `variant`        | `'soft' \| 'outline' \| 'solid'`                      | `'soft'`    |
+| `ariaLabel`      | `string`                                              | `''`        |
+| `ariaLabelledby` | `string`                                              | `''`        |
 
 ### Events
 
-| Name | Payload |
-| --- | --- |
-| `update:modelValue` | selection payload |
-| `change` | `selection, event` |
-| `clear` | `MouseEvent` |
+| Name                | Payload            |
+| ------------------- | ------------------ |
+| `update:modelValue` | selection payload  |
+| `change`            | `selection, event` |
+| `clear`             | `MouseEvent`       |
 
 ## Theming
 
@@ -90,4 +84,3 @@ Override component tokens through `theme.overrides.components.filterChips`.
 
 - Chips are native buttons with `aria-pressed` and grouped through `role="group"`.
 - The clear button should use explicit text when the filter meaning is not obvious from nearby context.
-

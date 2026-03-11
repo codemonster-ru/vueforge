@@ -5,7 +5,7 @@ BulkActionBar provides selection-aware actions with confirm and undo hooks for l
 ## Import
 
 ```ts
-import BulkActionBar from '@/package/components/bulk-action-bar.vue';
+import { BulkActionBar } from '@codemonster-ru/vueforge';
 ```
 
 ## Examples
@@ -44,27 +44,27 @@ Pair `last-action-id` and `undo-token` with backend undo semantics when the acti
 
 ### Props
 
-| Name | Type | Default |
-| --- | --- | --- |
-| `selection` | `Array<string \| number>` | `[]` |
-| `actions` | `BulkActionBarAction[]` | `[]` |
-| `disabled` | `boolean` | `false` |
-| `confirmMessage` | `string` | `'Are you sure?'` |
-| `selectedCountLabel` | `string` | `'selected'` |
-| `ariaLabel` | `string` | `'Bulk action bar'` |
-| `undoLabel` | `string` | `'Undo'` |
-| `showUndoButton` | `boolean` | `true` |
-| `undoDisabled` | `boolean` | `false` |
-| `lastActionId` | `string \| null` | `null` |
-| `undoToken` | `string` | `''` |
+| Name                 | Type                      | Default             |
+| -------------------- | ------------------------- | ------------------- |
+| `selection`          | `Array<string \| number>` | `[]`                |
+| `actions`            | `BulkActionBarAction[]`   | `[]`                |
+| `disabled`           | `boolean`                 | `false`             |
+| `confirmMessage`     | `string`                  | `'Are you sure?'`   |
+| `selectedCountLabel` | `string`                  | `'selected'`        |
+| `ariaLabel`          | `string`                  | `'Bulk action bar'` |
+| `undoLabel`          | `string`                  | `'Undo'`            |
+| `showUndoButton`     | `boolean`                 | `true`              |
+| `undoDisabled`       | `boolean`                 | `false`             |
+| `lastActionId`       | `string \| null`          | `null`              |
+| `undoToken`          | `string`                  | `''`                |
 
 ### Events
 
-| Name | Payload |
-| --- | --- |
-| `action` | `{ actionId, selection }` |
+| Name      | Payload                            |
+| --------- | ---------------------------------- |
+| `action`  | `{ actionId, selection }`          |
 | `confirm` | `{ actionId, selection, message }` |
-| `undo` | `{ actionId, selection, token? }` |
+| `undo`    | `{ actionId, selection, token? }`  |
 
 ## Theming
 

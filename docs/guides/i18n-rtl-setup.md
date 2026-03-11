@@ -62,7 +62,7 @@ Vue template example:
 ## 3) Recommended Verification
 
 - Run RTL regression checks:
-    - `npx vitest run src/package/components/__tests__/rtl-regression.test.ts`
+    - `npx vitest run tests/integration/rtl-regression.test.ts`
 - Run full quality gate:
     - `npm run lint`
     - `npm run typecheck`

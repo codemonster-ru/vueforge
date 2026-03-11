@@ -5,7 +5,7 @@ ScrollPanel provides a styled scrollable container for logs, side panels, and lo
 ## Import
 
 ```ts
-import ScrollPanel from '@/package/components/scroll-panel.vue';
+import { ScrollPanel } from '@codemonster-ru/vueforge';
 ```
 
 ## Examples
@@ -44,26 +44,26 @@ Enable `always-show` where discoverability of overflow matters more than minimal
 
 ### Props
 
-| Name | Type | Default |
-| --- | --- | --- |
-| `height` | `string` | `'16rem'` |
-| `minHeight` | `string \| undefined` | `undefined` |
-| `maxHeight` | `string \| undefined` | `undefined` |
-| `alwaysShow` | `boolean` | `false` |
-| `role` | `string` | `'region'` |
-| `ariaLabel` | `string` | `'Scrollable region'` |
-| `tabIndex` | `number` | `0` |
+| Name         | Type                  | Default               |
+| ------------ | --------------------- | --------------------- |
+| `height`     | `string`              | `'16rem'`             |
+| `minHeight`  | `string \| undefined` | `undefined`           |
+| `maxHeight`  | `string \| undefined` | `undefined`           |
+| `alwaysShow` | `boolean`             | `false`               |
+| `role`       | `string`              | `'region'`            |
+| `ariaLabel`  | `string`              | `'Scrollable region'` |
+| `tabIndex`   | `number`              | `0`                   |
 
 ### Exposed Methods
 
-| Name | Description |
-| --- | --- |
-| `getViewport()` | Returns the scrollable viewport element. |
-| `scrollTo(top, behavior?)` | Scrolls the viewport to a position. |
+| Name                       | Description                              |
+| -------------------------- | ---------------------------------------- |
+| `getViewport()`            | Returns the scrollable viewport element. |
+| `scrollTo(top, behavior?)` | Scrolls the viewport to a position.      |
 
 ## Theming
 
-`ScrollPanel` currently uses a CSS variable contract in component styles, but this repo does not include a dedicated preset file in `src/package/themes/default/components/` for it yet.
+`ScrollPanel` currently uses a CSS variable contract in component styles, but this repo does not include a dedicated preset file in `packages/vueforge/src/themes/default/components/` for it yet.
 
 ## Tokens
 

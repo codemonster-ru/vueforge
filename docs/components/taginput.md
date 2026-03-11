@@ -29,7 +29,7 @@ const skills = ref<Array<string | number>>(['vue']);
         :options="[
             { label: 'Vue', value: 'vue' },
             { label: 'TypeScript', value: 'ts' },
-            { label: 'Vitest', value: 'vitest' }
+            { label: 'Vitest', value: 'vitest' },
         ]"
         placeholder="Add skills"
         clearable
@@ -47,7 +47,7 @@ Disable custom creation when values must come from a known set.
         :model-value="['frontend']"
         :options="[
             { label: 'Frontend', value: 'frontend' },
-            { label: 'Backend', value: 'backend' }
+            { label: 'Backend', value: 'backend' },
         ]"
         :allow-custom="false"
     />
@@ -60,11 +60,7 @@ Use `maxTags` and `reject` when the field should stay bounded.
 
 ```vue
 <template>
-    <TagInput
-        :model-value="['ops', 'infra']"
-        :max-tags="3"
-        @reject="onReject"
-    />
+    <TagInput :model-value="['ops', 'infra']" :max-tags="3" @reject="onReject" />
 </template>
 ```
 

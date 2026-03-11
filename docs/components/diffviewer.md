@@ -5,7 +5,7 @@ DiffViewer compares two values in inline or split mode and can format them as pl
 ## Import
 
 ```ts
-import DiffViewer from '@/package/components/diff-viewer.vue';
+import { DiffViewer } from '@codemonster-ru/vueforge';
 ```
 
 ## Examples
@@ -30,12 +30,7 @@ const after = { retries: 5, region: 'eu-west-1', enabled: true };
 Use split mode when reviewers need side-by-side comparison instead of compact inline output.
 
 ```vue
-<DiffViewer
-    :before="before"
-    :after="after"
-    format="json"
-    mode="split"
-/>
+<DiffViewer :before="before" :after="after" format="json" mode="split" />
 ```
 
 ### Text Diff
@@ -43,11 +38,7 @@ Use split mode when reviewers need side-by-side comparison instead of compact in
 Switch to text mode for release notes, markdown, or source snippets that should not be parsed as JSON.
 
 ```vue
-<DiffViewer
-    before="Status: pending"
-    after="Status: approved"
-    format="text"
-/>
+<DiffViewer before="Status: pending" after="Status: approved" format="text" />
 ```
 
 ### Toolbar And Copy
@@ -55,38 +46,32 @@ Switch to text mode for release notes, markdown, or source snippets that should 
 Keep the toolbar visible when operators need fast mode switching or copy actions.
 
 ```vue
-<DiffViewer
-    :before="before"
-    :after="after"
-    show-toolbar
-    copyable
-    @copy="({ text }) => console.log(text)"
-/>
+<DiffViewer :before="before" :after="after" show-toolbar copyable @copy="({ text }) => console.log(text)" />
 ```
 
 ## API
 
 ### Props
 
-| Name | Type | Default |
-| --- | --- | --- |
-| `before` | `unknown` | `undefined` |
-| `after` | `unknown` | `undefined` |
-| `mode` | `'inline' \| 'split'` | `'inline'` |
-| `format` | `'auto' \| 'text' \| 'json'` | `'auto'` |
-| `showToolbar` | `boolean` | `false` |
-| `copyable` | `boolean` | `false` |
-| `disabled` | `boolean` | `false` |
-| `inlineLabel` | `string` | `'Inline diff'` |
-| `splitLabel` | `string` | `'Split diff'` |
-| `copyLabel` | `string` | `'Copy diff'` |
+| Name          | Type                         | Default         |
+| ------------- | ---------------------------- | --------------- |
+| `before`      | `unknown`                    | `undefined`     |
+| `after`       | `unknown`                    | `undefined`     |
+| `mode`        | `'inline' \| 'split'`        | `'inline'`      |
+| `format`      | `'auto' \| 'text' \| 'json'` | `'auto'`        |
+| `showToolbar` | `boolean`                    | `false`         |
+| `copyable`    | `boolean`                    | `false`         |
+| `disabled`    | `boolean`                    | `false`         |
+| `inlineLabel` | `string`                     | `'Inline diff'` |
+| `splitLabel`  | `string`                     | `'Split diff'`  |
+| `copyLabel`   | `string`                     | `'Copy diff'`   |
 
 ### Events
 
-| Name | Payload |
-| --- | --- |
+| Name          | Payload               |
+| ------------- | --------------------- |
 | `update:mode` | `'inline' \| 'split'` |
-| `copy` | `{ text }` |
+| `copy`        | `{ text }`            |
 
 ## Theming
 

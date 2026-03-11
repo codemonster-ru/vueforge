@@ -12,7 +12,7 @@ import {
     type PassThroughEntry,
     type PassThroughOptions,
     type PassThroughResolverContext,
-} from '@/package/config/pass-through';
+} from '@codemonster-ru/vueforge';
 ```
 
 ## Examples
@@ -45,21 +45,17 @@ type PassThroughResolverContext = Record<string, unknown>;
 type PassThroughEntry<Context = PassThroughResolverContext> =
     | PassThroughAttrs
     | ((context: Context) => PassThroughAttrs | undefined | null);
-type PassThroughOptions<Context = PassThroughResolverContext> = Record<
-    string,
-    PassThroughEntry<Context> | undefined
->;
+type PassThroughOptions<Context = PassThroughResolverContext> = Record<string, PassThroughEntry<Context> | undefined>;
 ```
 
 ### Functions
 
-| Name | Description |
-| --- | --- |
-| `resolvePassThrough(options, part, context)` | Resolves attrs for a specific component part. |
-| `withPartClass(attrs, baseClass, unstyled)` | Merges internal class with resolved attrs unless `unstyled` is enabled. |
+| Name                                         | Description                                                             |
+| -------------------------------------------- | ----------------------------------------------------------------------- |
+| `resolvePassThrough(options, part, context)` | Resolves attrs for a specific component part.                           |
+| `withPartClass(attrs, baseClass, unstyled)`  | Merges internal class with resolved attrs unless `unstyled` is enabled. |
 
 ## Recipes
 
 - Use PassThrough when a component exposes `pt` for root, item, icon, label, or other internal parts.
 - Pair it with `unstyled` when consumers should take over the visual class contract completely.
-

@@ -29,7 +29,7 @@ const view = ref('list');
         :options="[
             { label: 'List', value: 'list' },
             { label: 'Grid', value: 'grid' },
-            { label: 'Board', value: 'board' }
+            { label: 'Board', value: 'board' },
         ]"
     />
 </template>
@@ -47,7 +47,7 @@ Use `fullWidth` when the control should fill a narrow mobile or settings contain
         :options="[
             { label: 'Daily', value: 'daily' },
             { label: 'Weekly', value: 'weekly' },
-            { label: 'Monthly', value: 'monthly' }
+            { label: 'Monthly', value: 'monthly' },
         ]"
     />
 </template>
@@ -64,7 +64,7 @@ Use `outlined` on filled cards or toolbars.
         variant="outlined"
         :options="[
             { label: 'Light', value: 'light' },
-            { label: 'Dark', value: 'dark' }
+            { label: 'Dark', value: 'dark' },
         ]"
     />
 </template>
@@ -81,7 +81,7 @@ Disable options that are visible but not currently available.
         :options="[
             { label: 'Personal', value: 'personal' },
             { label: 'Team', value: 'team' },
-            { label: 'Enterprise', value: 'enterprise', disabled: true }
+            { label: 'Enterprise', value: 'enterprise', disabled: true },
         ]"
     />
 </template>

@@ -18,12 +18,7 @@ Use the default action pair for compact destructive actions.
 
 ```vue
 <template>
-    <ConfirmPopup
-        v-model="open"
-        title="Delete row?"
-        message="This action cannot be undone."
-        confirm-label="Delete"
-    >
+    <ConfirmPopup v-model="open" title="Delete row?" message="This action cannot be undone." confirm-label="Delete">
         <template #trigger>
             <Button severity="danger" label="Delete" />
         </template>
@@ -51,12 +46,7 @@ Use `loading` to block repeated confirm presses during async completion.
 
 ```vue
 <template>
-    <ConfirmPopup
-        :loading="true"
-        :close-on-confirm="false"
-        title="Sync project?"
-        message="This may take a minute."
-    >
+    <ConfirmPopup :loading="true" :close-on-confirm="false" title="Sync project?" message="This may take a minute.">
         <template #trigger>
             <Button label="Sync" />
         </template>

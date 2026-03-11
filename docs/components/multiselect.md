@@ -25,7 +25,7 @@ Use the default variant for multi-value filters and settings panels.
             { label: 'Canada', value: 'ca' },
             { label: 'Germany', value: 'de' },
             { label: 'Japan', value: 'jp' },
-            { label: 'United States', value: 'us' }
+            { label: 'United States', value: 'us' },
         ]"
     />
 </template>
@@ -45,7 +45,7 @@ Turn on `clearable` when the whole selection can be reset in a single action.
             { label: 'Bug', value: 'bug' },
             { label: 'Blocked', value: 'blocked' },
             { label: 'Customer', value: 'customer' },
-            { label: 'Internal', value: 'internal' }
+            { label: 'Internal', value: 'internal' },
         ]"
     />
 </template>
@@ -66,7 +66,7 @@ Disable built-in filtering when the list is intentionally short and every option
             { label: 'Tuesday', value: 'tuesday' },
             { label: 'Wednesday', value: 'wednesday' },
             { label: 'Thursday', value: 'thursday' },
-            { label: 'Friday', value: 'friday' }
+            { label: 'Friday', value: 'friday' },
         ]"
     />
 </template>
@@ -100,7 +100,7 @@ Use `disabled` to block the whole control and `readonly` when the current chips 
             readonly
             :options="[
                 { label: 'North America', value: 'na' },
-                { label: 'Europe', value: 'eu' }
+                { label: 'Europe', value: 'eu' },
             ]"
         />
     </div>

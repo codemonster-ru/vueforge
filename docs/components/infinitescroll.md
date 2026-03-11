@@ -5,7 +5,7 @@ InfiniteScroll is a sentinel-based loading utility with intersection, scroll-fal
 ## Import
 
 ```ts
-import InfiniteScroll from '@/package/components/infinite-scroll.vue';
+import { InfiniteScroll } from '@codemonster-ru/vueforge';
 ```
 
 ## Examples
@@ -50,47 +50,47 @@ Use the exposed methods when loading should be refreshable from parent logic.
 
 ### Props
 
-| Name | Type | Default |
-| --- | --- | --- |
-| `loading` | `boolean` | `false` |
-| `error` | `boolean` | `false` |
-| `hasMore` | `boolean` | `true` |
-| `disabled` | `boolean` | `false` |
-| `root` | `HTMLElement \| null` | `null` |
-| `scrollTarget` | `Window \| HTMLElement \| null` | `null` |
-| `rootMargin` | `string` | `'0px 0px 220px 0px'` |
-| `threshold` | `number` | `0` |
-| `fallbackOffset` | `number` | `160` |
-| `debounceMs` | `number` | `180` |
-| `observeOnMount` | `boolean` | `true` |
-| `loadingText` | `string` | `'Loading more...'` |
-| `endText` | `string` | `'No more items'` |
-| `retryLabel` | `string` | `'Retry'` |
+| Name             | Type                            | Default               |
+| ---------------- | ------------------------------- | --------------------- |
+| `loading`        | `boolean`                       | `false`               |
+| `error`          | `boolean`                       | `false`               |
+| `hasMore`        | `boolean`                       | `true`                |
+| `disabled`       | `boolean`                       | `false`               |
+| `root`           | `HTMLElement \| null`           | `null`                |
+| `scrollTarget`   | `Window \| HTMLElement \| null` | `null`                |
+| `rootMargin`     | `string`                        | `'0px 0px 220px 0px'` |
+| `threshold`      | `number`                        | `0`                   |
+| `fallbackOffset` | `number`                        | `160`                 |
+| `debounceMs`     | `number`                        | `180`                 |
+| `observeOnMount` | `boolean`                       | `true`                |
+| `loadingText`    | `string`                        | `'Loading more...'`   |
+| `endText`        | `string`                        | `'No more items'`     |
+| `retryLabel`     | `string`                        | `'Retry'`             |
 
 ### Events
 
-| Name | Payload |
-| --- | --- |
-| `load` | `{ trigger: 'intersection' \| 'scroll' \| 'retry' \| 'manual' }` |
-| `retry` | none |
+| Name    | Payload                                                          |
+| ------- | ---------------------------------------------------------------- |
+| `load`  | `{ trigger: 'intersection' \| 'scroll' \| 'retry' \| 'manual' }` |
+| `retry` | none                                                             |
 
 ### Slots
 
-| Name | Description |
-| --- | --- |
-| `default` | Main list content. |
+| Name       | Description                                           |
+| ---------- | ----------------------------------------------------- |
+| `default`  | Main list content.                                    |
 | `sentinel` | Idle sentinel content while more items are available. |
-| `loading` | Loading state content. |
-| `error` | Error state with `{ retry }`. |
-| `end` | End state when `hasMore` is `false`. |
+| `loading`  | Loading state content.                                |
+| `error`    | Error state with `{ retry }`.                         |
+| `end`      | End state when `hasMore` is `false`.                  |
 
 ### Exposed Methods
 
-| Name | Description |
-| --- | --- |
-| `loadMore()` | Triggers a manual load request. |
-| `refresh()` | Rebinds observer or fallback listeners. |
-| `retry()` | Emits retry flow and requests load again. |
+| Name         | Description                               |
+| ------------ | ----------------------------------------- |
+| `loadMore()` | Triggers a manual load request.           |
+| `refresh()`  | Rebinds observer or fallback listeners.   |
+| `retry()`    | Emits retry flow and requests load again. |
 
 ## Theming
 

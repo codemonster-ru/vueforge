@@ -38,7 +38,12 @@ Use `position="left"` for secondary navigation or workspace tools.
 <template>
     <Drawer v-model="open" title="Navigation" position="left">
         <template #body>
-            <Menu :items="[{ label: 'Overview', to: '/' }, { label: 'Members', to: '/members' }]" />
+            <Menu
+                :items="[
+                    { label: 'Overview', to: '/' },
+                    { label: 'Members', to: '/members' },
+                ]"
+            />
         </template>
     </Drawer>
 </template>
@@ -68,9 +73,7 @@ Control whether the drawer behaves like a blocking overlay or a lighter utility 
 ```vue
 <template>
     <Drawer v-model="open" :overlay="false" :lock-scroll="false" title="Inspector">
-        <template #body>
-            Non-blocking utility panel
-        </template>
+        <template #body> Non-blocking utility panel </template>
     </Drawer>
 </template>
 ```

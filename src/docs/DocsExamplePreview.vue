@@ -20,7 +20,7 @@
                         {{ previewActionLabel }}
                     </button>
                 </div>
-                <component :is="previewComponent" :key="previewRenderKey" v-if="previewComponent && !previewError" />
+                <component :is="previewComponent" v-if="previewComponent && !previewError" :key="previewRenderKey" />
                 <p v-else class="vf-docs-example__state">
                     {{ previewError }}
                 </p>
@@ -42,10 +42,11 @@
 </template>
 
 <script setup lang="ts">
-import { compile } from '@vue/compiler-dom/dist/compiler-dom.esm-bundler.js';
+import { compile } from '@vue/compiler-dom';
 import { CodeBlock as VueCodeBlock } from '@codemonster-ru/vue-codeblock';
 import * as VueRuntime from 'vue';
 import { computed, markRaw, onErrorCaptured, ref, watch } from 'vue';
+import { vOverlayBadge } from '../../packages/vueforge/src/directives/overlay-badge';
 
 const props = defineProps<{
     id: string;
@@ -55,19 +56,32 @@ const props = defineProps<{
     language: string;
 }>();
 
-const componentModules = import.meta.glob('../package/components/*.vue', {
-    eager: true,
-    import: 'default',
-}) as Record<string, object>;
+const componentModules = import.meta.glob(
+    ['../../packages/vueforge/src/components/*.vue', '../../packages/layouts/src/components/*.vue'],
+    {
+        eager: true,
+        import: 'default',
+    },
+) as Record<string, object>;
 
 const acronymSegments = new Set(['ui', 'id', 'api', 'otp']);
-
-const toPascalCase = (value: string): string =>
-    value
-        .split(/[-_]+/g)
-        .filter(Boolean)
-        .map(part => (acronymSegments.has(part.toLowerCase()) ? part.toUpperCase() : part.charAt(0).toUpperCase() + part.slice(1)))
-        .join('');
+const reservedExpressionIdentifiers = new Set([
+    'true',
+    'false',
+    'null',
+    'undefined',
+    'NaN',
+    'Infinity',
+    'Math',
+    'Number',
+    'String',
+    'Boolean',
+    'Array',
+    'Object',
+    'Date',
+    'JSON',
+    'console',
+]);
 
 const toComponentAliases = (value: string): string[] => {
     const parts = value.split(/[-_]+/g).filter(Boolean);
@@ -77,7 +91,9 @@ const toComponentAliases = (value: string): string[] => {
             parts.map(part => part.charAt(0).toUpperCase() + part.slice(1)).join(''),
             parts
                 .map(part =>
-                    acronymSegments.has(part.toLowerCase()) ? part.toUpperCase() : part.charAt(0).toUpperCase() + part.slice(1),
+                    acronymSegments.has(part.toLowerCase())
+                        ? part.toUpperCase()
+                        : part.charAt(0).toUpperCase() + part.slice(1),
                 )
                 .join(''),
         ]),
@@ -268,7 +284,13 @@ const createDemoChartAdapter = () => ({
 const createDemoCodeEditorAdapter = () => ({
     mount(
         container: HTMLElement,
-        config: { value: string; language?: string; theme?: string; readonly?: boolean; onChange?: (value: string) => void },
+        config: {
+            value: string;
+            language?: string;
+            theme?: string;
+            readonly?: boolean;
+            onChange?: (value: string) => void;
+        },
     ) {
         const host = document.createElement('textarea');
         host.className = 'vf-docs-demo-editor';
@@ -409,7 +431,13 @@ const DocsPreviewBottomSheet = markRaw({
                                             { class: 'vf-bottom-sheet__header-content' },
                                             slots.header?.() ??
                                                 (props.title
-                                                    ? [VueRuntime.h('h3', { class: 'vf-bottom-sheet__title' }, props.title)]
+                                                    ? [
+                                                          VueRuntime.h(
+                                                              'h3',
+                                                              { class: 'vf-bottom-sheet__title' },
+                                                              props.title,
+                                                          ),
+                                                      ]
                                                     : []),
                                         ),
                                         props.showClose
@@ -427,7 +455,11 @@ const DocsPreviewBottomSheet = markRaw({
                                     ])
                                   : null,
                               slots.body || slots.default
-                                  ? VueRuntime.h('div', { class: 'vf-bottom-sheet__body' }, slots.body?.() ?? slots.default?.())
+                                  ? VueRuntime.h(
+                                        'div',
+                                        { class: 'vf-bottom-sheet__body' },
+                                        slots.body?.() ?? slots.default?.(),
+                                    )
                                   : null,
                               slots.footer
                                   ? VueRuntime.h('div', { class: 'vf-bottom-sheet__footer' }, slots.footer())
@@ -453,7 +485,10 @@ const DocsPreviewModal = markRaw({
         {
             emit,
             slots,
-        }: { emit: (event: 'update:modelValue' | 'close', value?: boolean) => void; slots: VueRuntime.SetupContext['slots'] },
+        }: {
+            emit: (event: 'update:modelValue' | 'close', value?: boolean) => void;
+            slots: VueRuntime.SetupContext['slots'];
+        },
     ) {
         const close = () => {
             emit('update:modelValue', false);
@@ -462,37 +497,58 @@ const DocsPreviewModal = markRaw({
 
         return () =>
             props.modelValue
-                ? VueRuntime.h('div', { class: ['vf-modal', props.size !== 'md' ? `vf-modal_${props.size}` : null, 'vf-modal_preview'] }, [
-                      VueRuntime.h('div', {
-                          class: 'vf-modal__overlay',
-                          onClick: () => {
-                              if (props.closeOnOverlay) close();
-                          },
-                      }),
-                      VueRuntime.h('div', { class: 'vf-modal__panel', role: 'dialog', 'aria-modal': 'true' }, [
-                          props.title || slots.header
-                              ? VueRuntime.h('div', { class: 'vf-modal__header' }, [
-                                    VueRuntime.h(
+                ? VueRuntime.h(
+                      'div',
+                      {
+                          class: [
+                              'vf-modal',
+                              props.size !== 'md' ? `vf-modal_${props.size}` : null,
+                              'vf-modal_preview',
+                          ],
+                      },
+                      [
+                          VueRuntime.h('div', {
+                              class: 'vf-modal__overlay',
+                              onClick: () => {
+                                  if (props.closeOnOverlay) close();
+                              },
+                          }),
+                          VueRuntime.h('div', { class: 'vf-modal__panel', role: 'dialog', 'aria-modal': 'true' }, [
+                              props.title || slots.header
+                                  ? VueRuntime.h('div', { class: 'vf-modal__header' }, [
+                                        VueRuntime.h(
+                                            'div',
+                                            { class: 'vf-modal__header-content' },
+                                            slots.header?.() ??
+                                                (props.title
+                                                    ? [VueRuntime.h('h3', { class: 'vf-modal__title' }, props.title)]
+                                                    : []),
+                                        ),
+                                    ])
+                                  : null,
+                              props.showClose
+                                  ? VueRuntime.h(
+                                        'button',
+                                        {
+                                            type: 'button',
+                                            class: 'vf-modal__close',
+                                            'aria-label': 'Close',
+                                            onClick: close,
+                                        },
+                                        'x',
+                                    )
+                                  : null,
+                              slots.body || slots.default
+                                  ? VueRuntime.h(
                                         'div',
-                                        { class: 'vf-modal__header-content' },
-                                        slots.header?.() ??
-                                            (props.title ? [VueRuntime.h('h3', { class: 'vf-modal__title' }, props.title)] : []),
-                                    ),
-                                ])
-                              : null,
-                          props.showClose
-                              ? VueRuntime.h(
-                                    'button',
-                                    { type: 'button', class: 'vf-modal__close', 'aria-label': 'Close', onClick: close },
-                                    'x',
-                                )
-                              : null,
-                          slots.body || slots.default
-                              ? VueRuntime.h('div', { class: 'vf-modal__body' }, slots.body?.() ?? slots.default?.())
-                              : null,
-                          slots.footer ? VueRuntime.h('div', { class: 'vf-modal__footer' }, slots.footer()) : null,
-                      ]),
-                  ])
+                                        { class: 'vf-modal__body' },
+                                        slots.body?.() ?? slots.default?.(),
+                                    )
+                                  : null,
+                              slots.footer ? VueRuntime.h('div', { class: 'vf-modal__footer' }, slots.footer()) : null,
+                          ]),
+                      ],
+                  )
                 : null;
     },
 });
@@ -521,7 +577,10 @@ const DocsPreviewDrawer = markRaw({
         {
             emit,
             slots,
-        }: { emit: (event: 'update:modelValue' | 'close', value?: boolean) => void; slots: VueRuntime.SetupContext['slots'] },
+        }: {
+            emit: (event: 'update:modelValue' | 'close', value?: boolean) => void;
+            slots: VueRuntime.SetupContext['slots'];
+        },
     ) {
         const close = () => {
             emit('update:modelValue', false);
@@ -556,19 +615,30 @@ const DocsPreviewDrawer = markRaw({
                                             'div',
                                             { class: 'vf-drawer__header-content' },
                                             slots.header?.() ??
-                                                (props.title ? [VueRuntime.h('h3', { class: 'vf-drawer__title' }, props.title)] : []),
+                                                (props.title
+                                                    ? [VueRuntime.h('h3', { class: 'vf-drawer__title' }, props.title)]
+                                                    : []),
                                         ),
                                     ])
                                   : null,
                               props.showClose
                                   ? VueRuntime.h(
                                         'button',
-                                        { type: 'button', class: 'vf-drawer__close', 'aria-label': 'Close', onClick: close },
+                                        {
+                                            type: 'button',
+                                            class: 'vf-drawer__close',
+                                            'aria-label': 'Close',
+                                            onClick: close,
+                                        },
                                         'x',
                                     )
                                   : null,
                               slots.body || slots.default
-                                  ? VueRuntime.h('div', { class: 'vf-drawer__body' }, slots.body?.() ?? slots.default?.())
+                                  ? VueRuntime.h(
+                                        'div',
+                                        { class: 'vf-drawer__body' },
+                                        slots.body?.() ?? slots.default?.(),
+                                    )
                                   : null,
                               slots.footer ? VueRuntime.h('div', { class: 'vf-drawer__footer' }, slots.footer()) : null,
                           ]),
@@ -610,7 +680,10 @@ const DocsPreviewConfirmDialog = markRaw({
         {
             emit,
             slots,
-        }: { emit: (event: 'update:modelValue' | 'confirm' | 'cancel' | 'close', value?: boolean) => void; slots: VueRuntime.SetupContext['slots'] },
+        }: {
+            emit: (event: 'update:modelValue' | 'confirm' | 'cancel' | 'close', value?: boolean) => void;
+            slots: VueRuntime.SetupContext['slots'];
+        },
     ) {
         const close = (reason: 'cancel' | 'confirm') => {
             emit('update:modelValue', false);
@@ -650,27 +723,30 @@ const DocsPreviewConfirmDialog = markRaw({
                       },
                       {
                           body: () =>
-                              VueRuntime.h('div', { class: 'vf-confirm-dialog__message' }, slots.default?.() ?? props.message),
+                              VueRuntime.h(
+                                  'div',
+                                  { class: 'vf-confirm-dialog__message' },
+                                  slots.default?.() ?? props.message,
+                              ),
                           footer: () =>
                               VueRuntime.h('div', { class: 'vf-confirm-dialog__actions' }, [
-                                  slots.actions?.({ confirm, cancel }) ??
-                                      [
-                                          VueRuntime.h(exampleComponents.Button ?? 'button', {
-                                              class: 'vf-confirm-dialog__cancel',
-                                              label: props.cancelLabel,
-                                              variant: 'outlined',
-                                              severity: 'secondary',
-                                              disabled: props.loading,
-                                              onClick: cancel,
-                                          }),
-                                          VueRuntime.h(exampleComponents.Button ?? 'button', {
-                                              class: 'vf-confirm-dialog__confirm',
-                                              label: props.confirmLabel,
-                                              severity: props.confirmSeverity,
-                                              loading: props.loading,
-                                              onClick: confirm,
-                                          }),
-                                      ],
+                                  slots.actions?.({ confirm, cancel }) ?? [
+                                      VueRuntime.h(exampleComponents.Button ?? 'button', {
+                                          class: 'vf-confirm-dialog__cancel',
+                                          label: props.cancelLabel,
+                                          variant: 'outlined',
+                                          severity: 'secondary',
+                                          disabled: props.loading,
+                                          onClick: cancel,
+                                      }),
+                                      VueRuntime.h(exampleComponents.Button ?? 'button', {
+                                          class: 'vf-confirm-dialog__confirm',
+                                          label: props.confirmLabel,
+                                          severity: props.confirmSeverity,
+                                          loading: props.loading,
+                                          onClick: confirm,
+                                      }),
+                                  ],
                               ]),
                       },
                   )
@@ -712,7 +788,16 @@ const DocsPreviewConfirmPopup = markRaw({
             slots,
         }: {
             emit: (
-                event: 'update:modelValue' | 'confirm' | 'accept' | 'cancel' | 'reject' | 'show' | 'hide' | 'onShow' | 'onHide',
+                event:
+                    | 'update:modelValue'
+                    | 'confirm'
+                    | 'accept'
+                    | 'cancel'
+                    | 'reject'
+                    | 'show'
+                    | 'hide'
+                    | 'onShow'
+                    | 'onHide',
                 value?: boolean,
             ) => void;
             slots: VueRuntime.SetupContext['slots'];
@@ -783,7 +868,12 @@ const DocsPreviewConfirmPopup = markRaw({
                         'vf-popover',
                         'vf-confirm-popup',
                         'vf-confirm-popup_preview',
-                        { 'vf-popover_disabled': props.disabled, 'is-open': isOpen.value, 'is-top': isTopPlacement.value, 'is-end': isEndPlacement.value },
+                        {
+                            'vf-popover_disabled': props.disabled,
+                            'is-open': isOpen.value,
+                            'is-top': isTopPlacement.value,
+                            'is-end': isEndPlacement.value,
+                        },
                     ],
                 },
                 [
@@ -797,27 +887,37 @@ const DocsPreviewConfirmPopup = markRaw({
                             'aria-expanded': String(isOpen.value),
                             onClick: toggle,
                         },
-                        slots.trigger?.() ??
-                            [
-                                VueRuntime.h(exampleComponents.Button ?? 'button', {
-                                    label: props.title || 'Open confirmation',
-                                    severity: props.confirmSeverity,
-                                }),
-                            ],
+                        slots.trigger?.() ?? [
+                            VueRuntime.h(exampleComponents.Button ?? 'button', {
+                                label: props.title || 'Open confirmation',
+                                severity: props.confirmSeverity,
+                            }),
+                        ],
                     ),
                     isOpen.value
                         ? VueRuntime.h('div', { class: 'vf-confirm-popup__inline' }, [
-                              VueRuntime.h('div', { class: 'vf-popover__wrapper', role: 'dialog', 'data-placement': props.placement }, [
-                                  VueRuntime.h('div', { class: 'vf-confirm-popup__body' }, [
-                                      slots.default?.() ??
-                                          [
-                                              props.title ? VueRuntime.h('div', { class: 'vf-confirm-popup__title' }, props.title) : null,
-                                              VueRuntime.h('div', { class: 'vf-confirm-popup__message' }, props.message),
+                              VueRuntime.h(
+                                  'div',
+                                  { class: 'vf-popover__wrapper', role: 'dialog', 'data-placement': props.placement },
+                                  [
+                                      VueRuntime.h('div', { class: 'vf-confirm-popup__body' }, [
+                                          slots.default?.() ?? [
+                                              props.title
+                                                  ? VueRuntime.h(
+                                                        'div',
+                                                        { class: 'vf-confirm-popup__title' },
+                                                        props.title,
+                                                    )
+                                                  : null,
+                                              VueRuntime.h(
+                                                  'div',
+                                                  { class: 'vf-confirm-popup__message' },
+                                                  props.message,
+                                              ),
                                           ],
-                                  ]),
-                                  VueRuntime.h('div', { class: 'vf-confirm-popup__actions' }, [
-                                      slots.actions?.({ confirm, cancel }) ??
-                                          [
+                                      ]),
+                                      VueRuntime.h('div', { class: 'vf-confirm-popup__actions' }, [
+                                          slots.actions?.({ confirm, cancel }) ?? [
                                               VueRuntime.h(exampleComponents.Button ?? 'button', {
                                                   class: 'vf-confirm-popup__cancel',
                                                   label: props.cancelLabel,
@@ -835,9 +935,10 @@ const DocsPreviewConfirmPopup = markRaw({
                                                   onClick: confirm,
                                               }),
                                           ],
-                                  ]),
-                                  VueRuntime.h('div', { class: 'vf-popover__arrow', 'aria-hidden': 'true' }),
-                              ]),
+                                      ]),
+                                      VueRuntime.h('div', { class: 'vf-popover__arrow', 'aria-hidden': 'true' }),
+                                  ],
+                              ),
                           ])
                         : null,
                 ],
@@ -955,7 +1056,11 @@ const DocsPreviewContextMenu = markRaw({
             VueRuntime.h(
                 'div',
                 {
-                    class: ['vf-context-menu', 'vf-context-menu_preview', { 'vf-context-menu_disabled': props.disabled }],
+                    class: [
+                        'vf-context-menu',
+                        'vf-context-menu_preview',
+                        { 'vf-context-menu_disabled': props.disabled },
+                    ],
                     tabindex: props.disabled ? -1 : 0,
                     onContextmenu: openMenu,
                     onKeydown: onTriggerKeydown,
@@ -998,7 +1103,10 @@ const DocsPreviewNotificationCenter = markRaw({
             emit,
             slots,
         }: {
-            emit: (event: 'update:modelValue' | 'update:items' | 'close', value?: boolean | Array<Record<string, unknown>>) => void;
+            emit: (
+                event: 'update:modelValue' | 'update:items' | 'close',
+                value?: boolean | Array<Record<string, unknown>>,
+            ) => void;
             slots: VueRuntime.SetupContext['slots'];
         },
     ) {
@@ -1017,68 +1125,137 @@ const DocsPreviewNotificationCenter = markRaw({
             props.modelValue
                 ? VueRuntime.h('div', { class: 'vf-notification-center vf-notification-center_preview' }, [
                       VueRuntime.h('div', { class: 'vf-notification-center__overlay' }),
-                      VueRuntime.h('section', { class: 'vf-notification-center__panel', role: 'dialog', 'aria-modal': 'true' }, [
-                          VueRuntime.h('header', { class: 'vf-notification-center__header' }, [
-                              VueRuntime.h('div', { class: 'vf-notification-center__title-wrap' }, [
-                                  VueRuntime.h('h3', { class: 'vf-notification-center__title' }, props.title),
+                      VueRuntime.h(
+                          'section',
+                          { class: 'vf-notification-center__panel', role: 'dialog', 'aria-modal': 'true' },
+                          [
+                              VueRuntime.h('header', { class: 'vf-notification-center__header' }, [
+                                  VueRuntime.h('div', { class: 'vf-notification-center__title-wrap' }, [
+                                      VueRuntime.h('h3', { class: 'vf-notification-center__title' }, props.title),
+                                  ]),
+                                  VueRuntime.h('div', { class: 'vf-notification-center__header-actions' }, [
+                                      VueRuntime.h(
+                                          'button',
+                                          { type: 'button', class: 'vf-notification-center__close', onClick: close },
+                                          'x',
+                                      ),
+                                  ]),
                               ]),
-                              VueRuntime.h('div', { class: 'vf-notification-center__header-actions' }, [
-                                  VueRuntime.h('button', { type: 'button', class: 'vf-notification-center__close', onClick: close }, 'x'),
-                              ]),
-                          ]),
-                          VueRuntime.h('div', { class: 'vf-notification-center__body' }, [
-                              props.showFilters
-                                  ? VueRuntime.h('div', { class: 'vf-notification-center__filters', role: 'tablist' }, [
-                                        VueRuntime.h('button', { type: 'button', class: ['vf-notification-center__filter', 'is-active'] }, 'All'),
-                                        VueRuntime.h('button', { type: 'button', class: 'vf-notification-center__filter' }, 'Unread'),
-                                        VueRuntime.h('button', { type: 'button', class: 'vf-notification-center__filter' }, 'Read'),
-                                    ])
-                                  : null,
-                              props.items.length
-                                  ? VueRuntime.h(
-                                        'ul',
-                                        { class: 'vf-notification-center__list' },
-                                        props.items.map((item, index) =>
-                                            VueRuntime.h(
-                                                'li',
-                                                {
-                                                    key: String(item.id ?? index),
-                                                    class: ['vf-notification-center__item', { 'is-unread': !item.read }],
-                                                },
-                                                [
-                                                    slots.item
-                                                        ? slots.item({
-                                                              item,
-                                                              index,
-                                                              toggleRead: () => toggleRead(item.id as string | number),
-                                                          })
-                                                        : [
-                                                              VueRuntime.h('button', { type: 'button', class: 'vf-notification-center__item-main' }, [
-                                                                  VueRuntime.h('span', { class: 'vf-notification-center__avatar', 'aria-hidden': 'true' }, String(item.title ?? '?').slice(0, 1)),
-                                                                  VueRuntime.h('span', { class: 'vf-notification-center__content' }, [
-                                                                      VueRuntime.h('span', { class: 'vf-notification-center__item-title' }, String(item.title ?? 'Notification')),
-                                                                      item.message
-                                                                          ? VueRuntime.h('span', { class: 'vf-notification-center__item-message' }, String(item.message))
-                                                                          : null,
-                                                                  ]),
-                                                              ]),
-                                                          ],
-                                                    VueRuntime.h(
-                                                        'button',
-                                                        {
-                                                            type: 'button',
-                                                            class: 'vf-notification-center__toggle',
-                                                            onClick: () => toggleRead(item.id as string | number),
-                                                        },
-                                                        item.read ? 'Unread' : 'Read',
-                                                    ),
-                                                ],
+                              VueRuntime.h('div', { class: 'vf-notification-center__body' }, [
+                                  props.showFilters
+                                      ? VueRuntime.h(
+                                            'div',
+                                            { class: 'vf-notification-center__filters', role: 'tablist' },
+                                            [
+                                                VueRuntime.h(
+                                                    'button',
+                                                    {
+                                                        type: 'button',
+                                                        class: ['vf-notification-center__filter', 'is-active'],
+                                                    },
+                                                    'All',
+                                                ),
+                                                VueRuntime.h(
+                                                    'button',
+                                                    { type: 'button', class: 'vf-notification-center__filter' },
+                                                    'Unread',
+                                                ),
+                                                VueRuntime.h(
+                                                    'button',
+                                                    { type: 'button', class: 'vf-notification-center__filter' },
+                                                    'Read',
+                                                ),
+                                            ],
+                                        )
+                                      : null,
+                                  props.items.length
+                                      ? VueRuntime.h(
+                                            'ul',
+                                            { class: 'vf-notification-center__list' },
+                                            props.items.map((item, index) =>
+                                                VueRuntime.h(
+                                                    'li',
+                                                    {
+                                                        key: String(item.id ?? index),
+                                                        class: [
+                                                            'vf-notification-center__item',
+                                                            { 'is-unread': !item.read },
+                                                        ],
+                                                    },
+                                                    [
+                                                        slots.item
+                                                            ? slots.item({
+                                                                  item,
+                                                                  index,
+                                                                  toggleRead: () =>
+                                                                      toggleRead(item.id as string | number),
+                                                              })
+                                                            : [
+                                                                  VueRuntime.h(
+                                                                      'button',
+                                                                      {
+                                                                          type: 'button',
+                                                                          class: 'vf-notification-center__item-main',
+                                                                      },
+                                                                      [
+                                                                          VueRuntime.h(
+                                                                              'span',
+                                                                              {
+                                                                                  class: 'vf-notification-center__avatar',
+                                                                                  'aria-hidden': 'true',
+                                                                              },
+                                                                              String(item.title ?? '?').slice(0, 1),
+                                                                          ),
+                                                                          VueRuntime.h(
+                                                                              'span',
+                                                                              {
+                                                                                  class: 'vf-notification-center__content',
+                                                                              },
+                                                                              [
+                                                                                  VueRuntime.h(
+                                                                                      'span',
+                                                                                      {
+                                                                                          class: 'vf-notification-center__item-title',
+                                                                                      },
+                                                                                      String(
+                                                                                          item.title ?? 'Notification',
+                                                                                      ),
+                                                                                  ),
+                                                                                  item.message
+                                                                                      ? VueRuntime.h(
+                                                                                            'span',
+                                                                                            {
+                                                                                                class: 'vf-notification-center__item-message',
+                                                                                            },
+                                                                                            String(item.message),
+                                                                                        )
+                                                                                      : null,
+                                                                              ],
+                                                                          ),
+                                                                      ],
+                                                                  ),
+                                                              ],
+                                                        VueRuntime.h(
+                                                            'button',
+                                                            {
+                                                                type: 'button',
+                                                                class: 'vf-notification-center__toggle',
+                                                                onClick: () => toggleRead(item.id as string | number),
+                                                            },
+                                                            item.read ? 'Unread' : 'Read',
+                                                        ),
+                                                    ],
+                                                ),
                                             ),
+                                        )
+                                      : VueRuntime.h(
+                                            'p',
+                                            { class: 'vf-notification-center__empty' },
+                                            'No notifications',
                                         ),
-                                    )
-                                  : VueRuntime.h('p', { class: 'vf-notification-center__empty' }, 'No notifications'),
-                          ]),
-                      ]),
+                              ]),
+                          ],
+                      ),
                   ])
                 : null;
     },
@@ -1110,36 +1287,76 @@ const DocsPreviewTour = markRaw({
             props.modelValue
                 ? VueRuntime.h('div', { class: 'vf-tour vf-tour_preview' }, [
                       VueRuntime.h('div', { class: 'vf-tour__overlay' }),
-                      VueRuntime.h('div', { class: 'vf-tour__panel', role: 'dialog', 'aria-modal': 'true', 'aria-label': props.ariaLabel }, [
-                          step?.title || slots.title
-                              ? VueRuntime.h('div', { class: 'vf-tour__title' }, slots.title?.({ step, index: activeIndex }) ?? String(step?.title ?? 'Step'))
-                              : null,
-                          step?.content || slots.default
-                              ? VueRuntime.h(
-                                    'div',
-                                    { class: 'vf-tour__content' },
-                                    slots.default?.({ step, index: activeIndex }) ?? String(step?.content ?? ''),
-                                )
-                              : null,
-                          props.showProgress ? VueRuntime.h('div', { class: 'vf-tour__progress' }, `1 / ${Math.max(1, props.steps.length)}`) : null,
-                          VueRuntime.h(
-                              'div',
-                              { class: 'vf-tour__actions' },
-                              slots.actions?.({
-                                  step,
-                                  index: activeIndex,
-                                  isFirst: true,
-                                  isLast: props.steps.length <= 1,
-                                  prev: () => {},
-                                  next: () => {},
-                                  skip: () => {},
-                              }) ?? [
-                                  props.showSkip ? VueRuntime.h('button', { type: 'button', class: ['vf-tour__button', 'vf-tour__button_secondary'] }, 'Skip') : null,
-                                  VueRuntime.h('button', { type: 'button', class: ['vf-tour__button', 'vf-tour__button_secondary'], disabled: true }, 'Back'),
-                                  VueRuntime.h('button', { type: 'button', class: ['vf-tour__button', 'vf-tour__button_primary'] }, props.steps.length <= 1 ? 'Finish' : 'Next'),
-                              ],
-                          ),
-                      ]),
+                      VueRuntime.h(
+                          'div',
+                          {
+                              class: 'vf-tour__panel',
+                              role: 'dialog',
+                              'aria-modal': 'true',
+                              'aria-label': props.ariaLabel,
+                          },
+                          [
+                              step?.title || slots.title
+                                  ? VueRuntime.h(
+                                        'div',
+                                        { class: 'vf-tour__title' },
+                                        slots.title?.({ step, index: activeIndex }) ?? String(step?.title ?? 'Step'),
+                                    )
+                                  : null,
+                              step?.content || slots.default
+                                  ? VueRuntime.h(
+                                        'div',
+                                        { class: 'vf-tour__content' },
+                                        slots.default?.({ step, index: activeIndex }) ?? String(step?.content ?? ''),
+                                    )
+                                  : null,
+                              props.showProgress
+                                  ? VueRuntime.h(
+                                        'div',
+                                        { class: 'vf-tour__progress' },
+                                        `1 / ${Math.max(1, props.steps.length)}`,
+                                    )
+                                  : null,
+                              VueRuntime.h(
+                                  'div',
+                                  { class: 'vf-tour__actions' },
+                                  slots.actions?.({
+                                      step,
+                                      index: activeIndex,
+                                      isFirst: true,
+                                      isLast: props.steps.length <= 1,
+                                      prev: () => {},
+                                      next: () => {},
+                                      skip: () => {},
+                                  }) ?? [
+                                      props.showSkip
+                                          ? VueRuntime.h(
+                                                'button',
+                                                {
+                                                    type: 'button',
+                                                    class: ['vf-tour__button', 'vf-tour__button_secondary'],
+                                                },
+                                                'Skip',
+                                            )
+                                          : null,
+                                      VueRuntime.h(
+                                          'button',
+                                          {
+                                              type: 'button',
+                                              class: ['vf-tour__button', 'vf-tour__button_secondary'],
+                                              disabled: true,
+                                          },
+                                          'Back',
+                                      ),
+                                      VueRuntime.h(
+                                          'button',
+                                          { type: 'button', class: ['vf-tour__button', 'vf-tour__button_primary'] },
+                                          props.steps.length <= 1 ? 'Finish' : 'Next',
+                                      ),
+                                  ],
+                              ),
+                          ],
+                      ),
                   ])
                 : null;
     },
@@ -1180,55 +1397,106 @@ const DocsPreviewCommandPalette = markRaw({
             props.modelValue
                 ? VueRuntime.h('div', { class: 'vf-command-palette vf-command-palette_preview' }, [
                       VueRuntime.h('div', { class: 'vf-command-palette__overlay' }),
-                      VueRuntime.h('div', { class: 'vf-command-palette__panel', role: 'dialog', 'aria-modal': 'true' }, [
-                          VueRuntime.h('div', { class: 'vf-command-palette__header' }, [
-                              VueRuntime.h('input', {
-                                  class: 'vf-command-palette__input',
-                                  type: 'text',
-                                  value: '',
-                                  placeholder: props.placeholder,
-                              }),
-                              props.showScopeTabs && scopeOptions.length > 1
-                                  ? VueRuntime.h(
-                                        'div',
-                                        { class: 'vf-command-palette__scopes', role: 'tablist' },
-                                        scopeOptions.map(scopeOption =>
-                                            VueRuntime.h(
-                                                'button',
-                                                {
-                                                    type: 'button',
-                                                    class: ['vf-command-palette__scope', { 'is-active': scopeOption.id === props.scope }],
-                                                },
-                                                String(scopeOption.label ?? scopeOption.id),
+                      VueRuntime.h(
+                          'div',
+                          { class: 'vf-command-palette__panel', role: 'dialog', 'aria-modal': 'true' },
+                          [
+                              VueRuntime.h('div', { class: 'vf-command-palette__header' }, [
+                                  VueRuntime.h('input', {
+                                      class: 'vf-command-palette__input',
+                                      type: 'text',
+                                      value: '',
+                                      placeholder: props.placeholder,
+                                  }),
+                                  props.showScopeTabs && scopeOptions.length > 1
+                                      ? VueRuntime.h(
+                                            'div',
+                                            { class: 'vf-command-palette__scopes', role: 'tablist' },
+                                            scopeOptions.map(scopeOption =>
+                                                VueRuntime.h(
+                                                    'button',
+                                                    {
+                                                        type: 'button',
+                                                        class: [
+                                                            'vf-command-palette__scope',
+                                                            { 'is-active': scopeOption.id === props.scope },
+                                                        ],
+                                                    },
+                                                    String(scopeOption.label ?? scopeOption.id),
+                                                ),
                                             ),
-                                        ),
-                                    )
-                                  : null,
-                          ]),
-                          VueRuntime.h(
-                              'div',
-                              { class: 'vf-command-palette__list', role: 'listbox' },
-                              groups.length
-                                  ? groups.flatMap(([name, items], groupIndex) => [
-                                        name ? VueRuntime.h('div', { key: `label-${groupIndex}`, class: 'vf-command-palette__group-label' }, name) : null,
-                                        ...items.map((item, itemIndex) =>
-                                            VueRuntime.h('button', { key: `${groupIndex}-${itemIndex}`, type: 'button', class: ['vf-command-palette__item', { 'is-active': itemIndex === 0 && groupIndex === 0 }] }, [
-                                                VueRuntime.h('div', { class: 'vf-command-palette__item-main' }, [
-                                                    VueRuntime.h('span', { class: 'vf-command-palette__item-label' }, String(item.label ?? 'Command')),
-                                                    item.shortcut ? VueRuntime.h('span', { class: 'vf-command-palette__item-shortcut' }, String(item.shortcut)) : null,
-                                                ]),
-                                                item.description
-                                                    ? VueRuntime.h('span', { class: 'vf-command-palette__item-description' }, String(item.description))
-                                                    : null,
-                                                item.entityType
-                                                    ? VueRuntime.h('span', { class: 'vf-command-palette__item-entity' }, String(item.entityType))
-                                                    : null,
-                                            ]),
-                                        ),
-                                    ])
-                                  : [VueRuntime.h('div', { class: 'vf-command-palette__empty' }, props.emptyText)],
-                          ),
-                      ]),
+                                        )
+                                      : null,
+                              ]),
+                              VueRuntime.h(
+                                  'div',
+                                  { class: 'vf-command-palette__list', role: 'listbox' },
+                                  groups.length
+                                      ? groups.flatMap(([name, items], groupIndex) => [
+                                            name
+                                                ? VueRuntime.h(
+                                                      'div',
+                                                      {
+                                                          key: `label-${groupIndex}`,
+                                                          class: 'vf-command-palette__group-label',
+                                                      },
+                                                      name,
+                                                  )
+                                                : null,
+                                            ...items.map((item, itemIndex) =>
+                                                VueRuntime.h(
+                                                    'button',
+                                                    {
+                                                        key: `${groupIndex}-${itemIndex}`,
+                                                        type: 'button',
+                                                        class: [
+                                                            'vf-command-palette__item',
+                                                            { 'is-active': itemIndex === 0 && groupIndex === 0 },
+                                                        ],
+                                                    },
+                                                    [
+                                                        VueRuntime.h(
+                                                            'div',
+                                                            { class: 'vf-command-palette__item-main' },
+                                                            [
+                                                                VueRuntime.h(
+                                                                    'span',
+                                                                    { class: 'vf-command-palette__item-label' },
+                                                                    String(item.label ?? 'Command'),
+                                                                ),
+                                                                item.shortcut
+                                                                    ? VueRuntime.h(
+                                                                          'span',
+                                                                          {
+                                                                              class: 'vf-command-palette__item-shortcut',
+                                                                          },
+                                                                          String(item.shortcut),
+                                                                      )
+                                                                    : null,
+                                                            ],
+                                                        ),
+                                                        item.description
+                                                            ? VueRuntime.h(
+                                                                  'span',
+                                                                  { class: 'vf-command-palette__item-description' },
+                                                                  String(item.description),
+                                                              )
+                                                            : null,
+                                                        item.entityType
+                                                            ? VueRuntime.h(
+                                                                  'span',
+                                                                  { class: 'vf-command-palette__item-entity' },
+                                                                  String(item.entityType),
+                                                              )
+                                                            : null,
+                                                    ],
+                                                ),
+                                            ),
+                                        ])
+                                      : [VueRuntime.h('div', { class: 'vf-command-palette__empty' }, props.emptyText)],
+                              ),
+                          ],
+                      ),
                   ])
                 : null;
     },
@@ -1325,6 +1593,9 @@ const previewScriptHelpers = {
     console,
 };
 
+const kebabToCamelCase = (value: string): string =>
+    value.replace(/-([a-z])/g, (_, character: string) => character.toUpperCase());
+
 const clonePreviewValue = (value: unknown): unknown => {
     if (Array.isArray(value)) {
         return value.map(item => clonePreviewValue(item));
@@ -1359,8 +1630,42 @@ const isNumberPropDefinition = (definition: unknown): boolean => {
     return false;
 };
 
+const definitionContainsType = (definition: unknown, targetType: unknown): boolean => {
+    if (definition === targetType) {
+        return true;
+    }
+
+    if (Array.isArray(definition)) {
+        return definition.includes(targetType);
+    }
+
+    if (definition && typeof definition === 'object' && 'type' in (definition as Record<string, unknown>)) {
+        const typeDefinition = (definition as { type?: unknown }).type;
+        return typeDefinition === targetType || (Array.isArray(typeDefinition) && typeDefinition.includes(targetType));
+    }
+
+    return false;
+};
+
+const getPreviewSpecificComponents = (): Record<string, object> => ({
+    BottomSheet: DocsPreviewBottomSheet,
+    Modal: DocsPreviewModal,
+    Drawer: DocsPreviewDrawer,
+    ConfirmDialog: DocsPreviewConfirmDialog,
+    ConfirmPopup: DocsPreviewConfirmPopup,
+    ContextMenu: DocsPreviewContextMenu,
+    NotificationCenter: DocsPreviewNotificationCenter,
+    Tour: DocsPreviewTour,
+    CommandPalette: DocsPreviewCommandPalette,
+});
+
+const getPreviewComponentDefinition = (tagName: string): { props?: Record<string, unknown> } | undefined =>
+    (getPreviewSpecificComponents()[tagName] ?? exampleComponents[tagName]) as
+        | { props?: Record<string, unknown> }
+        | undefined;
+
 const getComponentNumberProps = (tagName: string): Set<string> => {
-    const component = exampleComponents[tagName] as { props?: Record<string, unknown> } | undefined;
+    const component = getPreviewComponentDefinition(tagName);
     const propsDefinition = component?.props;
 
     if (!propsDefinition || Array.isArray(propsDefinition)) {
@@ -1383,7 +1688,7 @@ const normalizePreviewTemplate = (template: string): string =>
 
             if (numberProps.size) {
                 normalizedAttributes = normalizedAttributes.replace(
-                    /(^|\s)([A-Za-z_][\w-]*)(\s*=\s*)("(\d+)"|'(\d+)')/g,
+                    /(^|\s)([A-Za-z_][\w-]*)(\s*=\s*)("(-?(?:\d*\.\d+|\d+))"|'(-?(?:\d*\.\d+|\d+))')/g,
                     (
                         attributeMatch,
                         whitespace: string,
@@ -1880,8 +2185,20 @@ const createComponentSpecificBindings = (template: string): Record<string, unkno
     if (/<NotificationCenter\b/i.test(template)) {
         bindings.open = true;
         bindings.notifications = [
-            { id: 1, title: 'Build finished', message: 'Production deployment succeeded.', read: false, severity: 'success' },
-            { id: 2, title: 'Review requested', message: 'Anna mentioned you in API changes.', read: false, severity: 'info' },
+            {
+                id: 1,
+                title: 'Build finished',
+                message: 'Production deployment succeeded.',
+                read: false,
+                severity: 'success',
+            },
+            {
+                id: 2,
+                title: 'Review requested',
+                message: 'Anna mentioned you in API changes.',
+                read: false,
+                severity: 'info',
+            },
         ];
     }
 
@@ -2169,10 +2486,50 @@ const extractDirectiveIdentifiers = (template: string): string[] => {
     return [...matches].map(match => match[1]);
 };
 
+const extractBoundExpressionIdentifiers = (template: string): string[] => {
+    const expressionMatches = template.matchAll(/(?:[:@][\w-]+|v-[\w-]+(?::[\w-]+)?)="\s*([^"]+)\s*"/g);
+
+    return [...expressionMatches].flatMap(([, expression]) =>
+        Array.from(expression.matchAll(/\b([A-Za-z_$][\w$]*)\b(?!\s*:)/g))
+            .map(match => match[1])
+            .filter(identifier => !reservedExpressionIdentifiers.has(identifier)),
+    );
+};
+
 const extractInterpolationIdentifiers = (template: string): string[] => {
     const matches = template.matchAll(/{{\s*([A-Za-z_$][\w$]*)(?:\s*(?:[.[(]|}})[\s\S]*?)?}}/g);
     return [...matches].map(match => match[1]);
 };
+
+type ModelBinding = {
+    identifier: string;
+    tagName: string;
+    propName: string;
+};
+
+type PropBinding = {
+    identifier: string;
+    tagName: string;
+    propName: string;
+};
+
+const extractModelBindings = (template: string): ModelBinding[] =>
+    [...template.matchAll(/<([A-Z][\w-]*)[^>]*\bv-model(?::([\w-]+))?="\s*([A-Za-z_$][\w$]*)\s*"/g)].map(
+        ([, tagName, argument, identifier]) => ({
+            identifier,
+            tagName,
+            propName: argument ? kebabToCamelCase(argument) : 'modelValue',
+        }),
+    );
+
+const extractPropBindings = (template: string): PropBinding[] =>
+    [...template.matchAll(/<([A-Z][\w-]*)[^>]*\s(?::|v-bind:)([\w-]+)="\s*([A-Za-z_$][\w$]*)\s*"/g)].map(
+        ([, tagName, propName, identifier]) => ({
+            identifier,
+            tagName,
+            propName: kebabToCamelCase(propName),
+        }),
+    );
 
 const isSupportedLiteralIdentifier = (identifier: string): boolean =>
     ['true', 'false', 'null', 'undefined'].includes(identifier);
@@ -2200,9 +2557,7 @@ const extractObjectBindingIdentifiers = (expression: string): string[] =>
         });
 
 const extractSlotScopeIdentifiers = (template: string): string[] => {
-    const matches = template.matchAll(
-        /(?:#[\w-]+|v-slot(?::[\w-]+)?)\s*=\s*"(\{[\s\S]*?\}|[A-Za-z_$][\w$]*)"/g,
-    );
+    const matches = template.matchAll(/(?:#[\w-]+|v-slot(?::[\w-]+)?)\s*=\s*"(\{[\s\S]*?\}|[A-Za-z_$][\w$]*)"/g);
 
     return [...matches].flatMap(([, expression]) => {
         const normalizedExpression = expression.trim();
@@ -2275,7 +2630,11 @@ const inferCodeEditorModelValue = (template: string, identifier: string): string
 };
 
 const inferAnchoredPopupModelValue = (template: string, identifier: string): boolean | undefined => {
-    if (!new RegExp(`<(?:ConfirmPopup|Popover|OverlayPanel)[^>]*v-model="${identifier}"[^>]*?(>|/>)`, 'i').test(template)) {
+    if (
+        !new RegExp(`<(?:ConfirmPopup|Popover|OverlayPanel)[^>]*v-model="${identifier}"[^>]*?(>|/>)`, 'i').test(
+            template,
+        )
+    ) {
         return undefined;
     }
 
@@ -2283,6 +2642,11 @@ const inferAnchoredPopupModelValue = (template: string, identifier: string): boo
 };
 
 const inferModelValue = (template: string, identifier: string): unknown => {
+    const matchingBinding = extractModelBindings(template).find(binding => binding.identifier === identifier);
+    const propDefinition = matchingBinding
+        ? getPreviewComponentDefinition(matchingBinding.tagName)?.props?.[matchingBinding.propName]
+        : undefined;
+
     const accordionValue = inferAccordionModelValue(template, identifier);
     if (accordionValue !== undefined) {
         return accordionValue;
@@ -2311,6 +2675,30 @@ const inferModelValue = (template: string, identifier: string): unknown => {
         return true;
     }
 
+    if (/(sidebarWidth|panelWidth|drawerWidth)$/i.test(identifier)) {
+        return 280;
+    }
+
+    if (definitionContainsType(propDefinition, Array)) {
+        return [];
+    }
+
+    if (definitionContainsType(propDefinition, Object)) {
+        return {};
+    }
+
+    if (definitionContainsType(propDefinition, Boolean)) {
+        return false;
+    }
+
+    if (definitionContainsType(propDefinition, Number)) {
+        return /(page|step|index|count|score|volume|quantity|width|height|size|precision)$/i.test(identifier) ? 1 : 0;
+    }
+
+    if (definitionContainsType(propDefinition, String)) {
+        return '';
+    }
+
     if (/(page|step|index|count|score|volume|quantity)$/i.test(identifier)) {
         return 1;
     }
@@ -2328,11 +2716,53 @@ const inferExternalBindingValue = (template: string, identifier: string): unknow
         return clonePreviewValue(componentBindings[identifier]);
     }
 
+    const matchingBinding = extractPropBindings(template).find(binding => binding.identifier === identifier);
+    const propDefinition = matchingBinding
+        ? getPreviewComponentDefinition(matchingBinding.tagName)?.props?.[matchingBinding.propName]
+        : undefined;
+
+    if (definitionContainsType(propDefinition, Array)) {
+        return [];
+    }
+
+    if (definitionContainsType(propDefinition, Object)) {
+        return {};
+    }
+
+    if (definitionContainsType(propDefinition, Boolean)) {
+        return false;
+    }
+
+    if (definitionContainsType(propDefinition, Number)) {
+        return /(page|step|index|count|score|volume|quantity|width|height|size|precision)$/i.test(identifier) ? 1 : 0;
+    }
+
+    if (definitionContainsType(propDefinition, String)) {
+        return '';
+    }
+
     if (identifier === 'dashboardTheme') {
         return {
             colors: { primary: '#1d4ed8' },
             components: { button: { backgroundColor: '#1d4ed8' } },
         };
+    }
+
+    if (/^(media|productImages|campaignMedia)$/i.test(identifier)) {
+        return [
+            {
+                src: '/gallery/1.jpg',
+                thumbnailSrc: '/gallery/thumbs/1.jpg',
+                alt: 'Item one',
+                caption: 'Intro scene',
+            },
+            {
+                src: '/gallery/2.jpg',
+                thumbnailSrc: '/gallery/thumbs/2.jpg',
+                alt: 'Item two',
+                caption: 'Detail view',
+            },
+        ];
     }
 
     if (identifier === 'noop') {
@@ -2392,7 +2822,11 @@ const inferExternalBindingValue = (template: string, identifier: string): unknow
         ];
     }
 
-    if (/(items|options|views|steps|logs|events|rows|columns|filters|roles|capabilities|users|members|assets)$/i.test(identifier)) {
+    if (
+        /(items|options|views|steps|logs|events|rows|columns|filters|roles|capabilities|users|members|assets)$/i.test(
+            identifier,
+        )
+    ) {
         return createGenericItemsCollection();
     }
 
@@ -2405,14 +2839,18 @@ const inferExternalBindingValue = (template: string, identifier: string): unknow
     }
 
     if (/(count|page|step|index|width|height|size|total)$/i.test(identifier)) {
-        return 1;
+        return /width/i.test(identifier) ? 280 : 1;
     }
 
     if (/(loading|error|disabled|visible|open|collapsed|show|hasMore)$/i.test(identifier)) {
         return false;
     }
 
-    if (/^(on|handle|open|close|toggle|load|save|send|submit|run|start|track|show|mark|undo|retry|confirm|cancel)/i.test(identifier)) {
+    if (
+        /^(on|handle|open|close|toggle|load|save|send|submit|run|start|track|show|mark|undo|retry|confirm|cancel)/i.test(
+            identifier,
+        )
+    ) {
         return () => {};
     }
 
@@ -2440,6 +2878,7 @@ const allExternalIdentifiers = computed(() =>
     Array.from(
         new Set([
             ...extractDirectiveIdentifiers(previewTemplate.value),
+            ...extractBoundExpressionIdentifiers(previewTemplate.value),
             ...extractInterpolationIdentifiers(previewTemplate.value),
         ]),
     ).filter(identifier => !isSupportedLiteralIdentifier(identifier)),
@@ -2473,17 +2912,6 @@ const inferredModelState = computed<Record<string, unknown>>(() =>
     ),
 );
 const unknownExampleComponents = computed(() => createUnknownExampleComponents(previewTemplate.value));
-const previewSpecificComponents = computed<Record<string, object>>(() => ({
-    BottomSheet: DocsPreviewBottomSheet,
-    Modal: DocsPreviewModal,
-    Drawer: DocsPreviewDrawer,
-    ConfirmDialog: DocsPreviewConfirmDialog,
-    ConfirmPopup: DocsPreviewConfirmPopup,
-    ContextMenu: DocsPreviewContextMenu,
-    NotificationCenter: DocsPreviewNotificationCenter,
-    Tour: DocsPreviewTour,
-    CommandPalette: DocsPreviewCommandPalette,
-}));
 const normalizedPreviewTemplate = computed(() => normalizePreviewTemplate(previewTemplate.value));
 
 const isPreviewable = computed(() => {
@@ -2552,9 +2980,7 @@ const showPreviewReset = computed(
     () => Boolean(previewComponent.value) && modelIdentifiers.value.length > 0 && hasPreviewStateChanges.value,
 );
 const initialPreviewState = computed<Record<string, unknown>>(() =>
-    Object.fromEntries(
-        Object.entries(inferredModelState.value).map(([key, value]) => [key, clonePreviewValue(value)]),
-    ),
+    Object.fromEntries(Object.entries(inferredModelState.value).map(([key, value]) => [key, clonePreviewValue(value)])),
 );
 
 const replacePreviewState = (nextState: Record<string, unknown>) => {
@@ -2569,7 +2995,8 @@ const replacePreviewState = (nextState: Record<string, unknown>) => {
     }
 };
 
-const arePreviewValuesEqual = (left: unknown, right: unknown): boolean => JSON.stringify(left) === JSON.stringify(right);
+const arePreviewValuesEqual = (left: unknown, right: unknown): boolean =>
+    JSON.stringify(left) === JSON.stringify(right);
 const hasPreviewStateChanges = computed(() =>
     Array.from(new Set([...Object.keys(initialPreviewState.value), ...Object.keys(previewState)])).some(
         key => !arePreviewValuesEqual(previewState[key], initialPreviewState.value[key]),
@@ -2603,7 +3030,10 @@ const previewComponent = computed(() => {
         components: {
             ...exampleComponents,
             ...unknownExampleComponents.value,
-            ...previewSpecificComponents.value,
+            ...getPreviewSpecificComponents(),
+        },
+        directives: {
+            overlayBadge: vOverlayBadge,
         },
         setup() {
             const implicitBindings = createImplicitPreviewBindings(previewTemplate.value);
@@ -2922,7 +3352,11 @@ onErrorCaptured(error => {
     min-height: 12rem;
     border-radius: 0.5rem;
     background:
-        linear-gradient(to right, color-mix(in srgb, var(--vf-docs-border-strong) 18%, transparent) 1px, transparent 1px)
+        linear-gradient(
+                to right,
+                color-mix(in srgb, var(--vf-docs-border-strong) 18%, transparent) 1px,
+                transparent 1px
+            )
             0 0 / 25% 100%,
         linear-gradient(to top, color-mix(in srgb, var(--vf-docs-border-strong) 18%, transparent) 1px, transparent 1px)
             0 0 / 100% 25%;
@@ -3002,7 +3436,12 @@ onErrorCaptured(error => {
     border: 0;
     background: transparent;
     color: inherit;
-    font: 0.9rem/1.6 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+    font:
+        0.9rem/1.6 'SFMono-Regular',
+        Consolas,
+        'Liberation Mono',
+        Menlo,
+        monospace;
     white-space: pre;
     resize: none;
     outline: none;

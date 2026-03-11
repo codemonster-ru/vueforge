@@ -5,7 +5,7 @@ Carousel displays sequential slides with arrows, indicators, keyboard support, s
 ## Import
 
 ```ts
-import Carousel from '@/package/components/carousel.vue';
+import { Carousel } from '@codemonster-ru/vueforge';
 ```
 
 ## Examples
@@ -59,13 +59,7 @@ Use `v-model` to control the active slide from application state.
 Enable autoplay for hero banners and lightweight promotional surfaces.
 
 ```vue
-<Carousel
-    v-model="activeSlide"
-    :items="heroSlides"
-    autoplay
-    :autoplay-interval="4000"
-    :show-indicators="false"
-/>
+<Carousel v-model="activeSlide" :items="heroSlides" autoplay :autoplay-interval="4000" :show-indicators="false" />
 ```
 
 ### Controlled Navigation
@@ -73,13 +67,7 @@ Enable autoplay for hero banners and lightweight promotional surfaces.
 Disable looping when the slide sequence has a clear start and end.
 
 ```vue
-<Carousel
-    v-model="activeSlide"
-    :items="slides"
-    :loop="false"
-    :show-arrows="true"
-    :show-indicators="true"
-/>
+<Carousel v-model="activeSlide" :items="slides" :loop="false" :show-arrows="true" :show-indicators="true" />
 ```
 
 ### Custom Navigation Icons
@@ -102,38 +90,38 @@ Use `prevIcon` and `nextIcon` to match the surrounding icon set.
 
 ### Props
 
-| Name | Type | Default |
-| --- | --- | --- |
-| `modelValue` | `number` | `0` |
-| `items` | `unknown[]` | `[]` |
-| `autoplay` | `boolean` | `false` |
-| `autoplayInterval` | `number` | `5000` |
-| `loop` | `boolean` | `true` |
-| `keyboard` | `boolean` | `true` |
-| `swipe` | `boolean` | `true` |
-| `pauseOnHover` | `boolean` | `true` |
-| `showArrows` | `boolean` | `true` |
-| `showIndicators` | `boolean` | `true` |
-| `disabled` | `boolean` | `false` |
-| `ariaLabel` | `string` | `'Carousel'` |
-| `slideKey` | `string \| ((item: unknown, index: number) => string \| number) \| undefined` | `undefined` |
-| `pt` | `PassThroughOptions \| undefined` | `undefined` |
-| `unstyled` | `boolean` | `false` |
+| Name               | Type                                                                          | Default      |
+| ------------------ | ----------------------------------------------------------------------------- | ------------ |
+| `modelValue`       | `number`                                                                      | `0`          |
+| `items`            | `unknown[]`                                                                   | `[]`         |
+| `autoplay`         | `boolean`                                                                     | `false`      |
+| `autoplayInterval` | `number`                                                                      | `5000`       |
+| `loop`             | `boolean`                                                                     | `true`       |
+| `keyboard`         | `boolean`                                                                     | `true`       |
+| `swipe`            | `boolean`                                                                     | `true`       |
+| `pauseOnHover`     | `boolean`                                                                     | `true`       |
+| `showArrows`       | `boolean`                                                                     | `true`       |
+| `showIndicators`   | `boolean`                                                                     | `true`       |
+| `disabled`         | `boolean`                                                                     | `false`      |
+| `ariaLabel`        | `string`                                                                      | `'Carousel'` |
+| `slideKey`         | `string \| ((item: unknown, index: number) => string \| number) \| undefined` | `undefined`  |
+| `pt`               | `PassThroughOptions \| undefined`                                             | `undefined`  |
+| `unstyled`         | `boolean`                                                                     | `false`      |
 
 ### Events
 
-| Name | Payload |
-| --- | --- |
-| `update:modelValue` | `number` |
-| `change` | `{ index, previousIndex, source }` |
+| Name                | Payload                            |
+| ------------------- | ---------------------------------- |
+| `update:modelValue` | `number`                           |
+| `change`            | `{ index, previousIndex, source }` |
 
 ### Slots
 
-| Name | Description |
-| --- | --- |
-| `item` | Custom slide content with `{ item, index, active }`. |
-| `prevIcon` | Replaces the previous-arrow icon. |
-| `nextIcon` | Replaces the next-arrow icon. |
+| Name       | Description                                          |
+| ---------- | ---------------------------------------------------- |
+| `item`     | Custom slide content with `{ item, index, active }`. |
+| `prevIcon` | Replaces the previous-arrow icon.                    |
+| `nextIcon` | Replaces the next-arrow icon.                        |
 
 ## Theming
 

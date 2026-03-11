@@ -32,13 +32,7 @@ Use `reachEnd` to trigger lazy loading or pagination handoff.
 
 ```vue
 <template>
-    <VirtualScroller
-        :items="activity"
-        :item-height="52"
-        height="28rem"
-        :overscan="6"
-        @reach-end="loadMore"
-    >
+    <VirtualScroller :items="activity" :item-height="52" height="28rem" :overscan="6" @reach-end="loadMore">
         <template #default="{ item }">
             <article>{{ item.message }}</article>
         </template>

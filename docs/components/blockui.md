@@ -5,7 +5,7 @@ BlockUI prevents interaction with a surface or the full viewport while backgroun
 ## Import
 
 ```ts
-import BlockUI from '@/package/components/block-ui.vue';
+import { BlockUI } from '@codemonster-ru/vueforge';
 ```
 
 ## Examples
@@ -43,7 +43,7 @@ Enable `full-screen` when the whole application shell should be blocked during c
 Use the default soft variant when content should remain legible underneath the overlay.
 
 ```vue
-<BlockUI v-model="blocked" variant="soft" :blur="2">
+<BlockUI v-model="blocked" variant="soft" blur>
     <div style="padding: 1rem; min-height: 10rem;">Workspace summary</div>
 </BlockUI>
 ```
@@ -69,30 +69,30 @@ Override the overlay slot when a richer blocking state needs custom messaging or
 
 ### Props
 
-| Name | Type | Default |
-| --- | --- | --- |
-| `modelValue` | `boolean` | `false` |
-| `fullScreen` | `boolean` | `false` |
-| `showSpinner` | `boolean` | `true` |
-| `label` | `string` | `''` |
-| `ariaLabel` | `string` | `'Blocked content'` |
-| `zIndex` | `number` | `1000` |
-| `variant` | `'soft' \| 'dim'` | `'soft'` |
-| `blur` | `number` | `0` |
+| Name          | Type              | Default             |
+| ------------- | ----------------- | ------------------- |
+| `modelValue`  | `boolean`         | `false`             |
+| `fullScreen`  | `boolean`         | `false`             |
+| `showSpinner` | `boolean`         | `true`              |
+| `label`       | `string`          | `''`                |
+| `ariaLabel`   | `string`          | `'Blocked content'` |
+| `zIndex`      | `number`          | `1000`              |
+| `variant`     | `'soft' \| 'dim'` | `'soft'`            |
+| `blur`        | `boolean`         | `false`             |
 
 ### Events
 
-| Name | Payload |
-| --- | --- |
-| `block` | none |
-| `unblock` | none |
+| Name      | Payload |
+| --------- | ------- |
+| `block`   | none    |
+| `unblock` | none    |
 
 ### Slots
 
-| Name | Description |
-| --- | --- |
+| Name      | Description                   |
+| --------- | ----------------------------- |
 | `default` | Content that becomes blocked. |
-| `overlay` | Custom overlay content. |
+| `overlay` | Custom overlay content.       |
 
 ## Theming
 

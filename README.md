@@ -4,12 +4,18 @@
 [![downloads](https://img.shields.io/npm/dw/@codemonster-ru/vueforge)](https://www.npmjs.com/package/@codemonster-ru/vueforge)
 [![license](https://img.shields.io/npm/l/@codemonster-ru/vueforge)](LICENSE)
 
-Open source component-level UI library for Vue 3.
+Open source UI library for Vue 3, split into core components and layouts.
 
 ## Install
 
 ```bash
 npm i @codemonster-ru/vueforge
+```
+
+Optional companion packages:
+
+```bash
+npm i @codemonster-ru/vueforge-layouts
 ```
 
 Peer dependencies:
@@ -24,6 +30,7 @@ Peer dependencies:
 import { createApp } from 'vue';
 import { VueForge, DefaultTheme } from '@codemonster-ru/vueforge';
 import '@codemonster-ru/vueforge/dist/index.css';
+import '@codemonster-ru/vueforge-layouts/dist/index.css';
 import App from './App.vue';
 
 const app = createApp(App);
@@ -47,19 +54,17 @@ app.use(VueForge, {
 </template>
 
 <script setup lang="ts">
-import { Container, PageHeader, Button } from '@codemonster-ru/vueforge';
+import { Container, Button } from '@codemonster-ru/vueforge';
+import { PageHeader } from '@codemonster-ru/vueforge-layouts';
 </script>
 ```
 
-## Components
+## Packages
 
-VueForge currently includes core building blocks for:
+- `@codemonster-ru/vueforge`: core primitives, forms, overlays, data display, services, theme/config runtime
+- `@codemonster-ru/vueforge-layouts`: app shell and layout composition
 
-- Layout and navigation: `Container`, `Section`, `Grid`, `Stack`, `Inline`, `AppShell`, `Menu`, `Link`, `Breadcrumbs`, `PageHeader`, `Divider`
-- Forms and inputs: `Form`, `FormField`, `Input`, `Textarea`, `Select`, `Autocomplete`, `Combobox`, `MultiSelect`, `TagInput`, `Date*`, `Time*`
-- Data display: `DataTable`, `Pagination`, `VirtualScroller`, `Card`, `EmptyState`
-- Overlays and feedback: `Modal`, `Drawer`, `Popover`, `Dropdown`, `ContextMenu`, `Tooltip`, `Toast`, `Alert`, `NotificationCenter`
-- Advanced interaction: `CommandPalette`, `Tour`, `KanbanBoard`, `Tree`, `TreeSelect`, `Wizard`, `Stepper`, `Tabs`, `Accordion`
+`@codemonster-ru/vueforge-layouts` complements the core package for app-shell and page layout composition.
 
 Full catalog: [`docs/components/README.md`](docs/components/README.md)
 
@@ -72,6 +77,8 @@ Full catalog: [`docs/components/README.md`](docs/components/README.md)
 - Live examples recipe: [`docs/recipes/live-playground.md`](docs/recipes/live-playground.md)
 - Core copy-paste cookbook: [`docs/recipes/core-cookbook.md`](docs/recipes/core-cookbook.md)
 - Components catalog: [`docs/components/README.md`](docs/components/README.md)
+- Package split migration: [`docs/guides/package-split.md`](docs/guides/package-split.md)
+- Package versioning / release tags: [`docs/contributing/package-versioning.md`](docs/contributing/package-versioning.md)
 - Roadmap / execution checklist: [`CHECKLIST.md`](CHECKLIST.md)
 - Release notes: [`CHANGELOG.md`](CHANGELOG.md)
 
@@ -83,6 +90,11 @@ npm run test
 npm run typecheck
 npm run build
 ```
+
+## Release Tags
+
+- `vueforge-vx.y.z` publishes `@codemonster-ru/vueforge`
+- `layouts-vx.y.z` publishes `@codemonster-ru/vueforge-layouts`
 
 ## License
 

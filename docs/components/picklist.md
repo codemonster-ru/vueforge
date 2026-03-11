@@ -5,7 +5,7 @@ PickList moves items between source and target collections with transfer control
 ## Import
 
 ```ts
-import PickList from '@/package/components/pick-list.vue';
+import { PickList } from '@codemonster-ru/vueforge';
 ```
 
 ## Examples
@@ -41,32 +41,32 @@ import PickList from '@/package/components/pick-list.vue';
 
 ### Props
 
-| Name | Type | Default |
-| --- | --- | --- |
-| `source` | `Record<string, unknown>[]` | `[]` |
-| `target` | `Record<string, unknown>[]` | `[]` |
-| `itemKey` | `string` | `'id'` |
-| `itemLabel` | `string` | `'label'` |
-| `sourceHeader` | `string` | `'Available'` |
-| `targetHeader` | `string` | `'Selected'` |
-| `sourceAriaLabel` | `string` | `'Available items'` |
-| `targetAriaLabel` | `string` | `'Selected items'` |
-| `multiple` | `boolean` | `true` |
-| `disabled` | `boolean` | `false` |
+| Name              | Type                        | Default             |
+| ----------------- | --------------------------- | ------------------- |
+| `source`          | `Record<string, unknown>[]` | `[]`                |
+| `target`          | `Record<string, unknown>[]` | `[]`                |
+| `itemKey`         | `string`                    | `'id'`              |
+| `itemLabel`       | `string`                    | `'label'`           |
+| `sourceHeader`    | `string`                    | `'Available'`       |
+| `targetHeader`    | `string`                    | `'Selected'`        |
+| `sourceAriaLabel` | `string`                    | `'Available items'` |
+| `targetAriaLabel` | `string`                    | `'Selected items'`  |
+| `multiple`        | `boolean`                   | `true`              |
+| `disabled`        | `boolean`                   | `false`             |
 
 ### Events
 
-| Name | Payload |
-| --- | --- |
-| `update:source` | updated source array |
-| `update:target` | updated target array |
-| `transfer` | `{ direction, items, source, target }` |
-| `reorder` | `{ list, items }` |
+| Name            | Payload                                |
+| --------------- | -------------------------------------- |
+| `update:source` | updated source array                   |
+| `update:target` | updated target array                   |
+| `transfer`      | `{ direction, items, source, target }` |
+| `reorder`       | `{ list, items }`                      |
 
 ### Slots
 
-| Name | Description |
-| --- | --- |
+| Name          | Description                               |
+| ------------- | ----------------------------------------- |
 | `source-item` | Custom source row with `{ item, index }`. |
 | `target-item` | Custom target row with `{ item, index }`. |
 
@@ -89,4 +89,3 @@ Override component tokens through `theme.overrides.components.picklist`.
 
 - Both columns use listbox semantics and keyboard navigation.
 - Transfer works through buttons and keyboard arrows, so the interaction stays accessible without drag and drop.
-

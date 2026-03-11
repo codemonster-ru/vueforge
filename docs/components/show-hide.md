@@ -5,8 +5,8 @@ Show and Hide are breakpoint-aware rendering helpers for responsive visibility.
 ## Import
 
 ```ts
-import Show from '@/package/components/show.vue';
-import Hide from '@/package/components/hide.vue';
+import { Show, Hide } from '@codemonster-ru/vueforge';
+import { Show, Hide } from '@codemonster-ru/vueforge';
 ```
 
 ## Examples
@@ -23,7 +23,9 @@ import Hide from '@/package/components/hide.vue';
 
 ```vue
 <Hide from="md">
-    <BottomSheet />
+    <Drawer model-value>
+        Mobile-only navigation
+    </Drawer>
 </Hide>
 ```
 
@@ -39,12 +41,12 @@ import Hide from '@/package/components/hide.vue';
 
 ### Shared Props
 
-| Name | Type | Default |
-| --- | --- | --- |
-| `as` | `string` | `'div'` |
+| Name   | Type                                        | Default     |
+| ------ | ------------------------------------------- | ----------- |
+| `as`   | `string`                                    | `'div'`     |
 | `from` | `'sm' \| 'md' \| 'lg' \| 'xl' \| undefined` | `undefined` |
-| `to` | `'sm' \| 'md' \| 'lg' \| 'xl' \| undefined` | `undefined` |
-| `when` | `boolean` | `true` |
+| `to`   | `'sm' \| 'md' \| 'lg' \| 'xl' \| undefined` | `undefined` |
+| `when` | `boolean`                                   | `true`      |
 
 ### Breakpoints
 
@@ -67,4 +69,3 @@ import Hide from '@/package/components/hide.vue';
 
 - Because these helpers add or remove DOM entirely, avoid using them for content that should remain available to assistive technology across breakpoints.
 - Server output renders by default and final visibility is resolved after hydration using viewport width.
-

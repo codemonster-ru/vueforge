@@ -5,7 +5,7 @@ Footer provides a consistent footer layout with left, center, and right content 
 ## Import
 
 ```ts
-import Footer from '@/package/components/footer.vue';
+import { Footer } from '@codemonster-ru/vueforge-layouts';
 ```
 
 ## Examples
@@ -43,7 +43,7 @@ Use the default slot when the footer is a single compact content block.
 Use `dense` for compact shells and admin workspaces where vertical space is tight.
 
 ```vue
-<Footer dense bordered={false}>
+<Footer dense bordered="{false}">
     <template #left>Workspace footer</template>
 </Footer>
 ```
@@ -52,27 +52,27 @@ Use `dense` for compact shells and admin workspaces where vertical space is tigh
 
 ### Props
 
-| Name | Type | Default |
-| --- | --- | --- |
-| `as` | `string` | `'footer'` |
-| `bordered` | `boolean` | `true` |
-| `dense` | `boolean` | `false` |
-| `wrap` | `boolean` | `true` |
-| `stackOnMobile` | `boolean` | `true` |
-| `mobileBreakpoint` | `number` | `720` |
-| `ariaLabel` | `string` | `''` |
-| `groupAriaLabel` | `string` | `'Footer content'` |
-| `leftAriaLabel` | `string` | `'Footer left section'` |
-| `centerAriaLabel` | `string` | `'Footer center section'` |
-| `rightAriaLabel` | `string` | `'Footer right section'` |
+| Name               | Type      | Default                   |
+| ------------------ | --------- | ------------------------- |
+| `as`               | `string`  | `'footer'`                |
+| `bordered`         | `boolean` | `true`                    |
+| `dense`            | `boolean` | `false`                   |
+| `wrap`             | `boolean` | `true`                    |
+| `stackOnMobile`    | `boolean` | `true`                    |
+| `mobileBreakpoint` | `number`  | `720`                     |
+| `ariaLabel`        | `string`  | `''`                      |
+| `groupAriaLabel`   | `string`  | `'Footer content'`        |
+| `leftAriaLabel`    | `string`  | `'Footer left section'`   |
+| `centerAriaLabel`  | `string`  | `'Footer center section'` |
+| `rightAriaLabel`   | `string`  | `'Footer right section'`  |
 
 ### Slots
 
-| Name | Description |
-| --- | --- |
-| `left` | Left-aligned section. |
-| `center` | Center-aligned section. |
-| `right` | Right-aligned section. |
+| Name      | Description                              |
+| --------- | ---------------------------------------- |
+| `left`    | Left-aligned section.                    |
+| `center`  | Center-aligned section.                  |
+| `right`   | Right-aligned section.                   |
 | `default` | Used only when named regions are absent. |
 
 ## Theming

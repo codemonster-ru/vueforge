@@ -33,9 +33,15 @@ Switch backgrounds to create alternating page bands or emphasize a specific bloc
 ```vue
 <template>
     <div style="display: grid; gap: 0.75rem;">
-        <Section background="surface"><Container><Card>Surface section</Card></Container></Section>
-        <Section background="muted"><Container><Card>Muted section</Card></Container></Section>
-        <Section background="elevated"><Container><Card>Elevated section</Card></Container></Section>
+        <Section background="surface"
+            ><Container><Card>Surface section</Card></Container></Section
+        >
+        <Section background="muted"
+            ><Container><Card>Muted section</Card></Container></Section
+        >
+        <Section background="elevated"
+            ><Container><Card>Elevated section</Card></Container></Section
+        >
     </div>
 </template>
 ```

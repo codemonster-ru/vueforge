@@ -18,7 +18,7 @@ Use static options for short, stable lists.
     :options="[
         { label: 'Admin', value: 'admin' },
         { label: 'Editor', value: 'editor' },
-        { label: 'Viewer', value: 'viewer' }
+        { label: 'Viewer', value: 'viewer' },
     ]"
     placeholder="Choose role"
 />
@@ -38,7 +38,7 @@ For very large datasets, prefer remote filtering and capped result windows inste
         { label: 'Brazil', value: 'br' },
         { label: 'Canada', value: 'ca' },
         { label: 'Chile', value: 'cl' },
-        { label: 'Denmark', value: 'dk' }
+        { label: 'Denmark', value: 'dk' },
     ]"
     :virtual="true"
     :virtual-threshold="100"

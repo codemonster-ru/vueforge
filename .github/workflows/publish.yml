@@ -2,37 +2,87 @@ name: publish to NPM
 on:
     push:
         tags:
-            - 'v*'
+            - 'vueforge-v*'
+            - 'layouts-v*'
+
 jobs:
-    build:
+    publish:
         runs-on: ubuntu-latest
         permissions:
             contents: write
             id-token: write
         steps:
             - uses: actions/checkout@v4
+
+            - name: Resolve package from tag
+              id: meta
+              shell: bash
+              run: |
+                  TAG="${GITHUB_REF_NAME}"
+
+                  case "$TAG" in
+                    vueforge-v*)
+                      echo "workspace=@codemonster-ru/vueforge" >> "$GITHUB_OUTPUT"
+                      echo "package_dir=packages/vueforge" >> "$GITHUB_OUTPUT"
+                      echo "package_name=@codemonster-ru/vueforge" >> "$GITHUB_OUTPUT"
+                      echo "version=${TAG#vueforge-v}" >> "$GITHUB_OUTPUT"
+                      ;;
+                    layouts-v*)
+                      echo "workspace=@codemonster-ru/vueforge-layouts" >> "$GITHUB_OUTPUT"
+                      echo "package_dir=packages/layouts" >> "$GITHUB_OUTPUT"
+                      echo "package_name=@codemonster-ru/vueforge-layouts" >> "$GITHUB_OUTPUT"
+                      echo "version=${TAG#layouts-v}" >> "$GITHUB_OUTPUT"
+                      ;;
+                    *)
+                      echo "Unsupported tag: $TAG" >&2
+                      exit 1
+                      ;;
+                  esac
+
             - uses: actions/setup-node@v4
               with:
                   node-version: 20
                   registry-url: 'https://registry.npmjs.org'
+                  cache: npm
+
             - run: npm install -g npm@latest
             - run: npm -v
             - run: npm ci
-            - run: npm run verify:semver
-            - run: npm run build
-            - run: npm run verify:bundle-size
-            - run: npm audit signatures
-            - run: npm publish --access public --provenance
-            - name: Extract release notes
+
+            - name: Verify package version matches tag
               shell: bash
               run: |
-                  VERSION="${GITHUB_REF_NAME#v}"
-                  awk -v ver="$VERSION" '
-                      $0 ~ "^##[[:space:]]+\\[" ver "\\]([[:space:]]|$)" {found=1; next}
-                      found && $0 ~ "^##[[:space:]]+" {exit}
-                      found {print}
-                  ' CHANGELOG.md > release.md
+                  PACKAGE_VERSION="$(node -p "require('./${{ steps.meta.outputs.package_dir }}/package.json').version")"
+                  TAG_VERSION="${{ steps.meta.outputs.version }}"
+
+                  if [ "$PACKAGE_VERSION" != "$TAG_VERSION" ]; then
+                    echo "Tag version $TAG_VERSION does not match package version $PACKAGE_VERSION for ${{ steps.meta.outputs.package_name }}" >&2
+                    exit 1
+                  fi
+
+            - name: Typecheck target package
+              run: npm run typecheck --workspace ${{ steps.meta.outputs.workspace }}
+
+            - name: Build target package
+              run: npm run build --workspace ${{ steps.meta.outputs.workspace }}
+
+            - run: npm audit signatures
+
+            - name: Publish target package
+              run: npm publish --workspace ${{ steps.meta.outputs.workspace }} --access public --provenance
+
+            - name: Prepare release notes
+              shell: bash
+              run: |
+                  cat <<EOF > release.md
+                  Published \`${{ steps.meta.outputs.package_name }}\` version \`${{ steps.meta.outputs.version }}\`.
+
+                  Tag: \`${GITHUB_REF_NAME}\`
+                  Package path: \`${{ steps.meta.outputs.package_dir }}\`
+                  EOF
+
             - name: Create GitHub Release
               uses: softprops/action-gh-release@v2
               with:
+                  name: ${{ steps.meta.outputs.package_name }}@${{ steps.meta.outputs.version }}
                   body_path: release.md

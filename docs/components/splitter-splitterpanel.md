@@ -5,8 +5,8 @@ Splitter and `SplitterPanel` provide resizable panes with keyboard support and o
 ## Import
 
 ```ts
-import Splitter from '@/package/components/splitter.vue';
-import SplitterPanel from '@/package/components/splitter-panel.vue';
+import { Splitter, SplitterPanel } from '@codemonster-ru/vueforge';
+import { Splitter, SplitterPanel } from '@codemonster-ru/vueforge';
 ```
 
 ## Examples
@@ -48,29 +48,29 @@ Nest splitters to build IDE-style or analytics workspaces.
 
 ### Splitter Props
 
-| Name | Type | Default |
-| --- | --- | --- |
-| `modelValue` | `number[]` | `[]` |
-| `minSizes` | `number[]` | `[]` |
-| `direction` | `'horizontal' \| 'vertical'` | `'horizontal'` |
-| `gutterSize` | `number \| string` | `8` |
-| `disabled` | `boolean` | `false` |
-| `persistence` | `'none' \| 'local' \| 'session'` | `'none'` |
-| `persistenceKey` | `string` | `''` |
+| Name             | Type                             | Default        |
+| ---------------- | -------------------------------- | -------------- |
+| `modelValue`     | `number[]`                       | `[]`           |
+| `minSizes`       | `number[]`                       | `[]`           |
+| `direction`      | `'horizontal' \| 'vertical'`     | `'horizontal'` |
+| `gutterSize`     | `number \| string`               | `8`            |
+| `disabled`       | `boolean`                        | `false`        |
+| `persistence`    | `'none' \| 'local' \| 'session'` | `'none'`       |
+| `persistenceKey` | `string`                         | `''`           |
 
 ### SplitterPanel Props
 
-| Name | Type | Default |
-| --- | --- | --- |
-| `size` | `number \| undefined` | `undefined` |
+| Name      | Type                  | Default     |
+| --------- | --------------------- | ----------- |
+| `size`    | `number \| undefined` | `undefined` |
 | `minSize` | `number \| undefined` | `undefined` |
 
 ### Events
 
-| Name | Payload |
-| --- | --- |
+| Name                | Payload    |
+| ------------------- | ---------- |
 | `update:modelValue` | `number[]` |
-| `change` | `number[]` |
+| `change`            | `number[]` |
 
 ## Theming
 

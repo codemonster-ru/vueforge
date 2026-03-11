@@ -24,21 +24,12 @@ Use this split for all SaaS flows:
 
 ## Component Mapping
 
-High-risk SaaS components and required backend ownership:
+High-risk data and admin components with required backend ownership:
 
-- `PermissionMatrix`:
-    - UI emits proposed state transitions (`inherit/allow/deny`).
-    - Backend validates actor can modify each role-capability edge and persists canonical matrix.
 - `DataTable` (`bulkAction`, `exportAction`):
     - UI emits selected keys/query context.
     - Backend validates each row/action and returns per-item failures when partially unauthorized.
-- `SavedViewsManager` / `DataTableToolbar` filters:
-    - UI stores/edit presets.
-    - Backend enforces ownership/sharing ACL and rejects unauthorized preset changes.
-- `CommandPalette` / `NotificationCenter` action links:
-    - UI exposes shortcuts/actions.
-    - Backend or route guards must verify permission at destination action handler.
-- `FileManager` / `AuditLogViewer` / `CommentThread`:
+- `CommentThread`:
     - UI can show candidate operations.
     - Backend validates read/write/resolve/delete operations and records actor identity.
 

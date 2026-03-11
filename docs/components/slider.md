@@ -65,7 +65,7 @@ const retention = ref(30);
             { value: 7, label: '7d' },
             { value: 30, label: '30d' },
             { value: 60, label: '60d' },
-            { value: 90, label: '90d' }
+            { value: 90, label: '90d' },
         ]"
     />
 </template>

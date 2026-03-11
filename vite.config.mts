@@ -11,19 +11,22 @@ export default defineConfig(({ mode }) => {
         plugins: [
             vue(),
             dts({
-                include: ['src/index.ts', 'src/package/**/*'],
+                include: ['src/index.ts'],
                 exclude: ['src/docs/**', 'src/**/*.test.ts', 'src/**/__tests__/**'],
                 insertTypesEntry: true,
                 outDir: 'dist',
             }),
         ],
         resolve: {
-            alias: [{ find: '@', replacement: fileURLToPath(new URL('./src', import.meta.url)) }],
+            alias: [
+                { find: '@core', replacement: fileURLToPath(new URL('./packages/vueforge/src', import.meta.url)) },
+                { find: '@', replacement: fileURLToPath(new URL('./src', import.meta.url)) },
+            ],
         },
         test: {
             globals: true,
             environment: 'jsdom',
-            include: ['src/**/*.test.ts'],
+            include: ['src/**/*.test.ts', 'packages/**/*.test.ts', 'tests/**/*.test.ts'],
             server: {
                 deps: {
                     inline: ['@codemonster-ru/vueiconify'],

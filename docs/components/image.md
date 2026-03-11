@@ -5,7 +5,7 @@ Image renders media with fallback handling and an optional preview lightbox with
 ## Import
 
 ```ts
-import Image from '@/package/components/image.vue';
+import { Image } from '@codemonster-ru/vueforge';
 ```
 
 ## Examples
@@ -23,13 +23,7 @@ Use `Image` when you need design-system styling, fallback handling, or preview b
 Provide `fallback-src` for broken asset URLs, user-generated uploads, or remote media that may disappear.
 
 ```vue
-<Image
-    src="/assets/missing.jpg"
-    fallback-src="/assets/placeholder.jpg"
-    alt="Asset preview"
-    width="320"
-    height="180"
-/>
+<Image src="/assets/missing.jpg" fallback-src="/assets/placeholder.jpg" alt="Asset preview" width="320" height="180" />
 ```
 
 ### Preview
@@ -102,52 +96,52 @@ interface PreviewItem {
 
 ### Props
 
-| Name | Type | Default |
-| --- | --- | --- |
-| `src` | `string` | `''` |
-| `alt` | `string` | `''` |
-| `fallbackSrc` | `string` | `''` |
-| `fit` | `'contain' \| 'cover' \| 'fill' \| 'none' \| 'scale-down'` | `'cover'` |
-| `width` | `string \| number \| undefined` | `undefined` |
-| `height` | `string \| number \| undefined` | `undefined` |
-| `loading` | `'eager' \| 'lazy'` | `'lazy'` |
-| `preview` | `boolean` | `false` |
-| `modelValue` | `boolean` | `false` |
-| `disabled` | `boolean` | `false` |
-| `closeOnOverlay` | `boolean` | `true` |
-| `closeOnEscape` | `boolean` | `true` |
-| `previewGroup` | `PreviewItem[]` | `[]` |
-| `previewStartIndex` | `number` | `0` |
-| `loopPreview` | `boolean` | `true` |
-| `zoomStep` | `number` | `0.25` |
-| `minZoom` | `number` | `1` |
-| `maxZoom` | `number` | `3` |
-| `showDownload` | `boolean` | `false` |
-| `downloadLabel` | `string` | `'Download image'` |
-| `downloadFileName` | `string` | `''` |
-| `prevLabel` | `string` | `'Previous image'` |
-| `nextLabel` | `string` | `'Next image'` |
-| `zoomInLabel` | `string` | `'Zoom in'` |
-| `zoomOutLabel` | `string` | `'Zoom out'` |
-| `zoomResetLabel` | `string` | `'Reset zoom'` |
-| `previewAriaLabel` | `string` | `'Open image preview'` |
-| `dialogAriaLabel` | `string` | `'Image preview'` |
-| `closeLabel` | `string` | `'Close preview'` |
-| `teleport` | `boolean` | `true` |
-| `pt` | `PassThroughOptions \| undefined` | `undefined` |
-| `unstyled` | `boolean` | `false` |
+| Name                | Type                                                       | Default                |
+| ------------------- | ---------------------------------------------------------- | ---------------------- |
+| `src`               | `string`                                                   | `''`                   |
+| `alt`               | `string`                                                   | `''`                   |
+| `fallbackSrc`       | `string`                                                   | `''`                   |
+| `fit`               | `'contain' \| 'cover' \| 'fill' \| 'none' \| 'scale-down'` | `'cover'`              |
+| `width`             | `string \| number \| undefined`                            | `undefined`            |
+| `height`            | `string \| number \| undefined`                            | `undefined`            |
+| `loading`           | `'eager' \| 'lazy'`                                        | `'lazy'`               |
+| `preview`           | `boolean`                                                  | `false`                |
+| `modelValue`        | `boolean`                                                  | `false`                |
+| `disabled`          | `boolean`                                                  | `false`                |
+| `closeOnOverlay`    | `boolean`                                                  | `true`                 |
+| `closeOnEscape`     | `boolean`                                                  | `true`                 |
+| `previewGroup`      | `PreviewItem[]`                                            | `[]`                   |
+| `previewStartIndex` | `number`                                                   | `0`                    |
+| `loopPreview`       | `boolean`                                                  | `true`                 |
+| `zoomStep`          | `number`                                                   | `0.25`                 |
+| `minZoom`           | `number`                                                   | `1`                    |
+| `maxZoom`           | `number`                                                   | `3`                    |
+| `showDownload`      | `boolean`                                                  | `false`                |
+| `downloadLabel`     | `string`                                                   | `'Download image'`     |
+| `downloadFileName`  | `string`                                                   | `''`                   |
+| `prevLabel`         | `string`                                                   | `'Previous image'`     |
+| `nextLabel`         | `string`                                                   | `'Next image'`         |
+| `zoomInLabel`       | `string`                                                   | `'Zoom in'`            |
+| `zoomOutLabel`      | `string`                                                   | `'Zoom out'`           |
+| `zoomResetLabel`    | `string`                                                   | `'Reset zoom'`         |
+| `previewAriaLabel`  | `string`                                                   | `'Open image preview'` |
+| `dialogAriaLabel`   | `string`                                                   | `'Image preview'`      |
+| `closeLabel`        | `string`                                                   | `'Close preview'`      |
+| `teleport`          | `boolean`                                                  | `true`                 |
+| `pt`                | `PassThroughOptions \| undefined`                          | `undefined`            |
+| `unstyled`          | `boolean`                                                  | `false`                |
 
 ### Events
 
-| Name | Payload |
-| --- | --- |
-| `update:modelValue` | `boolean` |
-| `open` | none |
-| `close` | `'overlay' \| 'esc' \| 'button'` |
-| `load` | image load event |
-| `error` | image error event |
-| `previewChange` | `{ index, src }` |
-| `zoomChange` | `{ zoom }` |
+| Name                | Payload                          |
+| ------------------- | -------------------------------- |
+| `update:modelValue` | `boolean`                        |
+| `open`              | none                             |
+| `close`             | `'overlay' \| 'esc' \| 'button'` |
+| `load`              | image load event                 |
+| `error`             | image error event                |
+| `previewChange`     | `{ index, src }`                 |
+| `zoomChange`        | `{ zoom }`                       |
 
 ## Theming
 

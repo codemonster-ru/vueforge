@@ -28,14 +28,7 @@ Use `precision` for currency-like or ratio-like fields that must round consisten
 
 ```vue
 <template>
-    <NumberInput
-        v-model="discount"
-        :min="0"
-        :max="1"
-        :step="0.05"
-        :precision="2"
-        placeholder="Discount"
-    />
+    <NumberInput v-model="discount" :min="0" :max="1" :step="0.05" :precision="2" placeholder="Discount" />
 </template>
 ```
 

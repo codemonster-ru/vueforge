@@ -5,7 +5,7 @@ Render a compact status or utility strip above the main application chrome.
 ## Import
 
 ```ts
-import { SystemBar } from '@codemonster-ru/vueforge';
+import { SystemBar } from '@codemonster-ru/vueforge-layouts';
 ```
 
 ## Examples
@@ -19,12 +19,8 @@ Use start, center, and end regions for compact operational context.
 ```vue
 <template>
     <SystemBar sticky>
-        <template #start>
-            Production
-        </template>
-        <template #center>
-            EU-Central · 99.98% uptime
-        </template>
+        <template #start> Production </template>
+        <template #center> EU-Central · 99.98% uptime </template>
         <template #end>
             <Button size="small" variant="text">Status</Button>
         </template>
@@ -39,9 +35,7 @@ Use `dense` when the bar contains short status tokens and needs to stay unobtrus
 ```vue
 <template>
     <SystemBar dense>
-        <template #center>
-            Maintenance window tonight 23:00-23:30 UTC
-        </template>
+        <template #center> Maintenance window tonight 23:00-23:30 UTC </template>
     </SystemBar>
 </template>
 ```

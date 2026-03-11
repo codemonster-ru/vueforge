@@ -177,7 +177,11 @@
                             />
                             <!-- eslint-enable vue/no-v-html -->
                         </div>
-                        <aside v-if="currentPageHeadings.length" class="vf-docs__toc" data-testid="vf-docs-toc">
+                        <aside
+                            v-if="pageContentReady && currentPageHeadings.length"
+                            class="vf-docs__toc"
+                            data-testid="vf-docs-toc"
+                        >
                             <p class="vf-docs__toc-title">On this page</p>
                             <ul class="vf-docs__toc-list">
                                 <li
@@ -241,12 +245,8 @@ import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import type { LocationQueryRaw } from 'vue-router';
 import { useRoute, useRouter } from 'vue-router';
 import packageJson from '../../package.json';
-import type { PanelMenuItem } from '@/package/components/panel-menu.vue';
-import PanelMenu from '@/package/components/panel-menu.vue';
-import Tab from '@/package/components/tab.vue';
-import TabPanel from '@/package/components/tab-panel.vue';
-import Tabs from '@/package/components/tabs.vue';
-import ThemeModeSwitch from '@/package/components/theme-mode-switch.vue';
+import { PanelMenu, Tab, TabPanel, Tabs, ThemeModeSwitch } from '@codemonster-ru/vueforge';
+import type { PanelMenuItem } from '@codemonster-ru/vueforge';
 import { docsGroups, findDocsPageByPath, firstDocsRoute, getDocsAdjacentPages } from './docs-structure';
 import DocsFeaturesContent from './DocsFeaturesContent.vue';
 import { renderDocsFeaturesMarkdown } from './docs-features';
@@ -264,6 +264,8 @@ type ComponentTabItem = {
 };
 
 const packageVersion = packageJson.version;
+const route = useRoute();
+const router = useRouter();
 
 const extractFirstParagraphText = (markdown: string): string => {
     const lines = markdown.split(/\r?\n/);
@@ -415,8 +417,6 @@ const parseRouteTabKey = (value: unknown): DocsTabKey | null => {
     return isDocsTabKey(value) ? value : null;
 };
 
-const route = useRoute();
-const router = useRouter();
 const searchQuery = ref('');
 const isMobileNavOpen = ref(false);
 const activeHeadingId = ref('');
@@ -437,8 +437,13 @@ const currentPath = computed(() => {
 });
 
 const currentPage = computed(() => findDocsPageByPath(currentPath.value));
+const pageContentReady = computed(() => currentPage.value.markdown.trim().length > 0);
 const firstParagraphText = computed(() => extractFirstParagraphText(currentPage.value.markdown));
 const showCurrentPageSummary = computed(() => {
+    if (!pageContentReady.value) {
+        return false;
+    }
+
     const summary = currentPage.value.summary.trim();
     if (!summary) {
         return false;
@@ -447,14 +452,22 @@ const showCurrentPageSummary = computed(() => {
     return summary !== firstParagraphText.value;
 });
 const adjacentPages = computed(() => getDocsAdjacentPages(currentPage.value.routePath));
-const renderedContent = computed(() => renderDocsMarkdown(currentPage.value.markdown, currentPage.value.sourcePath));
+const renderedContent = computed(() =>
+    pageContentReady.value
+        ? renderDocsMarkdown(currentPage.value.markdown, currentPage.value.sourcePath)
+        : { html: '', headings: [] },
+);
 const isComponentPage = computed(() => currentPage.value.groupKey === 'components' && !currentPage.value.isIndex);
-const showComponentTabs = computed(() => isComponentPage.value);
+const showComponentTabs = computed(() => isComponentPage.value && pageContentReady.value);
 const allowedComponentTabs = computed<Set<DocsTabKey>>(
     () => new Set<DocsTabKey>(componentTabs.value.map(tab => tab.key)),
 );
 const componentTabs = computed<Array<ComponentTabItem>>(() => {
     if (!isComponentPage.value) {
+        return [];
+    }
+
+    if (!pageContentReady.value) {
         return [];
     }
 
@@ -588,7 +601,7 @@ const sidebarMenuItems = computed<Array<PanelMenuItem>>(() =>
         key: group.key,
         label: group.title,
         items: group.items
-            .filter(item => !(group.key === 'components' && item.isIndex))
+            .filter(item => !(item.groupKey === 'components' && item.isIndex))
             .map(item => ({
                 key: item.routePath,
                 label: getSidebarItemLabel(item.routePath, item.title),
@@ -801,7 +814,7 @@ watch(
     () => route.path,
     () => {
         closeMobileNav();
-        ensureExpandedGroup(currentPage.value.groupKey);
+        ensureExpandedGroup(currentPage.value.sidebarGroupKey);
         activeComponentTab.value = parseRouteTabKey(route.query.tab) ?? 'features';
         void refreshActiveHeading();
         scheduleSidebarScrollToActiveItem();
@@ -809,7 +822,7 @@ watch(
 );
 
 watch(
-    () => currentPage.value.groupKey,
+    () => currentPage.value.sidebarGroupKey,
     groupKey => {
         ensureExpandedGroup(groupKey);
     },

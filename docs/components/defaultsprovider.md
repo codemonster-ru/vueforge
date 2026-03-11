@@ -5,7 +5,7 @@ DefaultsProvider scopes default prop policies for VueForge components to a subtr
 ## Import
 
 ```ts
-import DefaultsProvider from '@/package/components/defaults-provider.vue';
+import { DefaultsProvider } from '@codemonster-ru/vueforge';
 ```
 
 ## Examples
@@ -29,10 +29,10 @@ import DefaultsProvider from '@/package/components/defaults-provider.vue';
 
 ### Props
 
-| Name | Type | Default |
-| --- | --- | --- |
-| `defaults` | `ComponentDefaultsMap` | `{}` |
-| `as` | `string` | `'div'` |
+| Name       | Type                   | Default |
+| ---------- | ---------------------- | ------- |
+| `defaults` | `ComponentDefaultsMap` | `{}`    |
+| `as`       | `string`               | `'div'` |
 
 ## Priority
 

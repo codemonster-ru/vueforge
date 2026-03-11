@@ -5,7 +5,7 @@ TreeSelect combines a trigger, optional search input, and embedded `Tree` for hi
 ## Import
 
 ```ts
-import TreeSelect from '@/package/components/tree-select.vue';
+import { TreeSelect } from '@codemonster-ru/vueforge';
 ```
 
 ## Examples
@@ -56,43 +56,43 @@ import TreeSelect from '@/package/components/tree-select.vue';
 
 ### Props
 
-| Name | Type | Default |
-| --- | --- | --- |
-| `items` | `TreeItem[]` | `[]` |
-| `modelValue` | `TreeValue \| TreeValue[] \| undefined` | `undefined` |
-| `expandedKeys` | `TreeValue[]` | `[]` |
-| `multiple` | `boolean` | `false` |
-| `selectable` | `boolean` | `true` |
-| `expandOnClick` | `boolean` | `true` |
-| `disabled` | `boolean` | `false` |
-| `readonly` | `boolean` | `false` |
-| `loading` | `boolean` | `false` |
-| `loadingText` | `string \| undefined` | `undefined` |
-| `emptyText` | `string \| undefined` | `undefined` |
-| `placeholder` | `string` | `''` |
-| `searchPlaceholder` | `string \| undefined` | `undefined` |
-| `filter` | `boolean` | `true` |
-| `clearable` | `boolean` | `false` |
-| `variant` | `'filled' \| 'outlined'` | `'filled'` |
-| `size` | `'small' \| 'normal' \| 'large'` | `'normal'` |
+| Name                | Type                                    | Default     |
+| ------------------- | --------------------------------------- | ----------- |
+| `items`             | `TreeItem[]`                            | `[]`        |
+| `modelValue`        | `TreeValue \| TreeValue[] \| undefined` | `undefined` |
+| `expandedKeys`      | `TreeValue[]`                           | `[]`        |
+| `multiple`          | `boolean`                               | `false`     |
+| `selectable`        | `boolean`                               | `true`      |
+| `expandOnClick`     | `boolean`                               | `true`      |
+| `disabled`          | `boolean`                               | `false`     |
+| `readonly`          | `boolean`                               | `false`     |
+| `loading`           | `boolean`                               | `false`     |
+| `loadingText`       | `string \| undefined`                   | `undefined` |
+| `emptyText`         | `string \| undefined`                   | `undefined` |
+| `placeholder`       | `string`                                | `''`        |
+| `searchPlaceholder` | `string \| undefined`                   | `undefined` |
+| `filter`            | `boolean`                               | `true`      |
+| `clearable`         | `boolean`                               | `false`     |
+| `variant`           | `'filled' \| 'outlined'`                | `'filled'`  |
+| `size`              | `'small' \| 'normal' \| 'large'`        | `'normal'`  |
 
 ### Events
 
-| Name | Payload |
-| --- | --- |
-| `update:modelValue` | selected value payload |
-| `change` | `value, node, event` |
-| `update:expandedKeys` | expanded keys array |
-| `toggle` | `key, expanded, node, event` |
-| `nodeClick` | `node, event` |
-| `search` | query string |
-| `focus` | `FocusEvent` |
-| `blur` | `FocusEvent` |
+| Name                  | Payload                      |
+| --------------------- | ---------------------------- |
+| `update:modelValue`   | selected value payload       |
+| `change`              | `value, node, event`         |
+| `update:expandedKeys` | expanded keys array          |
+| `toggle`              | `key, expanded, node, event` |
+| `nodeClick`           | `node, event`                |
+| `search`              | query string                 |
+| `focus`               | `FocusEvent`                 |
+| `blur`                | `FocusEvent`                 |
 
 ### Slots
 
-| Name | Description |
-| --- | --- |
+| Name    | Description                                                                     |
+| ------- | ------------------------------------------------------------------------------- |
 | `label` | Forwarded tree label slot with `{ node, level, selected, expanded, disabled }`. |
 
 ## Theming
@@ -116,4 +116,3 @@ Override component tokens through `theme.overrides.components.treeselect`.
 - Trigger supports keyboard open and close, while the embedded tree keeps tree navigation bindings.
 - In filter mode, keyboard flow moves from the search field into the first enabled tree item.
 - `readonly` preserves the displayed value while blocking panel interaction and selection changes.
-

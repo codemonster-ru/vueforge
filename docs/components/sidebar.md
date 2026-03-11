@@ -34,7 +34,12 @@ Use `modelValue` if the surrounding codebase has already switched to the canonic
 <template>
     <Sidebar v-model="open" title="Workspace navigation">
         <template #body>
-            <Menu :items="[{ label: 'Overview', to: '/' }, { label: 'Members', to: '/members' }]" />
+            <Menu
+                :items="[
+                    { label: 'Overview', to: '/' },
+                    { label: 'Members', to: '/members' },
+                ]"
+            />
         </template>
     </Sidebar>
 </template>

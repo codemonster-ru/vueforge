@@ -23,7 +23,7 @@ Use a short first-level navigation set for application-level destinations.
         :items="[
             { label: 'Dashboard', to: '/' },
             { label: 'Projects', to: '/projects' },
-            { label: 'Settings', to: '/settings' }
+            { label: 'Settings', to: '/settings' },
         ]"
     />
 </template>
@@ -42,10 +42,10 @@ Use nested `items` when a top-level section needs a small submenu.
                 label: 'Products',
                 items: [
                     { label: 'Catalog', to: '/products' },
-                    { label: 'Pricing', to: '/pricing' }
-                ]
+                    { label: 'Pricing', to: '/pricing' },
+                ],
             },
-            { label: 'Docs', href: 'https://example.com/docs' }
+            { label: 'Docs', href: 'https://example.com/docs' },
         ]"
     />
 </template>
@@ -61,7 +61,7 @@ Use command-style items sparingly; most top-level nav should still map to routes
         :items="[
             { label: 'Home', to: '/' },
             { label: 'Refresh', command: noop },
-            { label: 'Archive', disabled: true }
+            { label: 'Archive', disabled: true },
         ]"
     />
 </template>

@@ -25,13 +25,7 @@ const toastOpen = ref(true);
 
 <template>
     <ToastContainer position="top-right">
-        <Toast
-            v-model="toastOpen"
-            title="Saved"
-            message="Changes are saved."
-            severity="success"
-            :duration="2500"
-        />
+        <Toast v-model="toastOpen" title="Saved" message="Changes are saved." severity="success" :duration="2500" />
     </ToastContainer>
 </template>
 ```

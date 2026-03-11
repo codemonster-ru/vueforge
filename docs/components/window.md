@@ -5,7 +5,7 @@ Window is a stateful pane switcher for stepped content, feature tours, and compa
 ## Import
 
 ```ts
-import Window from '@/package/components/window.vue';
+import { Window } from '@codemonster-ru/vueforge';
 ```
 
 ## Examples
@@ -73,13 +73,7 @@ Switch transitions to match the mental model of the content.
 Disable looping when the pane sequence represents a bounded workflow.
 
 ```vue
-<Window
-    v-model="active"
-    :items="views"
-    :loop="false"
-    prev-label="Previous step"
-    next-label="Next step"
-/>
+<Window v-model="active" :items="views" :loop="false" prev-label="Previous step" next-label="Next step" />
 ```
 
 ## API
@@ -98,36 +92,36 @@ interface WindowItem {
 
 ### Props
 
-| Name | Type | Default |
-| --- | --- | --- |
-| `modelValue` | `string \| number \| null` | `null` |
-| `items` | `WindowItem[]` | `[]` |
-| `loop` | `boolean` | `true` |
-| `disabled` | `boolean` | `false` |
-| `showControls` | `boolean` | `true` |
-| `keyboard` | `boolean` | `true` |
-| `transition` | `'slide-horizontal' \| 'slide-vertical' \| 'fade' \| 'none'` | `'slide-horizontal'` |
-| `ariaLabel` | `string` | `'Window'` |
-| `controlsAriaLabel` | `string` | `'Window controls'` |
-| `prevLabel` | `string` | `'Previous'` |
-| `nextLabel` | `string` | `'Next'` |
+| Name                | Type                                                         | Default              |
+| ------------------- | ------------------------------------------------------------ | -------------------- |
+| `modelValue`        | `string \| number \| null`                                   | `null`               |
+| `items`             | `WindowItem[]`                                               | `[]`                 |
+| `loop`              | `boolean`                                                    | `true`               |
+| `disabled`          | `boolean`                                                    | `false`              |
+| `showControls`      | `boolean`                                                    | `true`               |
+| `keyboard`          | `boolean`                                                    | `true`               |
+| `transition`        | `'slide-horizontal' \| 'slide-vertical' \| 'fade' \| 'none'` | `'slide-horizontal'` |
+| `ariaLabel`         | `string`                                                     | `'Window'`           |
+| `controlsAriaLabel` | `string`                                                     | `'Window controls'`  |
+| `prevLabel`         | `string`                                                     | `'Previous'`         |
+| `nextLabel`         | `string`                                                     | `'Next'`             |
 
 ### Events
 
-| Name | Payload |
-| --- | --- |
-| `update:modelValue` | `WindowValue` |
-| `change` | `{ value, item, index, direction }` |
-| `prev` | `{ value, item, index }` |
-| `next` | `{ value, item, index }` |
+| Name                | Payload                             |
+| ------------------- | ----------------------------------- |
+| `update:modelValue` | `WindowValue`                       |
+| `change`            | `{ value, item, index, direction }` |
+| `prev`              | `{ value, item, index }`            |
+| `next`              | `{ value, item, index }`            |
 
 ### Slots
 
-| Name | Description |
-| --- | --- |
-| `item` | Custom pane rendering with `{ item, index, value }`. |
+| Name       | Description                                                           |
+| ---------- | --------------------------------------------------------------------- |
+| `item`     | Custom pane rendering with `{ item, index, value }`.                  |
 | `controls` | Custom controls with `{ index, item, canPrev, canNext, prev, next }`. |
-| `default` | Fallback content when `item` is omitted. |
+| `default`  | Fallback content when `item` is omitted.                              |
 
 ## Theming
 
@@ -149,4 +143,3 @@ Override component tokens through `theme.overrides.components.window`.
 
 - Window renders a focusable `region` and supports `ArrowLeft`, `ArrowRight`, `PageUp`, `PageDown`, `Home`, and `End`.
 - Disabled items are skipped by the internal navigation logic.
-

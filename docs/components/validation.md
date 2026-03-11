@@ -9,7 +9,7 @@ import {
     buildValidationDescribedBy,
     createValidationMessages,
     createValidationState,
-    normalizeValidationErrors
+    normalizeValidationErrors,
 } from '@codemonster-ru/vueforge';
 ```
 

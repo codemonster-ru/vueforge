@@ -5,7 +5,7 @@ Sheet is a neutral surface primitive for grouped content, lightweight panels, an
 ## Import
 
 ```ts
-import Sheet from '@/package/components/sheet.vue';
+import { Sheet } from '@codemonster-ru/vueforge';
 ```
 
 ## Examples
@@ -81,23 +81,23 @@ Use `as` to align the root element with the surrounding document structure.
 
 ### Props
 
-| Name | Type | Default |
-| --- | --- | --- |
-| `as` | `string` | `'div'` |
-| `variant` | `'elevated' \| 'flat' \| 'outlined' \| 'tonal'` | `'elevated'` |
-| `bordered` | `boolean` | `false` |
-| `rounded` | `boolean` | `true` |
-| `interactive` | `boolean` | `false` |
-| `disabled` | `boolean` | `false` |
-| `ariaLabel` | `string \| undefined` | `undefined` |
+| Name          | Type                                            | Default      |
+| ------------- | ----------------------------------------------- | ------------ |
+| `as`          | `string`                                        | `'div'`      |
+| `variant`     | `'elevated' \| 'flat' \| 'outlined' \| 'tonal'` | `'elevated'` |
+| `bordered`    | `boolean`                                       | `false`      |
+| `rounded`     | `boolean`                                       | `true`       |
+| `interactive` | `boolean`                                       | `false`      |
+| `disabled`    | `boolean`                                       | `false`      |
+| `ariaLabel`   | `string \| undefined`                           | `undefined`  |
 
 ### Slots
 
-| Name | Description |
-| --- | --- |
-| `header` | Optional top section. |
-| `default` | Main surface content. |
-| `footer` | Optional bottom section. |
+| Name      | Description              |
+| --------- | ------------------------ |
+| `header`  | Optional top section.    |
+| `default` | Main surface content.    |
+| `footer`  | Optional bottom section. |
 
 ## Theming
 
@@ -119,4 +119,3 @@ Override component tokens through `theme.overrides.components.sheet`.
 
 - `as` lets you preserve document semantics such as `article`, `section`, or `aside`.
 - Disabled sheets expose `aria-disabled` without changing their structural semantics.
-

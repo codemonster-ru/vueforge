@@ -5,7 +5,7 @@ Provide a top-level application bar for global navigation, branding, and primary
 ## Import
 
 ```ts
-import { AppBar } from '@codemonster-ru/vueforge';
+import { AppBar } from '@codemonster-ru/vueforge-layouts';
 ```
 
 ## Examples

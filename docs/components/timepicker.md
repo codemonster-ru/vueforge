@@ -40,13 +40,7 @@ const supportWindow = ref();
 </script>
 
 <template>
-    <TimePicker
-        v-model="supportWindow"
-        placeholder="Choose start time"
-        min="09:00"
-        max="18:00"
-        :step="15"
-    />
+    <TimePicker v-model="supportWindow" placeholder="Choose start time" min="09:00" max="18:00" :step="15" />
 </template>
 ```
 

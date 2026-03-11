@@ -10,29 +10,23 @@ Purpose: capture explicit validation for localization and timezone-sensitive beh
 
 ## Validation Matrix
 
-| Area                          | Components                                                                             | Covered |
-| ----------------------------- | -------------------------------------------------------------------------------------- | ------- |
-| Global locale text            | `DataTable`, `Autocomplete`, `CommandPalette`, `NotificationCenter`, `VirtualScroller` | Yes     |
-| RTL interaction               | `DataTable`, `CommandPalette`, `NotificationCenter`, `Rating`, `VirtualScroller`       | Yes     |
-| Date locale defaults          | `DatePicker`, `Calendar`, `DateRangePicker`, `DateTimePicker`                          | Yes     |
-| Timezone-sensitive timestamps | `ActivityFeed`, `CommentThread`, `AuditLogViewer`, `Scheduler`                         | Yes     |
+| Area                          | Components                                                          | Covered |
+| ----------------------------- | ------------------------------------------------------------------- | ------- |
+| Global locale text            | `DataTable`, `Autocomplete`, `MultiSelect`, `VirtualScroller`       | Yes     |
+| RTL interaction               | `DataTable`, `MultiSelect`, `TagInput`, `Rating`, `VirtualScroller` | Yes     |
+| Date locale defaults          | `DatePicker`, `Calendar`, `DateRangePicker`, `DateTimePicker`       | Yes     |
+| Timezone-sensitive timestamps | `CommentThread`                                                     | Yes     |
 
 ## Test Evidence
 
-- `src/package/components/__tests__/activity-feed.test.ts`
-    - Locale + explicit `timeZone` timestamp formatting and relative-time coverage.
-- `src/package/components/__tests__/comment-thread.test.ts`
+- `packages/vueforge/src/components/__tests__/comment-thread.test.ts`
     - Locale + explicit `timeZone` timestamp rendering.
-- `src/package/components/__tests__/audit-log-viewer.test.ts`
-    - Locale + explicit `timeZone` timestamp column rendering.
-- `src/package/components/__tests__/scheduler.test.ts`
-    - Locale + explicit `timeZone` slot label formatting.
-- `src/package/components/__tests__/rtl-regression.test.ts`
+- `tests/integration/rtl-regression.test.ts`
     - RTL behavior regression suite for critical components.
-- `src/package/components/__tests__/calendar.test.ts`
-- `src/package/components/__tests__/datepicker.test.ts`
-- `src/package/components/__tests__/date-range-picker.test.ts`
-- `src/package/components/__tests__/datetimepicker.test.ts`
+- `packages/vueforge/src/components/__tests__/calendar.test.ts`
+- `packages/vueforge/src/components/__tests__/datepicker.test.ts`
+- `packages/vueforge/src/components/__tests__/date-range-picker.test.ts`
+- `packages/vueforge/src/components/__tests__/datetimepicker.test.ts`
     - Global date locale config and locale override behavior.
 
 ## Consumer Guidance

@@ -40,12 +40,7 @@ const billingDate = ref();
 </script>
 
 <template>
-    <DatePicker
-        v-model="billingDate"
-        placeholder="Choose billing date"
-        min="2026-01-01"
-        max="2026-12-31"
-    />
+    <DatePicker v-model="billingDate" placeholder="Choose billing date" min="2026-01-01" max="2026-12-31" />
 </template>
 ```
 
@@ -55,12 +50,7 @@ Override `locale` and `firstDayOfWeek` when the surrounding workflow requires a 
 
 ```vue
 <template>
-    <DatePicker
-        model-value="2026-04-06"
-        locale="de-DE"
-        :first-day-of-week="1"
-        placeholder="Wahle ein Datum"
-    />
+    <DatePicker model-value="2026-04-06" locale="de-DE" :first-day-of-week="1" placeholder="Wahle ein Datum" />
 </template>
 ```
 

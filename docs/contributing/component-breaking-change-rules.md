@@ -43,8 +43,8 @@ A change is breaking if existing consumer code can fail at compile-time, runtime
     - Breaking: `@select` payload changes from item object to item id string.
     - Safe path: add new event `@select-id`, deprecate old payload path.
 3. Slot removal:
-    - Breaking: remove `header` slot from `DataTableToolbar`.
-    - Safe path: keep `header` slot as alias and map to new `start` slot.
+    - Breaking: remove `footer` slot from `Card`.
+    - Safe path: keep `footer` slot as alias until the replacement API is established and documented.
 4. Token rename:
     - Breaking: rename `components.button.primaryBg` to `components.button.fillPrimary`.
     - Safe path: support both keys temporarily and document migration.

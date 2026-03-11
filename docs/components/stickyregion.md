@@ -5,7 +5,7 @@ StickyRegion is a utility wrapper for sticky headers, subheaders, and action bar
 ## Import
 
 ```ts
-import StickyRegion from '@/package/components/sticky-region.vue';
+import { StickyRegion } from '@codemonster-ru/vueforge-layouts';
 ```
 
 ## Examples
@@ -34,15 +34,15 @@ Use `edge="bottom"` for mobile or workflow completion actions.
 
 ### Props
 
-| Name | Type | Default |
-| --- | --- | --- |
-| `as` | `string` | `'div'` |
-| `edge` | `'top' \| 'bottom'` | `'top'` |
-| `offset` | `string` | `'0px'` |
-| `zIndex` | `string \| number` | `''` |
-| `bordered` | `boolean` | `false` |
-| `shadow` | `boolean` | `false` |
-| `ariaLabel` | `string` | `''` |
+| Name        | Type                | Default |
+| ----------- | ------------------- | ------- |
+| `as`        | `string`            | `'div'` |
+| `edge`      | `'top' \| 'bottom'` | `'top'` |
+| `offset`    | `string`            | `'0px'` |
+| `zIndex`    | `string \| number`  | `''`    |
+| `bordered`  | `boolean`           | `false` |
+| `shadow`    | `boolean`           | `false` |
+| `ariaLabel` | `string`            | `''`    |
 
 ## Theming
 

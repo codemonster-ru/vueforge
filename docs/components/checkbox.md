@@ -40,9 +40,7 @@ const marketing = ref(true);
 </script>
 
 <template>
-    <Checkbox v-model="marketing">
-        Email me release notes and onboarding tips
-    </Checkbox>
+    <Checkbox v-model="marketing"> Email me release notes and onboarding tips </Checkbox>
 </template>
 ```
 

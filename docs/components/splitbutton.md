@@ -18,14 +18,7 @@ Use the main button for the default action and the dropdown for alternatives.
 
 ```vue
 <template>
-    <SplitButton
-        label="Save"
-        :items="[
-            { label: 'Save draft' },
-            { label: 'Save and publish' }
-        ]"
-        @click="save"
-    />
+    <SplitButton label="Save" :items="[{ label: 'Save draft' }, { label: 'Save and publish' }]" @click="save" />
 </template>
 ```
 
@@ -35,9 +28,7 @@ Use the default slot when the primary action label needs richer content.
 
 ```vue
 <template>
-    <SplitButton :items="[{ label: 'Duplicate' }, { label: 'Archive' }]">
-        Save changes
-    </SplitButton>
+    <SplitButton :items="[{ label: 'Duplicate' }, { label: 'Archive' }]"> Save changes </SplitButton>
 </template>
 ```
 
@@ -49,13 +40,7 @@ Combine `SplitButton` with `ButtonGroup` for compact page toolbars.
 <template>
     <ButtonGroup attached variant="outlined">
         <Button label="Preview" />
-        <SplitButton
-            label="Publish"
-            :items="[
-                { label: 'Publish now' },
-                { label: 'Schedule' }
-            ]"
-        />
+        <SplitButton label="Publish" :items="[{ label: 'Publish now' }, { label: 'Schedule' }]" />
     </ButtonGroup>
 </template>
 ```
@@ -66,14 +51,7 @@ Change placement when the menu opens near the bottom edge of the viewport.
 
 ```vue
 <template>
-    <SplitButton
-        label="Run"
-        placement="top-end"
-        :items="[
-            { label: 'Run once' },
-            { label: 'Run nightly' }
-        ]"
-    />
+    <SplitButton label="Run" placement="top-end" :items="[{ label: 'Run once' }, { label: 'Run nightly' }]" />
 </template>
 ```
 

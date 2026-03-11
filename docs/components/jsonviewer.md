@@ -5,7 +5,7 @@ JSONViewer renders structured JSON with expandable nodes, copy actions, and opti
 ## Import
 
 ```ts
-import JSONViewer from '@/package/components/json-viewer.vue';
+import { JSONViewer } from '@codemonster-ru/vueforge';
 ```
 
 ## Examples
@@ -45,12 +45,7 @@ Lower `expanded-depth` when large payloads should stay scannable on first render
 Enable root and sorted keys when viewers are used for support tooling or diff-oriented inspection.
 
 ```vue
-<JSONViewer
-    :value="payload"
-    show-root
-    sort-keys
-    show-toolbar
-/>
+<JSONViewer :value="payload" show-root sort-keys show-toolbar />
 ```
 
 ### Copy Actions
@@ -71,27 +66,27 @@ Turn on copy helpers when operators need to reuse paths or raw values during deb
 
 ### Props
 
-| Name | Type | Default |
-| --- | --- | --- |
-| `value` | `unknown` | `undefined` |
-| `expandedDepth` | `number` | `2` |
-| `sortKeys` | `boolean` | `false` |
-| `showRoot` | `boolean` | `false` |
-| `copyable` | `boolean` | `false` |
-| `showToolbar` | `boolean` | `false` |
-| `disabled` | `boolean` | `false` |
-| `copyLabel` | `string` | `'Copy value'` |
-| `copyPathLabel` | `string` | `'Copy path'` |
-| `expandLabel` | `string` | `'Expand node'` |
-| `collapseLabel` | `string` | `'Collapse node'` |
+| Name            | Type      | Default           |
+| --------------- | --------- | ----------------- |
+| `value`         | `unknown` | `undefined`       |
+| `expandedDepth` | `number`  | `2`               |
+| `sortKeys`      | `boolean` | `false`           |
+| `showRoot`      | `boolean` | `false`           |
+| `copyable`      | `boolean` | `false`           |
+| `showToolbar`   | `boolean` | `false`           |
+| `disabled`      | `boolean` | `false`           |
+| `copyLabel`     | `string`  | `'Copy value'`    |
+| `copyPathLabel` | `string`  | `'Copy path'`     |
+| `expandLabel`   | `string`  | `'Expand node'`   |
+| `collapseLabel` | `string`  | `'Collapse node'` |
 
 ### Events
 
-| Name | Payload |
-| --- | --- |
-| `toggle` | `{ path, expanded }` |
-| `copyPath` | `{ path }` |
-| `copy` | `{ text }` |
+| Name       | Payload              |
+| ---------- | -------------------- |
+| `toggle`   | `{ path, expanded }` |
+| `copyPath` | `{ path }`           |
+| `copy`     | `{ text }`           |
 
 ## Theming
 

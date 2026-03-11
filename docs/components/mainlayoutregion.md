@@ -5,7 +5,7 @@ MainLayoutRegion is a reusable main-content wrapper with optional padding, borde
 ## Import
 
 ```ts
-import MainLayoutRegion from '@/package/components/main-layout-region.vue';
+import { MainLayoutRegion } from '@codemonster-ru/vueforge-layouts';
 ```
 
 ## Examples
@@ -17,7 +17,7 @@ Use `MainLayoutRegion` as the primary content landmark in shells and page layout
 ```vue
 <MainLayoutRegion>
     <PageHeader title="Analytics" />
-    <Chart :data="series" />
+    <Card>Primary analytics content</Card>
 </MainLayoutRegion>
 ```
 
@@ -45,16 +45,16 @@ Disable the landmark when embedding the component inside another `main` region.
 
 ### Props
 
-| Name | Type | Default |
-| --- | --- | --- |
-| `as` | `string` | `'main'` |
-| `landmark` | `boolean` | `true` |
-| `ariaLabel` | `string` | `'Main content'` |
-| `padded` | `boolean` | `true` |
-| `bordered` | `boolean` | `false` |
-| `constrained` | `boolean` | `false` |
-| `center` | `boolean` | `true` |
-| `maxWidth` | `string` | `''` |
+| Name          | Type      | Default          |
+| ------------- | --------- | ---------------- |
+| `as`          | `string`  | `'main'`         |
+| `landmark`    | `boolean` | `true`           |
+| `ariaLabel`   | `string`  | `'Main content'` |
+| `padded`      | `boolean` | `true`           |
+| `bordered`    | `boolean` | `false`          |
+| `constrained` | `boolean` | `false`          |
+| `center`      | `boolean` | `true`           |
+| `maxWidth`    | `string`  | `''`             |
 
 ## Theming
 

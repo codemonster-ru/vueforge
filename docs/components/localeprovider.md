@@ -5,7 +5,7 @@ LocaleProvider scopes VueForge locale text overrides to a subtree.
 ## Import
 
 ```ts
-import LocaleProvider from '@/package/components/locale-provider.vue';
+import { LocaleProvider } from '@codemonster-ru/vueforge';
 ```
 
 ## Examples
@@ -15,13 +15,13 @@ import LocaleProvider from '@/package/components/locale-provider.vue';
 ```vue
 <LocaleProvider
     :locale-text="{
-        commandPalette: {
-            placeholder: 'Введите команду...',
-            emptyText: 'Команды не найдены',
+        dataTable: {
+            empty: 'Нет данных',
+            loading: 'Загрузка...',
         },
     }"
 >
-    <CommandPalette />
+    <DataTable :columns="columns" :rows="[]" />
 </LocaleProvider>
 ```
 
@@ -29,10 +29,10 @@ import LocaleProvider from '@/package/components/locale-provider.vue';
 
 ### Props
 
-| Name | Type | Default |
-| --- | --- | --- |
-| `localeText` | `LocaleTextOptions` | `{}` |
-| `as` | `string` | `'div'` |
+| Name         | Type                | Default |
+| ------------ | ------------------- | ------- |
+| `localeText` | `LocaleTextOptions` | `{}`    |
+| `as`         | `string`            | `'div'` |
 
 ## Priority
 
@@ -43,4 +43,3 @@ import LocaleProvider from '@/package/components/locale-provider.vue';
 ## Recipes
 
 - Use LocaleProvider for embedded localized regions, previews, and app sections that temporarily differ from the global locale policy.
-

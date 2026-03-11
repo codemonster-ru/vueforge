@@ -5,7 +5,7 @@ OverlayPanel is a compatibility alias for `Popover` with legacy compatibility pr
 ## Import
 
 ```ts
-import OverlayPanel from '@/package/components/overlay-panel.vue';
+import { OverlayPanel } from '@codemonster-ru/vueforge';
 ```
 
 ## Examples
@@ -62,47 +62,47 @@ const open = ref(false);
 
 ### Props
 
-| Name | Type | Default |
-| --- | --- | --- |
-| `modelValue` | `boolean \| undefined` | `undefined` |
-| `placement` | `'bottom' \| 'top' \| 'bottom-start' \| 'bottom-end' \| 'top-start' \| 'top-end'` | `'bottom'` |
-| `offset` | `number` | `8` |
-| `disabled` | `boolean` | `false` |
-| `dismissable` | `boolean` | `true` |
-| `closeOnEscape` | `boolean` | `true` |
-| `showCloseIcon` | `boolean` | `false` |
-| `closeLabel` | `string` | `'Close overlay panel'` |
-| `pt` | `PassThroughOptions \| undefined` | `undefined` |
-| `unstyled` | `boolean` | `false` |
+| Name            | Type                                                                              | Default                 |
+| --------------- | --------------------------------------------------------------------------------- | ----------------------- |
+| `modelValue`    | `boolean \| undefined`                                                            | `undefined`             |
+| `placement`     | `'bottom' \| 'top' \| 'bottom-start' \| 'bottom-end' \| 'top-start' \| 'top-end'` | `'bottom'`              |
+| `offset`        | `number`                                                                          | `8`                     |
+| `disabled`      | `boolean`                                                                         | `false`                 |
+| `dismissable`   | `boolean`                                                                         | `true`                  |
+| `closeOnEscape` | `boolean`                                                                         | `true`                  |
+| `showCloseIcon` | `boolean`                                                                         | `false`                 |
+| `closeLabel`    | `string`                                                                          | `'Close overlay panel'` |
+| `pt`            | `PassThroughOptions \| undefined`                                                 | `undefined`             |
+| `unstyled`      | `boolean`                                                                         | `false`                 |
 
 ### Events
 
-| Name | Payload |
-| --- | --- |
+| Name                | Payload   |
+| ------------------- | --------- |
 | `update:modelValue` | `boolean` |
-| `show` | none |
-| `hide` | none |
-| `onShow` | none |
-| `onHide` | none |
-| `click` | none |
-| `onClick` | none |
+| `show`              | none      |
+| `hide`              | none      |
+| `onShow`            | none      |
+| `onHide`            | none      |
+| `click`             | none      |
+| `onClick`           | none      |
 
 ### Slots
 
-| Name | Description |
-| --- | --- |
-| `trigger` / `button` | Trigger content. |
-| `default` | Main overlay content. |
-| `header` / `popoverHeader` | Header content. |
-| `body` / `popoverBody` | Body content. |
-| `footer` / `popoverFooter` | Footer content. |
+| Name                       | Description           |
+| -------------------------- | --------------------- |
+| `trigger` / `button`       | Trigger content.      |
+| `default`                  | Main overlay content. |
+| `header` / `popoverHeader` | Header content.       |
+| `body` / `popoverBody`     | Body content.         |
+| `footer` / `popoverFooter` | Footer content.       |
 
 ### Exposed Methods
 
-| Name | Description |
-| --- | --- |
-| `show()` | Opens the overlay. |
-| `hide()` | Closes the overlay. |
+| Name       | Description          |
+| ---------- | -------------------- |
+| `show()`   | Opens the overlay.   |
+| `hide()`   | Closes the overlay.  |
 | `toggle()` | Toggles the overlay. |
 
 ## Theming

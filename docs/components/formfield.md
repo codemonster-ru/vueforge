@@ -57,9 +57,7 @@ Override hint and error rendering with slots when the content needs formatting.
         <template #default="{ id, describedBy, ariaInvalid }">
             <PasswordInput :id="id" :aria-describedby="describedBy" :aria-invalid="ariaInvalid" />
         </template>
-        <template #hint>
-            Use at least 12 characters.
-        </template>
+        <template #hint> Use at least 12 characters. </template>
     </FormField>
 </template>
 ```

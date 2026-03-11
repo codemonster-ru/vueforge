@@ -5,7 +5,7 @@ Provide compact side navigation for application shells with optional collapsed m
 ## Import
 
 ```ts
-import { NavigationRail } from '@codemonster-ru/vueforge';
+import { NavigationRail } from '@codemonster-ru/vueforge-layouts';
 ```
 
 ## Examples
@@ -27,7 +27,7 @@ const railItems = [
     { key: 'overview', label: 'Overview', icon: 'house' },
     { key: 'deployments', label: 'Deployments', icon: 'rocket' },
     { key: 'logs', label: 'Logs', icon: 'list' },
-    { key: 'settings', label: 'Settings', icon: 'gear' }
+    { key: 'settings', label: 'Settings', icon: 'gear' },
 ];
 </script>
 

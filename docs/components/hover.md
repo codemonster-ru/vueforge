@@ -5,7 +5,7 @@ Hover exposes hover and focus interaction state with keyboard parity and optiona
 ## Import
 
 ```ts
-import Hover from '@/package/components/hover.vue';
+import { Hover } from '@codemonster-ru/vueforge';
 ```
 
 ## Examples
@@ -34,26 +34,26 @@ import Hover from '@/package/components/hover.vue';
 
 ### Props
 
-| Name | Type | Default |
-| --- | --- | --- |
-| `as` | `string` | `'div'` |
+| Name         | Type                   | Default     |
+| ------------ | ---------------------- | ----------- |
+| `as`         | `string`               | `'div'`     |
 | `modelValue` | `boolean \| undefined` | `undefined` |
-| `disabled` | `boolean` | `false` |
-| `openDelay` | `number` | `0` |
-| `closeDelay` | `number` | `0` |
-| `ariaLabel` | `string` | `''` |
+| `disabled`   | `boolean`              | `false`     |
+| `openDelay`  | `number`               | `0`         |
+| `closeDelay` | `number`               | `0`         |
+| `ariaLabel`  | `string`               | `''`        |
 
 ### Events
 
-| Name | Payload |
-| --- | --- |
+| Name                | Payload   |
+| ------------------- | --------- |
 | `update:modelValue` | `boolean` |
-| `change` | `boolean` |
+| `change`            | `boolean` |
 
 ### Slots
 
-| Name | Description |
-| --- | --- |
+| Name      | Description                                      |
+| --------- | ------------------------------------------------ |
 | `default` | Scoped slot with `{ hovered, focused, active }`. |
 
 ## Theming
@@ -73,4 +73,3 @@ Override component tokens through `theme.overrides.components.hover`.
 
 - Focus enters the same active lifecycle as pointer hover, so keyboard users receive the same affordances.
 - Disabled state clears internal hover state and suppresses delayed activation.
-

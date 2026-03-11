@@ -34,19 +34,19 @@ const active = ref<number | null>(null);
                         label: 'Commerce',
                         items: [
                             { label: 'Catalog', to: '/catalog' },
-                            { label: 'Pricing', to: '/pricing' }
-                        ]
+                            { label: 'Pricing', to: '/pricing' },
+                        ],
                     },
                     {
                         label: 'Operations',
-                        items: [{ label: 'Orders', to: '/orders' }]
-                    }
-                ]
+                        items: [{ label: 'Orders', to: '/orders' }],
+                    },
+                ],
             },
             {
                 label: 'Docs',
-                items: [{ label: 'Guides', to: '/guides' }]
-            }
+                items: [{ label: 'Guides', to: '/guides' }],
+            },
         ]"
     />
 </template>
@@ -68,12 +68,7 @@ Use `lazy` when a root section should load its grouped links on first open.
 
 ```vue
 <template>
-    <MegaMenu
-        :items="[
-            { label: 'Integrations', lazy: true, sections: [] }
-        ]"
-        @lazy-load="onLazyLoad"
-    />
+    <MegaMenu :items="[{ label: 'Integrations', lazy: true, sections: [] }]" @lazy-load="onLazyLoad" />
 </template>
 ```
 

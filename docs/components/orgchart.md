@@ -5,7 +5,7 @@ OrgChart renders hierarchical organization-style structures with selectable node
 ## Import
 
 ```ts
-import OrgChart from '@/package/components/org-chart.vue';
+import { OrgChart } from '@codemonster-ru/vueforge';
 ```
 
 ## Examples
@@ -15,12 +15,7 @@ import OrgChart from '@/package/components/org-chart.vue';
 Use OrgChart for teams, reporting lines, capability maps, and high-level structure diagrams.
 
 ```vue
-<OrgChart
-    v-model="selectedNode"
-    v-model:expandedKeys="expandedKeys"
-    :items="orgItems"
-    aria-label="Company structure"
-/>
+<OrgChart v-model="selectedNode" v-model:expandedKeys="expandedKeys" :items="orgItems" aria-label="Company structure" />
 ```
 
 ### Multiple Selection
@@ -36,12 +31,7 @@ Enable `multiple` when the chart needs compare or bulk-selection behavior.
 Keep `collapsible` enabled when large charts should progressively reveal deeper levels.
 
 ```vue
-<OrgChart
-    v-model="selectedNode"
-    v-model:expandedKeys="expandedKeys"
-    :items="orgItems"
-    collapsible
-/>
+<OrgChart v-model="selectedNode" v-model:expandedKeys="expandedKeys" :items="orgItems" collapsible />
 ```
 
 ### Custom Node Content
@@ -77,39 +67,39 @@ interface OrgChartNodeItem {
 
 ### Props
 
-| Name | Type | Default |
-| --- | --- | --- |
-| `items` | `OrgChartNodeItem[]` | `[]` |
-| `modelValue` | `OrgChartValue \| OrgChartValue[] \| undefined` | `undefined` |
-| `expandedKeys` | `OrgChartValue[]` | `[]` |
-| `multiple` | `boolean` | `false` |
-| `selectable` | `boolean` | `true` |
-| `collapsible` | `boolean` | `true` |
-| `disabled` | `boolean` | `false` |
-| `size` | `'small' \| 'normal' \| 'large'` | `'normal'` |
-| `variant` | `'filled' \| 'outlined'` | `'filled'` |
-| `ariaLabel` | `string` | `'Org chart'` |
-| `ariaLabelledby` | `string` | `''` |
+| Name             | Type                                            | Default       |
+| ---------------- | ----------------------------------------------- | ------------- |
+| `items`          | `OrgChartNodeItem[]`                            | `[]`          |
+| `modelValue`     | `OrgChartValue \| OrgChartValue[] \| undefined` | `undefined`   |
+| `expandedKeys`   | `OrgChartValue[]`                               | `[]`          |
+| `multiple`       | `boolean`                                       | `false`       |
+| `selectable`     | `boolean`                                       | `true`        |
+| `collapsible`    | `boolean`                                       | `true`        |
+| `disabled`       | `boolean`                                       | `false`       |
+| `size`           | `'small' \| 'normal' \| 'large'`                | `'normal'`    |
+| `variant`        | `'filled' \| 'outlined'`                        | `'filled'`    |
+| `ariaLabel`      | `string`                                        | `'Org chart'` |
+| `ariaLabelledby` | `string`                                        | `''`          |
 
 ### Events
 
-| Name | Payload |
-| --- | --- |
-| `update:modelValue` | selected value payload |
-| `update:expandedKeys` | expanded keys array |
-| `change` | selection payload |
-| `toggle` | `key, expanded, node, event` |
-| `nodeClick` | `node, event` |
+| Name                  | Payload                      |
+| --------------------- | ---------------------------- |
+| `update:modelValue`   | selected value payload       |
+| `update:expandedKeys` | expanded keys array          |
+| `change`              | selection payload            |
+| `toggle`              | `key, expanded, node, event` |
+| `nodeClick`           | `node, event`                |
 
 ### Slots
 
-| Name | Description |
-| --- | --- |
+| Name   | Description                                                               |
+| ------ | ------------------------------------------------------------------------- |
 | `node` | Custom card content with `{ node, level, selected, expanded, disabled }`. |
 
 ## Theming
 
-`OrgChart` currently exposes a CSS variable token contract through the component styles, but this repo does not yet include a dedicated `theme.overrides.components.orgChart` preset file in `src/package/themes/default/components/`.
+`OrgChart` currently exposes a CSS variable token contract through the component styles, but this repo does not yet include a dedicated `theme.overrides.components.orgChart` preset file in `packages/vueforge/src/themes/default/components/`.
 
 ## Tokens
 
@@ -127,4 +117,3 @@ interface OrgChartNodeItem {
 
 - OrgChart uses tree-style semantics and keyboard navigation for selection and branch traversal.
 - The card layout is visual, but interaction still follows the same selected and expanded state model as hierarchical controls.
-

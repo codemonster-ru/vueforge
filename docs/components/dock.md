@@ -5,7 +5,7 @@ Dock provides app-launcher style navigation for primary workspaces and utility d
 ## Import
 
 ```ts
-import Dock from '@/package/components/dock.vue';
+import { Dock } from '@codemonster-ru/vueforge';
 ```
 
 ## Examples
@@ -92,28 +92,28 @@ interface DockItem {
 
 ### Props
 
-| Name | Type | Default |
-| --- | --- | --- |
-| `items` | `DockItem[]` | `[]` |
-| `modelValue` | `string \| number \| null` | `null` |
-| `position` | `'bottom' \| 'top' \| 'left' \| 'right'` | `'bottom'` |
-| `disabled` | `boolean` | `false` |
-| `ariaLabel` | `string` | `'Application launcher'` |
-| `syncActiveFromRoute` | `boolean` | `true` |
-| `pt` | `PassThroughOptions \| undefined` | `undefined` |
-| `unstyled` | `boolean` | `false` |
+| Name                  | Type                                     | Default                  |
+| --------------------- | ---------------------------------------- | ------------------------ |
+| `items`               | `DockItem[]`                             | `[]`                     |
+| `modelValue`          | `string \| number \| null`               | `null`                   |
+| `position`            | `'bottom' \| 'top' \| 'left' \| 'right'` | `'bottom'`               |
+| `disabled`            | `boolean`                                | `false`                  |
+| `ariaLabel`           | `string`                                 | `'Application launcher'` |
+| `syncActiveFromRoute` | `boolean`                                | `true`                   |
+| `pt`                  | `PassThroughOptions \| undefined`        | `undefined`              |
+| `unstyled`            | `boolean`                                | `false`                  |
 
 ### Events
 
-| Name | Payload |
-| --- | --- |
-| `update:modelValue` | `DockKey` |
-| `select` | `{ item, index, key, event }` |
+| Name                | Payload                       |
+| ------------------- | ----------------------------- |
+| `update:modelValue` | `DockKey`                     |
+| `select`            | `{ item, index, key, event }` |
 
 ### Slots
 
-| Name | Description |
-| --- | --- |
+| Name   | Description                                          |
+| ------ | ---------------------------------------------------- |
 | `item` | Custom launcher item with `{ item, index, active }`. |
 
 ## Theming

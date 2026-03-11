@@ -47,13 +47,7 @@ Mix `Button` and `SplitButton` when one action has secondary options.
 <template>
     <ButtonGroup attached>
         <Button label="Save" />
-        <SplitButton
-            label="More"
-            :items="[
-                { label: 'Save draft' },
-                { label: 'Save and publish' }
-            ]"
-        />
+        <SplitButton label="More" :items="[{ label: 'Save draft' }, { label: 'Save and publish' }]" />
     </ButtonGroup>
 </template>
 ```

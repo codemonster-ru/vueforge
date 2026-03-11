@@ -21,19 +21,22 @@ Add this block inside the release section (`## [x.y.z] - YYYY-MM-DD`):
 - `patch`: bugfixes/docs/tests/refactors with no API break and no new public API.
 - `minor`: backward-compatible public API additions or behavior expansions.
 - `major`: any breaking API/behavior change.
+- In the split workspace, semver classification applies to the package being released, not automatically to every package in the repo.
 - Breaking classification must follow [Component-Level Breaking Change Rules](./component-breaking-change-rules.md).
 - If breaking changes are marked `yes`, add migration notes in the same release section.
 - For major releases or complex migrations, create a dedicated migration document using [`docs/migrations/MIGRATION_TEMPLATE.md`](../migrations/MIGRATION_TEMPLATE.md).
 - If deprecations are introduced, explicitly describe replacement path and removal intent following [Deprecation Policy](./deprecation-policy.md).
 - Mark catalog sync as `yes` when `docs/audits/component-catalog-mapping.md` was reviewed/updated for the release scope, otherwise use `n/a` with explanation.
 - Record bundle-size metrics in release notes for `dist/index.ts.mjs`, `dist/index.ts.umd.js`, and `dist/index.css` (raw/gzip/brotli bytes).
+- Follow the package-specific tag and versioning rules in [`package-versioning.md`](./package-versioning.md).
 
 ## Enforcement
 
 - CI and publish pipelines run `npm run verify:semver`.
-- The check validates the current `package.json` version section in `CHANGELOG.md`.
+- The check currently validates the root `package.json` version section in `CHANGELOG.md`.
 - Release is blocked if the required semver checklist items are missing or unchecked.
 - Bundle-size gate runs in CI/release via `npm run verify:bundle-size` after `npm run build`.
+- Package publish workflow separately validates that the pushed release tag matches the target package version.
 
 ## Catalog Sync Gate
 

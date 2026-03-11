@@ -5,7 +5,7 @@ ScrollTop renders a floating action button that scrolls the page or a container 
 ## Import
 
 ```ts
-import ScrollTop from '@/package/components/scroll-top.vue';
+import { ScrollTop } from '@codemonster-ru/vueforge';
 ```
 
 ## Examples
@@ -59,37 +59,37 @@ Override the default slot when the floating action needs custom text or icon tre
 
 ### Props
 
-| Name | Type | Default |
-| --- | --- | --- |
-| `threshold` | `number` | `240` |
-| `behavior` | `'auto' \| 'smooth'` | `'smooth'` |
-| `target` | `Window \| HTMLElement \| null` | `null` |
-| `right` | `string` | `'1rem'` |
-| `bottom` | `string` | `'1rem'` |
-| `zIndex` | `number \| string` | `'60'` |
-| `showLabel` | `boolean` | `false` |
-| `label` | `string` | `'Top'` |
-| `icon` | `string` | `'arrowUp'` |
-| `ariaLabel` | `string` | `'Scroll to top'` |
-| `alwaysVisible` | `boolean` | `false` |
-| `disabled` | `boolean` | `false` |
-| `variant` | `'filled' \| 'outlined'` | `'filled'` |
+| Name            | Type                            | Default           |
+| --------------- | ------------------------------- | ----------------- |
+| `threshold`     | `number`                        | `240`             |
+| `behavior`      | `'auto' \| 'smooth'`            | `'smooth'`        |
+| `target`        | `Window \| HTMLElement \| null` | `null`            |
+| `right`         | `string`                        | `'1rem'`          |
+| `bottom`        | `string`                        | `'1rem'`          |
+| `zIndex`        | `number \| string`              | `'60'`            |
+| `showLabel`     | `boolean`                       | `false`           |
+| `label`         | `string`                        | `'Top'`           |
+| `icon`          | `string`                        | `'arrowUp'`       |
+| `ariaLabel`     | `string`                        | `'Scroll to top'` |
+| `alwaysVisible` | `boolean`                       | `false`           |
+| `disabled`      | `boolean`                       | `false`           |
+| `variant`       | `'filled' \| 'outlined'`        | `'filled'`        |
 
 ### Events
 
-| Name | Payload |
-| --- | --- |
+| Name    | Payload      |
+| ------- | ------------ |
 | `click` | `MouseEvent` |
 
 ### Slots
 
-| Name | Description |
-| --- | --- |
+| Name      | Description                  |
+| --------- | ---------------------------- |
 | `default` | Replaces the button content. |
 
 ## Theming
 
-`ScrollTop` currently uses a CSS variable contract in component styles, but this repo does not include a dedicated preset file in `src/package/themes/default/components/` for it yet.
+`ScrollTop` currently uses a CSS variable contract in component styles, but this repo does not include a dedicated preset file in `packages/vueforge/src/themes/default/components/` for it yet.
 
 ## Tokens
 

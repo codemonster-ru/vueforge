@@ -5,8 +5,8 @@ Accordion organizes expandable sections, while `AccordionItem` defines each togg
 ## Import
 
 ```ts
-import Accordion from '@/package/components/accordion.vue';
-import AccordionItem from '@/package/components/accordion-item.vue';
+import { Accordion, AccordionItem } from '@codemonster-ru/vueforge';
+import { Accordion, AccordionItem } from '@codemonster-ru/vueforge';
 ```
 
 ## Examples
@@ -71,12 +71,7 @@ Use grouped mode when the accordion acts like a cohesive settings block with sha
 Use dense mode for admin screens and enable analytics only when product instrumentation needs expand and collapse events.
 
 ```vue
-<Accordion
-    model-value="overview"
-    dense
-    analytics
-    analytics-context="security-settings"
->
+<Accordion model-value="overview" dense analytics analytics-context="security-settings">
     <AccordionItem value="overview" title="Overview">
         Summary content
     </AccordionItem>
@@ -90,50 +85,50 @@ Use dense mode for admin screens and enable analytics only when product instrume
 
 ### Accordion Props
 
-| Name | Type | Default |
-| --- | --- | --- |
-| `modelValue` | `string \| number \| Array<string \| number> \| undefined` | `undefined` |
-| `multiple` | `boolean` | `false` |
-| `disabled` | `boolean` | `false` |
-| `dense` | `boolean` | `false` |
-| `grouped` | `boolean` | `false` |
-| `groupTitle` | `string` | `''` |
-| `groupDescription` | `string` | `''` |
-| `analytics` | `boolean` | `false` |
-| `analyticsContext` | `string` | `''` |
-| `variant` | `'filled' \| 'outlined'` | `'filled'` |
-| `size` | `'small' \| 'normal' \| 'large'` | `'normal'` |
-| `ariaLabel` | `string` | `''` |
-| `ariaLabelledby` | `string` | `''` |
+| Name               | Type                                                       | Default     |
+| ------------------ | ---------------------------------------------------------- | ----------- |
+| `modelValue`       | `string \| number \| Array<string \| number> \| undefined` | `undefined` |
+| `multiple`         | `boolean`                                                  | `false`     |
+| `disabled`         | `boolean`                                                  | `false`     |
+| `dense`            | `boolean`                                                  | `false`     |
+| `grouped`          | `boolean`                                                  | `false`     |
+| `groupTitle`       | `string`                                                   | `''`        |
+| `groupDescription` | `string`                                                   | `''`        |
+| `analytics`        | `boolean`                                                  | `false`     |
+| `analyticsContext` | `string`                                                   | `''`        |
+| `variant`          | `'filled' \| 'outlined'`                                   | `'filled'`  |
+| `size`             | `'small' \| 'normal' \| 'large'`                           | `'normal'`  |
+| `ariaLabel`        | `string`                                                   | `''`        |
+| `ariaLabelledby`   | `string`                                                   | `''`        |
 
 ### AccordionItem Props
 
-| Name | Type | Default |
-| --- | --- | --- |
-| `value` | `string \| number` | required |
-| `title` | `string` | `''` |
-| `disabled` | `boolean` | `false` |
-| `unmount` | `boolean` | `false` |
+| Name       | Type               | Default  |
+| ---------- | ------------------ | -------- |
+| `value`    | `string \| number` | required |
+| `title`    | `string`           | `''`     |
+| `disabled` | `boolean`          | `false`  |
+| `unmount`  | `boolean`          | `false`  |
 
 ### Events
 
-| Name | Payload |
-| --- | --- |
+| Name                | Payload                                           |
+| ------------------- | ------------------------------------------------- |
 | `update:modelValue` | `AccordionValue \| AccordionValue[] \| undefined` |
-| `change` | `(nextValue, event)` |
-| `itemToggle` | `{ value, expanded, values, event }` |
-| `itemExpand` | `(value, values, event)` |
-| `itemCollapse` | `(value, values, event)` |
-| `analytics` | `{ type, value, values, context, at }` |
+| `change`            | `(nextValue, event)`                              |
+| `itemToggle`        | `{ value, expanded, values, event }`              |
+| `itemExpand`        | `(value, values, event)`                          |
+| `itemCollapse`      | `(value, values, event)`                          |
+| `analytics`         | `{ type, value, values, context, at }`            |
 
 ### Slots
 
-| Name | Description |
-| --- | --- |
-| `group-title` | Replaces the group title area. |
-| `group-description` | Replaces the group description area. |
-| `group-actions` | Adds actions to the grouped header. |
-| `title` | Customizes an individual `AccordionItem` header title. |
+| Name                | Description                                            |
+| ------------------- | ------------------------------------------------------ |
+| `group-title`       | Replaces the group title area.                         |
+| `group-description` | Replaces the group description area.                   |
+| `group-actions`     | Adds actions to the grouped header.                    |
+| `title`             | Customizes an individual `AccordionItem` header title. |
 
 ## Theming
 

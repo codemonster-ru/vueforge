@@ -17,16 +17,27 @@
     - Updated `ScrollTop` default icon from `↑` to `arrowUp` and synced component docs.
 - Testing/runtime:
     - Updated Vitest config to inline `@codemonster-ru/vueiconify` deps so CSS imports from the icon package resolve in test runtime.
+- Package split:
+    - Split the library workspace into `@codemonster-ru/vueforge` and `@codemonster-ru/vueforge-layouts`.
+    - Moved the real source of truth for core, layouts, config, services, directives, themes, and tests into `packages/*`.
+    - Removed the legacy `src/package` tree and kept the root `src/index.ts` as a transitional facade that re-exports the split packages.
+    - Updated package manifests, exports, README files, and workspace build/typecheck flow for standalone package publishing.
 - Documentation:
     - Reworked the entire `docs/components` set into a unified documentation structure: short intro, early `Import` or `Scope`, compact scenario-based examples, then API/theming/accessibility guidance.
     - Normalized component pages, reference pages, and index/template pages so `docs/components` no longer contains legacy mixed-format markdown sections.
-    - Clarified alias and wrapper relationships in docs where relevant, including `Sidebar` vs `Drawer`, `OverlayPanel` vs `Popover`, chart wrappers vs canonical `Chart`, and service/host pages such as `DialogService` and `DynamicDialog`.
-    - Fixed docs preview runtime warnings by switching example template compilation to identifier-prefixed render output in `DocsExamplePreview`, and expanded docs regression coverage to assert those warnings stay absent.
+    - Clarified alias and wrapper relationships in docs where relevant, including `Sidebar` vs `Drawer`, `OverlayPanel` vs `Popover`, and service/host pages such as `DialogService` and `DynamicDialog`.
+    - Fixed docs preview runtime warnings by hardening `DocsExamplePreview`: switched runtime template compilation to `@vue/compiler-dom`, improved preview binding inference, and expanded docs regression coverage to assert those warnings stay absent.
+    - Converted the docs runtime to a single package-aware site: one docs app, sidebar grouping for `Core` / `Layouts`, eager markdown loading for stable dev/runtime behavior, and corrected `apps/docs` dev entrypoint.
+- Publishing/versioning:
+    - Switched package publishing to independent package tags: `vueforge-vx.y.z` for `@codemonster-ru/vueforge` and `layouts-vx.y.z` for `@codemonster-ru/vueforge-layouts`.
+    - Updated the publish workflow to validate tag-to-package version matching and publish only the targeted workspace package.
+    - Documented independent package versioning and cross-package dependency bump rules in `docs/contributing/package-versioning.md`.
 - Migration notes:
     - Install `@codemonster-ru/vueiconify@^1.0.1` in consuming apps.
     - If you reference the icon package directly, switch imports from `CmIcon` to `VueIconify`.
     - Replace `import { Icon } from '@codemonster-ru/vueforge'` with `import { VueIconify } from '@codemonster-ru/vueiconify'`.
     - If you relied on symbol defaults for icon props (`'<'`, `'>'`, `'↑'`, `'×'`), use VueIconify icon names instead (for example `chevronLeft`, `chevronRight`, `arrowUp`, `xmark`).
+    - New code should import layout components from `@codemonster-ru/vueforge-layouts` instead of relying on umbrella exports from `@codemonster-ru/vueforge`.
 
 ## [0.99.0] - 2026-03-02
 

@@ -5,7 +5,7 @@ Lazy defers mounting of heavy subtree content until it becomes visible, with opt
 ## Import
 
 ```ts
-import Lazy from '@/package/components/lazy.vue';
+import { Lazy } from '@codemonster-ru/vueforge';
 ```
 
 ## Examples
@@ -45,31 +45,31 @@ Set `once="false"` when the content should mount and unmount as visibility chang
 
 ### Props
 
-| Name | Type | Default |
-| --- | --- | --- |
-| `as` | `string` | `'div'` |
-| `when` | `boolean` | `true` |
-| `disabled` | `boolean` | `false` |
-| `eager` | `boolean` | `false` |
-| `once` | `boolean` | `true` |
-| `delay` | `number` | `0` |
-| `rootMargin` | `string` | `'200px'` |
-| `threshold` | `number` | `0` |
-| `placeholderTag` | `string` | `'div'` |
-| `ariaLabel` | `string` | `''` |
+| Name             | Type      | Default   |
+| ---------------- | --------- | --------- |
+| `as`             | `string`  | `'div'`   |
+| `when`           | `boolean` | `true`    |
+| `disabled`       | `boolean` | `false`   |
+| `eager`          | `boolean` | `false`   |
+| `once`           | `boolean` | `true`    |
+| `delay`          | `number`  | `0`       |
+| `rootMargin`     | `string`  | `'200px'` |
+| `threshold`      | `number`  | `0`       |
+| `placeholderTag` | `string`  | `'div'`   |
+| `ariaLabel`      | `string`  | `''`      |
 
 ### Events
 
-| Name | Payload |
-| --- | --- |
-| `enter` | none |
-| `leave` | none |
+| Name    | Payload |
+| ------- | ------- |
+| `enter` | none    |
+| `leave` | none    |
 
 ### Slots
 
-| Name | Description |
-| --- | --- |
-| `default` | Content mounted when active. |
+| Name          | Description                         |
+| ------------- | ----------------------------------- |
+| `default`     | Content mounted when active.        |
 | `placeholder` | Fallback content before activation. |
 
 ## Theming
@@ -92,4 +92,3 @@ Override component tokens through `theme.overrides.components.lazy`.
 
 - Placeholder content should remain meaningful when the deferred content is important for page comprehension.
 - When `IntersectionObserver` is unavailable, Lazy falls back to immediate mount instead of failing silently.
-

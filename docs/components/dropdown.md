@@ -23,7 +23,7 @@ Pass `items` for a lightweight action menu driven by menu semantics.
             { label: 'View details', href: '#' },
             { label: 'Duplicate', href: '#' },
             { separator: true },
-            { label: 'Archive', href: '#', disabled: true }
+            { label: 'Archive', href: '#', disabled: true },
         ]"
     >
         <template #trigger>

@@ -61,9 +61,7 @@ Slots let the product replace the built-in title area and close control.
         <template #header>
             <h3 style="margin: 0;">Workspace notice</h3>
         </template>
-        <template #body>
-            Custom modal content.
-        </template>
+        <template #body> Custom modal content. </template>
     </Modal>
 </template>
 ```
@@ -75,9 +73,7 @@ Disable overlay and Escape dismissal when the user must make an explicit choice.
 ```vue
 <template>
     <Modal v-model="open" title="Finish setup" :close-on-overlay="false" :close-on-esc="false">
-        <template #body>
-            Complete the required fields before continuing.
-        </template>
+        <template #body> Complete the required fields before continuing. </template>
     </Modal>
 </template>
 ```

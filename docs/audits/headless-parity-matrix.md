@@ -7,20 +7,18 @@ Purpose: track slot API and part-level pass-through (`pt`) coverage for the curr
 ## Scope
 
 - `Carousel`
-- `Chart`
 - `Image`
 - `SpeedDial`
 - `OverlayPanel`
 
 ## Matrix
 
-| Component      | Slots (documented)                                                               | Parts (`pt`)                                                                                                | `unstyled` | Contract test                                              |
-| -------------- | -------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ---------- | ---------------------------------------------------------- |
-| `Carousel`     | `item`, `prevIcon`, `nextIcon`                                                   | `root`, `viewport`, `track`, `slide`, `prevArrow`, `nextArrow`, `indicators`, `indicator`                   | Yes        | `src/package/components/__tests__/headless-parity.test.ts` |
-| `Chart`        | `loading`, `empty`                                                               | `root`, `state`, `canvasWrap`, `canvas`                                                                     | Yes        | `src/package/components/__tests__/headless-parity.test.ts` |
-| `Image`        | none named                                                                       | `root`, `trigger`, `img`, `overlay`, `dialog`, `preview`, `close`, `toolbarButton`, `navButton`, `download` | Yes        | `src/package/components/__tests__/headless-parity.test.ts` |
-| `SpeedDial`    | `trigger`, `action`                                                              | `root`, `trigger`, `actions`, `item`, `action`, `label`                                                     | Yes        | `src/package/components/__tests__/headless-parity.test.ts` |
-| `OverlayPanel` | `trigger`, `header`, `default`, `body`, `footer` (+ `button`/`popover*` aliases) | `root`, `header`, `close`                                                                                   | Yes        | `src/package/components/__tests__/headless-parity.test.ts` |
+| Component      | Slots (documented)                                                               | Parts (`pt`)                                                                                                | `unstyled` | Contract test                               |
+| -------------- | -------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ---------- | ------------------------------------------- |
+| `Carousel`     | `item`, `prevIcon`, `nextIcon`                                                   | `root`, `viewport`, `track`, `slide`, `prevArrow`, `nextArrow`, `indicators`, `indicator`                   | Yes        | `tests/integration/headless-parity.test.ts` |
+| `Image`        | none named                                                                       | `root`, `trigger`, `img`, `overlay`, `dialog`, `preview`, `close`, `toolbarButton`, `navButton`, `download` | Yes        | `tests/integration/headless-parity.test.ts` |
+| `SpeedDial`    | `trigger`, `action`                                                              | `root`, `trigger`, `actions`, `item`, `action`, `label`                                                     | Yes        | `tests/integration/headless-parity.test.ts` |
+| `OverlayPanel` | `trigger`, `header`, `default`, `body`, `footer` (+ `button`/`popover*` aliases) | `root`, `header`, `close`                                                                                   | Yes        | `tests/integration/headless-parity.test.ts` |
 
 ## Notes
 

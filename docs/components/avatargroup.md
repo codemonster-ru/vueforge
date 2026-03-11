@@ -5,7 +5,7 @@ AvatarGroup renders stacked or inline collections of avatars with optional overf
 ## Import
 
 ```ts
-import AvatarGroup from '@/package/components/avatar-group.vue';
+import { AvatarGroup } from '@codemonster-ru/vueforge';
 ```
 
 ## Examples
@@ -74,22 +74,22 @@ interface AvatarGroupItem {
 
 ### Props
 
-| Name | Type | Default |
-| --- | --- | --- |
-| `items` | `AvatarGroupItem[]` | `[]` |
-| `max` | `number \| null` | `null` |
-| `size` | `'small' \| 'normal' \| 'large'` | `'normal'` |
-| `shape` | `'circle' \| 'rounded'` | `'circle'` |
-| `overlap` | `boolean` | `true` |
-| `ariaLabel` | `string` | `'Avatar group'` |
-| `overflowLabel` | `string` | `'more'` |
-| `disabled` | `boolean` | `false` |
+| Name            | Type                             | Default          |
+| --------------- | -------------------------------- | ---------------- |
+| `items`         | `AvatarGroupItem[]`              | `[]`             |
+| `max`           | `number \| null`                 | `null`           |
+| `size`          | `'small' \| 'normal' \| 'large'` | `'normal'`       |
+| `shape`         | `'circle' \| 'rounded'`          | `'circle'`       |
+| `overlap`       | `boolean`                        | `true`           |
+| `ariaLabel`     | `string`                         | `'Avatar group'` |
+| `overflowLabel` | `string`                         | `'more'`         |
+| `disabled`      | `boolean`                        | `false`          |
 
 ### Slots
 
-| Name | Description |
-| --- | --- |
-| `item` | Custom item rendering with `{ item, index }`. |
+| Name       | Description                                        |
+| ---------- | -------------------------------------------------- |
+| `item`     | Custom item rendering with `{ item, index }`.      |
 | `overflow` | Custom overflow avatar rendering with `{ count }`. |
 
 ## Theming

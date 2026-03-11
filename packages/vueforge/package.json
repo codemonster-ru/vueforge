@@ -1,0 +1,69 @@
+{
+    "name": "@codemonster-ru/vueforge",
+    "version": "0.100.0",
+    "description": "Open source core UI components for Vue.js.",
+    "license": "MIT",
+    "author": "Kirill Kolesnikov",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/codemonster-ru/vueforge.git"
+    },
+    "homepage": "https://github.com/codemonster-ru/vueforge#readme",
+    "bugs": {
+        "url": "https://github.com/codemonster-ru/vueforge/issues"
+    },
+    "keywords": [
+        "vue",
+        "vue3",
+        "ui",
+        "components",
+        "component-library",
+        "ui-kit",
+        "design-system",
+        "theming",
+        "typescript",
+        "vite"
+    ],
+    "main": "./dist/index.ts.umd.js",
+    "module": "./dist/index.ts.mjs",
+    "types": "./dist/index.d.ts",
+    "sideEffects": [
+        "*.css",
+        "dist/*.css"
+    ],
+    "exports": {
+        ".": {
+            "import": {
+                "style": "./dist/index.css",
+                "types": "./dist/index.d.ts",
+                "default": "./dist/index.ts.mjs"
+            },
+            "require": {
+                "types": "./dist/index.d.ts",
+                "default": "./dist/index.ts.umd.js"
+            }
+        },
+        "./package.json": "./package.json",
+        "./dist/*.css": {
+            "import": "./dist/*.css",
+            "require": "./dist/*.css"
+        }
+    },
+    "files": [
+        "dist",
+        "README.md"
+    ],
+    "scripts": {
+        "build": "vite build --config vite.config.mts --mode production",
+        "typecheck": "vue-tsc --noEmit -p tsconfig.json"
+    },
+    "peerDependencies": {
+        "@codemonster-ru/vueiconify": "^1.0.1",
+        "vue": "^3.0.0",
+        "vue-router": "^4.4.5"
+    },
+    "dependencies": {
+        "@codemonster-ru/floater.js": "^1.0.8",
+        "@codemonster-ru/vue-codeblock": "^1.0.0"
+    }
+}

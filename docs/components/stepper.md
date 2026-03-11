@@ -24,7 +24,7 @@ Use it for checkout or onboarding progress.
             { value: 'cart', label: 'Cart' },
             { value: 'address', label: 'Address' },
             { value: 'payment', label: 'Payment' },
-            { value: 'confirm', label: 'Confirm' }
+            { value: 'confirm', label: 'Confirm' },
         ]"
         clickable
     />
@@ -44,7 +44,7 @@ Use vertical layout in sidebars or narrow detail panels.
         :steps="[
             { value: 'account', label: 'Account' },
             { value: 'plan', label: 'Plan' },
-            { value: 'confirm', label: 'Confirm' }
+            { value: 'confirm', label: 'Confirm' },
         ]"
     />
 </template>
@@ -62,7 +62,7 @@ Use explicit `status` when a step should communicate a problem.
         :steps="[
             { value: 'account', label: 'Account', status: 'completed' },
             { value: 'plan', label: 'Plan', status: 'error', description: 'Fix validation errors' },
-            { value: 'confirm', label: 'Confirm' }
+            { value: 'confirm', label: 'Confirm' },
         ]"
     />
 </template>
@@ -111,7 +111,7 @@ Component tokens (override via `theme.overrides.components.stepper`):
 ## Recipes
 
 - Use `Stepper` as a progress or navigation primitive, not a full step workflow manager.
-- When the step headers and content panels are coupled, prefer `Wizard`.
+- When the step headers and content panels are tightly coupled, wrap `Stepper` in a dedicated flow component at app level.
 - Keep custom statuses explicit when the default active or completed inference is not enough.
 
 ## Accessibility

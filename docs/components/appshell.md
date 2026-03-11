@@ -5,7 +5,7 @@ Compose the top-level application frame with sidebar, header, main, and optional
 ## Import
 
 ```ts
-import { AppShell } from '@codemonster-ru/vueforge';
+import { AppShell } from '@codemonster-ru/vueforge-layouts';
 ```
 
 ## Examples
@@ -26,7 +26,7 @@ Use sidebar, header, and main regions for a standard application frame.
                 :items="[
                     { key: 'overview', label: 'Overview', icon: 'house', active: true },
                     { key: 'billing', label: 'Billing', icon: 'creditCard' },
-                    { key: 'settings', label: 'Settings', icon: 'gear' }
+                    { key: 'settings', label: 'Settings', icon: 'gear' },
                 ]"
             />
         </template>

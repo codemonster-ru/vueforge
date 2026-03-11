@@ -5,7 +5,6 @@ import { FlatCompat } from '@eslint/eslintrc';
 import typescriptEslint from '@typescript-eslint/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
 import vue from 'eslint-plugin-vue';
-import prettier from 'eslint-plugin-prettier';
 import vueParser from 'vue-eslint-parser';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -16,18 +15,17 @@ const compat = new FlatCompat({
 });
 
 export default [
-    { ignores: ['dist/**', 'apps/dist/**'] },
+    { ignores: ['dist/**', 'apps/dist/**', '**/dist/**'] },
     ...compat.extends(
         'eslint:recommended',
         'plugin:@typescript-eslint/recommended',
         'plugin:vue/vue3-recommended',
-        'plugin:prettier/recommended',
+        'prettier',
     ),
     {
         plugins: {
             '@typescript-eslint': typescriptEslint,
             vue,
-            prettier,
         },
         languageOptions: {
             parser: vueParser,
@@ -42,12 +40,6 @@ export default [
             },
         },
         rules: {
-            'prettier/prettier': [
-                'error',
-                {
-                    endOfLine: 'auto',
-                },
-            ],
             'vue/multi-word-component-names': 'off',
         },
     },

@@ -23,7 +23,7 @@ Use `expandedKeys` together with the selected value for a straightforward treegr
         v-model:expandedKeys="expanded"
         :columns="[
             { field: 'name', header: 'Name' },
-            { field: 'type', header: 'Type' }
+            { field: 'type', header: 'Type' },
         ]"
         :items="rows"
     />

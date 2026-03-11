@@ -5,7 +5,7 @@ Tree renders hierarchical data with selection, expansion, optional async branch 
 ## Import
 
 ```ts
-import Tree from '@/package/components/tree.vue';
+import { Tree } from '@codemonster-ru/vueforge';
 ```
 
 ## Examples
@@ -45,13 +45,7 @@ Enable `loadOnExpand` when child nodes are fetched lazily.
 Turn on virtualization for large visible trees where expanded nodes can exceed normal DOM limits.
 
 ```vue
-<Tree
-    :items="largeTreeItems"
-    virtualized
-    :virtualization-threshold="150"
-    :item-height="30"
-    :virtual-height="360"
-/>
+<Tree :items="largeTreeItems" virtualized :virtualization-threshold="150" :item-height="30" :virtual-height="360" />
 ```
 
 ### Custom Labels
@@ -88,44 +82,44 @@ interface TreeItem {
 
 ### Props
 
-| Name | Type | Default |
-| --- | --- | --- |
-| `items` | `TreeItem[]` | `[]` |
-| `modelValue` | `TreeValue \| TreeValue[] \| undefined` | `undefined` |
-| `expandedKeys` | `TreeValue[]` | `[]` |
-| `multiple` | `boolean` | `false` |
-| `selectionMode` | `'none' \| 'single' \| 'multiple' \| undefined` | `undefined` |
-| `selectable` | `boolean` | `true` |
-| `expandOnClick` | `boolean` | `true` |
-| `disabled` | `boolean` | `false` |
-| `size` | `'small' \| 'normal' \| 'large'` | `'normal'` |
-| `variant` | `'filled' \| 'outlined'` | `'filled'` |
-| `ariaLabel` | `string` | `'Tree'` |
-| `ariaLabelledby` | `string` | `''` |
-| `virtualized` | `boolean` | `false` |
-| `virtualizationThreshold` | `number` | `120` |
-| `itemHeight` | `number` | `32` |
-| `virtualHeight` | `number` | `360` |
-| `overscan` | `number` | `4` |
-| `loadingKeys` | `TreeValue[]` | `[]` |
-| `loadOnExpand` | `boolean` | `false` |
-| `asyncBranchLabel` | `string` | `'Loading...'` |
+| Name                      | Type                                            | Default        |
+| ------------------------- | ----------------------------------------------- | -------------- |
+| `items`                   | `TreeItem[]`                                    | `[]`           |
+| `modelValue`              | `TreeValue \| TreeValue[] \| undefined`         | `undefined`    |
+| `expandedKeys`            | `TreeValue[]`                                   | `[]`           |
+| `multiple`                | `boolean`                                       | `false`        |
+| `selectionMode`           | `'none' \| 'single' \| 'multiple' \| undefined` | `undefined`    |
+| `selectable`              | `boolean`                                       | `true`         |
+| `expandOnClick`           | `boolean`                                       | `true`         |
+| `disabled`                | `boolean`                                       | `false`        |
+| `size`                    | `'small' \| 'normal' \| 'large'`                | `'normal'`     |
+| `variant`                 | `'filled' \| 'outlined'`                        | `'filled'`     |
+| `ariaLabel`               | `string`                                        | `'Tree'`       |
+| `ariaLabelledby`          | `string`                                        | `''`           |
+| `virtualized`             | `boolean`                                       | `false`        |
+| `virtualizationThreshold` | `number`                                        | `120`          |
+| `itemHeight`              | `number`                                        | `32`           |
+| `virtualHeight`           | `number`                                        | `360`          |
+| `overscan`                | `number`                                        | `4`            |
+| `loadingKeys`             | `TreeValue[]`                                   | `[]`           |
+| `loadOnExpand`            | `boolean`                                       | `false`        |
+| `asyncBranchLabel`        | `string`                                        | `'Loading...'` |
 
 ### Events
 
-| Name | Payload |
-| --- | --- |
-| `update:modelValue` | selected value payload |
-| `update:expandedKeys` | expanded keys array |
-| `change` | selection payload |
-| `toggle` | `key, expanded, node, event` |
-| `nodeClick` | `node, event` |
-| `loadChildren` | `key, node, event` |
+| Name                  | Payload                      |
+| --------------------- | ---------------------------- |
+| `update:modelValue`   | selected value payload       |
+| `update:expandedKeys` | expanded keys array          |
+| `change`              | selection payload            |
+| `toggle`              | `key, expanded, node, event` |
+| `nodeClick`           | `node, event`                |
+| `loadChildren`        | `key, node, event`           |
 
 ### Slots
 
-| Name | Description |
-| --- | --- |
+| Name    | Description                                                        |
+| ------- | ------------------------------------------------------------------ |
 | `label` | Custom label with `{ node, level, selected, expanded, disabled }`. |
 
 ## Theming
@@ -149,4 +143,3 @@ Override component tokens through `theme.overrides.components.tree`.
 - Tree uses `role="tree"` and exposes `treeitem` semantics with expansion and selection state.
 - Keyboard navigation supports directional movement, selection, and expand or collapse behavior.
 - Virtualized mode preserves the same interaction contract while reducing DOM size for large trees.
-

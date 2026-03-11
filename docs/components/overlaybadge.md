@@ -5,7 +5,7 @@ OverlayBadge decorates an icon, button, or avatar with a compact count or status
 ## Import
 
 ```ts
-import OverlayBadge from '@/package/components/overlay-badge.vue';
+import { OverlayBadge } from '@codemonster-ru/vueforge';
 ```
 
 ## Examples
@@ -59,22 +59,22 @@ Use the directive form when you only need decoration on an existing element.
 
 ### Props
 
-| Name | Type | Default |
-| --- | --- | --- |
-| `value` | `string \| number \| null \| undefined` | `undefined` |
-| `hidden` | `boolean` | `false` |
-| `dot` | `boolean` | `false` |
-| `max` | `number` | `99` |
-| `showZero` | `boolean` | `false` |
-| `severity` | `'neutral' \| 'info' \| 'success' \| 'warn' \| 'danger'` | `'danger'` |
-| `position` | `'top-right' \| 'top-left' \| 'bottom-right' \| 'bottom-left'` | `'top-right'` |
-| `ariaLabel` | `string` | `''` |
-| `as` | `string` | `'span'` |
+| Name        | Type                                                           | Default       |
+| ----------- | -------------------------------------------------------------- | ------------- |
+| `value`     | `string \| number \| null \| undefined`                        | `undefined`   |
+| `hidden`    | `boolean`                                                      | `false`       |
+| `dot`       | `boolean`                                                      | `false`       |
+| `max`       | `number`                                                       | `99`          |
+| `showZero`  | `boolean`                                                      | `false`       |
+| `severity`  | `'neutral' \| 'info' \| 'success' \| 'warn' \| 'danger'`       | `'danger'`    |
+| `position`  | `'top-right' \| 'top-left' \| 'bottom-right' \| 'bottom-left'` | `'top-right'` |
+| `ariaLabel` | `string`                                                       | `''`          |
+| `as`        | `string`                                                       | `'span'`      |
 
 ### Slots
 
-| Name | Description |
-| --- | --- |
+| Name      | Description                                     |
+| --------- | ----------------------------------------------- |
 | `default` | Target content that receives the badge overlay. |
 
 ## Theming

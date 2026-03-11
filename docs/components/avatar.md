@@ -5,7 +5,7 @@ Avatar renders a user or entity image, initials fallback, and optional presence 
 ## Import
 
 ```ts
-import Avatar from '@/package/components/avatar.vue';
+import { Avatar } from '@codemonster-ru/vueforge';
 ```
 
 ## Examples
@@ -54,19 +54,19 @@ Adjust shape and size to match list items, cards, and denser admin layouts.
 
 ### Props
 
-| Name | Type | Default |
-| --- | --- | --- |
-| `src` | `string` | `''` |
-| `alt` | `string` | `''` |
-| `name` | `string` | `''` |
-| `size` | `'small' \| 'normal' \| 'large'` | `'normal'` |
-| `shape` | `'circle' \| 'rounded'` | `'circle'` |
+| Name     | Type                                                     | Default     |
+| -------- | -------------------------------------------------------- | ----------- |
+| `src`    | `string`                                                 | `''`        |
+| `alt`    | `string`                                                 | `''`        |
+| `name`   | `string`                                                 | `''`        |
+| `size`   | `'small' \| 'normal' \| 'large'`                         | `'normal'`  |
+| `shape`  | `'circle' \| 'rounded'`                                  | `'circle'`  |
 | `status` | `'online' \| 'offline' \| 'busy' \| 'away' \| undefined` | `undefined` |
 
 ### Slots
 
-| Name | Description |
-| --- | --- |
+| Name      | Description                                     |
+| --------- | ----------------------------------------------- |
 | `default` | Replaces the default image or initials content. |
 
 ## Theming

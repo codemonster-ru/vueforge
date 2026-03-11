@@ -18,12 +18,7 @@ Use the defaults for destructive confirmation flows.
 
 ```vue
 <template>
-    <ConfirmDialog
-        v-model="open"
-        title="Delete item?"
-        message="This action cannot be undone."
-        confirm-label="Delete"
-    />
+    <ConfirmDialog v-model="open" title="Delete item?" message="This action cannot be undone." confirm-label="Delete" />
 </template>
 ```
 

@@ -22,11 +22,11 @@ Use columns and rows for a straightforward sortable table.
         :columns="[
             { field: 'name', header: 'Name', sortable: true },
             { field: 'role', header: 'Role' },
-            { field: 'age', header: 'Age', align: 'right', sortable: true }
+            { field: 'age', header: 'Age', align: 'right', sortable: true },
         ]"
         :rows="[
             { id: 1, name: 'Alice', role: 'Developer', age: 29 },
-            { id: 2, name: 'Bob', role: 'Designer', age: 34 }
+            { id: 2, name: 'Bob', role: 'Designer', age: 34 },
         ]"
         row-key="id"
         sortable
@@ -69,7 +69,7 @@ Use multi-selection for batch workflows.
         :selection="selection"
         :bulk-actions="[
             { label: 'Archive', value: 'archive' },
-            { label: 'Delete', value: 'delete' }
+            { label: 'Delete', value: 'delete' },
         ]"
         @update:selection="selection = $event"
         @bulk-action="onBulkAction"

@@ -5,7 +5,7 @@ SlideGroup provides a horizontally scrollable selection group for filters, tabs,
 ## Import
 
 ```ts
-import SlideGroup from '@/package/components/slide-group.vue';
+import { SlideGroup } from '@codemonster-ru/vueforge';
 ```
 
 ## Examples
@@ -53,32 +53,32 @@ interface SlideGroupItem {
 
 ### Props
 
-| Name | Type | Default |
-| --- | --- | --- |
-| `modelValue` | `string \| number \| null` | `null` |
-| `items` | `SlideGroupItem[]` | `[]` |
-| `disabled` | `boolean` | `false` |
-| `showControls` | `boolean` | `true` |
-| `scrollStep` | `number` | `180` |
-| `snap` | `boolean` | `true` |
-| `ariaLabel` | `string` | `'Slide group'` |
-| `prevLabel` | `string` | `'Scroll left'` |
-| `nextLabel` | `string` | `'Scroll right'` |
+| Name           | Type                       | Default          |
+| -------------- | -------------------------- | ---------------- |
+| `modelValue`   | `string \| number \| null` | `null`           |
+| `items`        | `SlideGroupItem[]`         | `[]`             |
+| `disabled`     | `boolean`                  | `false`          |
+| `showControls` | `boolean`                  | `true`           |
+| `scrollStep`   | `number`                   | `180`            |
+| `snap`         | `boolean`                  | `true`           |
+| `ariaLabel`    | `string`                   | `'Slide group'`  |
+| `prevLabel`    | `string`                   | `'Scroll left'`  |
+| `nextLabel`    | `string`                   | `'Scroll right'` |
 
 ### Events
 
-| Name | Payload |
-| --- | --- |
-| `update:modelValue` | `string \| number` |
-| `change` | `(value, item, index, sourceEvent)` |
+| Name                | Payload                             |
+| ------------------- | ----------------------------------- |
+| `update:modelValue` | `string \| number`                  |
+| `change`            | `(value, item, index, sourceEvent)` |
 
 ### Slots
 
-| Name | Description |
-| --- | --- |
+| Name   | Description                                           |
+| ------ | ----------------------------------------------------- |
 | `item` | Custom item rendering with `{ item, index, active }`. |
-| `prev` | Replaces the previous control content. |
-| `next` | Replaces the next control content. |
+| `prev` | Replaces the previous control content.                |
+| `next` | Replaces the next control content.                    |
 
 ## Theming
 

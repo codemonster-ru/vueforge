@@ -94,26 +94,26 @@ Use `label` props when slot content is unnecessary and a compact declaration is 
 
 ### Tabs Props
 
-| Name | Type | Default |
-| --- | --- | --- |
-| `modelValue` | `string \| number \| undefined` | `undefined` |
-| `disabled` | `boolean` | `false` |
-| `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` |
-| `ariaLabel` | `string \| undefined` | `undefined` |
-| `ariaLabelledby` | `string \| undefined` | `undefined` |
+| Name             | Type                            | Default        |
+| ---------------- | ------------------------------- | -------------- |
+| `modelValue`     | `string \| number \| undefined` | `undefined`    |
+| `disabled`       | `boolean`                       | `false`        |
+| `orientation`    | `'horizontal' \| 'vertical'`    | `'horizontal'` |
+| `ariaLabel`      | `string \| undefined`           | `undefined`    |
+| `ariaLabelledby` | `string \| undefined`           | `undefined`    |
 
 ### Tab Props
 
-| Name | Type | Default |
-| --- | --- | --- |
-| `value` | `string \| number` | required |
-| `label` | `string \| undefined` | `undefined` |
-| `disabled` | `boolean` | `false` |
+| Name       | Type                  | Default     |
+| ---------- | --------------------- | ----------- |
+| `value`    | `string \| number`    | required    |
+| `label`    | `string \| undefined` | `undefined` |
+| `disabled` | `boolean`             | `false`     |
 
 ### TabPanel Props
 
-| Name | Type | Default |
-| --- | --- | --- |
+| Name    | Type               | Default  |
+| ------- | ------------------ | -------- |
 | `value` | `string \| number` | required |
 
 ## Events

@@ -26,7 +26,7 @@ Use a strict combobox when users should search and then choose an existing optio
             { label: 'Canada', value: 'ca' },
             { label: 'Germany', value: 'de' },
             { label: 'Japan', value: 'jp' },
-            { label: 'United States', value: 'us' }
+            { label: 'United States', value: 'us' },
         ]"
     />
 </template>
@@ -47,7 +47,7 @@ Use `allowCreate` when users may commit a custom value that is not yet present i
         :options="[
             { label: 'Backend', value: 'backend' },
             { label: 'Design', value: 'design' },
-            { label: 'Frontend', value: 'frontend' }
+            { label: 'Frontend', value: 'frontend' },
         ]"
     />
 </template>
@@ -67,7 +67,7 @@ Turn on `clearable` when both the selected value and the typed query should be r
         :options="[
             { label: 'Ava Patel', value: 'ava' },
             { label: 'Maksim Ivanov', value: 'maksim' },
-            { label: 'Wei Chen', value: 'wei' }
+            { label: 'Wei Chen', value: 'wei' },
         ]"
     />
 </template>
@@ -110,7 +110,7 @@ Use `disabled` when the control is unavailable and `readonly` when the current v
             readonly
             :options="[
                 { label: 'Weekly', value: 'weekly' },
-                { label: 'Monthly', value: 'monthly' }
+                { label: 'Monthly', value: 'monthly' },
             ]"
         />
     </div>

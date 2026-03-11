@@ -29,7 +29,7 @@ const open = ref(false);
         :actions="[
             { label: 'Create task', value: 'create' },
             { label: 'Invite member', value: 'invite' },
-            { label: 'Export', value: 'export' }
+            { label: 'Export', value: 'export' },
         ]"
         @action="onQuickAction"
     />
@@ -45,11 +45,7 @@ Change direction to fit the surrounding viewport and avoid collisions.
     <SpeedDial
         :model-value="true"
         direction="left"
-        :actions="[
-            { label: 'Pin' },
-            { label: 'Share' },
-            { label: 'Archive' }
-        ]"
+        :actions="[{ label: 'Pin' }, { label: 'Share' }, { label: 'Archive' }]"
     />
 </template>
 ```

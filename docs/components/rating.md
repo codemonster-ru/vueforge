@@ -5,7 +5,7 @@ Rating captures or displays a score across a fixed number of steps, including fr
 ## Import
 
 ```ts
-import Rating from '@/package/components/rating.vue';
+import { Rating } from '@codemonster-ru/vueforge';
 ```
 
 ## Examples
@@ -39,7 +39,7 @@ Enable `allow-half` when users need finer control than whole-star increments.
 Use `precision` with `readonly` for review summaries that need decimal accuracy.
 
 ```vue
-<Rating :model-value="3.7" precision="0.1" readonly />
+<Rating :model-value="3.7" :precision="0.1" readonly />
 ```
 
 ### Clearable Input
@@ -54,32 +54,32 @@ Enable `clearable` when users should be able to remove a previously selected sco
 
 ### Props
 
-| Name | Type | Default |
-| --- | --- | --- |
-| `modelValue` | `number` | `0` |
-| `max` | `number` | `5` |
-| `size` | `'small' \| 'normal' \| 'large'` | `'normal'` |
-| `allowHalf` | `boolean` | `false` |
-| `precision` | `number \| undefined` | `undefined` |
-| `clearable` | `boolean` | `false` |
-| `readonly` | `boolean` | `false` |
-| `disabled` | `boolean` | `false` |
-| `ariaLabel` | `string` | `''` |
+| Name         | Type                             | Default     |
+| ------------ | -------------------------------- | ----------- |
+| `modelValue` | `number`                         | `0`         |
+| `max`        | `number`                         | `5`         |
+| `size`       | `'small' \| 'normal' \| 'large'` | `'normal'`  |
+| `allowHalf`  | `boolean`                        | `false`     |
+| `precision`  | `number \| undefined`            | `undefined` |
+| `clearable`  | `boolean`                        | `false`     |
+| `readonly`   | `boolean`                        | `false`     |
+| `disabled`   | `boolean`                        | `false`     |
+| `ariaLabel`  | `string`                         | `''`        |
 
 ### Events
 
-| Name | Payload |
-| --- | --- |
-| `update:modelValue` | `number` |
-| `change` | `number` |
-| `focus` | `FocusEvent` |
-| `blur` | `FocusEvent` |
+| Name                | Payload      |
+| ------------------- | ------------ |
+| `update:modelValue` | `number`     |
+| `change`            | `number`     |
+| `focus`             | `FocusEvent` |
+| `blur`              | `FocusEvent` |
 
 ### Slots
 
-| Name | Description |
-| --- | --- |
-| `icon` | Replaces the empty icon. |
+| Name          | Description               |
+| ------------- | ------------------------- |
+| `icon`        | Replaces the empty icon.  |
 | `active-icon` | Replaces the filled icon. |
 
 ## Theming

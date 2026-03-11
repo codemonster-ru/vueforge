@@ -7,11 +7,14 @@ Compose analytics pages with pinned controls and split visualization/detail pane
     <PageLayout :show-desktop-toggles="true">
         <template #default>
             <StickyRegion as="header" offset="0px" shadow>
-                <DataTableToolbar />
+                <Inline gap="0.75rem">
+                    <Button label="Refresh" />
+                    <Button label="Export" variant="outline" />
+                </Inline>
             </StickyRegion>
             <SplitLayout preset="editor-preview">
                 <template #default>
-                    <Chart :data="chartData" />
+                    <Card>Primary analytics panel</Card>
                 </template>
                 <template #secondary>
                     <DataTable :columns="columns" :rows="rows" />

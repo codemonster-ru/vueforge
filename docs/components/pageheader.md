@@ -5,7 +5,7 @@ Standardize page titles, subtitles, metadata, and actions at the top of applicat
 ## Import
 
 ```ts
-import { PageHeader } from '@codemonster-ru/vueforge';
+import { PageHeader } from '@codemonster-ru/vueforge-layouts';
 ```
 
 ## Examples
@@ -45,7 +45,12 @@ Use `breadcrumbs` and `meta` when the page needs route context and lightweight s
 <template>
     <PageHeader title="Projects" subtitle="Overview and team activity.">
         <template #breadcrumbs>
-            <Breadcrumbs :items="[{ label: 'Home', to: '/' }, { label: 'Projects', active: true }]" />
+            <Breadcrumbs
+                :items="[
+                    { label: 'Home', to: '/' },
+                    { label: 'Projects', active: true },
+                ]"
+            />
         </template>
         <template #meta>
             <Badge severity="info">24 active</Badge>

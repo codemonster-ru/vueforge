@@ -60,7 +60,12 @@ Use `as` when the inline row should also define a semantic region.
 ```vue
 <template>
     <Inline as="section" gap="0.5rem" align="center">
-        <Breadcrumbs :items="[{ label: 'Home', to: '/' }, { label: 'Projects', active: true }]" />
+        <Breadcrumbs
+            :items="[
+                { label: 'Home', to: '/' },
+                { label: 'Projects', active: true },
+            ]"
+        />
     </Inline>
 </template>
 ```

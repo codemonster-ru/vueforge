@@ -5,7 +5,7 @@ Timeline presents ordered events, milestones, or status changes in vertical or h
 ## Import
 
 ```ts
-import Timeline from '@/package/components/timeline.vue';
+import { Timeline } from '@codemonster-ru/vueforge';
 ```
 
 ## Examples
@@ -80,20 +80,20 @@ interface TimelineItem {
 
 ### Props
 
-| Name | Type | Default |
-| --- | --- | --- |
-| `items` | `TimelineItem[]` | `[]` |
-| `orientation` | `'vertical' \| 'horizontal'` | `'vertical'` |
-| `size` | `'small' \| 'normal' \| 'large'` | `'normal'` |
-| `ariaLabel` | `string` | `''` |
-| `ariaLabelledby` | `string` | `''` |
+| Name             | Type                             | Default      |
+| ---------------- | -------------------------------- | ------------ |
+| `items`          | `TimelineItem[]`                 | `[]`         |
+| `orientation`    | `'vertical' \| 'horizontal'`     | `'vertical'` |
+| `size`           | `'small' \| 'normal' \| 'large'` | `'normal'`   |
+| `ariaLabel`      | `string`                         | `''`         |
+| `ariaLabelledby` | `string`                         | `''`         |
 
 ### Slots
 
-| Name | Description |
-| --- | --- |
-| `marker` | Custom marker with `{ item, index }`. |
-| `item` | Custom content with `{ item, index }`. |
+| Name     | Description                            |
+| -------- | -------------------------------------- |
+| `marker` | Custom marker with `{ item, index }`.  |
+| `item`   | Custom content with `{ item, index }`. |
 
 ## Theming
 
@@ -110,10 +110,9 @@ Override component tokens through `theme.overrides.components.timeline`.
 ## Recipes
 
 - Use Timeline for issue history, deployment milestones, order tracking, and workflow progress snapshots.
-- Prefer `ActivityFeed` when entries behave like operator-facing feed items with actors and actions.
+- Prefer `CommentThread` when entries need richer participant and action context.
 
 ## Accessibility
 
 - Timeline can be labeled via `ariaLabel` or `ariaLabelledby` depending on surrounding headings.
 - Custom marker and item slots should preserve sufficient contrast and readable ordering in both orientations.
-

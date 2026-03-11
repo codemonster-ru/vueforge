@@ -5,7 +5,7 @@ ColorPicker provides a compact color input with presets, text entry, and optiona
 ## Import
 
 ```ts
-import ColorPicker from '@/package/components/color-picker.vue';
+import { ColorPicker } from '@codemonster-ru/vueforge';
 ```
 
 ## Examples
@@ -47,10 +47,7 @@ const brandColorRgba = ref('rgba(59, 130, 246, 0.8)');
 Use presets when the product should guide users toward a controlled palette.
 
 ```vue
-<ColorPicker
-    v-model="brandColor"
-    :presets="['#2563eb', '#0f766e', '#dc2626', '#f59e0b']"
-/>
+<ColorPicker v-model="brandColor" :presets="['#2563eb', '#0f766e', '#dc2626', '#f59e0b']" />
 ```
 
 ### Readonly
@@ -65,27 +62,27 @@ Keep the control focusable but non-editable with `readonly`.
 
 ### Props
 
-| Name | Type | Default |
-| --- | --- | --- |
-| `modelValue` | `string` | `'#3b82f6'` |
-| `format` | `'hex' \| 'rgb' \| 'hsl'` | `'hex'` |
-| `alpha` | `boolean` | `false` |
-| `presets` | `string[]` | `[]` |
-| `placeholder` | `string` | `'#3b82f6'` |
-| `disabled` | `boolean` | `false` |
-| `readonly` | `boolean` | `false` |
-| `size` | `'small' \| 'normal' \| 'large'` | `'normal'` |
-| `variant` | `'filled' \| 'outlined'` | `'filled'` |
-| `ariaLabel` | `string` | `'Color picker'` |
+| Name          | Type                             | Default          |
+| ------------- | -------------------------------- | ---------------- |
+| `modelValue`  | `string`                         | `'#3b82f6'`      |
+| `format`      | `'hex' \| 'rgb' \| 'hsl'`        | `'hex'`          |
+| `alpha`       | `boolean`                        | `false`          |
+| `presets`     | `string[]`                       | `[]`             |
+| `placeholder` | `string`                         | `'#3b82f6'`      |
+| `disabled`    | `boolean`                        | `false`          |
+| `readonly`    | `boolean`                        | `false`          |
+| `size`        | `'small' \| 'normal' \| 'large'` | `'normal'`       |
+| `variant`     | `'filled' \| 'outlined'`         | `'filled'`       |
+| `ariaLabel`   | `string`                         | `'Color picker'` |
 
 ### Events
 
-| Name | Payload |
-| --- | --- |
+| Name                | Payload  |
+| ------------------- | -------- |
 | `update:modelValue` | `string` |
-| `change` | `string` |
-| `open` | none |
-| `close` | none |
+| `change`            | `string` |
+| `open`              | none     |
+| `close`             | none     |
 
 ## Theming
 

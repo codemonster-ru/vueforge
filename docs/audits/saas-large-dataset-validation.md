@@ -24,18 +24,18 @@ Validated components and utilities:
 
 ## Test Evidence
 
-- `src/package/components/__tests__/data-table.test.ts`
+- `packages/vueforge/src/components/__tests__/data-table.test.ts`
     - Server request handoff for sort/pagination/filter.
     - Loading/empty/error slot behavior for server datasets.
-- `src/package/components/__tests__/pagination.test.ts`
+- `packages/vueforge/src/components/__tests__/pagination.test.ts`
     - Page updates and edge navigation behavior.
-- `src/package/components/__tests__/virtual-scroller.test.ts`
+- `packages/vueforge/src/components/__tests__/virtual-scroller.test.ts`
     - Virtual window rendering and `rangeChange`/`reachEnd`.
     - Empty and error-state fallback through `empty` slot.
-- `src/package/components/__tests__/tree.test.ts`
+- `packages/vueforge/src/components/__tests__/tree.test.ts`
     - Virtualized expanded rendering.
     - Async branch states via `loadingKeys` and `loadChildren`.
-- `src/package/components/__tests__/tree-table.test.ts`
+- `packages/vueforge/src/components/__tests__/tree-table.test.ts`
     - Lazy and server handoff payload verification.
 
 ## Consumer Guidance

@@ -35,7 +35,7 @@ const menuItems = [
 <template>
     <Inline align="center" justify="space-between" gap="0.75rem" wrap="wrap">
         <Inline gap="0.5rem" wrap="wrap">
-            <SearchInput v-model="query" placeholder="Search projects..." />
+            <Input v-model="query" placeholder="Search projects..." />
             <FilterChips v-model="filters" :options="statusOptions" clearable />
         </Inline>
         <Inline gap="0.5rem">
@@ -162,26 +162,25 @@ const confirmDelete = () => {
 </script>
 ```
 
-## 6) Global Command + Notifications
+## 6) Global Overlays
 
 ```vue
 <template>
     <Inline gap="0.5rem">
-        <Button @click="notificationsOpen = true"> Notifications </Button>
-        <Button @click="commandOpen = true"> Open command palette </Button>
+        <Button @click="drawerOpen = true"> Open drawer </Button>
+        <Button @click="toastOpen = true"> Show toast </Button>
     </Inline>
 
-    <NotificationCenter v-model="notificationsOpen" :items="notifications" />
-    <CommandPalette v-model="commandOpen" :items="commands" />
+    <Drawer v-model="drawerOpen">Navigation and secondary actions</Drawer>
+    <ToastContainer v-if="toastOpen">
+        <Toast severity="success" title="Saved" description="Changes were stored successfully." />
+    </ToastContainer>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
 
-const notificationsOpen = ref(false);
-const commandOpen = ref(false);
-
-const notifications = [{ id: 1, title: 'Build passed', message: 'CI is green' }];
-const commands = [{ label: 'Go to settings', value: 'settings' }];
+const drawerOpen = ref(false);
+const toastOpen = ref(true);
 </script>
 ```

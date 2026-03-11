@@ -5,7 +5,7 @@ ThemeProvider scopes theme preset and token overrides to a subtree without repla
 ## Import
 
 ```ts
-import ThemeProvider from '@/package/components/theme-provider.vue';
+import { ThemeProvider } from '@codemonster-ru/vueforge';
 ```
 
 ## Examples
@@ -35,21 +35,20 @@ import ThemeProvider from '@/package/components/theme-provider.vue';
 
 ### Props
 
-| Name | Type | Default |
-| --- | --- | --- |
-| `preset` | `ThemePreset \| undefined` | `undefined` |
+| Name        | Type                       | Default     |
+| ----------- | -------------------------- | ----------- |
+| `preset`    | `ThemePreset \| undefined` | `undefined` |
 | `overrides` | `ThemePreset \| undefined` | `undefined` |
-| `as` | `string` | `'div'` |
-| `dark` | `boolean` | `false` |
+| `as`        | `string`                   | `'div'`     |
+| `dark`      | `boolean`                  | `false`     |
 
 ### Slots
 
-| Name | Description |
-| --- | --- |
+| Name      | Description                                             |
+| --------- | ------------------------------------------------------- |
 | `default` | Content that should receive the scoped theme variables. |
 
 ## Recipes
 
 - Use ThemeProvider for isolated themed surfaces, embedded product previews, and mixed light or dark regions.
 - Nested providers are valid; inner scopes override outer CSS variable values for their subtree.
-

@@ -1,74 +1,24 @@
 {
-    "name": "@codemonster-ru/vueforge",
+    "name": "vueforge-workspace",
+    "private": true,
     "version": "0.100.0",
-    "description": "Open source UI components for Vue.js.",
-    "license": "MIT",
-    "author": "Kirill Kolesnikov",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/codemonster-ru/vueforge.git"
-    },
-    "keywords": [
-        "vue",
-        "vue3",
-        "ui",
-        "components",
-        "component-library",
-        "ui-kit",
-        "design-system",
-        "theming",
-        "typescript",
-        "vite"
-    ],
-    "main": "./dist/index.ts.umd.js",
-    "module": "./dist/index.ts.mjs",
-    "types": "./dist/index.d.ts",
-    "exports": {
-        ".": {
-            "import": {
-                "style": "./dist/index.css",
-                "types": "./dist/index.d.ts",
-                "default": "./dist/index.ts.mjs"
-            },
-            "require": {
-                "types": "./dist/index.d.ts",
-                "default": "./dist/index.ts.umd.js"
-            }
-        },
-        "./dist/*.css": {
-            "import": "./dist/*.css",
-            "require": "./dist/*.css"
-        }
-    },
-    "files": [
-        "dist",
-        "!dist/docs",
-        "!dist/src/docs",
-        "!dist/src/**/__tests__"
+    "description": "VueForge workspace.",
+    "workspaces": [
+        "packages/*"
     ],
     "scripts": {
-        "dev": "vite dev --force --mode development",
-        "build": "vite build --mode production",
+        "dev": "vite dev --config vite.docs.config.mts --force --mode development",
+        "build": "npm run build:packages && npm run build:docs",
+        "build:packages": "npm run build --workspaces --if-present",
         "build:docs": "vite build --config vite.docs.config.mts --mode production",
-        "lint": "node --import tsx ./node_modules/eslint/bin/eslint.js . --ext .ts,.vue --config eslint.config.ts",
+        "lint": "node --import tsx ./node_modules/eslint/bin/eslint.js packages src tests scripts *.ts *.mts --ext .ts,.vue --config eslint.config.ts",
         "format": "prettier --write .",
         "format:check": "prettier --check .",
-        "typecheck": "vue-tsc --noEmit",
+        "typecheck": "vue-tsc --noEmit -p tsconfig.json && npm run typecheck --workspaces --if-present",
         "test": "vitest run",
-        "test:ssr": "vitest run src/package/components/__tests__/ssr-hydration.test.ts",
+        "test:ssr": "vitest run tests/integration/ssr-hydration.test.ts",
         "verify:bundle-size": "node --import tsx ./scripts/verify-bundle-size.ts",
         "verify:semver": "node --import tsx ./scripts/verify-semver-checklist.ts"
-    },
-    "peerDependencies": {
-        "@codemonster-ru/vueiconify": "^1.0.1",
-        "chart.js": "^4.0.0",
-        "vue": "^3.0.0",
-        "vue-router": "^4.4.5"
-    },
-    "peerDependenciesMeta": {
-        "chart.js": {
-            "optional": true
-        }
     },
     "devDependencies": {
         "@codemonster-ru/vue-codeblock": "^1.0.0",
@@ -94,8 +44,5 @@
         "vitest": "^4.0.18",
         "vue": "^3.4.31",
         "vue-tsc": "^2.0.21"
-    },
-    "dependencies": {
-        "@codemonster-ru/floater.js": "^1.0.8"
     }
 }
