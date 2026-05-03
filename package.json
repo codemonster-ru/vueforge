@@ -1,0 +1,21 @@
+{
+  "name": "vueforge",
+  "private": true,
+  "version": "0.0.0",
+  "workspaces": [
+    "packages/*",
+    "examples/*"
+  ],
+  "scripts": {
+    "build": "npm run build -w @codemonster-ru/vueforge-icons && npm run build -w @codemonster-ru/vueforge-theme && npm run build -w @codemonster-ru/vueforge-core && npm run build -w @codemonster-ru/vueforge-layouts && npm run build -w @codemonster-ru/vueforge-codeblock",
+    "lint": "npm run lint --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "check": "npm run check --workspaces --if-present",
+    "format": "npm run format --workspaces --if-present",
+    "prepublish:all": "npm run build && npm pack --workspace @codemonster-ru/vueforge-icons --dry-run && npm pack --workspace @codemonster-ru/vueforge-theme --dry-run && npm pack --workspace @codemonster-ru/vueforge-core --dry-run && npm pack --workspace @codemonster-ru/vueforge-layouts --dry-run && npm pack --workspace @codemonster-ru/vueforge-codeblock --dry-run"
+  },
+  "devDependencies": {
+    "@vue/language-core": "~3.1.8"
+  }
+}

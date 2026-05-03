@@ -1,0 +1,32 @@
+node_modules
+.DS_Store
+
+.npm-cache
+**/.npm-cache
+
+# Build artifacts
+**/dist
+**/coverage
+**/*.tsbuildinfo
+
+# Local dependencies and caches
+**/node_modules
+**/.cache
+**/.vite
+**/.generated
+**/.idea
+
+# Local env files
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Artifacts
+*.tgz

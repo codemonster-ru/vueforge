@@ -1,0 +1,128 @@
+.vf-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--vf-surface-gap);
+  padding: var(--vf-surface-padding);
+  border: 1px solid var(--vf-card-border-color);
+  border-radius: var(--vf-radius-surface);
+  background: var(--vf-card-background);
+  color: var(--vf-card-color);
+  line-height: var(--vf-text-body-line-height);
+}
+
+.vf-card--compact {
+  padding: var(--vf-surface-padding-compact);
+  gap: var(--vf-surface-gap-compact);
+}
+
+.vf-card__title {
+  margin: 0;
+  font-size: var(--vf-card-title-font-size);
+  font-weight: var(--vf-text-body-font-weight);
+  line-height: var(--vf-text-body-line-height);
+}
+
+.vf-card__body {
+  color: var(--vf-card-body-color);
+}
+
+.vf-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--vf-surface-gap);
+  padding: var(--vf-surface-padding);
+  border: 1px solid var(--vf-panel-border-color);
+  border-radius: var(--vf-radius-surface);
+  background: var(--vf-panel-background);
+  color: var(--vf-panel-color);
+  line-height: var(--vf-text-body-line-height);
+}
+
+.vf-panel--subtle {
+  background: var(--vf-panel-subtle-background);
+  box-shadow: none;
+}
+
+.vf-panel__title {
+  margin: 0;
+  font-size: var(--vf-panel-title-font-size);
+  font-weight: var(--vf-text-body-font-weight);
+  line-height: var(--vf-text-body-line-height);
+}
+
+.vf-table-wrap {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  border: 1px solid var(--vf-table-border-color);
+  border-radius: var(--vf-radius-surface);
+  background: var(--vf-table-background);
+  color: var(--vf-table-color);
+  overflow: hidden;
+}
+
+.vf-table-scroll {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.vf-table {
+  width: 100%;
+  min-width: 36rem;
+  border-collapse: separate;
+  border-spacing: 0;
+  color: var(--vf-table-color);
+  font-size: var(--vf-text-body-font-size);
+  font-weight: var(--vf-text-body-font-weight);
+  line-height: var(--vf-text-body-line-height);
+}
+
+.vf-table__caption {
+  padding: 0.875rem 1rem 0;
+  text-align: left;
+  color: var(--vf-table-caption-color);
+}
+
+.vf-table :where(th, td) {
+  padding: 0.625rem 0.875rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.vf-table :where(th) {
+  font-weight: var(--vf-font-weight-medium);
+  color: var(--vf-table-head-color);
+  background: var(--vf-table-head-background);
+}
+
+.vf-table :where(td) {
+  color: var(--vf-table-color);
+}
+
+.vf-table thead th {
+  border-bottom: 1px solid var(--vf-table-border-color);
+}
+
+.vf-table tbody tr + tr td,
+.vf-table tfoot tr:first-child td {
+  border-top: 1px solid var(--vf-table-border-color);
+}
+
+.vf-table tfoot td {
+  color: var(--vf-table-foot-color);
+  background: var(--vf-table-foot-background);
+}
+
+.vf-table--striped tbody tr:nth-child(even) td {
+  background: var(--vf-table-stripe-background);
+}
+
+.vf-table--compact :where(th, td) {
+  padding: 0.5rem 0.75rem;
+}
+
+.vf-table--sticky-header thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}

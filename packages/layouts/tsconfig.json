@@ -1,0 +1,19 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "jsx": "preserve",
+    "esModuleInterop": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "declaration": true,
+    "declarationMap": true,
+    "types": ["vitest/globals"]
+  },
+  "include": ["src/**/*", "tests/**/*", "env.d.ts", "index.html"],
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ]
+}

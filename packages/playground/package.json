@@ -1,0 +1,54 @@
+{
+  "name": "@codemonster-ru/vueforge-playground",
+  "version": "0.1.0",
+  "description": "Vue 3 adapter for Codemonster playground core",
+  "type": "module",
+  "license": "MIT",
+  "homepage": "https://github.com/codemonster-ru/vueforge/tree/main/packages/playground#readme",
+  "bugs": {
+    "url": "https://github.com/codemonster-ru/vueforge/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codemonster-ru/vueforge.git",
+    "directory": "packages/playground"
+  },
+  "keywords": [
+    "vue",
+    "vue3",
+    "playground",
+    "sandbox",
+    "vueforge"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./style.css": "./dist/style.css"
+  },
+  "files": [
+    "dist"
+  ],
+  "peerDependencies": {
+    "vue": "^3.4.0"
+  },
+  "dependencies": {
+    "@codemonster-ru/vueforge-playground-core": "file:../playground-core",
+    "@codemonster-ru/vueforge-codeblock": "file:../codeblock"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.2.4",
+    "vite": "^6.4.2",
+    "vue": "^3.5.20",
+    "vue-tsc": "^2.2.12"
+  },
+  "scripts": {
+    "build": "vite build && vue-tsc --emitDeclarationOnly --declaration --declarationDir dist",
+    "lint": "eslint .",
+    "test": "vitest run --passWithNoTests"
+  }
+}

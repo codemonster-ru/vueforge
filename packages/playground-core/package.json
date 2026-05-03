@@ -1,0 +1,43 @@
+{
+  "name": "@codemonster-ru/vueforge-playground-core",
+  "version": "0.1.0",
+  "description": "Framework-agnostic playground core runtime",
+  "type": "module",
+  "license": "MIT",
+  "homepage": "https://github.com/codemonster-ru/vueforge/tree/main/packages/playground-core#readme",
+  "bugs": {
+    "url": "https://github.com/codemonster-ru/vueforge/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codemonster-ru/vueforge.git",
+    "directory": "packages/playground-core"
+  },
+  "keywords": [
+    "vueforge",
+    "playground",
+    "runtime",
+    "sandbox"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --dts --clean",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "tsup": "^8.5.0"
+  }
+}

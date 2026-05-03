@@ -1,0 +1,5 @@
+**/dist
+**/coverage
+**/node_modules
+**/showcase-dist
+package-lock.json

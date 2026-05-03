@@ -1,0 +1,47 @@
+name: Release Package From Tag
+
+on:
+  push:
+    tags:
+      - '@*/*@*'
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Resolve release target from tag
+        id: prep
+        run: node scripts/ci/prepare-release-from-tag.mjs
+
+      - name: Build target package
+        run: npm run build -w "${{ steps.prep.outputs.package_name }}"
+
+      - name: Publish package to npm
+        run: npm publish -w "${{ steps.prep.outputs.package_name }}" --access public --provenance
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: ${{ steps.prep.outputs.release_name }}
+          body_path: ${{ steps.prep.outputs.release_notes_path }}
+          tag_name: ${{ github.ref_name }}
+          target_commitish: ${{ github.sha }}

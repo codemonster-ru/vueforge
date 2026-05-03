@@ -1,0 +1,460 @@
+import type { InjectionKey, Ref } from "vue";
+import type {
+  VfResolvedTheme as BaseVfResolvedTheme,
+  VfResolvedThemeConfig as BaseVfResolvedThemeConfig,
+  VfResolvedThemePreset as BaseVfResolvedThemePreset,
+  VfResolvedThemePresetOptions,
+  VfThemeConfig as BaseVfThemeConfig,
+  VfThemeMode as BaseVfThemeMode,
+  VfThemePreset as BaseVfThemePreset,
+  VfThemePresetOptions,
+  VfThemeTokens as BaseVfThemeTokens,
+} from "@codemonster-ru/vueforge-theme";
+
+export type VfResolvedTheme = BaseVfResolvedTheme;
+export type VfThemeMode = BaseVfThemeMode;
+export type { VfResolvedThemePresetOptions, VfThemePresetOptions };
+
+type BaseVfThemeTokensWithoutLegacyTypography = Omit<
+  BaseVfThemeTokens,
+  "textLineHeight" | "headingLineHeight" | "tabsLineHeight"
+>;
+
+export interface VfThemeTokens extends BaseVfThemeTokensWithoutLegacyTypography {
+  fontFamilyBase: string;
+  fontFamilyHeading: string;
+  fontFamilyMono: string;
+  fontWeightRegular: string;
+  fontWeightMedium: string;
+  fontWeightSemibold: string;
+  fontWeightBold: string;
+  fontSizeXs: string;
+  fontSizeSm: string;
+  fontSizeMd: string;
+  fontSizeLg: string;
+  fontSizeXl: string;
+  fontSize2xl: string;
+  fontSize3xl: string;
+  lineHeightTight: string;
+  lineHeightNormal: string;
+  lineHeightRelaxed: string;
+  selectableColor: string;
+  selectableHoverColor: string;
+  selectableHoverBackground: string;
+  selectableActiveColor: string;
+  selectableActiveBackground: string;
+  navMenuItemHoverColor: string;
+  navMenuItemHoverBackground: string;
+  navMenuItemActiveColor: string;
+  navMenuItemActiveBackground: string;
+  navMenuPillsItemPadding: string;
+  navMenuPillsListGap: string;
+  navMenuPillsNestedGap: string;
+  navMenuPillsCollapseOffsetTop: string;
+  navMenuPillsItemMinHeight: string;
+  navMenuPillsItemHoverColor: string;
+  navMenuPillsItemHoverBackground: string;
+  navMenuPillsItemActiveColor: string;
+  navMenuPillsItemActiveBackground: string;
+  navMenuGroupLabelColor: string;
+  navMenuItemColor: string;
+  navMenuTopItemFontWeight: string;
+  navMenuItemRadius: string;
+  navMenuItemFocusColor: string;
+  navMenuItemFocusBorderColor: string;
+  navMenuItemAncestorActiveColor: string;
+  navMenuBranchColor: string;
+  navMenuBranchAncestorActiveColor: string;
+  tableOfContentsPillsListGap: string;
+  tableOfContentsPillsItemPadding: string;
+  tableOfContentsPillsItemMinHeight: string;
+  tableOfContentsPillsHoverColor: string;
+  tableOfContentsPillsHoverBackground: string;
+  tableOfContentsPillsActiveColor: string;
+  tableOfContentsPillsActiveBackground: string;
+  menuBarPillsSubmenuHoverBackground: string;
+  menuBarPillsSubmenuActiveBackground: string;
+  menuBarPillsListGap: string;
+  menuBarItemColor: string;
+  menuBarTopItemFontWeight: string;
+  menuBarItemFocusColor: string;
+  menuBarItemFocusBorderColor: string;
+  menuBarItemAncestorActiveColor: string;
+  menuBarTopHoverColor: string;
+  menuBarTopHoverBackground: string;
+  menuBarTopActiveColor: string;
+  menuBarTopActiveBackground: string;
+  menuBarSubmenuHoverColor: string;
+  menuBarSubmenuHoverBackground: string;
+  menuBarSubmenuActiveColor: string;
+  menuBarSubmenuActiveBackground: string;
+  menuBarPillsTopHoverColor: string;
+  menuBarPillsTopHoverBackground: string;
+  menuBarPillsTopActiveColor: string;
+  menuBarPillsTopActiveBackground: string;
+  menuBarPillsSubmenuHoverColor: string;
+  menuBarPillsSubmenuActiveColor: string;
+  tableOfContentsFocusColor: string;
+  tableOfContentsFocusBorderColor: string;
+  dropdownItemColor: string;
+  dropdownItemFocusColor: string;
+  dropdownItemFocusBorderColor: string;
+  dropdownItemDefaultHoverColor: string;
+  dropdownItemDefaultHoverBackground: string;
+  dropdownItemDefaultActiveColor: string;
+  dropdownItemDefaultActiveBackground: string;
+  dropdownItemPillsHoverColor: string;
+  dropdownItemPillsHoverBackground: string;
+  dropdownItemPillsActiveColor: string;
+  dropdownItemPillsActiveBackground: string;
+  breadcrumbsLinkColor: string;
+  breadcrumbsLinkHoverColor: string;
+  breadcrumbsLinkFocusColor: string;
+  breadcrumbsCurrentColor: string;
+  breadcrumbsDisabledColor: string;
+  breadcrumbsSeparatorColor: string;
+  accordionBorderColor: string;
+  accordionBackground: string;
+  accordionColor: string;
+  accordionTriggerExpandedColor: string;
+  accordionTriggerHoverColor: string;
+  accordionTriggerFocusBorderColor: string;
+  accordionIconColor: string;
+  accordionContentBackground: string;
+  accordionContentBorderColor: string;
+  accordionContentColor: string;
+  tabsListBorderColor: string;
+  tabsTabColor: string;
+  tabsTabHoverColor: string;
+  tabsTabActiveColor: string;
+  tabsTabDisabledColor: string;
+  tabsIndicatorColor: string;
+  tabsListBackground: string;
+  tabsListPaddingBottom: string;
+  tabsTabBackground: string;
+  tabsTabHoverBackground: string;
+  tabsTabActiveBackground: string;
+  tabsListBaselineOverlap: string;
+  tabsScrollButtonWidth: string;
+  tabsScrollButtonIconOffsetY: string;
+  tabsFadeWidth: string;
+  tabsScrollbarHeight: string;
+  tabsGapOffset: string;
+  tabsFocusRingColor: string;
+  tabsPanelColor: string;
+  tabsPanelFocusBorderColor: string;
+  badgeBackground: string;
+  badgeBorderColor: string;
+  badgeColor: string;
+  badgePrimaryBackground: string;
+  badgePrimaryBorderColor: string;
+  badgePrimaryColor: string;
+  badgeSuccessBackground: string;
+  badgeSuccessBorderColor: string;
+  badgeSuccessColor: string;
+  badgeInfoBackground: string;
+  badgeInfoBorderColor: string;
+  badgeInfoColor: string;
+  badgeWarnBackground: string;
+  badgeWarnBorderColor: string;
+  badgeWarnColor: string;
+  badgeHelpBackground: string;
+  badgeHelpBorderColor: string;
+  badgeHelpColor: string;
+  badgeDangerBackground: string;
+  badgeDangerBorderColor: string;
+  badgeDangerColor: string;
+  badgeContrastBackground: string;
+  badgeContrastBorderColor: string;
+  badgeContrastColor: string;
+  tagBackground: string;
+  tagBorderColor: string;
+  tagColor: string;
+  tagPrimaryBorderColor: string;
+  tagPrimaryColor: string;
+  tagSuccessBorderColor: string;
+  tagSuccessColor: string;
+  tagInfoBorderColor: string;
+  tagInfoColor: string;
+  tagWarnBorderColor: string;
+  tagWarnColor: string;
+  tagHelpBorderColor: string;
+  tagHelpColor: string;
+  tagDangerBorderColor: string;
+  tagDangerColor: string;
+  tagContrastBorderColor: string;
+  tagContrastColor: string;
+  alertColor: string;
+  alertBodyColor: string;
+  alertPrimaryIconColor: string;
+  alertSuccessIconColor: string;
+  alertInfoIconColor: string;
+  alertWarnIconColor: string;
+  alertHelpIconColor: string;
+  alertDangerIconColor: string;
+  alertContrastIconColor: string;
+  dividerColor: string;
+  cardBorderColor: string;
+  cardBackground: string;
+  cardColor: string;
+  cardBodyColor: string;
+  panelBorderColor: string;
+  panelBackground: string;
+  panelColor: string;
+  panelSubtleBackground: string;
+  tableBorderColor: string;
+  tableBackground: string;
+  tableColor: string;
+  tableCaptionColor: string;
+  tableHeadBackground: string;
+  tableHeadColor: string;
+  tableFootBackground: string;
+  tableFootColor: string;
+  tableStripeBackground: string;
+  dialogContentBorderColor: string;
+  dialogContentBackground: string;
+  dialogContentColor: string;
+  dialogContentFocusBorderColor: string;
+  dialogDividerColor: string;
+  dialogHeaderMinHeight: string;
+  dialogFooterMinHeight: string;
+  drawerContentBorderColor: string;
+  drawerContentBackground: string;
+  drawerContentColor: string;
+  drawerContentFocusBorderColor: string;
+  drawerDividerColor: string;
+  drawerHeaderMinHeight: string;
+  drawerFooterMinHeight: string;
+  popoverTriggerFocusBorderColor: string;
+  popoverContentBorderColor: string;
+  popoverContentBackground: string;
+  popoverContentColor: string;
+  tooltipContentBorderColor: string;
+  tooltipContentBackground: string;
+  tooltipContentColor: string;
+  textBodyFontSize: string;
+  textBodyLineHeight: string;
+  textBodyFontWeight: string;
+  textCaptionFontSize: string;
+  textCaptionLineHeight: string;
+  textCaptionFontWeight: string;
+  textLabelFontSize: string;
+  textLabelLineHeight: string;
+  textLabelFontWeight: string;
+  headingFontSizeSm: string;
+  headingFontSizeMd: string;
+  headingFontSizeLg: string;
+  headingFontSizeXl: string;
+  headingFontWeight: string;
+  headingH1FontSize: string;
+  headingH1LineHeight: string;
+  headingH2FontSize: string;
+  headingH2LineHeight: string;
+  headingH3FontSize: string;
+  headingH3LineHeight: string;
+  headingH4FontSize: string;
+  headingH4LineHeight: string;
+  headingH5FontSize: string;
+  headingH5LineHeight: string;
+  headingH6FontSize: string;
+  headingH6LineHeight: string;
+  textLinkBorderWidth: string;
+  textLinkUnderlineThickness: string;
+  textLinkUnderlineOffset: string;
+  textLinkTransitionDuration: string;
+  textLinkTransitionEasing: string;
+  textLinkHoverColor: string;
+  textCodePaddingBlock: string;
+  textCodePaddingInline: string;
+  textCodeBorderWidth: string;
+  listDiscPaddingInlineStart: string;
+  listDecimalPaddingInlineStart: string;
+  listItemGap: string;
+  blockquotePaddingBlock: string;
+  blockquotePaddingInlineStart: string;
+  blockquoteBorderWidth: string;
+  proseFlowGap: string;
+  buttonSecondaryHoverBackground: string;
+  buttonSecondaryHoverBorderColor: string;
+  buttonSecondaryActiveBackground: string;
+  buttonSecondaryActiveBorderColor: string;
+  buttonGhostHoverBackground: string;
+  buttonGhostHoverBorderColor: string;
+  buttonGhostActiveBackground: string;
+  buttonGhostActiveBorderColor: string;
+  buttonSolidHoverFilter: string;
+  buttonSolidActiveFilter: string;
+  fieldBackground: string;
+  fieldBorderColor: string;
+  fieldHoverBorderColor: string;
+  fieldFocusBorderColor: string;
+  fieldInvalidBorderColor: string;
+  fieldDisabledBackground: string;
+  fieldDisabledColor: string;
+  fieldPlaceholderColor: string;
+  inputBackground: string;
+  inputBorderColor: string;
+  inputHoverBorderColor: string;
+  inputFocusBorderColor: string;
+  inputInvalidBorderColor: string;
+  inputDisabledBackground: string;
+  inputColor: string;
+  inputDisabledColor: string;
+  inputPlaceholderColor: string;
+  textareaBackground: string;
+  textareaBorderColor: string;
+  textareaHoverBorderColor: string;
+  textareaFocusBorderColor: string;
+  textareaInvalidBorderColor: string;
+  textareaDisabledBackground: string;
+  textareaColor: string;
+  textareaDisabledColor: string;
+  textareaPlaceholderColor: string;
+  selectBackground: string;
+  selectBorderColor: string;
+  selectHoverBorderColor: string;
+  selectFocusBorderColor: string;
+  selectInvalidBorderColor: string;
+  selectDisabledBackground: string;
+  selectColor: string;
+  selectDisabledColor: string;
+  selectPlaceholderColor: string;
+  selectIconColor: string;
+  selectDisabledIconColor: string;
+  selectOptionColor: string;
+  selectOptionHoverColor: string;
+  selectOptionHoverBackground: string;
+  selectOptionFocusColor: string;
+  selectOptionActiveColor: string;
+  selectOptionActiveBackground: string;
+  selectOptionDisabledColor: string;
+  selectionControlBackground: string;
+  selectionControlBorderColor: string;
+  selectionControlHoverBorderColor: string;
+  selectionControlFocusBorderColor: string;
+  selectionControlInvalidBorderColor: string;
+  selectionControlDisabledBackground: string;
+  selectionControlDisabledBorderColor: string;
+  selectionControlDisabledColor: string;
+  checkboxBackground: string;
+  checkboxBorderColor: string;
+  checkboxHoverBorderColor: string;
+  checkboxFocusBorderColor: string;
+  checkboxInvalidBorderColor: string;
+  checkboxCheckedBackground: string;
+  checkboxCheckedBorderColor: string;
+  checkboxMarkColor: string;
+  checkboxDisabledBackground: string;
+  checkboxDisabledBorderColor: string;
+  checkboxDisabledColor: string;
+  checkboxDisabledMarkColor: string;
+  radioControlBackground: string;
+  radioHoverBorderColor: string;
+  radioBorderColor: string;
+  radioFocusBorderColor: string;
+  radioInvalidBorderColor: string;
+  radioCheckedBorderColor: string;
+  radioDotColor: string;
+  radioDisabledBackground: string;
+  radioDisabledBorderColor: string;
+  radioDisabledColor: string;
+  radioDisabledDotColor: string;
+  switchTrackBorderColor: string;
+  switchTrackHoverBorderColor: string;
+  switchTrackFocusBorderColor: string;
+  switchTrackCheckedBorderColor: string;
+  switchTrackCheckedHoverBorderColor: string;
+  switchTrackInvalidBorderColor: string;
+  switchTrackStaticBorderColor: string;
+  switchTrackDisabledBackground: string;
+  switchTrackDisabledBorderColor: string;
+  switchDisabledColor: string;
+  switchTrackBackground: string;
+  switchTrackHoverBackground: string;
+  switchTrackCheckedBackground: string;
+  switchTrackCheckedHoverBackground: string;
+  switchThumbBackground: string;
+  switchThumbBorderColor: string;
+  switchThumbShadow: string;
+  switchThumbColor: string;
+  switchThumbIconSize: string;
+  switchThumbDisabledBackground: string;
+  switchThumbDisabledBorderColor: string;
+  switchThumbDisabledColor: string;
+  switchThumbCheckedBackground: string;
+  switchThumbCheckedBorderColor: string;
+  switchThumbCheckedShadow: string;
+  switchThumbCheckedColor: string;
+  switchThumbInverseBackground: string;
+  switchThumbInverseBorderColor: string;
+  switchThumbInverseColor: string;
+  proseHeadingMargin: string;
+  proseHeadingGap: string;
+  proseBlockSpacing: string;
+  proseListPaddingInlineStart: string;
+  proseListItemSpacing: string;
+  proseLinkHoverColor: string;
+  proseBlockquotePaddingInlineStart: string;
+  proseBlockquoteBorderWidth: string;
+  proseInlineCodeFontSize: string;
+  proseInlineCodePadding: string;
+  proseCodeBlockPadding: string;
+  proseHrBorderWidth: string;
+  proseHrOpacity: string;
+  proseHrMargin: string;
+}
+
+export interface VfThemePreset extends Omit<
+  BaseVfThemePreset,
+  "tokens" | "dark"
+> {
+  tokens: VfThemeTokens;
+  dark?: Partial<VfThemeTokens>;
+}
+
+export interface VfResolvedThemePreset extends Omit<
+  BaseVfResolvedThemePreset,
+  "light" | "dark"
+> {
+  light: VfThemeTokens;
+  dark: VfThemeTokens;
+}
+
+export interface VfThemeConfig extends Omit<
+  BaseVfThemeConfig,
+  "preset" | "extend" | "light" | "dark"
+> {
+  preset?: VfThemePreset;
+  extend?: Partial<VfThemeTokens>;
+  light?: Partial<VfThemeTokens>;
+  dark?: Partial<VfThemeTokens>;
+}
+
+export interface VfResolvedThemeConfig extends Omit<
+  BaseVfResolvedThemeConfig,
+  "preset"
+> {
+  preset: VfResolvedThemePreset;
+}
+
+export interface VfVueForgeOptions {
+  theme?: VfThemeConfig;
+  defaultTheme?: VfThemeMode;
+  themeStorageKey?: string;
+  themeAttribute?: string;
+}
+
+export interface VfThemeContext {
+  mode: Ref<VfThemeMode>;
+  resolvedTheme: Ref<VfResolvedTheme>;
+  setTheme: (value: VfThemeMode) => void;
+  toggleTheme: () => void;
+}
+
+export interface VfThemeProviderProps {
+  defaultTheme?: VfThemeMode;
+  storageKey?: string;
+  attribute?: string;
+}
+
+export type VfThemeInjectionKey = InjectionKey<VfThemeContext>;
