@@ -1,10 +1,10 @@
 ---
-title: "Content Area"
-description: "Component documentation for Content Area"
-order: 23
+title: "Auth Layout"
+description: "Component documentation for Auth Layout"
+order: 19
 ---
 
-# Content Area
+# Auth Layout
 
 This section provides a quick overview before the detailed subsections below.
 
