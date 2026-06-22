@@ -8,11 +8,10 @@ Component props and their default values.
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
-| `modelValue?` | `boolean` | `false` | Controlled current value. |
-| `size?` | `VfControlSize` | `md` | Size token for spacing and dimensions. |
-| `invalid?` | `boolean` | `false` | Marks the control as invalid for visual state and `aria-invalid`; error text should be rendered through `VfField`. |
-| `disabled?` | `boolean` | `false` | Disables user interaction. |
-| `label?` | `string` | — | Visible inline label content for the checkbox. |
+| `label?` | `string` | — | Visible legend rendered above the grouped controls. |
+| `description?` | `string` | — | Helper text rendered below the grouped controls. |
+| `error?` | `string` | — | Error text rendered below the grouped controls. |
+| `invalid?` | `boolean` | `false` | Forces invalid styling/state even when `error` is absent. |
 
 ## Emits
 
@@ -20,8 +19,7 @@ Emitted component events and their payload shapes.
 
 | Name | Parameters | ReturnType | Description |
 | --- | --- | --- | --- |
-| `update:modelValue` | `[value: boolean]` | `void` | Emitted with next model value. |
-| `change` | `[value: boolean]` | `void` | Emitted when current value changes. |
+| `—` | `—` | `void` | No component events are emitted. |
 
 ## Slots
 
@@ -29,7 +27,10 @@ Available slots and their slot props.
 
 | Name | Parameters | ReturnType | Description |
 | --- | --- | --- | --- |
-| `default` | `—` | `void` | label content |
+| `default` | `[scope: { describedBy?: string; invalid: boolean }]` | `void` | Wraps grouped controls and exposes shared a11y metadata. |
+| `label` | `—` | `void` | Custom legend content. |
+| `description` | `—` | `void` | Custom helper text content. |
+| `error` | `—` | `void` | Custom error content. |
 
 ## Events
 
@@ -53,4 +54,4 @@ Exported utility and union types.
 
 | Name | Values |
 | --- | --- |
-| `VfControlSize` | `'sm' \| 'md' \| 'lg'` |
+| `—` | No dedicated public types are exported for this component. |
